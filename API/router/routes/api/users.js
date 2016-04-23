@@ -1,20 +1,20 @@
 /**
  * Created by Kangoo13 on 18/10/2015.
  */
-var express     = require('express');
-var User        = require('../../../models/User.js');
-var superSecret = require('../../../config.js').secret;
-var jwt         = require('jsonwebtoken');
-var auth        = require('authenticate');
-var fs          = require('fs');
-var path        = require('path');
-var multer      = require('multer');
-var Promise     = require('bluebird');
-var upload      = multer({ dest: './uploads/avatar/'});
-var util        = require("util");;
-var router      = express.Router();
+ var express     = require('express');
+ var User        = require('../../../models/User.js');
+ var superSecret = require('../../../config.js').secret;
+ var jwt         = require('jsonwebtoken');
+ var auth        = require('authenticate');
+ var fs          = require('fs');
+ var path        = require('path');
+ var multer      = require('multer');
+ var Promise     = require('bluebird');
+ var upload      = multer({ dest: './uploads/avatar/'});
+ var util        = require("util");;
+ var router      = express.Router();
 
-var uploadConfig = {
+ var uploadConfig = {
     acceptedMimeTypes : [ "image/jpeg", "image/png", "image/gif", "image/tiff" ],
     acceptedExtensions : [ "jpg", "jpeg", "png", "gif", "tiff" ],
     maxFileSize : 2000000
@@ -92,10 +92,21 @@ router.post('/', function(req, res, next) {
         });
 });
 
-router.get('/:id', function(req, res, next) {
-    User.findById(req.params.id, function (err, post) {
-        if (err) return next(err);
-        res.json(post);
+router.get('/:email', function(req, res, next) {
+    User.findOne({
+        'emailLocal': req.params.email
+    }).select('emailLocal').exec(function (err, user) {
+        if (err) throw err;
+
+        if (user) {
+            res.json(user);
+        }
+        else {
+            res.json({
+                success: false,
+                message: 'User not found.'
+            });
+        }
     });
 });
 
@@ -139,38 +150,38 @@ router.post('/picture/:id', upload.single('avatar'), auth({secret: superSecret})
     if (req.decoded.admin || req.decoded.id == req.params.id) {
         var image = req.file;
         Promise.resolve(image)
-            .then(function(image) {
-                if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
-                    throw "Incorrect MIME type";
-                }
-                return image;
-            })
-            .then(function(image) {
-                if (image.size > uploadConfig.maxFileSize) {
-                    throw "File is too large";
-                }
-                return image;
-            })
-            .then(function(image) {
-                if (!fs.existsSync("uploads/avatar/"+req.decoded.id+"/")){
-                    fs.mkdirSync("uploads/avatar/"+req.decoded.id+"/");
-                }
-                var tempPath = image.path;
-                var realPath = "uploads/avatar/"+req.decoded.id+"/";
-                var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
-                console.log("TempPath:"+tempPath+" autre:"+ realPath+image.filename+"."+ext);
-                return fs.rename(tempPath, realPath+image.filename+"."+ext);
-            })
-            .then(function(err) {
-                if (err)
-                    throw err;
-            })
-            .then(function() {
-                res.send({success: true, message: "Your image has been saved"});
-            })
-            .catch(function(err) {
-                res.send({success: false, message: err});
-            });
+        .then(function(image) {
+            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+                throw "Incorrect MIME type";
+            }
+            return image;
+        })
+        .then(function(image) {
+            if (image.size > uploadConfig.maxFileSize) {
+                throw "File is too large";
+            }
+            return image;
+        })
+        .then(function(image) {
+            if (!fs.existsSync("uploads/avatar/"+req.decoded.id+"/")){
+                fs.mkdirSync("uploads/avatar/"+req.decoded.id+"/");
+            }
+            var tempPath = image.path;
+            var realPath = "uploads/avatar/"+req.decoded.id+"/";
+            var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
+            console.log("TempPath:"+tempPath+" autre:"+ realPath+image.filename+"."+ext);
+            return fs.rename(tempPath, realPath+image.filename+"."+ext);
+        })
+        .then(function(err) {
+            if (err)
+                throw err;
+        })
+        .then(function() {
+            res.send({success: true, message: "Your image has been saved"});
+        })
+        .catch(function(err) {
+            res.send({success: false, message: err});
+        });
     }
     else {
         return res.status(403).send({
@@ -179,9 +190,6 @@ router.post('/picture/:id', upload.single('avatar'), auth({secret: superSecret})
         });
     }
 });
-
-
-
 
 router.post('/authenticate', function(req, res) {
     User.findOne({
