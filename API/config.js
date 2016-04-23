@@ -4,8 +4,7 @@
  module.exports = {
 
     'secret': 'ilovebananas5328',
-    // 'database': 'mongodb://apiforlightthemup:OKLMcousin1234@ds055855.mongolab.com:55855/heroku_55h9tvr5',
-    'database': 'mongodb://localhost:27017/lightthemup',
+    'database': 'mongodb://lightthemup:lightthemup@ds011790.mlab.com:11790/apiforlightthemup',
     'facebookAuth' : {
         'clientID'      : '893159310766341',
         'clientSecret'  : '8aa9a262261b4d2ed257935fae1429e4',
