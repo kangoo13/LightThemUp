@@ -3,7 +3,7 @@ var request = require("supertest");
 var express = require("express");
 var mongoose = require('mongoose');
 var should = require('should');
-var config = require('./config-test');
+var config = require('../config');
 var url = 'http://localhost:3000';
 
 //TO-DO: update, pictures

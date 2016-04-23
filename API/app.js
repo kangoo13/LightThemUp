@@ -3,7 +3,6 @@ var bodyParser      = require('body-parser');
 var mongoose        = require('mongoose');
 var morgan          = require('morgan');
 var config          = require('./config');
-// var config          = require('./test/config-test');
 var User            = require('./models/User');
 var passport        = require('passport');
 var expressSession  = require('express-session');
