@@ -2,7 +2,14 @@
 
 Installer Node JS, npm, mongodb
 
-Faire un npm install pour installer les modules 
+Faire un npm install pour installer les modules
+
+Launch MongoDb
+mongod --smallfiles --dbpath mongo/db/
+
+Stop MongoDb
+mongod --dbpath mongo/db/ --shutdown
+
 
 Mongo-express pour Admin UI comme phpmyadmin
 

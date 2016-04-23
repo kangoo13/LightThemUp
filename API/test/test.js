@@ -1,75 +1,215 @@
-/**
- * Created by aurelienschiltz on 22/03/2016.
- */
-var should = require('should');
-var assert = require('assert');
-var request = require('supertest');
+var chai  = require("chai");
+var request = require("supertest");
+var express = require("express");
 var mongoose = require('mongoose');
-var winston = require('winston');
-var config = require('./config-debug');
+var should = require('should');
+var config = require('./config-test');
+var url = 'http://localhost:3000';
 
 describe('Routing', function() {
-    var url = 'http://someurl.com';
-    // within before() you can run all the operations that are needed to setup your tests. In this case
-    // I want to create a connection with the database, and when I'm done, I call done().
-    before(function(done) {
-        // In our tests we use the test db
-        mongoose.connect(config.database);
-        done();
-    });
-    // use describe to give a title to your test suite, in this case the tile is "Account"
-    // and then specify a function in which we are going to declare all the tests
-    // we want to run. Each test starts with the function it() and as a first argument
-    // we have to provide a meaningful title for it, whereas as the second argument we
-    // specify a function that takes a single parameter, "done", that we will use
-    // to specify when our test is completed, and that's what makes easy
-    // to perform async test!
-    describe('Account', function() {
-        it('should return error trying to save duplicate username', function(done) {
-            var profile = {
-                username: 'vgheri',
-                password: 'test',
-                firstName: 'Valerio',
-                lastName: 'Gheri'
-            };
-            // once we have specified the info we want to send to the server via POST verb,
-            // we need to actually perform the action on the resource, in this case we want to
-            // POST on /api/profiles and we want to send some info
-            // We do this using the request object, requiring supertest!
-            request(url)
-                .post('/api/profiles')
-                .send(profile)
-                // end handles the response
-                .end(function(err, res) {
-                    if (err) {
-                        throw err;
-                    }
-                    // this is should.js syntax, very clear
-                    res.should.have.status(400);
-                    done();
-                });
+  before(function(done) {
+    mongoose.connect(config.database);              
+    done();
+  });
+
+  // to perform async test!
+  describe('Users', function() {
+
+    it('Should return users on simple GET', function(done) {
+      request(url)
+      .get('/users')
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          done();
         });
-        it('should correctly update an existing account', function(done){
-            var body = {
-                firstName: 'JP',
-                lastName: 'Berd'
-            };
-            request(url)
-                .put('/api/profiles/vgheri')
-                .send(body)
-                .expect('Content-Type', /json/)
-                .expect(200) //Status code
-                .end(function(err,res) {
-                    if (err) {
-                        throw err;
-                    }
-                    // Should.js fluent syntax applied
-                    res.body.should.have.property('_id');
-                    res.body.firstName.should.equal('JP');
-                    res.body.lastName.should.equal('Berd');
-                    res.body.creationDate.should.not.equal(null);
-                    done();
-                });
+  });
+
+    it('Should return error trying to save a new user with dumb arguments', function(done) {
+      var profile = {
+        dsq: 'test@test.fr',
+        qqqq: 'Test1234'
+      };
+      request(url)
+      .post('/users')
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to false
+          json.success.should.equal(false);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("Wrong arguments");
+          done();
         });
-    });
+  });
+
+
+    it('Should return success trying to save a new user', function(done) {
+      var profile = {
+        email: 'test@test.fr',
+        password: 'Test1234'
+      };
+      request(url)
+      .post('/users')
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to true
+          json.success.should.equal(true);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("User created !");
+          done();
+        });
+  });
+
+    it('Should return error trying to save duplicate user', function(done) {
+      var profile = {
+        email: 'test@test.fr',
+        password: 'Test1234'
+      };
+      request(url)
+      .post('/users')
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to false
+          json.success.should.equal(false);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("User already exists");
+          done();
+        });
+  });
+
+
+    it('Should return error trying to log in a not existing user', function(done) {
+      var profile = {
+        email: 'nonexisting@test.fr',
+        password: 'Test1234'
+      };
+      request(url)
+      .post('/authenticate')
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to false
+          json.success.should.equal(false);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("Authentication failed. User not found.");
+          done();
+        });
+  });
+
+    //TO-DO: update, delete, get, pictures
+
+  });
 });
+
+// describe("GET method", function() {
+
+//   describe("Users", function() {
+
+//     var url = "http://localhost:3000/users/";
+
+//     it("Returns status 200", function(done) {
+//       request(url, function(error, response, body) {
+//         chai.expect(response.statusCode).to.equal(200);
+//         done();
+//       });
+//     });
+
+//   });
+
+//   describe("Achievements", function() {
+
+//     var url = "http://localhost:3000/achievements/";
+
+//     it("Returns status 200", function(done) {
+//       request(url, function(error, response, body) {
+//         chai.expect(response.statusCode).to.equal(200);
+//         done();
+//       });
+//     });
+
+//   });
+
+//   describe("Playlist", function() {
+
+//     var url = "http://localhost:3000/playlists/";
+
+//     it("Returns status 200", function(done) {
+//       request(url, function(error, response, body) {
+//         chai.expect(response.statusCode).to.equal(200);
+//         done();
+//       });
+//     });
+
+//   });
+
+//   describe("News", function() {
+
+//     var url = "http://localhost:3000/news/";
+
+//     it("Returns status 200", function(done) {
+//       request(url, function(error, response, body) {
+//         chai.expect(response.statusCode).to.equal(200);
+//         done();
+//       });
+//     });
+
+//   });
+
+// });

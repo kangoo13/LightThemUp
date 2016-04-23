@@ -38,7 +38,9 @@
     "serve-favicon": "~2.3.0",
     "multer": "^1.1.0",
     "bluebird": "^2.9.2",
-    "async": "^2.0.0-rc.3"
+    "async": "^2.0.0-rc.3",
+    "winston": "^2.2.0",
+    "request": "^2.67.0"
   },
   "devDependencies": {
     "supertest": "1.1.0",
