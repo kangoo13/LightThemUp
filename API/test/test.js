@@ -6,13 +6,14 @@ var should = require('should');
 var config = require('./config-test');
 var url = 'http://localhost:3000';
 
+//TO-DO: update, delete, get, pictures
+
 describe('Routing', function() {
   before(function(done) {
     mongoose.connect(config.database);              
     done();
   });
 
-  // to perform async test!
   describe('Users', function() {
 
     it('Should return users on simple GET', function(done) {
@@ -129,7 +130,7 @@ describe('Routing', function() {
         password: 'Test1234'
       };
       request(url)
-      .post('/authenticate')
+      .post('/users/authenticate')
       .send(profile)
     // end handles the response
     .end(function(err, res) {
@@ -153,63 +154,67 @@ describe('Routing', function() {
         });
   });
 
-    //TO-DO: update, delete, get, pictures
+    it('Should return error trying to log in with a wrong password', function(done) {
+      var profile = {
+        email: 'test@test.fr',
+        password: 'Test12345'
+      };
+      request(url)
+      .post('/users/authenticate')
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to false
+          json.success.should.equal(false);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("Authentication failed. Wrong password.");
+          done();
+        });
+  });
+
+    it('Should return error success trying log in an user', function(done) {
+      var profile = {
+        email: 'test@test.fr',
+        password: 'Test1234'
+      };
+      request(url)
+      .post('/users/authenticate')
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to true
+          json.success.should.equal(true);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("Enjoy your token!");
+          // If response contains token
+          json.should.have.property('token');
+          done();
+        });
+  });
 
   });
 });
-
-// describe("GET method", function() {
-
-//   describe("Users", function() {
-
-//     var url = "http://localhost:3000/users/";
-
-//     it("Returns status 200", function(done) {
-//       request(url, function(error, response, body) {
-//         chai.expect(response.statusCode).to.equal(200);
-//         done();
-//       });
-//     });
-
-//   });
-
-//   describe("Achievements", function() {
-
-//     var url = "http://localhost:3000/achievements/";
-
-//     it("Returns status 200", function(done) {
-//       request(url, function(error, response, body) {
-//         chai.expect(response.statusCode).to.equal(200);
-//         done();
-//       });
-//     });
-
-//   });
-
-//   describe("Playlist", function() {
-
-//     var url = "http://localhost:3000/playlists/";
-
-//     it("Returns status 200", function(done) {
-//       request(url, function(error, response, body) {
-//         chai.expect(response.statusCode).to.equal(200);
-//         done();
-//       });
-//     });
-
-//   });
-
-//   describe("News", function() {
-
-//     var url = "http://localhost:3000/news/";
-
-//     it("Returns status 200", function(done) {
-//       request(url, function(error, response, body) {
-//         chai.expect(response.statusCode).to.equal(200);
-//         done();
-//       });
-//     });
-
-//   });
-
-// });
