@@ -8,6 +8,7 @@ module.exports = function (app) {
     app.use('/news', require('./routes/api/news'));
     app.use('/songs', require('./routes/api/songs'));
     app.use('/playlists', require('./routes/api/playlists'));
+    app.use('/playlistsong', require('./routes/api/playlistsong'));
     app.use('/users', require('./routes/api/users'));
 };
 

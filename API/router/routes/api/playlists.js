@@ -11,46 +11,6 @@ var async           = require('async');
 var router          = express.Router();
 
 
-router.post('/song', auth({secret: superSecret}), function(req, res, next) {
-    if (req.body.idSong && req.body.idPlaylist) {
-        PlaylistSong.find({idSong : req.body.idSong, idPlaylist : req.body.idPlaylist}, function (err, docs) {
-            if (!docs.length){
-                var playlist = new PlaylistSong();
-
-                playlist.idSong = req.body.idSong;
-                playlist.idPlaylist = req.body.idPlaylist;
-                playlist.save(function (err) {
-                    if (err) {
-                        return res.json({
-                            success: false,
-                            message: err.errors
-                        });
-                    }
-                    res.json({
-                        success: true,
-                        message: 'Song added to the playlist !'
-                    });
-                });
-            }else{
-                return res.json({
-                    success: false,
-                    message: 'Song already exists in the playlist ! '
-                });
-            }
-        });
-    }
-    else
-        return res.json({
-            success: false,
-            message: 'Wrong arguments'
-        });
-});
-
-
-
-
-
-
 router.get('/', function(req, res, next) {
     Playlist.find(function (err, playlists) {
         if (err) return next(err);
@@ -115,8 +75,7 @@ router.get('/:id', function(req, res, next) {
     }
     else
     {
-        var regex = new RegExp(req.params.id, 'i');
-        return Playlist.find({name: regex}, function(err,q){
+        return Playlist.find({name: req.params.id, created_by: req.decoded.id}, function(err,q){
             if (err) return next(err);
             return res.json(q);
         });

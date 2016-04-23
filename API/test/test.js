@@ -9,6 +9,7 @@ var url = 'http://localhost:3000';
 //TO-DO: update, pictures
 
 describe('Routing', function() {
+    this.timeout(10000);
   before(function(done) {
     mongoose.connect(config.database);              
     done();
@@ -269,34 +270,181 @@ describe('Routing', function() {
   });
 
 
-    it('Should return error on remove an user without admin privileges', function(done) {
-      var profile = {
-        token: token
-      };
-      request(url)
-      .delete('/users/' + id)
-      .send(profile)
-    // end handles the response
-    .end(function(err, res) {
-      if (err) {
-        throw err;
-      }
-         // If status is 403
-         res.status.should.be.eql(403);
-          // If response is JSON
-          res.text.should.be.json;
-          var json = JSON.parse(res.text);
-          // If response contains success
-          json.should.have.property('success');
-          // If response success is equal to false
-          json.success.should.equal(false);
-          // If response contains message
-          json.should.have.property('message');
-          // If response message is equal to our text
-          json.message.should.equal("Unauthorized.");
-          done();
-        });
-  });
+      it('Should return error on remove an user without admin privileges', function(done) {
+          var profile = {
+              token: token
+          };
+          request(url)
+              .delete('/users/' + id)
+              .send(profile)
+              // end handles the response
+              .end(function(err, res) {
+                  if (err) {
+                      throw err;
+                  }
+                  // If status is 403
+                  res.status.should.be.eql(403);
+                  // If response is JSON
+                  res.text.should.be.json;
+                  var json = JSON.parse(res.text);
+                  // If response contains success
+                  json.should.have.property('success');
+                  // If response success is equal to false
+                  json.success.should.equal(false);
+                  // If response contains message
+                  json.should.have.property('message');
+                  // If response message is equal to our text
+                  json.message.should.equal("Unauthorized.");
+                  done();
+              });
+      });
+
+      it('Should return success on creating a new playlist', function(done) {
+          var profile = {
+              token: token,
+              name: "TestPlaylist"
+          };
+          request(url)
+              .post('/playlists')
+              .send(profile)
+              // end handles the response
+              .end(function(err, res) {
+                  if (err) {
+                      throw err;
+                  }
+                  // If status is 200
+                  res.status.should.be.eql(200);
+                  // If response is JSON
+                  res.text.should.be.json;
+                  var json = JSON.parse(res.text);
+                  // If response contains success
+                  json.should.have.property('success');
+                  // If response success is equal to true
+                  json.success.should.equal(true);
+                  // If response contains message
+                  json.should.have.property('message');
+                  // If response message is equal to our text
+                  json.message.should.equal("Playlist created !");
+                  done();
+              });
+      });
+
+      it('Should return success on creating a new song', function(done) {
+          var profile = {
+              token: token,
+              name: "TestSong",
+              description: "TestDescription"
+          };
+          request(url)
+              .post('/songs')
+              .send(profile)
+              // end handles the response
+              .end(function(err, res) {
+                  if (err) {
+                      throw err;
+                  }
+                  // If status is 200
+                  res.status.should.be.eql(200);
+                  // If response is JSON
+                  res.text.should.be.json;
+                  var json = JSON.parse(res.text);
+                  // If response contains success
+                  json.should.have.property('success');
+                  // If response success is equal to true
+                  json.success.should.equal(true);
+                  // If response contains message
+                  json.should.have.property('message');
+                  // If response message is equal to our text
+                  json.message.should.equal("Song created !");
+                  done();
+              });
+      });
+
+      it('Should return success on creating a new correspondance PlaylistSong', function(done) {
+          var profile = {
+              token: token,
+              idSong: song,
+              idPlaylist: playlist
+          };
+          request(url)
+              .post('/playlists')
+              .send(profile)
+              // end handles the response
+              .end(function(err, res) {
+                  if (err) {
+                      throw err;
+                  }
+                  // If status is 200
+                  res.status.should.be.eql(200);
+                  // If response is JSON
+                  res.text.should.be.json;
+                  var json = JSON.parse(res.text);
+                  // If response contains success
+                  json.should.have.property('success');
+                  // If response success is equal to true
+                  json.success.should.equal(true);
+                  // If response contains message
+                  json.should.have.property('message');
+                  // If response message is equal to our text
+                  json.message.should.equal("Playlist created !");
+                  done();
+              });
+      });
+
+      var songId;
+      it('Should return song fields', function(done) {
+          request(url)
+              .get('/songs/TestSong')
+              // end handles the response
+              .end(function(err, res) {
+                  if (err) {
+                      throw err;
+                  }
+                  // If status is 200*
+
+                  console.log(res.text);
+                  res.status.should.be.eql(200);
+                  // If response is JSON
+                  res.text.should.be.json;
+                  var json = JSON.parse(res.text);
+                  // If response contains user _id
+                  json.should.have.property('_id');
+                  songId = json._id;
+                  done();
+              });
+      });
+
+      it('Should return success on remove a song with admin privileges', function(done) {
+          var profile = {
+              token: token
+          };
+          request(url)
+              .delete('/songs/' + songId)
+              .send(profile)
+              // end handles the response
+              .end(function(err, res) {
+                  if (err) {
+                      throw err;
+                  }
+                  // If status is 200
+
+                  console.log(res.text);
+                  res.status.should.be.eql(200);
+                  // If response is JSON
+                  res.text.should.be.json;
+                  var json = JSON.parse(res.text);
+                  // If response contains success
+                  json.should.have.property('success');
+                  // If response success is equal to true
+                  json.success.should.equal(true);
+                  // If response contains message
+                  json.should.have.property('message');
+                  // If response message is equal to our text
+                  json.message.should.equal("The song has been deleted.");
+                  done();
+              });
+      });
+
   });
 
 });

@@ -1,28 +1,28 @@
 /**
  * Created by Kangoo13 on 17/10/2015.
  */
-var express     = require('express');
-var Song        = require('../../../models/Song.js');
-var superSecret = require('../../../config.js').secret;
-var auth        = require('authenticate');
-var router      = express.Router();
+var express                     = require('express');
+var PlaylistSong        = require('../../../models/PlaylistSong.js');
+var superSecret                 = require('../../../config.js').secret;
+var auth                        = require('authenticate');
+var router                      = express.Router();
 
 router.get('/', function(req, res, next) {
-    Song.find(function (err, songs) {
+    PlaylistSong.find(function (err, playlistSongs) {
         if (err) return next(err);
-        res.json(songs);
+        res.json(playlistSongs);
     });
 });
 
 router.post('/', auth({secret: superSecret}), function(req, res, next) {
-    if (req.body.name && req.body.description ) {
-        Song.find({name : req.body.name}, function (err, docs) {
+    if (req.body.idSong && req.body.idPlaylist) {
+        PlaylistPlaylistSong.find({idSong : req.body.idSong, idPlaylist : req.body.idPlaylist}, function (err, docs) {
             if (!docs.length){
-                var song = new Song();
+                var playlist = new PlaylistSong();
 
-                song.name = req.body.name;
-                song.description = req.body.description;
-                song.save(function (err) {
+                playlist.idSong = req.body.idSong;
+                playlist.idPlaylist = req.body.idPlaylist;
+                playlist.save(function (err) {
                     if (err) {
                         return res.json({
                             success: false,
@@ -31,13 +31,13 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
                     }
                     res.json({
                         success: true,
-                        message: 'Song created !'
+                        message: 'PlaylistSong added to the playlist !'
                     });
                 });
             }else{
                 return res.json({
                     success: false,
-                    message: 'Song already exists'
+                    message: 'PlaylistSong already exists in the playlist ! '
                 });
             }
         });
@@ -49,9 +49,10 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
         });
 });
 
+
 router.get('/:id', function(req, res, next) {
     if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-        Song.findById(req.params.id, function (err, post) {
+        PlaylistSong.findById(req.params.id, function (err, post) {
             if (err) return next(err);
             res.json(post);
         });
@@ -59,7 +60,7 @@ router.get('/:id', function(req, res, next) {
     else
     {
         var regex = new RegExp(req.params.id, 'i');
-        return Song.findOne({name: regex}, function(err,q){
+        return PlaylistSong.find({name: regex}, function(err,q){
             if (err) return next(err);
             return res.json(q);
         });
@@ -68,11 +69,11 @@ router.get('/:id', function(req, res, next) {
 
 router.put('/:id', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin || req.decoded.id == req.params.id) {
-        Song.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+        PlaylistSong.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
             if (err) return next(err);
             res.json({
                 success: true,
-                message: 'Song updated !'
+                message: 'PlaylistSong updated !'
             });
         });
     }
@@ -86,11 +87,11 @@ router.put('/:id', auth({secret: superSecret}), function(req, res, next) {
 
 router.delete('/:id', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin || req.decoded.id == req.params.id) {
-        Song.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+        PlaylistSong.findByIdAndRemove(req.params.id, req.body, function (err, post) {
             if (err) return next(err);
             return res.status(200).send({
                 success: true,
-                message: 'The song has been deleted.'
+                message: 'The playlistSong has been deleted.'
             });
         });
     }
