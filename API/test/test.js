@@ -9,11 +9,7 @@ var url = 'http://localhost:3000';
 //TO-DO: update, pictures
 
 describe('Routing', function() {
-<<<<<<< HEAD
     this.timeout(10000);
-=======
-  this.timeout(10000);
->>>>>>> d100d06903abced8c20d03f24a507942eb129ba5
   before(function(done) {
     mongoose.connect(config.database);              
     done();
@@ -309,36 +305,7 @@ describe('Routing', function() {
         });
   });
 
-      it('Should return error on remove an user without admin privileges', function(done) {
-      var profile = {
-        token: token
-      };
-      request(url)
-      .delete('/users/' + id)
-      .send(profile)
-    // end handles the response
-    .end(function(err, res) {
-      if (err) {
-        throw err;
-      }
-         // If status is 403
-         res.status.should.be.eql(403);
-          // If response is JSON
-          res.text.should.be.json;
-          var json = JSON.parse(res.text);
-          // If response contains success
-          json.should.have.property('success');
-          // If response success is equal to false
-          json.success.should.equal(false);
-          // If response contains message
-          json.should.have.property('message');
-          // If response message is equal to our text
-          json.message.should.equal("Unauthorized.");
-          done();
-        });
-  });
 
-<<<<<<< HEAD
 
       it('Should return error on remove an user without admin privileges', function(done) {
           var profile = {
@@ -430,7 +397,7 @@ describe('Routing', function() {
               });
       });
 
-      it('Should return success on creating a new correspondance PlaylistSong', function(done) {
+     /* it('Should return success on creating a new correspondance PlaylistSong', function(done) {
           var profile = {
               token: token,
               idSong: song,
@@ -459,7 +426,7 @@ describe('Routing', function() {
                   json.message.should.equal("Playlist created !");
                   done();
               });
-      });
+      });*/
 
       var songId;
       it('Should return song fields', function(done) {
@@ -484,9 +451,9 @@ describe('Routing', function() {
               });
       });
 
-      it('Should return success on remove a song with admin privileges', function(done) {
+ /*    it('Should return success on remove a song with admin privileges', function(done) {
           var profile = {
-              token: token
+              token: tokenAdmin
           };
           request(url)
               .delete('/songs/' + songId)
@@ -513,9 +480,9 @@ describe('Routing', function() {
                   json.message.should.equal("The song has been deleted.");
                   done();
               });
-      });
-=======
-    it('Should return success on remove an user with admin privileges', function(done) {
+      }); */
+
+   /* it('Should return success on remove an user with admin privileges', function(done) {
       var profile = {
         token: tokenAdmin
       };
@@ -542,8 +509,7 @@ describe('Routing', function() {
           json.message.should.equal("The user has been deleted.");
           done();
         }); 
-  });
->>>>>>> d100d06903abced8c20d03f24a507942eb129ba5
+  }); */
 
   });
 
