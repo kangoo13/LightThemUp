@@ -9,6 +9,7 @@ var url = 'http://localhost:3000';
 //TO-DO: update, pictures
 
 describe('Routing', function() {
+  this.timeout(10000);
   before(function(done) {
     mongoose.connect(config.database);              
     done();
@@ -62,10 +63,40 @@ describe('Routing', function() {
         });
   });
 
+    it('Should return success trying to save a new base_user', function(done) {
+      var profile = {
+        email: 'base_user@test.fr',
+        password: 'Test1234'
+      };
+      request(url)
+      .post('/users')
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to true
+          json.success.should.equal(true);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("User created !");
+          done();
+        });
+  });
+
 
     it('Should return success trying to save a new user', function(done) {
       var profile = {
-        email: 'test@test.fr',
+        email: 'user@test.fr',
         password: 'Test1234'
       };
       request(url)
@@ -95,7 +126,7 @@ describe('Routing', function() {
 
     it('Should return error trying to save duplicate user', function(done) {
       var profile = {
-        email: 'test@test.fr',
+        email: 'user@test.fr',
         password: 'Test1234'
       };
       request(url)
@@ -156,7 +187,7 @@ describe('Routing', function() {
 
     it('Should return error trying to log in with a wrong password', function(done) {
       var profile = {
-        email: 'test@test.fr',
+        email: 'user@test.fr',
         password: 'Test12345'
       };
       request(url)
@@ -184,10 +215,44 @@ describe('Routing', function() {
         });
   });
 
-    var token;
-    it('Should return success trying log in an user', function(done) {
+    var tokenAdmin;
+    it('Should return success trying log in an user (as Admin)', function(done) {
       var profile = {
-        email: 'test@test.fr',
+        email: 'admin@admin.fr',
+        password: 'Test1234'
+      };
+      request(url)
+      .post('/users/authenticate')
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+          // If status is 200
+          res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to true
+          json.success.should.equal(true);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("Enjoy your token!");
+          // If response contains token
+          json.should.have.property('token');
+          tokenAdmin = json.token;
+          done();
+        });
+  });
+
+     var token;
+    it('Should return success trying log in an user (as user)', function(done) {
+      var profile = {
+        email: 'base_user@test.fr',
         password: 'Test1234'
       };
       request(url)
@@ -218,10 +283,11 @@ describe('Routing', function() {
         });
   });
 
+
     var id;
     it('Should return user fields', function(done) {
       request(url)
-      .get('/users/test@test.fr')
+      .get('/users/user@test.fr')
     // end handles the response
     .end(function(err, res) {
       if (err) {
@@ -239,37 +305,7 @@ describe('Routing', function() {
         });
   });
 
-    it('Should return success on remove an user with admin privileges', function(done) {
-      var profile = {
-        token: token
-      };
-      request(url)
-      .delete('/users/' + id)
-      .send(profile)
-    // end handles the response
-    .end(function(err, res) {
-      if (err) {
-        throw err;
-      }
-         // If status is 200
-         res.status.should.be.eql(200);
-          // If response is JSON
-          res.text.should.be.json;
-          var json = JSON.parse(res.text);
-          // If response contains success
-          json.should.have.property('success');
-          // If response success is equal to true
-          json.success.should.equal(true);
-          // If response contains message
-          json.should.have.property('message');
-          // If response message is equal to our text
-          json.message.should.equal("The user has been deleted.");
-          done();
-        }); 
-  });
-
-
-    it('Should return error on remove an user without admin privileges', function(done) {
+      it('Should return error on remove an user without admin privileges', function(done) {
       var profile = {
         token: token
       };
@@ -297,6 +333,36 @@ describe('Routing', function() {
           done();
         });
   });
+
+    it('Should return success on remove an user with admin privileges', function(done) {
+      var profile = {
+        token: tokenAdmin
+      };
+      request(url)
+      .delete('/users/' + id)
+      .send(profile)
+    // end handles the response
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+         // If status is 200
+         res.status.should.be.eql(200);
+          // If response is JSON
+          res.text.should.be.json;
+          var json = JSON.parse(res.text);
+          // If response contains success
+          json.should.have.property('success');
+          // If response success is equal to true
+          json.success.should.equal(true);
+          // If response contains message
+          json.should.have.property('message');
+          // If response message is equal to our text
+          json.message.should.equal("The user has been deleted.");
+          done();
+        }); 
+  });
+
   });
 
 });
