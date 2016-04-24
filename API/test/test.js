@@ -7,7 +7,7 @@ var config = require('../config');
 var url = 'http://localhost:3000';
 
 //TO-DO: update, pictures
-
+var token;
 describe('Routing', function() {
     this.timeout(10000);
   before(function(done) {
@@ -15,7 +15,62 @@ describe('Routing', function() {
     done();
   });
 
-  describe('Users', function() {
+
+    describe('Songs', function() {
+        var songId;
+        it('Should return song fields', function(done) {
+            request(url)
+                .get('/songs/TestSong')
+                // end handles the response
+                .end(function(err, res) {
+                    if (err) {
+                        throw err;
+                    }
+                    // If status is 200*
+
+                    res.status.should.be.eql(200);
+                    // If response is JSON
+                    res.text.should.be.json;
+                    var json = JSON.parse(res.text);
+                    // If response contains user _id
+                    json.should.have.property('_id');
+                    songId = json._id;
+                    done();
+                });
+
+            it('Should return success on creating a new song', function(done) {
+                var profile = {
+                    token: token,
+                    name: "TestSong",
+                    description: "TestDescription"
+                };
+                request(url)
+                    .post('/songs')
+                    .send(profile)
+                    // end handles the response
+                    .end(function(err, res) {
+                        if (err) {
+                            throw err;
+                        }
+                        // If status is 200
+                        res.status.should.be.eql(200);
+                        // If response is JSON
+                        res.text.should.be.json;
+                        var json = JSON.parse(res.text);
+                        // If response contains success
+                        json.should.have.property('success');
+                        // If response success is equal to true
+                        json.success.should.equal(true);
+                        // If response contains message
+                        json.should.have.property('message');
+                        // If response message is equal to our text
+                        json.message.should.equal("Song created !");
+                        done();
+                    });
+            });
+    });
+
+        describe('Users', function() {
 
     it('Should return users on simple GET', function(done) {
       request(url)
@@ -249,7 +304,7 @@ describe('Routing', function() {
         });
   });
 
-     var token;
+
     it('Should return success trying log in an user (as user)', function(done) {
       var profile = {
         email: 'base_user@test.fr',
@@ -336,66 +391,9 @@ describe('Routing', function() {
               });
       });
 
-      it('Should return success on creating a new playlist', function(done) {
-          var profile = {
-              token: token,
-              name: "TestPlaylist"
-          };
-          request(url)
-              .post('/playlists')
-              .send(profile)
-              // end handles the response
-              .end(function(err, res) {
-                  if (err) {
-                      throw err;
-                  }
-                  // If status is 200
-                  res.status.should.be.eql(200);
-                  // If response is JSON
-                  res.text.should.be.json;
-                  var json = JSON.parse(res.text);
-                  // If response contains success
-                  json.should.have.property('success');
-                  // If response success is equal to true
-                  json.success.should.equal(true);
-                  // If response contains message
-                  json.should.have.property('message');
-                  // If response message is equal to our text
-                  json.message.should.equal("Playlist created !");
-                  done();
-              });
-      });
 
-      it('Should return success on creating a new song', function(done) {
-          var profile = {
-              token: token,
-              name: "TestSong",
-              description: "TestDescription"
-          };
-          request(url)
-              .post('/songs')
-              .send(profile)
-              // end handles the response
-              .end(function(err, res) {
-                  if (err) {
-                      throw err;
-                  }
-                  // If status is 200
-                  res.status.should.be.eql(200);
-                  // If response is JSON
-                  res.text.should.be.json;
-                  var json = JSON.parse(res.text);
-                  // If response contains success
-                  json.should.have.property('success');
-                  // If response success is equal to true
-                  json.success.should.equal(true);
-                  // If response contains message
-                  json.should.have.property('message');
-                  // If response message is equal to our text
-                  json.message.should.equal("Song created !");
-                  done();
-              });
-      });
+
+
 
      /* it('Should return success on creating a new correspondance PlaylistSong', function(done) {
           var profile = {
@@ -428,27 +426,7 @@ describe('Routing', function() {
               });
       });*/
 
-      var songId;
-      it('Should return song fields', function(done) {
-          request(url)
-              .get('/songs/TestSong')
-              // end handles the response
-              .end(function(err, res) {
-                  if (err) {
-                      throw err;
-                  }
-                  // If status is 200*
 
-                  console.log(res.text);
-                  res.status.should.be.eql(200);
-                  // If response is JSON
-                  res.text.should.be.json;
-                  var json = JSON.parse(res.text);
-                  // If response contains user _id
-                  json.should.have.property('_id');
-                  songId = json._id;
-                  done();
-              });
       });
 
  /*    it('Should return success on remove a song with admin privileges', function(done) {
@@ -512,5 +490,35 @@ describe('Routing', function() {
   }); */
 
   });
-
+    describe('Playlist', function() {
+        it('Should return success on creating a new playlist', function (done) {
+            var profile = {
+                token: token,
+                name: "TestPlaylist"
+            };
+            request(url)
+                .post('/playlists')
+                .send(profile)
+                // end handles the response
+                .end(function (err, res) {
+                    if (err) {
+                        throw err;
+                    }
+                    // If status is 200
+                    res.status.should.be.eql(200);
+                    // If response is JSON
+                    res.text.should.be.json;
+                    var json = JSON.parse(res.text);
+                    // If response contains success
+                    json.should.have.property('success');
+                    // If response success is equal to true
+                    json.success.should.equal(true);
+                    // If response contains message
+                    json.should.have.property('message');
+                    // If response message is equal to our text
+                    json.message.should.equal("Playlist created !");
+                    done();
+                });
+        });
+    });
 });

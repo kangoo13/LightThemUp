@@ -10,7 +10,6 @@ var auth            = require('authenticate');
 var async           = require('async');
 var router          = express.Router();
 
-
 router.get('/', function(req, res, next) {
     Playlist.find(function (err, playlists) {
         if (err) return next(err);
