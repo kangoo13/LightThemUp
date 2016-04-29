@@ -3,9 +3,32 @@
  */
 var express     = require('express');
 var Achievement       = require('../../../models/Achievement.js');
+var User       = require('../../../models/User.js');
 var auth        = require('authenticate');
 var superSecret = require('../../../config.js').secret;
 var router      = express.Router();
+
+router.get('/add', function(req, res, next) {
+    User.find({}, function (err, playlist) {
+        Achievement.find({}, function (err, songs){
+            playlist[0].achievements = songs;
+            playlist[0].save({ validateBeforeSave: false }, function (err) {
+                if (err) {
+                    return res.json({
+                        success: false,
+                        message: err.errors
+                    });
+                }
+                res.json({
+                    success: true,
+                    message: 'Playlist created !'
+                });
+            });
+        });
+        if (err) return next(err);
+
+    });
+});
 
 router.get('/', function(req, res, next) {
     Achievement.find(function (err, achievements) {
@@ -13,6 +36,7 @@ router.get('/', function(req, res, next) {
         res.json(achievements);
     });
 });
+
 
 router.post('/', auth({secret: superSecret}), function(req, res, next) {
     if (req.body.name && req.body.description) {

@@ -3,31 +3,41 @@
  */
 var express         = require('express');
 var Playlist        = require('../../../models/Playlist.js');
-var PlaylistSong    = require('../../../models/PlaylistSong.js');
 var Song            = require('../../../models/Song.js');
 var superSecret     = require('../../../config.js').secret;
 var auth            = require('authenticate');
 var async           = require('async');
 var router          = express.Router();
 
-router.get('/', function(req, res, next) {
-    Playlist.find(function (err, playlists) {
+router.get('/add', function(req, res, next) {
+    Playlist.find({_id : "572272c38ef1c73fc9d4c37f"}, function (err, playlist) {
+        Song.find({}, function (err, songs){
+            playlist[0].songs = songs;
+            playlist[0].save(function (err) {
+                if (err) {
+                    return res.json({
+                        success: false,
+                        message: err.errors
+                    });
+                }
+                res.json({
+                    success: true,
+                    message: 'Playlist created !'
+                });
+            });
+        });
         if (err) return next(err);
-        var getSongsFns = playlists.map(function(playlist) {
-            return function(callback) {
-                PlaylistSong.findSongsByPlaylistId(playlist._id, callback)
-            }
-        })
-        async.parallel(getSongsFns, function(err, songs) {
-            if (err) {
-                res.status(500).send()
-                return
-            }
-            res.contentType('application/json');
-            res.send(JSON.stringify(songs));
-        })
+
     });
 });
+
+router.get('/', function(req, res, next) {
+    Playlist.find({}).populate("songs").exec(function (err, songs) {
+        if (err) return next(err);
+        res.json(songs);
+    });
+});
+
 
 router.post('/', auth({secret: superSecret}), function(req, res, next) {
     if (req.body.name ) {

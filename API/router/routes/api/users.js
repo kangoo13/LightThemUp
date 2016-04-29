@@ -11,14 +11,16 @@
  var multer      = require('multer');
  var Promise     = require('bluebird');
  var upload      = multer({ dest: './uploads/avatar/'});
- var util        = require("util");;
+ var util        = require("util");
+ var Achievement = require("../../../models/Achievement.js");
  var router      = express.Router();
-
  var uploadConfig = {
     acceptedMimeTypes : [ "image/jpeg", "image/png", "image/gif", "image/tiff" ],
     acceptedExtensions : [ "jpg", "jpeg", "png", "gif", "tiff" ],
     maxFileSize : 2000000
 };
+
+
 
 router.get('/picture/', auth({secret: superSecret}), function(req, res, next) {
     var path = "./uploads/avatar/";
@@ -49,7 +51,7 @@ router.get('/pictures/', auth({secret: superSecret}), function(req, res, next) {
 
 
 router.get('/', function(req, res, next) {
-    User.find(function (err, users) {
+    User.find({}).populate("achievements").exec(function (err, users) {
         if (err) return next(err);
         res.json(users);
     });
@@ -66,10 +68,9 @@ router.post('/', function(req, res, next) {
                 //user.type = req.body.type;
                 user.save(function (err) {
                     if (err) {
-                        var error = err.errors.passwordLocal || err.errors.emailLocal; //|| err.errors.type;
                         return res.json({
                             success: false,
-                            message: error.message
+                            message: err.message
                         });
                     }
                     res.json({

@@ -3,17 +3,19 @@
  */
 var mongoose    = require('mongoose');
 var bcrypt      = require('bcrypt-nodejs');
+var Schema      = mongoose.Schema;
 
 var userSchema = mongoose.Schema({
     admin: { type: Boolean, default: false },
-    emailLocal        : { type: String, match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']},
-    passwordLocal     : { type: String, match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/, 'Please provid a valid password']},
+    emailLocal        : { type: String },
+    passwordLocal     : { type: String },
     name : { type: String },
     picture : { type: String },
     address : { type: String },
     description : { type: String },
     city : { type: String },
     country : { type: String },
+    achievements: [{type: Schema.Types.ObjectId, ref: 'Achievement'}],
     facebook         : {
         id           : String,
         token        : String,
@@ -38,6 +40,18 @@ var userSchema = mongoose.Schema({
 
 userSchema.pre('save', function(next) {
     var user = this;
+    if (user.isModified('passwordLocal')) {
+        if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/.test(this.passwordLocal)) {
+            var error = new Error("Invalid password")
+            return next(error);
+        }
+    }
+    if (user.isModified('emailLocal')) {
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.emailLocal)) {
+            var error = new Error("Invalid email")
+            return next(error);
+        }
+    }
     this.updated_at = Date.now();
     if (!user.isModified('passwordLocal')) return next();
     bcrypt.hash(user.passwordLocal, null, null, function (err, hash) {
