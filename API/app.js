@@ -18,36 +18,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-var db = mongoose.connection;
-
-// Create DB for first use
-
-// db.on('error', console.error);
-// db.once('open', function() {
-//   // Create schemas and models here.
-//   var modelSchema = require('./models/Achievement.js');
-//   var myModel = mongoose.model('Achievement', modelSchema);
-//   new myModel().save();
-//   modelSchema = require('./models/AchievementUser.js');
-//   myModel = mongoose.model('AchievementUser', modelSchema);
-//   new myModel().save();
-//   modelSchema = require('./models/News.js');
-//   myModel = mongoose.model('News', modelSchema);
-//   new myModel().save();
-//   modelSchema = require('./models/Playlist.js');
-//   myModel = mongoose.model('Playlist', modelSchema);
-//   new myModel().save();
-//   modelSchema = require('./models/PlaylistSong.js');
-//   myModel = mongoose.model('PlaylistSong', modelSchema);
-//   new myModel().save();
-//   modelSchema = require('./models/Song.js');
-//   myModel = mongoose.model('Song', modelSchema);
-//   new myModel().save();
-//   modelSchema = require('./models/User.js');
-//   myModel = mongoose.model('User', modelSchema);
-//   new myModel().save();
-// });
-
 mongoose.connect(config.database, function(err) {
     if(err) {
         console.log('connection error', err);

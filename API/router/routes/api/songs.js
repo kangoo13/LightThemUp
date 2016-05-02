@@ -15,32 +15,44 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', auth({secret: superSecret}), function(req, res, next) {
-    if (req.body.name && req.body.description ) {
-        Song.find({name : req.body.name}, function (err, docs) {
-            if (!docs.length){
-                var song = new Song();
+    if (req.body.name && req.body.artist && req.body.picture && req.body.price && req.body.file && req.body.difficulty ) {
+        if (req.decoded.admin) {
+            Song.find({name: req.body.name}, function (err, docs) {
+                if (!docs.length) {
+                    var song = new Song();
 
-                song.name = req.body.name;
-                song.description = req.body.description;
-                song.save(function (err) {
-                    if (err) {
-                        return res.json({
-                            success: false,
-                            message: err.errors
+                    song.name = req.body.name;
+                    song.artist = req.body.artist;
+                    song.picture = req.body.picture;
+                    song.price = req.body.price;
+                    song.file = req.body.file;
+                    song.difficulty = req.body.difficulty;
+                    song.save(function (err) {
+                        if (err) {
+                            return res.json({
+                                success: false,
+                                message: err.errors
+                            });
+                        }
+                        res.json({
+                            success: true,
+                            message: 'Song created !'
                         });
-                    }
-                    res.json({
-                        success: true,
-                        message: 'Song created !'
                     });
-                });
-            }else{
-                return res.json({
-                    success: false,
-                    message: 'Song already exists'
-                });
-            }
-        });
+                } else {
+                    return res.json({
+                        success: false,
+                        message: 'Song already exists'
+                    });
+                }
+            });
+        }
+        else {
+            return res.status(403).send({
+                success: false,
+                message: 'Unauthorized.'
+            });
+        }
     }
     else
         return res.json({
@@ -49,26 +61,16 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
         });
 });
 
-router.get('/:id', function(req, res, next) {
-    if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-        Song.findById(req.params.id, function (err, post) {
+router.get('/:idSong', function(req, res, next) {
+        Song.findById(req.params.idSong, function (err, post) {
             if (err) return next(err);
             res.json(post);
         });
-    }
-    else
-    {
-        var regex = new RegExp(req.params.id, 'i');
-        return Song.findOne({name: regex}, function(err,q){
-            if (err) return next(err);
-            return res.json(q);
-        });
-    }
 });
 
-router.put('/:id', auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.id) {
-        Song.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+router.put('/:idSong', auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin) {
+        Song.findByIdAndUpdate(req.params.idSong, req.body, function (err, post) {
             if (err) return next(err);
             res.json({
                 success: true,
@@ -84,9 +86,9 @@ router.put('/:id', auth({secret: superSecret}), function(req, res, next) {
     }
 });
 
-router.delete('/:id', auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.id) {
-        Song.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+router.delete('/:idSong', auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin) {
+        Song.findByIdAndRemove(req.params.idSong, req.body, function (err, post) {
             if (err) return next(err);
             return res.status(200).send({
                 success: true,

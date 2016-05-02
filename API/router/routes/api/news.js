@@ -8,39 +8,49 @@ var auth        = require('authenticate');
 var router      = express.Router();
 
 router.get('/', function(req, res, next) {
-    News.find(function (err, newss) {
+    News.find(function (err, news) {
         if (err) return next(err);
-        res.json(newss);
+        res.json(news);
     });
 });
 
 router.post('/', auth({secret: superSecret}), function(req, res, next) {
-    if (req.body.name && req.body.description ) {
-        News.find({name : req.body.name}, function (err, docs) {
-            if (!docs.length){
-                var news = new News();
+    if (req.body.name && req.body.description && req.body.picture ) {
+        if (req.decoded.admin) {
+            News.find({name: req.body.name}, function (err, docs) {
+                if (!docs.length) {
+                    var news = new News();
 
-                news.name = req.body.name;
-                news.description = req.body.description;
-                news.save(function (err) {
-                    if (err) {
-                        return res.json({
-                            success: false,
-                            message: err.errors
+                    news.name = req.body.name;
+                    news.description = req.body.description;
+                    news.picture = req.body.picture;
+                    news.author = req.decoded.id;
+                    news.save(function (err) {
+                        if (err) {
+                            return res.json({
+                                success: false,
+                                message: err.errors
+                            });
+                        }
+                        res.json({
+                            success: true,
+                            message: 'News created !'
                         });
-                    }
-                    res.json({
-                        success: true,
-                        message: 'News created !'
                     });
-                });
-            }else{
-                return res.json({
-                    success: false,
-                    message: 'News already exists'
-                });
-            }
-        });
+                } else {
+                    return res.json({
+                        success: false,
+                        message: 'News already exists'
+                    });
+                }
+            });
+        }
+        else {
+            return res.status(403).send({
+                success: false,
+                message: 'Unauthorized.'
+            });
+        }
     }
     else
         return res.json({
@@ -49,26 +59,16 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
         });
 });
 
-router.get('/:id', function(req, res, next) {
-    if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-        News.findById(req.params.id, function (err, post) {
+router.get('/:idNews', function(req, res, next) {
+        News.findById(req.params.idNews, function (err, post) {
             if (err) return next(err);
             res.json(post);
         });
-    }
-    else
-    {
-        var regex = new RegExp(req.params.id, 'i');
-        return News.find({name: regex}, function(err,q){
-            if (err) return next(err);
-            return res.json(q);
-        });
-    }
 });
 
-router.put('/:id', auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.id) {
-        News.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+router.put('/:idNews', auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin) {
+        News.findByIdAndUpdate(req.params.idNews, req.body, function (err, post) {
             if (err) return next(err);
             res.json({
                 success: true,
@@ -84,9 +84,9 @@ router.put('/:id', auth({secret: superSecret}), function(req, res, next) {
     }
 });
 
-router.delete('/:id', auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.id) {
-        News.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+router.delete('/:idNews', auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin) {
+        News.findByIdAndRemove(req.params.idNews, req.body, function (err, post) {
             if (err) return next(err);
             return res.status(200).send({
                 success: true,

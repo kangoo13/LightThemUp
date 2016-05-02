@@ -10,45 +10,16 @@
  var path        = require('path');
  var multer      = require('multer');
  var Promise     = require('bluebird');
- var upload      = multer({ dest: './uploads/avatar/'});
  var util        = require("util");
  var Achievement = require("../../../models/Achievement.js");
+ var upload      = multer({ dest: './uploads/avatar/'});
  var router      = express.Router();
+
  var uploadConfig = {
     acceptedMimeTypes : [ "image/jpeg", "image/png", "image/gif", "image/tiff" ],
     acceptedExtensions : [ "jpg", "jpeg", "png", "gif", "tiff" ],
     maxFileSize : 2000000
 };
-
-
-
-router.get('/picture/', auth({secret: superSecret}), function(req, res, next) {
-    var path = "./uploads/avatar/";
-    console.log("debut get");
-    fs.readdir(path, function(err, items) {
-
-        for (var i=0; i<items.length; i++) {
-            console.log(items[i]);
-        }
-    });
-    console.log("FIN get");
-
-    
-
-});
-
-router.get('/pictures/', auth({secret: superSecret}), function(req, res, next) {
-    var path = "./uploads/avatar/";
-    console.log("debut geta");
-    fs.readdir(path+"56fa3f7e7614a31100c67163/", function(err, items) {
-        for (var i=0; i<items.length; i++) {
-            console.log(items[i]);
-        }
-    });
-    console.log("FIN getza");
-});
-
-
 
 router.get('/', function(req, res, next) {
     User.find({}).populate("achievements").exec(function (err, users) {
@@ -58,14 +29,23 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    if (req.body.email && req.body.password){ //&& req.body.type) {
+    if (req.body.email && req.body.password){
         User.find({emailLocal : req.body.email}, function (err, docs) {
             if (!docs.length){
                 var user = new User();
 
                 user.emailLocal = req.body.email;
                 user.passwordLocal = req.body.password;
-                //user.type = req.body.type;
+                if (req.body.name)
+                    user.name = req.body.name;
+                if (req.body.address)
+                    user.address = req.body.address;
+                if (req.body.description)
+                    user.description = req.body.description;
+                if (req.body.city)
+                    user.city = req.body.city;
+                if (req.body.country)
+                    user.country = req.body.country;
                 user.save(function (err) {
                     if (err) {
                         return res.json({
@@ -93,27 +73,9 @@ router.post('/', function(req, res, next) {
         });
 });
 
-router.get('/:email', function(req, res, next) {
-    User.findOne({
-        'emailLocal': req.params.email
-    }).select('emailLocal').exec(function (err, user) {
-        if (err) throw err;
-
-        if (user) {
-            res.json(user);
-        }
-        else {
-            res.json({
-                success: false,
-                message: 'User not found.'
-            });
-        }
-    });
-});
-
-router.put('/:id', auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.id) {
-        User.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+router.put('/:idUser', auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin || req.decoded.id == req.params.idUser) {
+        User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
             if (err) return next(err);
             res.json({
                 success: true,
@@ -129,9 +91,9 @@ router.put('/:id', auth({secret: superSecret}), function(req, res, next) {
     }
 });
 
-router.delete('/:id', auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.id) {
-        User.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin || req.decoded.id == req.params.idUser) {
+        User.findByIdAndRemove(req.params.idUser, req.body, function (err, post) {
             if (err) return next(err);
             return res.status(200).send({
                 success: true,
@@ -147,8 +109,15 @@ router.delete('/:id', auth({secret: superSecret}), function(req, res, next) {
     }
 });
 
-router.post('/picture/:id', upload.single('avatar'), auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.id) {
+router.get('/:idUser', function(req, res, next) {
+    User.findById(req.params.idUser).populate("achievements").exec(function (err, post) {
+        if (err) return next(err);
+        res.json(post);
+    });
+});
+
+router.post('/:idUser/picture', upload.single('avatar'), auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin || req.decoded.id == req.params.idUser) {
         var image = req.file;
         Promise.resolve(image)
         .then(function(image) {
@@ -170,7 +139,6 @@ router.post('/picture/:id', upload.single('avatar'), auth({secret: superSecret})
             var tempPath = image.path;
             var realPath = "uploads/avatar/"+req.decoded.id+"/";
             var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
-            console.log("TempPath:"+tempPath+" autre:"+ realPath+image.filename+"."+ext);
             return fs.rename(tempPath, realPath+image.filename+"."+ext);
         })
         .then(function(err) {
@@ -193,43 +161,50 @@ router.post('/picture/:id', upload.single('avatar'), auth({secret: superSecret})
 });
 
 router.post('/authenticate', function(req, res) {
-    User.findOne({
-        'emailLocal': req.body.email
-    }).select('emailLocal passwordLocal').exec(function (err, user) {
-        if (err) throw err;
+    if (req.body.email && req.body.password) {
+        User.findOne({
+            'emailLocal': req.body.email
+        }).select('emailLocal passwordLocal').exec(function (err, user) {
+            if (err) throw err;
 
-        if (!user) {
-            res.json({
-                success: false,
-                message: 'Authentication failed. User not found.'
-            });
-        } else if (user) {
-            var validPassword = user.comparePassword(req.body.password);
-            if (!validPassword) {
+            if (!user) {
                 res.json({
                     success: false,
-                    message: 'Authentication failed. Wrong password.'
+                    message: 'Authentication failed. User not found.'
                 });
-            } else {
+            } else if (user) {
+                var validPassword = user.comparePassword(req.body.password);
+                if (!validPassword) {
+                    res.json({
+                        success: false,
+                        message: 'Authentication failed. Wrong password.'
+                    });
+                } else {
 
-                var token = jwt.sign({
-                    'emailLocal': user.emailLocal,
-                    'id': user.id,
-                    'admin': user.admin,
-                }, superSecret, {
-                    expiresInMinutes: 1440 // expires in 24 hours
-                });
+                    var token = jwt.sign({
+                        'emailLocal': user.emailLocal,
+                        'id': user.id,
+                        'admin': user.admin,
+                    }, superSecret, {
+                        expiresInMinutes: 1440 // expires in 24 hours
+                    });
 
-                res.json({
-                    success: true,
-                    message: 'Enjoy your token!',
-                    token: token
-                });
+                    res.json({
+                        success: true,
+                        message: 'Enjoy your token!',
+                        token: token
+                    });
+                }
+
             }
 
-        }
-
-    });
+        });
+    }
+    else
+        return res.json({
+            success: false,
+            message: 'Wrong arguments'
+        });
 });
 
 module.exports = router;

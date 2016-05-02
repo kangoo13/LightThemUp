@@ -3,7 +3,6 @@
  */
 var mongoose    = require('mongoose');
 var Schema      = mongoose.Schema;
-var Song        = require('./Song.js');
 
 var PlaylistSchema = new mongoose.Schema({
     name: String,
