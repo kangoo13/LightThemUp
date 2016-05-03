@@ -18,12 +18,12 @@ router.post('/:idAchievement', auth({secret: superSecret}), function(req, res, n
                     user.achievements.push(objectid);
                     user.save(function (err) {
                         if (err) {
-                            return res.json({
+                            return res.status(503).json({
                                 success: false,
                                 message: err.errors
                             });
                         }
-                        res.json({
+                        res.status(200).json({
                             success: true,
                             message: 'Achievement added to the user !'
                         });
@@ -31,7 +31,7 @@ router.post('/:idAchievement', auth({secret: superSecret}), function(req, res, n
                 });
             }
             else {
-                return res.status(403).send({
+                return res.status(401).send({
                     success: false,
                     message: 'Unauthorized.'
                 });
@@ -41,7 +41,7 @@ router.post('/:idAchievement', auth({secret: superSecret}), function(req, res, n
         });
     }
     else
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: 'Wrong arguments'
         });
@@ -50,7 +50,7 @@ router.post('/:idAchievement', auth({secret: superSecret}), function(req, res, n
 router.get('/', function(req, res, next) {
     Achievement.find(function (err, achievements) {
         if (err) return next(err);
-        res.json(achievements);
+        res.status(200).json(achievements);
     });
 });
 
@@ -67,18 +67,18 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
                     achievement.picture = req.body.picture;
                     achievement.save(function (err) {
                         if (err) {
-                            return res.json({
+                            return res.status(503).json({
                                 success: false,
                                 message: err.errors
                             });
                         }
-                        res.json({
+                        res.status(200).json({
                             success: true,
                             message: 'Achievement created !'
                         });
                     });
                 } else {
-                    return res.json({
+                    return res.status(409).json({
                         success: false,
                         message: 'Achievement already exists'
                     });
@@ -87,7 +87,7 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
         }
     }
     else
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: 'Wrong arguments'
         });
@@ -96,7 +96,7 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
 router.get('/:idAchievement', function(req, res, next) {
         Achievement.findById(req.params.idAchievement, function (err, post) {
             if (err) return next(err);
-            res.json(post);
+            res.status(200).json(post);
         });
 });
 
@@ -104,14 +104,14 @@ router.put('/:idAchievement', auth({secret: superSecret}), function(req, res, ne
     if (req.decoded.admin) {
         Achievement.findByIdAndUpdate(req.params.idAchievement, req.body, function (err, post) {
             if (err) return next(err);
-            res.json({
+            res.status(200).json({
                 success: true,
                 message: 'Achievement updated !'
             });
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -129,7 +129,7 @@ router.delete('/:idAchievement', auth({secret: superSecret}), function(req, res,
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });

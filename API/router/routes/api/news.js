@@ -10,7 +10,7 @@ var router      = express.Router();
 router.get('/', function(req, res, next) {
     News.find(function (err, news) {
         if (err) return next(err);
-        res.json(news);
+        res.status(200).json(news);
     });
 });
 
@@ -27,18 +27,18 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
                     news.author = req.decoded.id;
                     news.save(function (err) {
                         if (err) {
-                            return res.json({
+                            return res.status(503).json({
                                 success: false,
                                 message: err.errors
                             });
                         }
-                        res.json({
+                        res.status(200).json({
                             success: true,
                             message: 'News created !'
                         });
                     });
                 } else {
-                    return res.json({
+                    return res.status(409).json({
                         success: false,
                         message: 'News already exists'
                     });
@@ -46,14 +46,14 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
             });
         }
         else {
-            return res.status(403).send({
+            return res.status(401).send({
                 success: false,
                 message: 'Unauthorized.'
             });
         }
     }
     else
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: 'Wrong arguments'
         });
@@ -62,7 +62,7 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
 router.get('/:idNews', function(req, res, next) {
         News.findById(req.params.idNews, function (err, post) {
             if (err) return next(err);
-            res.json(post);
+            res.status(200).json(post);
         });
 });
 
@@ -70,14 +70,14 @@ router.put('/:idNews', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
         News.findByIdAndUpdate(req.params.idNews, req.body, function (err, post) {
             if (err) return next(err);
-            res.json({
+            res.status(200).json({
                 success: true,
                 message: 'News updated !'
             });
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -95,7 +95,7 @@ router.delete('/:idNews', auth({secret: superSecret}), function(req, res, next) 
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });

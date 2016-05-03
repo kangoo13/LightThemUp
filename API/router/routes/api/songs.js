@@ -27,7 +27,7 @@ var uploadMusicConfig = {
 router.get('/', function(req, res, next) {
     Song.find(function (err, songs) {
         if (err) return next(err);
-        res.json(songs);
+        res.status(200).json(songs);
     });
 });
 
@@ -46,18 +46,18 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
                     song.difficulty = req.body.difficulty;
                     song.save(function (err) {
                         if (err) {
-                            return res.json({
+                            return res.status(503).json({
                                 success: false,
                                 message: err.errors
                             });
                         }
-                        res.json({
+                        res.status(200).json({
                             success: true,
                             message: 'Song created !'
                         });
                     });
                 } else {
-                    return res.json({
+                    return res.status(409).json({
                         success: false,
                         message: 'Song already exists'
                     });
@@ -65,14 +65,14 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
             });
         }
         else {
-            return res.status(403).send({
+            return res.status(401).send({
                 success: false,
                 message: 'Unauthorized.'
             });
         }
     }
     else
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: 'Wrong arguments'
         });
@@ -81,7 +81,7 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
 router.get('/:idSong', function(req, res, next) {
         Song.findById(req.params.idSong, function (err, post) {
             if (err) return next(err);
-            res.json(post);
+            res.status(200).json(post);
         });
 });
 
@@ -89,14 +89,14 @@ router.put('/:idSong', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
         Song.findByIdAndUpdate(req.params.idSong, req.body, function (err, post) {
             if (err) return next(err);
-            res.json({
+            res.status(200).json({
                 success: true,
                 message: 'Song updated !'
             });
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -114,7 +114,7 @@ router.delete('/:idSong', auth({secret: superSecret}), function(req, res, next) 
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -176,7 +176,7 @@ router.post('/:idSong/picture', upload.single('picture'), auth({secret: superSec
             });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -238,7 +238,7 @@ router.post('/:idSong/music', upload.single('music'),  auth({secret: superSecret
             });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -299,7 +299,7 @@ router.post('/:idSong/preview', upload.single('preview'), auth({secret: superSec
             });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });

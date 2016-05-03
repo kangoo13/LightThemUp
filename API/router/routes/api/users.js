@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
     User.find({}).populate("achievements").exec(function (err, users) {
         if (err) return next(err);
 
-        res.json(users);
+        res.status(200).json(users);
     });
 });
 
@@ -49,18 +49,18 @@ router.post('/', function(req, res, next) {
                     user.country = req.body.country;
                 user.save(function (err) {
                     if (err) {
-                        return res.json({
+                        return res.status(503).json({
                             success: false,
                             message: err.message
                         });
                     }
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         message: 'User created !'
                     });
                 });
             }else{
-                return res.json({
+                return res.status(409).json({
                     success: false,
                     message: 'User already exists'
                 });
@@ -68,7 +68,7 @@ router.post('/', function(req, res, next) {
         });
     }
     else
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: 'Wrong arguments'
         });
@@ -78,14 +78,14 @@ router.put('/:idUser', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin || req.decoded.id == req.params.idUser) {
         User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
             if (err) return next(err);
-            res.json({
+            res.status(200).json({
                 success: true,
                 message: 'User updated !'
             });
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -103,7 +103,7 @@ router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) 
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -113,7 +113,7 @@ router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) 
 router.get('/:idUser', function(req, res, next) {
     User.findById(req.params.idUser).populate("achievements").exec(function (err, post) {
         if (err) return next(err);
-        res.json(post);
+        res.status(200).json(post);
     });
 });
 
@@ -172,7 +172,7 @@ router.post('/:idUser/avatar', upload.single('avatar'), auth({secret: superSecre
         });
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: 'Unauthorized.'
         });
@@ -187,14 +187,14 @@ router.post('/authenticate', function(req, res) {
             if (err) throw err;
 
             if (!user) {
-                res.json({
+                res.status(404).json({
                     success: false,
                     message: 'Authentication failed. User not found.'
                 });
             } else if (user) {
                 var validPassword = user.comparePassword(req.body.password);
                 if (!validPassword) {
-                    res.json({
+                    res.status(401).json({
                         success: false,
                         message: 'Authentication failed. Wrong password.'
                     });
@@ -208,7 +208,7 @@ router.post('/authenticate', function(req, res) {
                         expiresInMinutes: 1440 // expires in 24 hours
                     });
 
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         message: 'Enjoy your token!',
                         token: token
