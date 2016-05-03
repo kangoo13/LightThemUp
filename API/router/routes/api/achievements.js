@@ -9,9 +9,7 @@ var auth        = require('authenticate');
 var mongoose    = require('mongoose');
 var router      = express.Router();
 
-
-
-router.post('/:idAchievement', function(req, res, next) {
+router.post('/:idAchievement', auth({secret: superSecret}), function(req, res, next) {
     if (req.body.idUser) {
         User.findOne({_id: req.body.idUser}, function (err, user) {
             if (req.decoded.id == req.body.idUser || req.decoded.admin) {
