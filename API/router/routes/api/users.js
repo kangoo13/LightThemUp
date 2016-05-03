@@ -24,6 +24,7 @@
 router.get('/', function(req, res, next) {
     User.find({}).populate("achievements").exec(function (err, users) {
         if (err) return next(err);
+
         res.json(users);
     });
 });
@@ -182,7 +183,7 @@ router.post('/authenticate', function(req, res) {
     if (req.body.email && req.body.password) {
         User.findOne({
             'emailLocal': req.body.email
-        }).select('emailLocal passwordLocal').exec(function (err, user) {
+        }).select('emailLocal +passwordLocal +admin').exec(function (err, user) {
             if (err) throw err;
 
             if (!user) {

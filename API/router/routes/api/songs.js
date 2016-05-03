@@ -183,9 +183,7 @@ router.post('/:idSong/picture', upload.single('picture'), auth({secret: superSec
     }
 });
 
-router.post('/:idSong/music', upload.single('music'),  function(req, res, next) {
-    req.decoded = [];
-    req.decoded.admin = true;
+router.post('/:idSong/music', upload.single('music'),  auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
         var musicPath = "";
         var music = req.file;
@@ -247,9 +245,7 @@ router.post('/:idSong/music', upload.single('music'),  function(req, res, next) 
     }
 });
 
-router.post('/:idSong/preview', upload.single('preview'),  function(req, res, next) {
-    req.decoded = [];
-    req.decoded.admin = true;
+router.post('/:idSong/preview', upload.single('preview'), auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
         var musicPath = "";
         var music = req.file;
