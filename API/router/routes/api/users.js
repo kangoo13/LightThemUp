@@ -118,7 +118,7 @@ router.get('/:idUser', function(req, res, next) {
 });
 
 router.post('/:idUser/avatar', upload.single('avatar'), auth({secret: superSecret}),  function(req, res, next) {
-    if (req.decoded.admin) {
+    if (req.decoded.admin || req.decoded.id == req.params.idUser) {
         var picturePath = "";
         var image = req.file;
         Promise.resolve(image)
