@@ -27,14 +27,17 @@ mongoose.connect(config.database, function(err) {
 });
 
 
-if (!fs.existsSync("uploads")){
-    fs.mkdirSync("uploads");
+if (!fs.existsSync("public/uploads")){
+    fs.mkdirSync("public/uploads");
 }
-if (!fs.existsSync("uploads/tmp/")){
-    fs.mkdirSync("uploads/tmp");
+if (!fs.existsSync("public/uploads/avatar")){
+    fs.mkdirSync("public/uploads/avatar");
 }
-if (!fs.existsSync("uploads/avatar")){
-    fs.mkdirSync("uploads/avatar");
+if (!fs.existsSync("public/uploads/achievements")){
+    fs.mkdirSync("public/uploads/achievements");
+}
+if (!fs.existsSync("public/uploads/songs")){
+    fs.mkdirSync("public/uploads/songs");
 }
 // Add headers
 app.use(function (req, res, next) {

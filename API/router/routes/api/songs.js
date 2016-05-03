@@ -5,7 +5,24 @@ var express     = require('express');
 var Song        = require('../../../models/Song.js');
 var superSecret = require('../../../config.js').secret;
 var auth        = require('authenticate');
+var fs          = require('fs');
+var path        = require('path');
+var multer      = require('multer');
+var Promise     = require('bluebird');
+var upload      = multer({ dest: './public/uploads/avatar/'});
 var router      = express.Router();
+
+var uploadConfig = {
+    acceptedMimeTypes : [ "image/jpeg", "image/png", "image/gif", "image/tiff" ],
+    acceptedExtensions : [ "jpg", "jpeg", "png", "gif", "tiff" ],
+    maxFileSize : 2000000
+};
+
+var uploadMusicConfig = {
+    acceptedMimeTypes : [ "audio/midi" ],
+    acceptedExtensions : [ "midi", "mp3", "wav", "mid" ],
+    maxFileSize : 200000000
+};
 
 router.get('/', function(req, res, next) {
     Song.find(function (err, songs) {
@@ -95,6 +112,195 @@ router.delete('/:idSong', auth({secret: superSecret}), function(req, res, next) 
                 message: 'The song has been deleted.'
             });
         });
+    }
+    else {
+        return res.status(403).send({
+            success: false,
+            message: 'Unauthorized.'
+        });
+    }
+});
+
+router.post('/:idSong/picture', upload.single('picture'), auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin) {
+        var picturePath = "";
+        var image = req.file;
+        Promise.resolve(image)
+            .then(function(image) {
+                if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+                    throw "Incorrect MIME type";
+                }
+                return image;
+            })
+            .then(function(image) {
+                if (image.size > uploadConfig.maxFileSize) {
+                    throw "File is too large";
+                }
+                return image;
+            })
+            .then(function(image) {
+                if (!fs.existsSync(process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/")){
+                    fs.mkdirSync(process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/");
+                }
+                var tempPath = image.path;
+                var realPath = process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/";
+                //var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
+                picturePath = image.originalname;
+                return fs.rename(tempPath, realPath+image.originalname);
+            })
+            .then(function(err) {
+                if (err)
+                    throw err;
+                else
+                {
+                    Song.find({'_id': req.params.idSong}, function(err, song){
+                        if (song.length)
+                        {
+                            song[0].picture = picturePath;
+                            song[0].save(function (err) {
+                                if (err) {
+                                    throw err.message;
+                                }
+                            });
+                        }
+                        else
+                            throw "Song not found to apply the picture";
+                    });
+                }
+            })
+            .then(function() {
+                res.send({success: true, message: "Your image has been saved"});
+            })
+            .catch(function(err) {
+                res.send({success: false, message: err});
+            });
+    }
+    else {
+        return res.status(403).send({
+            success: false,
+            message: 'Unauthorized.'
+        });
+    }
+});
+
+router.post('/:idSong/music', upload.single('music'),  function(req, res, next) {
+    req.decoded = [];
+    req.decoded.admin = true;
+    if (req.decoded.admin) {
+        var musicPath = "";
+        var music = req.file;
+        Promise.resolve(music)
+            .then(function(music) {
+                if (uploadMusicConfig.acceptedMimeTypes.indexOf(music.mimetype) == -1) {
+                    throw "Incorrect MIME type";
+                }
+                return music;
+            })
+            .then(function(music) {
+                if (music.size > uploadMusicConfig.maxFileSize) {
+                    throw "File is too large";
+                }
+                return music;
+            })
+            .then(function(music) {
+                if (!fs.existsSync(process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/")){
+                    fs.mkdirSync(process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/");
+                }
+                var tempPath = music.path;
+                var realPath = process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/";
+                //var ext = music.originalname.substr(music.originalname.lastIndexOf('.') + 1);
+                musicPath = music.originalname;
+                return fs.rename(tempPath, realPath+music.originalname);
+            })
+            .then(function(err) {
+                if (err)
+                    throw err;
+                else
+                {
+                    Song.find({'_id': req.params.idSong}, function(err, song){
+                        if (song.length)
+                        {
+                            song[0].file = musicPath;
+                            song[0].save(function (err) {
+                                if (err) {
+                                    throw err.message;
+                                }
+                            });
+                        }
+                        else
+                            throw "Song not found to apply the music";
+                    });
+                }
+            })
+            .then(function() {
+                res.send({success: true, message: "Your music has been saved"});
+            })
+            .catch(function(err) {
+                res.send({success: false, message: err});
+            });
+    }
+    else {
+        return res.status(403).send({
+            success: false,
+            message: 'Unauthorized.'
+        });
+    }
+});
+
+router.post('/:idSong/preview', upload.single('preview'),  function(req, res, next) {
+    req.decoded = [];
+    req.decoded.admin = true;
+    if (req.decoded.admin) {
+        var musicPath = "";
+        var music = req.file;
+        Promise.resolve(music)
+            .then(function(music) {
+                if (uploadMusicConfig.acceptedMimeTypes.indexOf(music.mimetype) == -1) {
+                    throw "Incorrect MIME type";
+                }
+                return music;
+            })
+            .then(function(music) {
+                if (music.size > uploadMusicConfig.maxFileSize) {
+                    throw "File is too large";
+                }
+                return music;
+            })
+            .then(function(music) {
+                if (!fs.existsSync(process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/")){
+                    fs.mkdirSync(process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/");
+                }
+                var tempPath = music.path;
+                var realPath = process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/";
+                musicPath = music.originalname;
+                return fs.rename(tempPath, realPath+musicPath);
+            })
+            .then(function(err) {
+                if (err)
+                    throw err;
+                else
+                {
+                    Song.find({'_id': req.params.idSong}, function(err, song){
+                        if (song.length)
+                        {
+                            song[0].preview = musicPath;
+                            song[0].save(function (err) {
+                                if (err) {
+                                    throw err.message;
+                                }
+                            });
+                        }
+                        else
+                            throw "Song not found to apply the preview";
+                    });
+                }
+            })
+            .then(function() {
+                res.send({success: true, message: "Your preview has been saved"});
+            })
+            .catch(function(err) {
+                res.send({success: false, message: err});
+            });
     }
     else {
         return res.status(403).send({

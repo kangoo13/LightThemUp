@@ -12,7 +12,7 @@
  var Promise     = require('bluebird');
  var util        = require("util");
  var Achievement = require("../../../models/Achievement.js");
- var upload      = multer({ dest: './uploads/avatar/'});
+ var upload      = multer({ dest: './public/uploads/avatar/'});
  var router      = express.Router();
 
  var uploadConfig = {
@@ -116,8 +116,9 @@ router.get('/:idUser', function(req, res, next) {
     });
 });
 
-router.post('/:idUser/picture', upload.single('avatar'), auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.idUser) {
+router.post('/:idUser/avatar', upload.single('avatar'), auth({secret: superSecret}),  function(req, res, next) {
+    if (req.decoded.admin) {
+        var picturePath = "";
         var image = req.file;
         Promise.resolve(image)
         .then(function(image) {
@@ -133,17 +134,34 @@ router.post('/:idUser/picture', upload.single('avatar'), auth({secret: superSecr
             return image;
         })
         .then(function(image) {
-            if (!fs.existsSync("uploads/avatar/"+req.decoded.id+"/")){
-                fs.mkdirSync("uploads/avatar/"+req.decoded.id+"/");
+            if (!fs.existsSync(process.cwd()+"/public/uploads/avatar/"+req.params.idUser+"/")){
+                fs.mkdirSync(process.cwd()+"/public/uploads/avatar/"+req.params.idUser+"/");
             }
             var tempPath = image.path;
-            var realPath = "uploads/avatar/"+req.decoded.id+"/";
-            var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
-            return fs.rename(tempPath, realPath+image.filename+"."+ext);
+            var realPath = process.cwd()+"/public/uploads/avatar/"+req.params.idUser+"/";
+            //var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
+            picturePath = image.originalname;
+            return fs.rename(tempPath, realPath+image.originalname);
         })
         .then(function(err) {
             if (err)
                 throw err;
+            else
+            {
+                User.find({'_id': req.params.idUser}, function(err, user){
+                    if (user.length)
+                    {
+                        user[0].picture = picturePath;
+                        user[0].save(function (err) {
+                            if (err) {
+                                throw err.message;
+                            }
+                        });
+                    }
+                    else
+                        throw "User not found to apply the picture";
+                });
+            }
         })
         .then(function() {
             res.send({success: true, message: "Your image has been saved"});

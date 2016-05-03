@@ -9,6 +9,7 @@ var SongSchema = new mongoose.Schema({
     picture: String,
     price: Number,
     file: String,
+    preview: String,
     difficulty: Number,
     downloaded: Number,
     created_at: { type: Date, default: Date.now },
