@@ -3,11 +3,9 @@
  * GET home page.
  */
 
-exports.index = function(req, res){
-  res.render('index');
-};
+module.exports = function(app) {
 
-exports.partials = function (req, res) {
-  var name = req.params.name;
-  res.render('partials/' + name);
+  app.get('*', function(req, res) {
+    res.sendfile("public/index.html");
+  });
 };
