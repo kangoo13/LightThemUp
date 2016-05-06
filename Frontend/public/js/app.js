@@ -1,10 +1,7 @@
 'use strict';
 
 
-angular.module('LightThemUp', [
-  'LightThemUp.controllers', 'ngRoute'
-]).
-config(function ($routeProvider, $locationProvider) {
+var app = angular.module('LightThemUp', ['ngRoute', 'toastr', 'ngResource']).config(function ($routeProvider, $locationProvider) {
   $routeProvider.
     when('/', {
       templateUrl: '/home.html',
@@ -12,7 +9,8 @@ config(function ($routeProvider, $locationProvider) {
     }).
     when('/inscription', {
       templateUrl: '/register.html',
-      controller: 'HomeController'
+      controller: 'RegisterController',
+      controllerAs: 'vm'
     }).
     otherwise({
       redirectTo: '/'

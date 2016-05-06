@@ -1,15 +1,19 @@
-<div id="page">
+<div id="page" ng-controller="RegisterController">
 
     <div id="main-view">
         <div class="container">
                 <div class="column content">
                     <h3>Inscription</h3>
-                    <form action="https://apiforlightthemup.herokuapp.com/users" method="post" >
+                    <div ng-show='createFailed'>{{message}}</div>
+                    <form name="createUser" ng-submit="vm.CreateUser()" role="form">
                         <label for="email">Votre email</label>
-                        <input class="u-full-width" type="email" name="email" placeholder="example@example.com" />
+                        <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com" required/>
                         <label for="password">Votre mot de passe</label>
-                        <input class="u-full-width" type="password" name="password" placeholder="mot de passe" />
-                        <input type="submit" value="Envoyer"/>
+                        <input ng-model="vm.user.password" class="u-full-width" type="password" name="password" placeholder="mot de passe" required/>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                            <a href="/" class="btn btn-link">Cancel</a>
+                        </div>
                 </div>
                 </form>
         </div>
