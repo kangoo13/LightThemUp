@@ -17,9 +17,9 @@ import com.bumptech.glide.Glide;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MusicViewHolder> {
+public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicViewHolder> {
 
-    private List<Music> mMovieList;
+    private List<ShopData> mMovieList;
     protected LinkedList<Integer> drawableLinkedList;
     private Context mContext;
     private Boolean MidiPlayer = false;
@@ -32,7 +32,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MusicViewHolde
      * @param followerList Follower List objects
      * @param drawableLinkedList      Drawable item .
      */
-    public ListAdapter(Context context, List<Music> followerList, LinkedList<Integer> drawableLinkedList) {
+    public ListAdapterShop(Context context, List<ShopData> followerList, LinkedList<Integer> drawableLinkedList) {
         this.mContext = context;
         this.mMovieList = followerList;
         this.drawableLinkedList = drawableLinkedList;
@@ -41,7 +41,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MusicViewHolde
     @Override
     public void onBindViewHolder(final MusicViewHolder holder, final int position) {
 
-        Music movie = mMovieList.get(position);
+        ShopData movie = mMovieList.get(position);
         final int actionDrawableId = this.drawableLinkedList.get(position);
         holder.title.setText(movie.getTitle());
         //holder.rating.setText("Rating: " + String.valueOf(movie.getRating()));
@@ -65,7 +65,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MusicViewHolde
          * Set OnClickListener on the Button.
          * We pass in 3 parameters:
          * @param position :Position of the object on the List
-         * @param mMusicList Music Object
+         * @param mMusicList ShopData Object
          * @param actionDrawableId Drawable ID
          */
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +107,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MusicViewHolde
     public MusicViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.movie_item_layout, viewGroup, false);
+                inflate(R.layout.item_layout_shop, viewGroup, false);
 
         return new MusicViewHolder(itemView);
     }
@@ -178,7 +178,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MusicViewHolde
      * We Use a Switch case to get the Drawable ID which will determine what action to perform.
      *
      * R.drawable.music_add_touch: Add the selected movie to the DB
-     * R.drawable.music_added_touch: Remove the Music from the DB
+     * R.drawable.music_added_touch: Remove the ShopData from the DB
      * R.drawable.music_error_touch: An error occurred performing your request. Retry.
      *
      *
@@ -186,8 +186,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MusicViewHolde
      * @param followerList     Object List
      * @param actionDrawableId Drawable Id
      */
-    protected void onMemberClick(final int position, final List<Music> followerList,int actionDrawableId) {
-        final Music follower = followerList.get(position);
+    protected void onMemberClick(final int position, final List<ShopData> followerList,int actionDrawableId) {
+        final ShopData follower = followerList.get(position);
         switch (actionDrawableId) {
             case R.drawable.movie_add_touch:
 

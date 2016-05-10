@@ -9,8 +9,8 @@
     <!-- Thumbnail Image -->
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#3c7c8b"
+        app:civ_border_width="3dp"
+        app:civ_border_color="#515051"
         android:id="@+id/thumbnail"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -19,7 +19,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"/>
 
-    <!-- Music Title -->
+    <!-- ShopData Title -->
     <TextView
         android:id="@+id/title"
         android:text="title"
@@ -54,7 +54,7 @@
         android:layout_marginRight="80dp"
         android:layout_below="@+id/details"
         android:layout_toLeftOf="@+id/btnAddMovie"
-        android:layout_toStartOf="@+id/btnAddMovie"/>
+        android:layout_toStartOf="@+id/btnAddMovie" />
 
     <TextView
         android:layout_width="wrap_content"

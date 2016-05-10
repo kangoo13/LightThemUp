@@ -1,17 +1,13 @@
 package kilomat.keylit;
 
 import android.content.Context;
-import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -46,6 +42,7 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
         holder.details.setText(data.getDetails());
         holder.current_score.setText(String.valueOf(data.getCurrent_score()));
         holder.progress.setProgress((int) data.getProgress());
+        holder.current_progress.setText((int) data.getProgress() + "/100");
         //holder.state_success.setText(data.getState_success());
         //Use Glide to load the Image
         Glide.with(mContext).load(data.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
@@ -55,7 +52,7 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
          * Set OnClickListener on the Button.
          * We pass in 3 parameters:
          * @param position :Position of the object on the List
-         * @param mAchievDataList Music Object
+         * @param mAchievDataList ShopData Object
          * @param actionDrawableId Drawable ID
          */
     }
@@ -74,7 +71,7 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
     public AchievDataViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.achiev_item_layout, viewGroup, false);
+                inflate(R.layout.item_layout_achiev, viewGroup, false);
 
         return new AchievDataViewHolder(itemView);
     }
@@ -86,6 +83,7 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
         TextView details;
         TextView current_score;
         TextView state_success;
+        TextView current_progress;
 
         public AchievDataViewHolder(View itemView) {
             super(itemView);
@@ -95,6 +93,7 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
             details = (TextView) itemView.findViewById(R.id.details);
             progress = (ProgressBar) itemView.findViewById(R.id.progress);
             current_score = (TextView) itemView.findViewById(R.id.current_score);
+            current_progress = (TextView) itemView.findViewById(R.id.progress_text);
         }
     }
 

@@ -8,7 +8,6 @@
     import android.os.AsyncTask;
     import android.os.Bundle;
     import android.os.StrictMode;
-    import android.preference.PreferenceActivity;
     import android.support.v7.app.AppCompatActivity;
     import android.util.Log;
     import android.view.View;
@@ -21,7 +20,6 @@
     import org.apache.http.HttpEntity;
     import org.apache.http.HttpResponse;
     import org.apache.http.NameValuePair;
-    import org.apache.http.client.ClientProtocolException;
     import org.apache.http.client.HttpClient;
     import org.apache.http.client.entity.UrlEncodedFormEntity;
     import org.apache.http.client.methods.HttpPost;
@@ -31,18 +29,13 @@
     import org.json.JSONException;
     import org.json.JSONObject;
 
-    import java.io.BufferedReader;
     import java.io.IOException;
-    import java.io.InputStreamReader;
     import java.io.UnsupportedEncodingException;
     import java.util.ArrayList;
     import java.util.List;
-    import java.util.concurrent.ExecutionException;
 
     import butterknife.ButterKnife;
     import butterknife.InjectView;
-    import com.loopj.android.http.*;
-    import cz.msebera.android.httpclient.Header;
 
     public class SignupActivity extends AppCompatActivity {
         private static final String TAG = "SignupActivity";
@@ -158,7 +151,7 @@
             _signupButton.setEnabled(true);
             setResult(RESULT_OK, null);
             Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_LONG).show();
-            Intent mainActivity = new Intent(this, Main.class);
+            Intent mainActivity = new Intent(this, HomeActivity.class);
             mainActivity.putExtra("activity", "SignUp");
             startActivity(mainActivity);
             finish();

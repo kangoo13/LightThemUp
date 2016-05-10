@@ -5,9 +5,8 @@ import java.util.ArrayList;
 /**
  * Created by BAHA on 04/04/2016.
  */
-import java.util.ArrayList;
 
-public class Music {
+public class ShopData {
 
     private int year, download;
     private double rating;
@@ -17,20 +16,20 @@ public class Music {
     /**
      * Default Constructor
      */
-    public Music() {
+    public ShopData() {
     }
 
     /**
      * Constructor with parameters
      *
-     * @param name         Music Title
+     * @param name         ShopData Title
      * @param thumbnailUrl Thumbnail URL
      * @param year         Year Released
-     * @param rating       Music Rating
-     * @param genre        Music genre(s)
+     * @param rating       ShopData Rating
+     * @param genre        ShopData genre(s)
      */
-    public Music(String name, String thumbnailUrl, int year, double rating,
-                 ArrayList<String> genre, String artist, int download) {
+    public ShopData(String name, String thumbnailUrl, int year, double rating,
+                    ArrayList<String> genre, String artist, int download) {
         this.title = name;
         this.thumbnailUrl = thumbnailUrl;
         this.year = year;

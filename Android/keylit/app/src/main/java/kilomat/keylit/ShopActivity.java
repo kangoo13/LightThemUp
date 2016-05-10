@@ -26,25 +26,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class NewShopActivity extends AppCompatActivity {
+public class ShopActivity extends AppCompatActivity {
     /**
      * Used for logging purposes.
      */
-    private static final String TAG = NewShopActivity.class.getSimpleName();
+    private static final String TAG = ShopActivity.class.getSimpleName();
     private static final int MY_SOCKET_TIMEOUT_MS = 50000;
 
     private ProgressDialog mProgressDialog;
-    private List<Music> mMovieList = new ArrayList<>();
+    private List<ShopData> mMovieList = new ArrayList<>();
     private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_activity_shop);
+        setContentView(R.layout.activity_shop);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewShopActivity.this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ShopActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -60,11 +60,11 @@ public class NewShopActivity extends AppCompatActivity {
 
     /**
      * This method fetches data from the provided URL using volley library. We then parse the json,
-     * store all the json data into an ArrayList as Music objects.
+     * store all the json data into an ArrayList as ShopData objects.
      */
 
     private void fetchMovies() {
-        Toast.makeText(NewShopActivity.this, "Executing Task", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ShopActivity.this, "Executing Task", Toast.LENGTH_SHORT).show();
         // Creating volley request obj
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Constants.URL,
                 new Response.Listener<JSONArray>() {
@@ -75,7 +75,7 @@ public class NewShopActivity extends AppCompatActivity {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject obj = response.getJSONObject(i);
-                                Music movie = new Music();
+                                ShopData movie = new ShopData();
                                 movie.setTitle(obj.getString("title"));
                                 movie.setThumbnailUrl(obj.getString("picture"));
                                 movie.setRating(((Number) obj.get("difficulty")).doubleValue());
@@ -95,7 +95,7 @@ public class NewShopActivity extends AppCompatActivity {
                                 mMovieList.add(movie);
 
                                 if (mMovieList != null) {
-                                    mRecyclerView.setAdapter(new ListAdapter(getApplicationContext(), mMovieList,
+                                    mRecyclerView.setAdapter(new ListAdapterShop(getApplicationContext(), mMovieList,
                                             new LinkedList<>(Collections.nCopies(mMovieList.size(),
                                                     R.drawable.movie_add_touch))));
                                 } else {

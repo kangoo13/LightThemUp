@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         <activity
-            android:name=".Main"
+            android:name=".HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,8 +30,8 @@
         <activity android:name=".AchievActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".PlaylistActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".ScanActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".NewShopActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".NewAchievActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".ShopActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".AchievActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".SynActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 

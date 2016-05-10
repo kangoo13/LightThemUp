@@ -6,7 +6,7 @@ package kilomat.keylit;
 public class Constants {
 
     /**
-     * Music JSON URL
+     * ShopData JSON URL
      */
 
     public static final String URL = "http://lightthemup.netne.net/shop/api/music.json";

@@ -1,7 +1,5 @@
 package kilomat.keylit;
 
-import java.util.ArrayList;
-
 /**
  * Created by BAHA on 04/04/2016.
  */
@@ -21,7 +19,7 @@ public class AchievData {
     /**
      * Constructor with parameters
      *
-     * @param name         Music Title
+     * @param name         ShopData Title
      * @param thumbnailUrl Thumbnail URL
      */
     public AchievData(String name, String thumbnailUrl, String mdetails,
