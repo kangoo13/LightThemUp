@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_row_selector"
+    android:padding="8dp" >
+
+    <!-- Thumbnail Image -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#3c7c8b"
+        android:id="@+id/thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Music Title -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textSize="@dimen/title"
+        android:textStyle="bold" />
+
+    <!-- Rating -->
+    <TextView
+        android:id="@+id/rating"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/rating"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignStart="@+id/title"
+        android:layout_below="@+id/title" />
+
+    <!-- Genre -->
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textColor="@color/genre"
+        android:textSize="@dimen/genre"
+        android:layout_below="@+id/rating"
+        android:layout_toLeftOf="@+id/btnAddMovie"
+        android:layout_toStartOf="@+id/btnAddMovie" />
+
+    <!-- Release Year -->
+    <TextView
+        android:id="@+id/releaseYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/year"
+        android:textSize="@dimen/year" />
+    <RatingBar
+        android:id="@+id/ratingbar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:layout_below="@+id/genre"
+        android:layout_alignLeft="@+id/rating"/>
+
+    <ImageView
+        android:id="@+id/btnPlayMidi"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:focusable="false"
+        android:textColor="@color/white"
+        android:src="@drawable/media_play"
+        android:layout_below="@+id/rating"
+        android:layout_alignRight="@+id/genre"
+        android:layout_alignParentRight="true"/>
+    <ImageView
+        android:id="@+id/btnStopMidi"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:focusable="false"
+        android:textColor="@color/white"
+        android:src="@drawable/media_pause"
+        android:layout_below="@+id/rating"
+        android:visibility="gone"
+        android:layout_alignRight="@+id/genre"
+        android:layout_alignParentRight="true"/>
+
+
+    <ImageView
+        android:id="@+id/btnAddMovie"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:focusable="false"
+        android:textColor="@color/white"
+        android:src="@drawable/movie_add_touch"
+        android:layout_below="@+id/title"
+        android:layout_alignRight="@+id/rating"
+        android:layout_alignEnd="@+id/rating" />
+
+
+
+</RelativeLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_row_selector"
+    android:padding="8dp" >
+
+    <!-- Thumbnail Image -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#3c7c8b"
+        android:id="@+id/thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Music Title -->
+    <TextView
+        android:id="@+id/title"
+        android:text="title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textSize="@dimen/title"
+        android:textStyle="bold" />
+
+    <!-- Rating -->
+    <TextView
+        android:id="@+id/details"
+        android:text="details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/rating"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignStart="@+id/title"
+        android:layout_below="@+id/title" />
+
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textColor="@color/genre"
+        android:max="100"
+        android:layout_marginRight="80dp"
+        android:layout_below="@+id/details"
+        android:layout_toLeftOf="@+id/btnAddMovie"
+        android:layout_toStartOf="@+id/btnAddMovie"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100/100"
+        android:id="@+id/progress_text"
+        android:layout_below="@+id/details"
+        android:layout_alignRight="@+id/progress"
+        android:layout_alignEnd="@+id/progress"
+        android:textSize="@dimen/year"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="score"
+        android:id="@+id/current_score"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:layout_alignRight="@+id/title" />
+
+</RelativeLayout>

@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp" >
+
+        <Button
+            android:layout_width="177dp"
+            android:layout_height="41dp"
+            android:layout_gravity="center"
+            android:id="@+id/btnSelectPhoto"
+            android:background="@drawable/btn_select_scan"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:layout_weight="1.06">
+
+        <ImageView
+            android:id="@+id/viewImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_scan_photo" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+        <Button
+            android:layout_width="91dp"
+            android:layout_height="41dp"
+            android:layout_gravity="center"
+            android:id="@+id/btnSendPhoto"
+            android:background="@drawable/btn_send_scan"
+
+            />
+    </LinearLayout>
+
+
+</LinearLayout>
