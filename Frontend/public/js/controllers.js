@@ -6,7 +6,7 @@ app.controller('HomeController', function ($scope) {
     // write Ctrl here
 });
 
-app.controller('RegisterController', ['User', '$location', 'toastr', function (User, $location, toastr) {
+app.controller('RegisterController', ['UserService', '$location', 'toastr', function (UserService, $location, toastr) {
 
     var vm = this;
 
@@ -14,12 +14,37 @@ app.controller('RegisterController', ['User', '$location', 'toastr', function (U
 
     function CreateUser() {
         vm.dataLoading = true;
-        User.save({email: vm.user.email, password: vm.user.password}).$promise.then(function(data) {
-            toastr.success(data.message, 'Success');
-            $location.path('/login');
-        }, function(error) {
-            toastr.error(error.data.message, 'Error');
-            vm.dataLoading = false;
-        });
+        UserService.Create(vm.user)
+            .then(function (response) {
+                if (response.success) {
+                    toastr.success(response.message, "Success");
+                    $location.path('/login');
+                } else {
+                    toastr.error(response.message, "Error");
+                    vm.dataLoading = false;
+                }
+            });
+    }
+}]);
+
+
+app.controller('LoginController', ['UserService', '$location', 'toastr', function (UserService, $location, toastr) {
+
+    var vm = this;
+
+    vm.LoginUser = LoginUser;
+
+    function LoginUser() {
+        vm.dataLoading = true;
+        UserService.Login(vm.user)
+            .then(function (response) {
+                if (response.success) {
+                    toastr.success(response.message, "Success");
+                    $location.path('/login');
+                } else {
+                    toastr.error(response.message, "Error");
+                    vm.dataLoading = false;
+                }
+            });
     }
 }]);

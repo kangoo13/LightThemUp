@@ -165,12 +165,12 @@ router.post('/:idAchievement/picture', upload.single('picture'), auth({secret: s
                 return image;
             })
             .then(function(image) {
-                if (!fs.existsSync(process.cwd()+"/public/uploads/avatar/"+req.params.idAchievement+"/")){
-                    fs.mkdirSync(process.cwd()+"/public/uploads/avatar/"+req.params.idAchievement+"/");
+                if (!fs.existsSync(process.cwd()+"/public/uploads/achievements/"+req.params.idAchievement+"/")){
+                    fs.mkdirSync(process.cwd()+"/public/uploads/achievements/"+req.params.idAchievement+"/");
                 }
                 var tempPath = image.path;
-                var realPath = process.cwd()+"/public/uploads/avatar/"+req.params.idAchievement+"/";
-                picturePath = image.originalname;
+                var realPath = process.cwd()+"/public/uploads/achievements/"+req.params.idAchievement+"/";
+                picturePath = "uploads/achievements/"+req.params.idAchievement+"/"+image.originalname;
                 return fs.rename(tempPath, realPath+image.originalname);
             })
             .then(function(err) {

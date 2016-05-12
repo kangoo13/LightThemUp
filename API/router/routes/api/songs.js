@@ -145,7 +145,7 @@ router.post('/:idSong/picture', upload.single('picture'), auth({secret: superSec
                 var tempPath = image.path;
                 var realPath = process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/";
                 //var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
-                picturePath = image.originalname;
+                picturePath = "uploads/songs/"+req.params.idSong+"/"+image.originalname;
                 return fs.rename(tempPath, realPath+image.originalname);
             })
             .then(function(err) {
@@ -207,7 +207,7 @@ router.post('/:idSong/music', upload.single('music'),  auth({secret: superSecret
                 var tempPath = music.path;
                 var realPath = process.cwd()+"/public/uploads/songs/"+req.params.idSong+"/";
                 //var ext = music.originalname.substr(music.originalname.lastIndexOf('.') + 1);
-                musicPath = music.originalname;
+                musicPath = "uploads/songs/"+req.params.idSong+"/"+music.originalname;
                 return fs.rename(tempPath, realPath+music.originalname);
             })
             .then(function(err) {

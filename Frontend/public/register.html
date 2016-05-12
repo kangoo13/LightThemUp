@@ -4,18 +4,21 @@
         <div class="container">
                 <div class="column content">
                     <h3>Inscription</h3>
-                    <div ng-show='createFailed'>{{message}}</div>
                     <form name="createUser" ng-submit="vm.CreateUser()" role="form">
                         <label for="email">Votre email</label>
                         <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com" required/>
                         <label for="password">Votre mot de passe</label>
                         <input ng-model="vm.user.password" class="u-full-width" type="password" name="password" placeholder="mot de passe" required/>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Register</button>
-                            <a href="/" class="btn btn-link">Cancel</a>
+                            <button type="submit" class="btn btn-primary">S'enregistrer</button>
+                            <a href="/" class="btn btn-primary">Cancel</a>
                         </div>
                 </div>
                 </form>
         </div>
     </div>
 </div>
+
+
+
+

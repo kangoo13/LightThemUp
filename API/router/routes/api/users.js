@@ -141,7 +141,7 @@ router.post('/:idUser/avatar', upload.single('avatar'), auth({secret: superSecre
             var tempPath = image.path;
             var realPath = process.cwd()+"/public/uploads/avatar/"+req.params.idUser+"/";
             //var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
-            picturePath = image.originalname;
+            picturePath = "uploads/avatar/"+req.params.idUser+"/"+image.originalname;
             return fs.rename(tempPath, realPath+image.originalname);
         })
         .then(function(err) {
