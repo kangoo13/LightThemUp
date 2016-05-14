@@ -26,7 +26,9 @@ mongoose.connect(config.database, function(err) {
     }
 });
 
-
+if (!fs.existsSync("public")){
+    fs.mkdirSync("public");
+}
 if (!fs.existsSync("public/uploads")){
     fs.mkdirSync("public/uploads");
 }
