@@ -4,14 +4,15 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-  "start": "node app.js",
-    "test": "mocha",
+  "start": "nodejs app.js",
+    "test": "mocha test",
     "heroku-postbuild": ""
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.3.0",
     "body-parser": "~1.14.1",
+    "chai": "3.5.0",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.4.0",
     "cookie-session": "~2.0.0-alpha.1",
@@ -24,6 +25,7 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^5.4.0",
     "method-override": "^2.3.5",
+    "mocha": "2.4.5",
     "mongodb": "~2.0.46",
     "mongoose": "4.1.11",
     "morgan": "~1.6.1",
@@ -44,6 +46,6 @@
   },
   "devDependencies": {
     "supertest": "1.1.0",
-    "should": "8.2.2"
+    "should": "8.3.1"
   }
 }
