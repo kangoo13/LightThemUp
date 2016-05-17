@@ -325,9 +325,6 @@ describe('Users', function() {
 });
 
  it('Should return success on user updating his avatar', function(done) {
-  var profile = {
-    token: token
-  };
   request(url)
   .post('/users/' + idUser + "/avatar/")
   .field('token', token)
@@ -409,4 +406,9 @@ describe('Users', function() {
     done();
   });
 });
+
+ after(function() {
+  mongoose.disconnect();
+});
+ 
 });
