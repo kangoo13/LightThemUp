@@ -13,13 +13,15 @@ var tokenAdmin;
 var token;
 var emailAdmin = 'admin@admin.fr';
 var passwordAdmin = 'Test1234';
-var playlistName = "playlistTest";
+var achievementName = "achievementTest";
+var pictureTest = "a";
+var descriptionTest = "descriptionTest"
 var emailUser = 'user@test.fr';
 var passwordUser = 'Test1234';
-var idPlaylist;
+var idAchievement;
 var idUser;
 
-describe('Playlists', function() {
+describe('Achievements', function() {
 	this.timeout(10000);
 	before(function(done) {
 		mongoose.connect(config.database);              
@@ -119,13 +121,39 @@ describe('Playlists', function() {
 		});
 	});
 
-	it('Should return success trying to create a playlist', function(done) {
+	it('Should return error trying to create an achievement as a User', function(done) {
 		var profile = {
-			token: tokenAdmin,
-			name: playlistName
+			token: token,
+			name: achievementName,
+			description: descriptionTest,
+			picture: pictureTest
 		};
 		request(url)
-		.post('/playlists/')
+		.post('/achievements/')
+		.send(profile)
+		.end(function(err, res) {
+			if (err) {
+				throw err;
+			}
+			res.status.should.be.eql(401);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(false);
+			json.should.have.property('message');
+			json.message.should.equal("Unauthorized.");
+			done();
+		});
+	});
+	it('Should return success trying to create an achievement as an Admin', function(done) {
+		var profile = {
+			token: tokenAdmin,
+			name: achievementName,
+			description: descriptionTest,
+			picture: pictureTest
+		};
+		request(url)
+		.post('/achievements/')
 		.send(profile)
 		.end(function(err, res) {
 			if (err) {
@@ -137,14 +165,14 @@ describe('Playlists', function() {
 			json.should.have.property('success');
 			json.success.should.equal(true);
 			json.should.have.property('message');
-			json.message.should.equal("Playlist created !");
+			json.message.should.equal("Achievement created !");
 			done();
 		});
 	});
 
-	it('Should return playlists on simple GET', function(done) {
+	it('Should return achievements on simple GET', function(done) {
 		request(url)
-		.get('/playlists/')
+		.get('/achievements/')
 		.end(function(err, res) {
 			if (err) {
 				throw err;
@@ -153,17 +181,17 @@ describe('Playlists', function() {
 			res.text.should.be.json;
 			var jsonData = JSON.parse(res.text);
 			for (var i = 0; i < jsonData.length; i++) {
-				var playlists = jsonData[i];
-				if (playlists.name == playlistName)
-					idPlaylist = playlists._id;
+				var achievements = jsonData[i];
+				if (achievements.name == achievementName)
+					idAchievement = achievements._id;
 			}
 			done();
 		});
 	});
 
-	it('Should return playlist detail (with playlistId) on simple GET', function(done) {
+	it('Should return achievement detail (with achievementId) on simple GET', function(done) {
 		request(url)
-		.get('/playlists/' + idPlaylist)
+		.get('/achievements/' + idAchievement)
 		.end(function(err, res) {
 			if (err) {
 				throw err;
@@ -174,13 +202,13 @@ describe('Playlists', function() {
 		});
 	});
 
-	it('Should return error on user editing name of another user playlist', function(done) {
+	it('Should return error on user editing name of an achievement', function(done) {
 		var profile = {
 			token: token,
-			name: playlistName + "NEW NAME"
+			name: achievementName + "NEW NAME"
 		};
 		request(url)
-		.put('/playlists/' + idPlaylist)
+		.put('/achievements/' + idAchievement)
 		.send(profile)
 		.end(function(err, res) {
 			if (err) {
@@ -197,13 +225,13 @@ describe('Playlists', function() {
 		});
 	});
 
-	it('Should return success on user editing name of his playlist', function(done) {
+	it('Should return success on admin editing name of an achievement', function(done) {
 		var profile = {
 			token: tokenAdmin,
-			name: playlistName + "NEW NAME"
+			name: achievementName + "NEW NAME"
 		};
 		request(url)
-		.put('/playlists/' + idPlaylist)
+		.put('/achievements/' + idAchievement)
 		.send(profile)
 		.end(function(err, res) {
 			if (err) {
@@ -215,39 +243,71 @@ describe('Playlists', function() {
 			json.should.have.property('success');
 			json.success.should.equal(true);
 			json.should.have.property('message');
-			json.message.should.equal("Playlist updated !");
+			json.message.should.equal("Achievement updated !");
 			done();
 		});
 	});
 
-	it('Should return success on user removing his playlist', function(done) {
+	it('Should return success on user completing an achievement (with tokenAdmin)', function(done) {
 		var profile = {
-			token: tokenAdmin
+			token: tokenAdmin,
+			idUser: idUser
 		};
 		request(url)
-		.delete('/playlists/' + idPlaylist)
+		.post('/achievements/' + idAchievement)
 		.send(profile)
 		.end(function(err, res) {
-			if (err) {
-				throw err;
-			}
 			res.status.should.be.eql(200);
 			res.text.should.be.json;
 			var json = JSON.parse(res.text);
 			json.should.have.property('success');
 			json.success.should.equal(true);
 			json.should.have.property('message');
-			json.message.should.equal("The playlist has been deleted.");
+			json.message.should.equal("Achievement added to the user !");
 			done();
 		});
 	});
 
-	it('Should return error on user removing another user playlist', function(done) {
+	it('Should return error on user updating achievement\'s picture', function(done) {
+		request(url)
+		.post('/achievements/' + idAchievement + "/picture/")
+		.field('token', token)
+		.attach('picture', __dirname + '/avatar.jpg')
+		.end(function(err, res) {
+			res.status.should.be.eql(401);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(false);
+			json.should.have.property('message');
+			json.message.should.equal("Unauthorized.");
+			done();
+		});
+	});
+
+	it('Should return success on Admin updating achievement\'s picture', function(done) {
+		request(url)
+		.post('/achievements/' + idAchievement + "/picture/")
+		.field('token', tokenAdmin)
+		.attach('picture', __dirname + '/avatar.jpg')
+		.end(function(err, res) {
+			res.status.should.be.eql(200);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(true);
+			json.should.have.property('message');
+			json.message.should.equal("Your image has been saved");
+			done();
+		});
+	});
+
+	it('Should return error on user removing a achievement', function(done) {
 		var profile = {
 			token: token
 		};
 		request(url)
-		.delete('/playlists/' + idPlaylist)
+		.delete('/achievements/' + idAchievement)
 		.send(profile)
 		.end(function(err, res) {
 			if (err) {
@@ -264,7 +324,29 @@ describe('Playlists', function() {
 		});
 	});
 
-	// TODO: ajout et suppression d'une musique
+
+
+	it('Should return success on admin removing a achievement', function(done) {
+		var profile = {
+			token: tokenAdmin
+		};
+		request(url)
+		.delete('/achievements/' + idAchievement)
+		.send(profile)
+		.end(function(err, res) {
+			if (err) {
+				throw err;
+			}
+			res.status.should.be.eql(200);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(true);
+			json.should.have.property('message');
+			json.message.should.equal("The achievement has been deleted.");
+			done();
+		});
+	});
 
 	it('Should return success on user removing his account', function(done) {
 		var profile = {
@@ -287,6 +369,7 @@ describe('Playlists', function() {
 			done();
 		});
 	});
+
 
 	after(function() {
 		mongoose.disconnect();

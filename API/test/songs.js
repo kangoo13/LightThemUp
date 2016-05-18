@@ -13,13 +13,18 @@ var tokenAdmin;
 var token;
 var emailAdmin = 'admin@admin.fr';
 var passwordAdmin = 'Test1234';
-var playlistName = "playlistTest";
+var songName = "songTest";
+var artistName = "artistTest";
+var priceTest = "42";
+var difficultyTest = "69";
+var pictureTest = "a";
+var fileTest = "b";
 var emailUser = 'user@test.fr';
 var passwordUser = 'Test1234';
-var idPlaylist;
+var idSong;
 var idUser;
 
-describe('Playlists', function() {
+describe('Songs', function() {
 	this.timeout(10000);
 	before(function(done) {
 		mongoose.connect(config.database);              
@@ -119,13 +124,46 @@ describe('Playlists', function() {
 		});
 	});
 
-	it('Should return success trying to create a playlist', function(done) {
+	it('Should return error trying to create a song as an user', function(done) {
 		var profile = {
-			token: tokenAdmin,
-			name: playlistName
+			token: token,
+			name: songName,
+			artist: artistName,
+			picture: pictureTest,
+			price: priceTest,
+			file: fileTest,
+			difficulty: difficultyTest
 		};
 		request(url)
-		.post('/playlists/')
+		.post('/songs/')
+		.send(profile)
+		.end(function(err, res) {
+			if (err) {
+				throw err;
+			}
+			res.status.should.be.eql(401);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(false);
+			json.should.have.property('message');
+			json.message.should.equal("Unauthorized.");
+			done();
+		});
+	});
+
+	it('Should return success trying to create a song as an Admin', function(done) {
+		var profile = {
+			token: tokenAdmin,
+			name: songName,
+			artist: artistName,
+			picture: pictureTest,
+			price: priceTest,
+			file: fileTest,
+			difficulty: difficultyTest
+		};
+		request(url)
+		.post('/songs/')
 		.send(profile)
 		.end(function(err, res) {
 			if (err) {
@@ -137,14 +175,14 @@ describe('Playlists', function() {
 			json.should.have.property('success');
 			json.success.should.equal(true);
 			json.should.have.property('message');
-			json.message.should.equal("Playlist created !");
+			json.message.should.equal("Song created !");
 			done();
 		});
 	});
 
-	it('Should return playlists on simple GET', function(done) {
+	it('Should return songs on simple GET', function(done) {
 		request(url)
-		.get('/playlists/')
+		.get('/songs/')
 		.end(function(err, res) {
 			if (err) {
 				throw err;
@@ -153,17 +191,17 @@ describe('Playlists', function() {
 			res.text.should.be.json;
 			var jsonData = JSON.parse(res.text);
 			for (var i = 0; i < jsonData.length; i++) {
-				var playlists = jsonData[i];
-				if (playlists.name == playlistName)
-					idPlaylist = playlists._id;
+				var songs = jsonData[i];
+				if (songs.name == songName)
+					idSong = songs._id;
 			}
 			done();
 		});
 	});
 
-	it('Should return playlist detail (with playlistId) on simple GET', function(done) {
+	it('Should return song detail (with songId) on simple GET', function(done) {
 		request(url)
-		.get('/playlists/' + idPlaylist)
+		.get('/songs/' + idSong)
 		.end(function(err, res) {
 			if (err) {
 				throw err;
@@ -174,13 +212,13 @@ describe('Playlists', function() {
 		});
 	});
 
-	it('Should return error on user editing name of another user playlist', function(done) {
+	it('Should return error on user editing name of a song', function(done) {
 		var profile = {
 			token: token,
-			name: playlistName + "NEW NAME"
+			name: songName + "NEW NAME"
 		};
 		request(url)
-		.put('/playlists/' + idPlaylist)
+		.put('/songs/' + idSong)
 		.send(profile)
 		.end(function(err, res) {
 			if (err) {
@@ -197,13 +235,13 @@ describe('Playlists', function() {
 		});
 	});
 
-	it('Should return success on user editing name of his playlist', function(done) {
+	it('Should return success on admin editing name of a song', function(done) {
 		var profile = {
 			token: tokenAdmin,
-			name: playlistName + "NEW NAME"
+			name: songName + "NEW NAME"
 		};
 		request(url)
-		.put('/playlists/' + idPlaylist)
+		.put('/songs/' + idSong)
 		.send(profile)
 		.end(function(err, res) {
 			if (err) {
@@ -215,39 +253,120 @@ describe('Playlists', function() {
 			json.should.have.property('success');
 			json.success.should.equal(true);
 			json.should.have.property('message');
-			json.message.should.equal("Playlist updated !");
+			json.message.should.equal("Song updated !");
 			done();
 		});
 	});
 
-	it('Should return success on user removing his playlist', function(done) {
-		var profile = {
-			token: tokenAdmin
-		};
+	it('Should return error on user updating song\'s picture', function(done) {
 		request(url)
-		.delete('/playlists/' + idPlaylist)
-		.send(profile)
+		.post('/songs/' + idSong + "/picture/")
+		.field('token', token)
+		.attach('picture', __dirname + '/avatar.jpg')
 		.end(function(err, res) {
-			if (err) {
-				throw err;
-			}
+			res.status.should.be.eql(401);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(false);
+			json.should.have.property('message');
+			json.message.should.equal("Unauthorized.");
+			done();
+		});
+	});
+
+	it('Should return success on Admin updating song\'s picture', function(done) {
+		request(url)
+		.post('/songs/' + idSong + "/picture/")
+		.field('token', tokenAdmin)
+		.attach('picture', __dirname + '/avatar.jpg')
+		.end(function(err, res) {
 			res.status.should.be.eql(200);
 			res.text.should.be.json;
 			var json = JSON.parse(res.text);
 			json.should.have.property('success');
 			json.success.should.equal(true);
 			json.should.have.property('message');
-			json.message.should.equal("The playlist has been deleted.");
+			json.message.should.equal("Your image has been saved");
 			done();
 		});
 	});
 
-	it('Should return error on user removing another user playlist', function(done) {
+	it('Should return error on user updating song\'s file', function(done) {
+		request(url)
+		.post('/songs/' + idSong + "/music/")
+		.field('token', token)
+		.attach('music', __dirname + '/song.mid')
+		.end(function(err, res) {
+			res.status.should.be.eql(401);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(false);
+			json.should.have.property('message');
+			json.message.should.equal("Unauthorized.");
+			done();
+		});
+	});
+
+
+	it('Should return success on Admin updating song\'s file', function(done) {
+		request(url)
+		.post('/songs/' + idSong + "/music/")
+		.field('token', tokenAdmin)
+		.attach('music', __dirname + '/song.mid')
+		.end(function(err, res) {
+			res.status.should.be.eql(200);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(true);
+			json.should.have.property('message');
+			json.message.should.equal("Your music has been saved");
+			done();
+		});
+	});
+
+	it('Should return error on Admin updating song\'s preview', function(done) {
+		request(url)
+		.post('/songs/' + idSong + "/preview/")
+		.field('token', token)
+		.attach('preview', __dirname + '/song.mid')
+		.end(function(err, res) {
+			res.status.should.be.eql(401);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(false);
+			json.should.have.property('message');
+			json.message.should.equal("Unauthorized.");
+			done();
+		});
+	});
+
+	it('Should return success on Admin updating song\'s preview', function(done) {
+		request(url)
+		.post('/songs/' + idSong + "/preview/")
+		.field('token', tokenAdmin)
+		.attach('preview', __dirname + '/song.mid')
+		.end(function(err, res) {
+			res.status.should.be.eql(200);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(true);
+			json.should.have.property('message');
+			json.message.should.equal("Your preview has been saved");
+			done();
+		});
+	});
+
+	it('Should return error on user removing a song', function(done) {
 		var profile = {
 			token: token
 		};
 		request(url)
-		.delete('/playlists/' + idPlaylist)
+		.delete('/songs/' + idSong)
 		.send(profile)
 		.end(function(err, res) {
 			if (err) {
@@ -264,7 +383,27 @@ describe('Playlists', function() {
 		});
 	});
 
-	// TODO: ajout et suppression d'une musique
+	it('Should return success on admin removing a song', function(done) {
+		var profile = {
+			token: tokenAdmin
+		};
+		request(url)
+		.delete('/songs/' + idSong)
+		.send(profile)
+		.end(function(err, res) {
+			if (err) {
+				throw err;
+			}
+			res.status.should.be.eql(200);
+			res.text.should.be.json;
+			var json = JSON.parse(res.text);
+			json.should.have.property('success');
+			json.success.should.equal(true);
+			json.should.have.property('message');
+			json.message.should.equal("The song has been deleted.");
+			done();
+		});
+	});
 
 	it('Should return success on user removing his account', function(done) {
 		var profile = {
@@ -287,6 +426,7 @@ describe('Playlists', function() {
 			done();
 		});
 	});
+
 
 	after(function() {
 		mongoose.disconnect();
