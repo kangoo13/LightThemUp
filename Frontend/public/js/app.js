@@ -7,7 +7,7 @@ var app = angular.module('LightThemUp', ['ngRoute', 'toastr', 'ngResource', 'ngA
       controller: 'HomeController'
     }).
     when('/inscription', {
-      templateUrl: '/register.html',
+      templateUrl: '/inscription.html',
       controller: 'RegisterController',
       controllerAs: 'vm'
     }).

@@ -1,20 +1,12 @@
-<div id="page" ng-controller="LoginController">
-
-    <div id="main-view">
-        <div class="container">
-                <div class="column content">
-                    <h3>Connexion</h3>
-                    <form name="loginUser" ng-submit="vm.LoginUser()" role="form">
-                        <label for="email">Votre email</label>
-                        <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com" />
-                        <label for="password">Votre mot de passe</label>
-                        <input ng-model="vm.user.password" class="u-full-width" type="password" name="password" placeholder="mot de passe" />
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Connexion</button>
-                            <a href="/" class="btn btn-primary">Cancel</a>
-                        </div>
-                </div>
-                </form>
-        </div>
-    </div>
+<div ng-controller="LoginController">
+    <h3>Connexion</h3>
+    <form name="loginUser" ng-submit="vm.LoginUser()" role="form">
+        <label for="email">Votre email</label>
+        <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com" />
+        <label for="password">Votre mot de passe</label>
+        <input ng-model="vm.user.password" class="u-full-width" type="password" name="password" placeholder="Mot de passe" />
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Connexion</button>
+            <a class="button" href="/">Annuler</a>
+    </form>
 </div>

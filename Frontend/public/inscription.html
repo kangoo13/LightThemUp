@@ -1,0 +1,14 @@
+<div ng-controller="RegisterController">
+    <h3>Inscription</h3>
+    <form name="createUser" ng-submit="vm.CreateUser()" role="form">
+        <label for="email">Votre email</label>
+        <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com" required/>
+        <label for="password">Votre mot de passe</label>
+        <input ng-model="vm.user.password" class="u-full-width" type="password" name="password" placeholder="Mot de passe" required/>
+        <p><em>Compris entre 4 et 12 caractères incluant au moins une majuscule et un chiffre</em></p>
+        <div class="form-actions">
+            <button type="submit" class="button-primary">S'enregistrer</button>
+            <a class="button" href="/">Annuler</a>
+        </div>
+    </form>
+</div>
