@@ -23,7 +23,6 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 .DS_STORE
-public/
 
 # Dependency directory
 # node_modules
