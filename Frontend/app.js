@@ -53,6 +53,9 @@ require('./routes')(app);
  * Start Server
  */
 
-app.listen(80);
+var port = 8080
+app.listen(port);
+
+console.log("App listen to " + port);
 
 module.export = app;
