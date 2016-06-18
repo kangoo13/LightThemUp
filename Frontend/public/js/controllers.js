@@ -49,9 +49,10 @@ app.controller('LoginController', ['UserService', '$location', 'toastr', functio
     }
 }]);
 
-app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr', function ($scope, UserService, $location, toastr) {
+app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr', function ($scope, NewsService, $location, toastr) {
 
+    NewsService.GetAll().then(function (response) {
+        $scope.news = response;
+    });
 
-
-    $scope.news = NewsService.GetAll();
 }]);
