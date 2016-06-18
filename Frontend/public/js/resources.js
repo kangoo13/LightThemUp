@@ -17,6 +17,10 @@ app.factory("UserService", function($http) {
         return $http.post(apiUrl+'/users', user).then(handleSuccess, handleError);
     }
 
+    function Login(user) {
+        return $http.post(apiUrl+'/users', user).then(handleSuccess, handleError);
+    }
+
     function handleSuccess(res) {
         return res.data;
     }

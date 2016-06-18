@@ -523,47 +523,16 @@ footer #copyright {
 	color: #B5B5B5;
 }
 
-/* Slider Swiper
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-.swiper-slide:hover {
-	transform: scale(1.2);
-	opacity: 0.6;
-}
-
-.swiper-container {
-	width: 100%;
-	height: 250px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.swiper-slide {
-	text-align: center;
-	font-size: 18px;
-	background: #fff;
-	/* Center slide text vertically */
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
-	-webkit-justify-content: center;
-	justify-content: center;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	-webkit-align-items: center;
-	align-items: center;
-	transition: 1s all;
-	opacity: 1;
-}
-
 /* Links */
 a {
 	color: #1EAEDB;
 	text-decoration: none;
 }
+
 a:hover {
 	color: #77E7F5;
+}
+
+.word-break-all {
+	word-break: break-all;
 }
