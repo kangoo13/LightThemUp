@@ -532,7 +532,3 @@ a {
 a:hover {
 	color: #77E7F5;
 }
-
-.word-break-all {
-	word-break: break-all;
-}
