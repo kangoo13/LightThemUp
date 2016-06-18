@@ -1,6 +1,5 @@
-<div ng-controller="NewsController">
-<div class="row" ng-repeat="new in news">
+
+<div ng-controller="NewsController" class="row" ng-repeat="new in news">
     <div class="one-third column"><a  href="news/{{ new.slug }}"><img class="u-max-full-width" src="http://main.its.utoronto.ca/wp-content/uploads/2016/02/news.jpg"></a></div>
     <div class="two-thirds column"><a  href="news/{{ new.slug }}">{{ new.name }}</a><p>{{ new.description | limitTo : 200 }}</p></div>
-</div>
 </div>
