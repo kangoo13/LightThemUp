@@ -18,7 +18,7 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
             .then(function (response) {
                 if (response.success) {
                     toastr.success(response.message, "Success");
-                    $location.path('/login');
+                    $location.path('/connexion');
                 } else {
                     toastr.error(response.message, "Error");
                     vm.dataLoading = false;
@@ -40,7 +40,7 @@ app.controller('LoginController', ['UserService', '$location', 'toastr', functio
             .then(function (response) {
                 if (response.success) {
                     toastr.success(response.message, "Success");
-                    $location.path('/login');
+                    $location.path('/');
                 } else {
                     toastr.error(response.message, "Error");
                     vm.dataLoading = false;
