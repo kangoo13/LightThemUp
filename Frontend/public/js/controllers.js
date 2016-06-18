@@ -56,3 +56,11 @@ app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr'
     });
 
 }]);
+
+app.controller('NewsDetailsontroller', ['$scope', '$routeParams', 'NewsService', '$location', 'toastr', function ($scope, $routeParams, NewsService, $location, toastr) {
+
+    NewsService.GetOneNews($routeParams.slug).then(function (response) {
+        $scope.news = response;
+    });
+
+}]);

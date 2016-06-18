@@ -35,11 +35,16 @@ app.factory("NewsService", function($http) {
     var service = {};
 
     service.GetAll = GetAll;
+    service.GetOneNews = GetOneNews;
 
     return service;
 
     function GetAll() {
         return $http.get(apiUrl+'/news').then(handleSuccess, handleError);
+    }
+
+    function GetOneNews(slug) {
+        return $http.get(apiUrl+'/news/'+slug).then(handleSuccess, handleError);
     }
 
     function handleSuccess(res) {

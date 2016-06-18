@@ -61,7 +61,7 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
 });
 
 router.get('/:idNews', function(req, res, next) {
-        News.findById(req.params.idNews, function (err, post) {
+        News.findOne({ 'slug': req.params.idNews }, function (err, post) {
             if (err) return next(err);
             res.status(200).json(post);
         });
