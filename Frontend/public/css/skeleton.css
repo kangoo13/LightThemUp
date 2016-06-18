@@ -532,3 +532,10 @@ a {
 a:hover {
 	color: #77E7F5;
 }
+
+/* Loading */
+
+.dataLoading {
+	display: block;
+	margin: 2.5rem auto 0 auto;
+}

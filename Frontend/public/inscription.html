@@ -2,13 +2,17 @@
     <h3>Inscription</h3>
     <form name="createUser" ng-submit="vm.CreateUser()" role="form">
         <label for="email">Votre email</label>
-        <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com" required/>
+        <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com"
+               required/>
         <label for="password">Votre mot de passe</label>
-        <input ng-model="vm.user.password" class="u-full-width" type="password" name="password" placeholder="Mot de passe" required/>
+        <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
+               placeholder="Mot de passe" required/>
         <p><em>Compris entre 4 et 12 caractères incluant au moins une majuscule et un chiffre</em></p>
         <div class="form-actions">
             <button type="submit" class="button-primary">S'enregistrer</button>
             <a class="button" href="/">Annuler</a>
+            <img class="dataLoading" ng-if="vm.dataLoading"
+                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
         </div>
     </form>
 </div>
