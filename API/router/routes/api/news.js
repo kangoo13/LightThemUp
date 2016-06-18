@@ -8,7 +8,7 @@ var auth        = require('authenticate');
 var router      = express.Router();
 
 router.get('/', function(req, res, next) {
-    News.find(function (err, news) {
+    News.find().sort("-created_at").exec(function (err, news) {
         if (err) return next(err);
         res.status(200).json(news);
     });
