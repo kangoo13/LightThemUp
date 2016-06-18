@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', auth({secret: superSecret}), function(req, res, next) {
-    if (req.body.name && req.body.description && req.body.picture ) {
+    if (req.body.name && req.body.description && req.body.picture && req.body.slug) {
         if (req.decoded.admin) {
             News.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
@@ -25,6 +25,7 @@ router.post('/', auth({secret: superSecret}), function(req, res, next) {
                     news.description = req.body.description;
                     news.picture = req.body.picture;
                     news.author = req.decoded.id;
+                    news.slug = req.body.slug;
                     news.save(function (err) {
                         if (err) {
                             return res.status(503).json({
