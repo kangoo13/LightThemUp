@@ -25,3 +25,24 @@ app.factory("UserService", function($http) {
         return res.data;
     }
 });
+
+app.factory("NewsService", function($http) {
+
+    var service = {};
+
+    service.GetAll = GetAll;
+
+    return service;
+
+    function GetAll() {
+        return $http.get(apiUrl+'/news').then(handleSuccess, handleError);
+    }
+
+    function handleSuccess(res) {
+        return res.data;
+    }
+
+    function handleError(res) {
+        return res.data;
+    }
+});

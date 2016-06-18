@@ -48,3 +48,10 @@ app.controller('LoginController', ['UserService', '$location', 'toastr', functio
             });
     }
 }]);
+
+app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr', function ($scope, UserService, $location, toastr) {
+
+
+
+    $scope.news = NewsService.GetAll();
+}]);

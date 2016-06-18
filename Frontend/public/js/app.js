@@ -16,6 +16,11 @@ var app = angular.module('LightThemUp', ['ngRoute', 'toastr', 'ngResource', 'ngA
       controller: 'LoginController',
       controllerAs: 'vm'
     }).
+    when('/news', {
+      templateUrl: '/news.html',
+      controller: 'NewsController',
+      controllerAs: 'vm'
+    }).
     otherwise({
       redirectTo: '/'
     });
