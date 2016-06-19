@@ -27,18 +27,46 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
     }
 }]);
 
-
-app.controller('LoginController', ['UserService', '$location', 'toastr', function (UserService, $location, toastr) {
+app.controller('LoginController', ['UserService', '$location', '$window', 'toastr', 'AuthenticationService', function (UserService, $location, $window, toastr, AuthenticationService) {
 
     var vm = this;
 
     vm.LoginUser = LoginUser;
+
+    AuthenticationService.isAuthenticated = false;
+    delete $window.localStorage.token;
 
     function LoginUser() {
         vm.dataLoading = true;
         UserService.Login(vm.user)
             .then(function (response) {
                 if (response.success) {
+                    AuthenticationService.isAuthenticated = true;
+                    $window.localStorage.token = response.token;
+                    toastr.success(response.message, "Success");
+                    $location.path('/');
+                } else {
+                    toastr.error(response.message, "Error");
+                    vm.dataLoading = false;
+                }
+            });
+    }
+}]);
+
+app.controller('LogoutController', ['UserService', '$location', '$window', 'toastr', 'AuthenticationService', function (UserService, $location, $window, toastr, AuthenticationService) {
+
+    var vm = this;
+
+    vm.LogoutUser = LogoutUser;
+    console.log("INSIDE");
+
+    function LogoutUser() {
+        vm.dataLoading = true;
+        UserService.Logout(vm.user)
+            .then(function (response) {
+                if (response.success) {
+                    AuthenticationService.isAuthenticated = false;
+                    delete $window.localStorage.token;
                     toastr.success(response.message, "Success");
                     $location.path('/');
                 } else {
