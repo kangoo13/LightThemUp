@@ -1,6 +1,6 @@
 <div class="content" ng-controller="LoginController">
     <h3>Connexion</h3>
-    <form name="loginUser" ng-submit="vm.LoginUser()" role="form">
+    <form name="loginUser" ng-submit="vm.LoginUser()" role="form" autocomplete="on">
         <label for="email">Votre email</label>
         <input ng-model="vm.user.email" class="u-full-width" type="email" name="email"
                placeholder="example@example.com"/>

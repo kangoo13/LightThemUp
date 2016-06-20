@@ -53,28 +53,15 @@ app.controller('LoginController', ['UserService', '$location', '$window', 'toast
     }
 }]);
 
-app.controller('LogoutController', ['UserService', '$location', '$window', 'toastr', 'AuthenticationService', function (UserService, $location, $window, toastr, AuthenticationService) {
+app.controller('LogoutController', ['$location', '$window', 'toastr', 'AuthenticationService', '$scope', function ($location, $window, toastr, AuthenticationService, $scope) {
 
     var vm = this;
-
-    vm.LogoutUser = LogoutUser;
-    console.log("INSIDE");
-
-    function LogoutUser() {
-        vm.dataLoading = true;
-        UserService.Logout(vm.user)
-            .then(function (response) {
-                if (response.success) {
-                    AuthenticationService.isAuthenticated = false;
-                    delete $window.localStorage.token;
-                    toastr.success(response.message, "Success");
-                    $location.path('/');
-                } else {
-                    toastr.error(response.message, "Error");
-                    vm.dataLoading = false;
-                }
-            });
-    }
+    $scope.LogoutUser = function LogoutUser() {
+        AuthenticationService.isAuthenticated = false;
+        delete $window.localStorage.token;
+        toastr.success("Vous êtes déconnecté", "Success");
+        $location.path('/');
+    };
 }]);
 
 app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr', function ($scope, NewsService, $location, toastr) {

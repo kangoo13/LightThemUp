@@ -15,10 +15,6 @@ var app = angular.module('LightThemUp', ['ngRoute', 'toastr', 'ngResource', 'ngA
         controller: 'LoginController',
         controllerAs: 'vm',
         access: {requiredAuthentication: false}
-    }).when('/deconnexion', {
-        controller: 'LogoutController',
-        controllerAs: 'vm',
-        access: {requiredAuthentication: false}
     }).when('/news', {
         templateUrl: '/news.html',
         controller: 'NewsController',

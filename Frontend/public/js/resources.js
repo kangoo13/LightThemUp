@@ -33,8 +33,7 @@ app.factory("UserService", function ($http) {
 
     service.Create = Create;
     service.Login = Login;
-    service.Logout = Logout;
-
+    
     return service;
 
     function Create(user) {
@@ -43,10 +42,6 @@ app.factory("UserService", function ($http) {
 
     function Login(user) {
         return $http.post(apiUrl + '/users/authenticate', user).then(handleSuccess, handleError);
-    }
-
-    function Logout(user) {
-        return $http.get(apiUrl + '/users/logout', user).then(handleSuccess, handleError);;
     }
 
     function handleSuccess(res) {
