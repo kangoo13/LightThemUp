@@ -13,7 +13,6 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Swiper/3.0.8/css/swiper.min.css">
     <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/skeleton.css">
@@ -48,7 +47,7 @@
     </div>
 </header>
 
-<div id="main-view">
+<div id="main-view" ng-controller="MainController">
     <div class="container">
         <div class="row">
             <div class="two-thirds column">
@@ -59,10 +58,10 @@
                 <div class="twelve columns sidebarBlock firstBlock">
                     <h5><i class="fa fa-user"></i>Espace membre</h5>
                     <ul>
-                        <li><a href="/inscription" title="Inscription">Inscription</a></li>
-                        <li><a href="/connexion" title="Connexion">Connexion</a></li>
-                        <li><a href="/compte" title="Inscription">Mon compte</a></li>
-                        <li ng-controller="LogoutController" ><a ng-href="#" ng-click="LogoutUser()"
+                        <li ng-hide="isLogged"><a href="/inscription" title="Inscription">Inscription</a></li>
+                        <li ng-hide="isLogged"><a href="/connexion" title="Connexion">Connexion</a></li>
+                        <li ng-show="isLogged"><a href="/compte" title="Inscription">Mon compte</a></li>
+                        <li ng-show="isLogged" ng-controller="LogoutController" ><a ng-href="#" ng-click="LogoutUser()"
                             title="Déconnexion">Déconnexion</a></li>
                     </ul>
                 </div>
@@ -131,5 +130,6 @@
 <script src="/js/resources.js"></script>
 <script src="/js/controllers.js"></script>
 <script src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<script src="cookies/angular-cookies.js"></script>
 </body>
 </html>

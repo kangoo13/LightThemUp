@@ -9,7 +9,7 @@ app.factory("UserService", function ($http) {
 
     service.Create = Create;
     service.Login = Login;
-    
+
     return service;
 
     function Create(user) {
