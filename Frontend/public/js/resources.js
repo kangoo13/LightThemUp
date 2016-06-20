@@ -14,9 +14,9 @@ app.factory('TokenInterceptor', function ($q, $window, AuthenticationService) {
     return {
         request: function (config) {
             config.headers = config.headers || {};
-            if ($window.sessionStorage.token) {
+            if ($window.localStorage.token) {
                 AuthenticationService.isAuthenticated = true;
-                config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+                config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
             }
             return config;
         },
