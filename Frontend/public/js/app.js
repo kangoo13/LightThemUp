@@ -8,18 +8,21 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
     }).when('/inscription', {
         templateUrl: '/inscription.html',
         controller: 'RegisterController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        authorizedAccess: false
     }).when('/connexion', {
         templateUrl: '/connexion.html',
         controller: 'LoginController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        authorizedAccess: false
     }).when('/news', {
         templateUrl: '/news.html',
         controller: 'NewsController',
         authorizedAccess: true
     }).when('/news/:slug', {
         templateUrl: '/news-details.html',
-        controller: 'NewsDetailsController'
+        controller: 'NewsDetailsController',
+        authorizedAccess: true
     }).otherwise({
         redirectTo: '/'
     });
@@ -27,14 +30,25 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
 });
 
 app.run(function ($rootScope, $location, $cookies) {
-    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+    $rootScope.$on("$routeChangeStart", function (event, nextRoute, currentRoute) {
         var userAuthenticated = $cookies.get('token');
-        /* Check if the user is logged in */
+
+        if (!userAuthenticated && !nextRoute.authorizedAccess && $location.url() != "/connexion") {
+            $rootScope.savedLocation = null;
+        }
+
         if (!userAuthenticated && nextRoute.authorizedAccess) {
             /* You can save the user's location to take him back to the same page after he has logged-in */
-            $rootScope.savedLocation = currentRoute;
+            $rootScope.savedLocation = $location.url();
             $location.path('/connexion');
         }
+
+        // Redirect the user to saved location if he has logged-in
+        if (userAuthenticated && $rootScope.savedLocation) {
+            $location.path($rootScope.savedLocation);
+            $rootScope.savedLocation = null;
+        }
+
     });
 });
 
