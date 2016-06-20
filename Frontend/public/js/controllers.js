@@ -33,9 +33,6 @@ app.controller('LoginController', ['UserService', '$location', '$window', 'toast
 
     vm.LoginUser = LoginUser;
 
-    AuthenticationService.isAuthenticated = false;
-    delete $window.localStorage.token;
-
     function LoginUser() {
         vm.dataLoading = true;
         UserService.Login(vm.user)
@@ -54,8 +51,6 @@ app.controller('LoginController', ['UserService', '$location', '$window', 'toast
 }]);
 
 app.controller('LogoutController', ['$location', '$window', 'toastr', 'AuthenticationService', '$scope', function ($location, $window, toastr, AuthenticationService, $scope) {
-
-    var vm = this;
     $scope.LogoutUser = function LogoutUser() {
         AuthenticationService.isAuthenticated = false;
         delete $window.localStorage.token;
