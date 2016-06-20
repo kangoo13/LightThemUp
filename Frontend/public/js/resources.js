@@ -3,30 +3,6 @@
  */
 var apiUrl = 'http://localhost:3000';
 
-app.factory('AuthenticationService', function () {
-    var auth = {
-        isAuthenticated: false
-    }
-    return auth;
-});
-
-app.factory('TokenInterceptor', function ($q, $window, AuthenticationService) {
-    return {
-        request: function (config) {
-            config.headers = config.headers || {};
-            if ($window.localStorage.token) {
-                AuthenticationService.isAuthenticated = true;
-                config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
-            }
-            return config;
-        },
-
-        response: function (response) {
-            return response || $q.when(response);
-        }
-    };
-});
-
 app.factory("UserService", function ($http) {
 
     var service = {};

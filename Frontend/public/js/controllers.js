@@ -39,7 +39,7 @@ app.controller('LoginController', ['UserService', '$location', '$window', 'toast
             .then(function (response) {
                 if (response.success) {
                     AuthenticationService.isAuthenticated = true;
-                    $window.localStorage.token = response.token;
+                    $window.sessionStorage.token = response.token;
                     toastr.success(response.message, "Success");
                     $location.path('/');
                 } else {
@@ -53,7 +53,7 @@ app.controller('LoginController', ['UserService', '$location', '$window', 'toast
 app.controller('LogoutController', ['$location', '$window', 'toastr', 'AuthenticationService', '$scope', function ($location, $window, toastr, AuthenticationService, $scope) {
     $scope.LogoutUser = function LogoutUser() {
         AuthenticationService.isAuthenticated = false;
-        delete $window.localStorage.token;
+        delete $window.sessionStorage.token;
         toastr.success("Vous êtes déconnecté", "Success");
         $location.path('/');
     };
