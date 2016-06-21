@@ -40,7 +40,6 @@ app.factory("NewsService", function ($http) {
     }
 
     function GetOneNews(slug) {
-        console.log(slug);
         return $http.get(apiUrl + '/news/' + slug).then(handleSuccess, handleError);
     }
 

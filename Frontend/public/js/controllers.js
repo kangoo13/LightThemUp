@@ -129,6 +129,9 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService', '$location', 'toastr', function ($scope, $routeParams, NewsService, $location, toastr) {
 
     NewsService.GetOneNews($routeParams.slug).then(function (response) {
+        // If no news, redirect user to 404 error
+        if (response == null)
+            $location.path("/404");
         $scope.news = response;
     });
 
