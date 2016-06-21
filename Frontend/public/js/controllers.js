@@ -94,6 +94,14 @@ app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr'
 
 }]);
 
+app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
+
+    PlaylistService.GetAllByUser($cookies.get('token')).then(function (response) {
+        $scope.playlists = response;
+    });
+
+}]);
+
 app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService', '$location', 'toastr', function ($scope, $routeParams, NewsService, $location, toastr) {
 
     NewsService.GetOneNews($routeParams.slug).then(function (response) {

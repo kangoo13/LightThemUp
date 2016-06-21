@@ -52,3 +52,36 @@ app.factory("NewsService", function ($http) {
         return res.data;
     }
 });
+
+
+app.factory("PlaylistService", function ($http) {
+
+    var service = {};
+
+    service.GetAllByUser = GetAllByUser;
+    service.GetOneNews = GetOneNews;
+
+    return service;
+
+    function GetAllByUser(token) {
+        return $http.get(apiUrl + '/playlists/user', {
+            headers: {
+                "x-access-token": token
+            }
+        }).then(handleSuccess, handleError);
+    }
+
+    function GetOneNews(slug) {
+        console.log(slug);
+        return $http.get(apiUrl + '/news/' + slug).then(handleSuccess, handleError);
+    }
+
+    function handleSuccess(res) {
+        return res.data;
+    }
+
+    function handleError(res) {
+        return res.data;
+    }
+});
+

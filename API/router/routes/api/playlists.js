@@ -79,12 +79,14 @@
     });
 });
 
+/*
  router.get('/', function(req, res, next) {
     Playlist.find({}).populate("songs").exec(function (err, songs) {
         if (err) return next(err);
         res.status(200).json(songs);
     });
 });
+*/
 
 
  router.post('/', auth({secret: superSecret}), function(req, res, next) {
@@ -122,13 +124,20 @@
         });
 });
 
+router.get('/user', auth({secret: superSecret}), function(req, res, next) {
+    Playlist.find({'created_by': req.decoded.id}).populate("songs").exec(function (err, post) {
+        if (err) return next(err);
+        res.status(200).json(post);
+    });
+});
 
- router.get('/:idPlaylist', function(req, res, next) {
+router.get('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
     Playlist.findById(req.params.idPlaylist).populate("songs").exec(function (err, post) {
         if (err) return next(err);
         res.status(200).json(post);
     });
 });
+
 
  router.put('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin || req.decoded.id == req.params.idPlaylist && req.body.name) {
