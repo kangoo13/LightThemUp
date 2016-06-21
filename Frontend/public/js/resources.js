@@ -66,14 +66,16 @@ app.factory("PlaylistService", function ($http) {
         return $http.get(apiUrl + '/playlists/user', {
             headers: {
                 'Content-Type' : 'application/x-www-form-urlencoded',
+                "x-access-token": token
 
             }
         }).then(handleSuccess, handleError);
     }
 
     function Create(name, token) {
-        console.log("create");
-        var data = "name="+name;
+        var data = $.param({
+            name: name.name
+        });
         return $http.post(apiUrl + '/playlists/', data, {
             headers: {
                 'Content-Type' : 'application/x-www-form-urlencoded',

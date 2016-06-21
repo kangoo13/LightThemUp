@@ -110,7 +110,7 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
     function CreatePlaylist() {
         vm.dataLoading = true;
         console.log("here");
-        PlaylistService.Create(vm.name, $cookies.get('token'))
+        PlaylistService.Create(vm.playlist, $cookies.get('token'))
             .then(function (response) {
                 if (response.success) {
                     // Send a broadcast to notify that user is now logged in
