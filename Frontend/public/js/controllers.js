@@ -84,19 +84,39 @@ app.controller('LogoutController', ['$rootScope', '$location', '$cookies', 'toas
     };
 }]);
 
-app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr', function ($scope, NewsService, $location, toastr) {
+app.controller('NewsController', ['$scope', 'NewsService', function ($scope, NewsService) {
 
-    console.log("newsController");
-
+    var vm = this;
+    vm.dataLoading = true;
     NewsService.GetAll().then(function (response) {
+        vm.dataLoading = false;
         $scope.news = response;
     });
 
 }]);
 
-app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
 
+app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService', '$location', 'toastr', function ($scope, $routeParams, NewsService, $location, toastr) {
+
+    var vm = this;
+    vm.dataLoading = true;
+    NewsService.GetOneNews($routeParams.slug).then(function (response) {
+        vm.dataLoading = false;
+        // If no news, redirect user to 404 error
+        if (response == null)
+            $location.path("/404");
+        $scope.newsDetails = response;
+    });
+
+}]);
+
+
+app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', function ($scope, $cookies, PlaylistService) {
+
+    var vm = this;
+    vm.dataLoading = true;
     PlaylistService.GetAllByUser($cookies.get('token')).then(function (response) {
+        vm.dataLoading = false;
         $scope.playlists = response;
     });
 
@@ -105,15 +125,12 @@ app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', '
 app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
 
     var vm = this;
-    console.log("salut");
     vm.CreatePlaylist = CreatePlaylist;
     function CreatePlaylist() {
         vm.dataLoading = true;
-        console.log("here");
         PlaylistService.Create(vm.playlist, $cookies.get('token'))
             .then(function (response) {
                 if (response.success) {
-                    // Send a broadcast to notify that user is now logged in
                     /*  toastr.success(response.message, "Success");*/
                     toastr.success("Playlist créée.");
                     $location.path('/playlists');
@@ -123,16 +140,5 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
                 }
             });
     }
-
-}]);
-
-app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService', '$location', 'toastr', function ($scope, $routeParams, NewsService, $location, toastr) {
-
-    NewsService.GetOneNews($routeParams.slug).then(function (response) {
-        // If no news, redirect user to 404 error
-        if (response == null)
-            $location.path("/404");
-        $scope.news = response;
-    });
 
 }]);

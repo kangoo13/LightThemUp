@@ -18,20 +18,24 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
     }).when('/news', {
         templateUrl: '/news.html',
         controller: 'NewsController',
+        controllerAs: 'vm',
+        authorizedAccess: true
+    }).when('/news/:slug', {
+        templateUrl: '/news-details.html',
+        controller: 'NewsDetailsController',
+        controllerAs: 'vm',
         authorizedAccess: true
     }).when('/playlists', {
         templateUrl: '/playlist.html',
         controller: 'PlaylistController',
+        controllerAs: 'vm',
         authorizedAccess: false
     }).when('/playlists/create', {
         templateUrl: '/create-playlist.html',
         controller: 'CreatePlaylistController',
         controllerAs: 'vm',
         authorizedAccess: false
-    }).when('/news/:slug', {
-        templateUrl: '/news-details.html',
-        controller: 'NewsDetailsController',
-        authorizedAccess: true
+
     }).otherwise({
         redirectTo: '/404',
         templateUrl: '404.html'

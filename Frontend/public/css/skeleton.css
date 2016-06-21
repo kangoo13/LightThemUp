@@ -735,15 +735,23 @@ a:hover {
     font-size: 1.35rem;
 }
 
+.news-image {
+    margin-bottom: 2.5rem;
+}
+
 /* Loading */
 
 .dataLoading {
     display: block;
-    margin: 2.5rem auto 0 auto;
+    margin: 0 auto;
 }
 
 /* Custom utilities */
 
 .u-text-right {
     text-align: right;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
 }
