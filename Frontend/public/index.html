@@ -61,11 +61,13 @@
                     <ul>
                         <li ng-hide="isLogged"><a href="/inscription" title="Inscription">Inscription</a></li>
                         <li ng-hide="isLogged"><a href="/connexion" title="Connexion">Connexion</a></li>
+                        <!-- Member area -->
                         <li ng-show="isLogged"><a href="/compte" title="Inscription">Mon compte</a></li>
+                        <li ng-show="isLogged"><a href="/playlists" title="Playlists">Mes playlists</a></li>
+                        <!--End of member area-->
                         <li ng-show="isLogged" ng-controller="LogoutController">
                             <a ng-href="#" ng-click="LogoutUser()" title="Déconnexion">Déconnexion</a>
                         </li>
-                        <li><a href="/playlists" title="Playlists">Mes playlists</a></li>
                     </ul>
                 </div>
                 <div class="twelve columns sidebarBlock">
