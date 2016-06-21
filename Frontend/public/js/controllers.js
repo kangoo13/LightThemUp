@@ -86,9 +86,9 @@ app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr'
 
 }]);
 
-app.controller('PlaylistController', ['$scope', 'PlaylistService', '$location', 'toastr', function ($scope, PlaylistService, $location, toastr) {
+app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
 
-    PlaylistService.GetAll().then(function (response) {
+    PlaylistService.GetAllByUser($cookies.get('token')).then(function (response) {
         $scope.playlists = response;
     });
 

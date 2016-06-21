@@ -61,13 +61,17 @@ app.factory("PlaylistService", function ($http) {
 
     var service = {};
 
-    service.GetAll = GetAll;
+    service.GetAllByUser = GetAllByUser;
     service.GetOneNews = GetOneNews;
 
     return service;
 
-    function GetAll() {
-        return $http.get(apiUrl + '/playlists').then(handleSuccess, handleError);
+    function GetAllByUser(token) {
+        return $http.get(apiUrl + '/playlists/user', {
+            headers: {
+                "x-access-token": token
+            }
+        }).then(handleSuccess, handleError);
     }
 
     function GetOneNews(slug) {
