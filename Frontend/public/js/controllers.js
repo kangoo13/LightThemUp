@@ -18,9 +18,7 @@ app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies
 }]);
 
 app.controller('FooterController', ['$scope', function ($scope) {
-
     $scope.currentYear = new Date().getFullYear();
-
 }]);
 
 app.controller('HomeController', function ($scope) {
@@ -87,6 +85,8 @@ app.controller('LogoutController', ['$rootScope', '$location', '$cookies', 'toas
 }]);
 
 app.controller('NewsController', ['$scope', 'NewsService', '$location', 'toastr', function ($scope, NewsService, $location, toastr) {
+
+    console.log("newsController");
 
     NewsService.GetAll().then(function (response) {
         $scope.news = response;
