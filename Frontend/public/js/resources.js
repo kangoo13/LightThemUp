@@ -73,8 +73,7 @@ app.factory("PlaylistService", function ($http) {
 
     function Create(name, token) {
         console.log("create");
-        var data = {};
-        data['name'] = name;
+        var data = "name="+name;
         return $http.post(apiUrl + '/playlists/', data, {
             headers: {
                 'Content-Type' : 'application/x-www-form-urlencoded',
