@@ -3,37 +3,13 @@
  */
 var apiUrl = 'http://localhost:3000';
 
-app.factory('AuthenticationService', function () {
-    var auth = {
-        isAuthenticated: false
-    }
-    return auth;
-});
-
-app.factory('TokenInterceptor', function ($q, $window, AuthenticationService) {
-    return {
-        request: function (config) {
-            config.headers = config.headers || {};
-            if ($window.sessionStorage.token) {
-                AuthenticationService.isAuthenticated = true;
-                config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
-            }
-            return config;
-        },
-
-        response: function (response) {
-            return response || $q.when(response);
-        }
-    };
-});
-
 app.factory("UserService", function ($http) {
 
     var service = {};
 
     service.Create = Create;
     service.Login = Login;
-    
+
     return service;
 
     function Create(user) {
@@ -80,6 +56,7 @@ app.factory("NewsService", function ($http) {
     }
 });
 
+
 app.factory("PlaylistService", function ($http) {
 
     var service = {};
@@ -106,3 +83,4 @@ app.factory("PlaylistService", function ($http) {
         return res.data;
     }
 });
+

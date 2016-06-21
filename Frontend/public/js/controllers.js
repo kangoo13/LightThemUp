@@ -2,6 +2,19 @@
 
 /* Controllers */
 
+app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', function ($rootScope, $scope, $location, $cookies) {
+    if ($cookies.get('token'))
+        $scope.isLogged = true;
+    else
+        $scope.isLogged = false;
+    $rootScope.$on('userLoggedIn', function () {
+        $scope.isLogged = true;
+    });
+    $rootScope.$on('userLoggedOut', function () {
+        $scope.isLogged = false;
+    });
+}]);
+
 app.controller('HomeController', function ($scope) {
     // write Ctrl here
 });
@@ -17,7 +30,8 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
         UserService.Create(vm.user)
             .then(function (response) {
                 if (response.success) {
-                    toastr.success(response.message, "Success");
+                   /* toastr.success(response.message, "Success");*/
+                    toastr.success("Vous êtes inscrit(e).");
                     $location.path('/connexion');
                 } else {
                     toastr.error(response.message, "Error");
@@ -27,23 +41,21 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
     }
 }]);
 
-app.controller('LoginController', ['UserService', '$location', '$window', 'toastr', 'AuthenticationService', function (UserService, $location, $window, toastr, AuthenticationService) {
+app.controller('LoginController', ['$rootScope', 'UserService', '$location', "$cookies", 'toastr', function ($rootScope, UserService, $location, $cookies, toastr) {
 
     var vm = this;
-
     vm.LoginUser = LoginUser;
-
-    AuthenticationService.isAuthenticated = false;
-    delete $window.localStorage.token;
-
     function LoginUser() {
         vm.dataLoading = true;
         UserService.Login(vm.user)
             .then(function (response) {
                 if (response.success) {
-                    AuthenticationService.isAuthenticated = true;
-                    $window.localStorage.token = response.token;
-                    toastr.success(response.message, "Success");
+                    // Save the token as a cookie
+                    $cookies.put('token', response.token);
+                    // Send a broadcast to notify that user is now logged in
+                    $rootScope.$broadcast('userLoggedIn');
+                  /*  toastr.success(response.message, "Success");*/
+                    toastr.success("Vous êtes connecté(e).");
                     $location.path('/');
                 } else {
                     toastr.error(response.message, "Error");
@@ -53,13 +65,15 @@ app.controller('LoginController', ['UserService', '$location', '$window', 'toast
     }
 }]);
 
-app.controller('LogoutController', ['$location', '$window', 'toastr', 'AuthenticationService', '$scope', function ($location, $window, toastr, AuthenticationService, $scope) {
-
-    var vm = this;
+app.controller('LogoutController', ['$rootScope', '$location', '$cookies', 'toastr', '$scope', function ($rootScope, $location, $cookies, toastr, $scope) {
     $scope.LogoutUser = function LogoutUser() {
-        AuthenticationService.isAuthenticated = false;
-        delete $window.localStorage.token;
-        toastr.success("Vous êtes déconnecté", "Success");
+        // Get cookie
+        var token = $cookies.get('token');
+        // Remove token
+        $cookies.remove('token');
+        // Send a broadcast to notify that user is now logged out
+        $rootScope.$broadcast('userLoggedOut');
+        toastr.success("Vous êtes déconnecté(e).");
         $location.path('/');
     };
 }]);

@@ -1,15 +1,14 @@
-
 /**
  * Module dependencies
  */
 
 var express = require('express'),
-  bodyParser = require('body-parser'),
-  methodOverride = require('method-override'),
-  morgan = require('morgan'),
-  routes = require('./routes'),
-  http = require('http'),
-  path = require('path');
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    morgan = require('morgan'),
+    routes = require('./routes'),
+    http = require('http'),
+    path = require('path');
 
 var app = module.exports = express();
 
@@ -26,18 +25,19 @@ app.use(morgan('dev'));
 app.use(bodyParser());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/cookies', express.static(__dirname + '/node_modules/angular-cookies/'));
 
 var env = process.env.NODE_ENV || 'development';
-app.use(function(err, req, res, next) {
-  return res.status(500).send({
-    success: false,
-    message: err.toString(),
-  });
+app.use(function (err, req, res, next) {
+    return res.status(500).send({
+        success: false,
+        message: err.toString(),
+    });
 });
 
 // production only
 if (env === 'production') {
-  // TODO
+    // TODO
 }
 
 
