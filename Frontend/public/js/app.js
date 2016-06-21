@@ -26,6 +26,7 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
     }).when('/playlists/create', {
         templateUrl: '/create-playlist.html',
         controller: 'CreatePlaylistController',
+        controllerAs: 'vm',
         authorizedAccess: false
     }).when('/news/:slug', {
         templateUrl: '/news-details.html',
@@ -65,4 +66,11 @@ app.config(function (toastrConfig) {
     angular.extend(toastrConfig, {
         positionClass: 'toast-top-right'
     });
+});
+
+app.config(function ($httpProvider) {
+    $httpProvider.defaults.headers.common = {};
+    $httpProvider.defaults.headers.post = {};
+    $httpProvider.defaults.headers.put = {};
+    $httpProvider.defaults.headers.patch = {};
 });
