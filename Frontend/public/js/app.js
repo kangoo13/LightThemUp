@@ -19,6 +19,10 @@ var app = angular.module('LightThemUp', ['ngRoute', 'toastr', 'ngResource', 'ngA
         templateUrl: '/news.html',
         controller: 'NewsController',
         access: {requiredAuthentication: true}
+    }).when('/playlists', {
+        templateUrl: '/playlist.html',
+        controller: 'PlaylistController',
+        access: {requiredAuthentication: false}
     }).when('/news/:slug', {
         templateUrl: '/news-details.html',
         controller: 'NewsDetailsController',

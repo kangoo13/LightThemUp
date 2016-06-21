@@ -79,3 +79,30 @@ app.factory("NewsService", function ($http) {
         return res.data;
     }
 });
+
+app.factory("PlaylistService", function ($http) {
+
+    var service = {};
+
+    service.GetAll = GetAll;
+    service.GetOneNews = GetOneNews;
+
+    return service;
+
+    function GetAll() {
+        return $http.get(apiUrl + '/playlists').then(handleSuccess, handleError);
+    }
+
+    function GetOneNews(slug) {
+        console.log(slug);
+        return $http.get(apiUrl + '/news/' + slug).then(handleSuccess, handleError);
+    }
+
+    function handleSuccess(res) {
+        return res.data;
+    }
+
+    function handleError(res) {
+        return res.data;
+    }
+});

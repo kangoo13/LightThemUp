@@ -1,0 +1,9 @@
+<div ng-controller="PlaylistController" class="row content">
+    <a href="playlists/create">Créer une playlist</a>
+    <div class="row content" ng-repeat="playlist in playlists">
+        Playlist name : {{ playlist.name }}
+        <div class="row content" ng-repeat="song in playlist.songs">
+            Song name : {{ song.name }}
+        </div>
+    </div>
+</div>
