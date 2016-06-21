@@ -66,6 +66,7 @@ app.factory("PlaylistService", function ($http) {
     function GetAllByUser(token) {
         return $http.get(apiUrl + '/playlists/user', {
             headers: {
+                'Content-Type' : 'application/x-www-form-urlencoded',
                 "x-access-token": token
             }
         }).then(handleSuccess, handleError);
@@ -77,10 +78,12 @@ app.factory("PlaylistService", function ($http) {
     }
 
     function handleSuccess(res) {
+        console.log("success");
         return res.data;
     }
 
     function handleError(res) {
+        console.log("error");
         return res.data;
     }
 });
