@@ -24,7 +24,8 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'NewsDetailsController',
         authorizedAccess: true
     }).otherwise({
-        redirectTo: '/'
+        redirectTo: '/404',
+        templateUrl: '404.html'
     });
     $locationProvider.html5Mode(true);
 });

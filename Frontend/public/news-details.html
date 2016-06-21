@@ -1,10 +1,12 @@
-<div ng-controller="NewsDetailsController" class="row content">
+<div ng-controller="NewsDetailsController" class="row content news">
     <div class="one-third column">
         <a href="news/{{ news.slug }}">
             <img class="u-max-full-width" src="http://main.its.utoronto.ca/wp-content/uploads/2016/02/news.jpg">
         </a>
     </div>
     <div class="two-thirds column">
-        <a href="news/{{ news.slug }}">{{ news.name }}</a>
-        <p>{{ news.description }}</p></div>
+        <h1>{{ news.name }}</h1>
+        <p>{{ news.description }}</p>
+        <p class="u-text-right">Publiée le <span class="news-date">{{ news.created_at | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
+    </div>
 </div>

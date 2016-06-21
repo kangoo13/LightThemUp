@@ -1,6 +1,3 @@
-/**
- * Created by aurelienschiltz on 06/05/2016.
- */
 var apiUrl = 'http://localhost:3000';
 
 app.factory("UserService", function ($http) {

@@ -3,6 +3,8 @@
 /* Controllers */
 
 app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', function ($rootScope, $scope, $location, $cookies) {
+
+    // Set scope var isLogged depending on token existence
     if ($cookies.get('token'))
         $scope.isLogged = true;
     else
@@ -13,6 +15,12 @@ app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies
     $rootScope.$on('userLoggedOut', function () {
         $scope.isLogged = false;
     });
+}]);
+
+app.controller('FooterController', ['$scope', function ($scope) {
+
+    $scope.currentYear = new Date().getFullYear();
+
 }]);
 
 app.controller('HomeController', function ($scope) {

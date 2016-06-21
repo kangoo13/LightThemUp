@@ -25,7 +25,10 @@ app.use(morgan('dev'));
 app.use(bodyParser());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Get some modules from node_modules
 app.use('/cookies', express.static(__dirname + '/node_modules/angular-cookies/'));
+app.use('/language', express.static(__dirname + '/node_modules/angular-i18n/'));
 
 var env = process.env.NODE_ENV || 'development';
 app.use(function (err, req, res, next) {
