@@ -59,7 +59,7 @@ app.factory("PlaylistService", function ($http) {
     var service = {};
 
     service.GetAllByUser = GetAllByUser;
-    service.GetOneNews = GetOneNews;
+    service.Create = Create;
 
     return service;
 
@@ -72,9 +72,8 @@ app.factory("PlaylistService", function ($http) {
         }).then(handleSuccess, handleError);
     }
 
-    function GetOneNews(slug) {
-        console.log(slug);
-        return $http.get(apiUrl + '/news/' + slug).then(handleSuccess, handleError);
+    function Create(name, token) {
+        return $http.post(apiUrl + '/playlists/', name, token).then(handleSuccess, handleError);
     }
 
     function handleSuccess(res) {

@@ -23,6 +23,10 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         templateUrl: '/playlist.html',
         controller: 'PlaylistController',
         authorizedAccess: false
+    }).when('/playlists/create', {
+        templateUrl: '/create-playlist.html',
+        controller: 'CreatePlaylistController',
+        authorizedAccess: false
     }).when('/news/:slug', {
         templateUrl: '/news-details.html',
         controller: 'NewsDetailsController',

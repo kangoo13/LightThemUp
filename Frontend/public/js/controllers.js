@@ -102,6 +102,30 @@ app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', '
 
 }]);
 
+app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
+
+    var vm = this;
+    console.log("salut");
+    vm.CreatePlaylist = CreatePlaylist;
+    function CreatePlaylist() {
+        vm.dataLoading = true;
+        console.log("here");
+        PlaylistService.Create(vm.name, $cookies.get('token'))
+            .then(function (response) {
+                if (response.success) {
+                    // Send a broadcast to notify that user is now logged in
+                    /*  toastr.success(response.message, "Success");*/
+                    toastr.success("Playlist créée.");
+                    $location.path('/playlists');
+                } else {
+                    toastr.error(response.message, "Error");
+                    vm.dataLoading = false;
+                }
+            });
+    }
+
+}]);
+
 app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService', '$location', 'toastr', function ($scope, $routeParams, NewsService, $location, toastr) {
 
     NewsService.GetOneNews($routeParams.slug).then(function (response) {

@@ -2,7 +2,7 @@
  * Created by Kangoo13 on 17/10/2015.
  */
 var express     = require('express');
-var News  = require('../../../models/News.js');
+var News        = require('../../../models/News.js');
 var superSecret = require('../../../config.js').secret;
 var auth        = require('authenticate');
 var router      = express.Router();
