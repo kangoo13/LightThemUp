@@ -6,10 +6,11 @@ var mongoose = require('mongoose');
 var AchievementSchema = new mongoose.Schema({
     name: String,
     description: String,
-    picture: String,
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now },
-});
+    picture: String
+},
+    {
+        timestamps: true
+    });
 
 AchievementSchema.pre('save', function(next) {
     this.updated_at = Date.now();

@@ -33,10 +33,11 @@ var userSchema = mongoose.Schema({
         token        : String,
         email        : String,
         name         : String
-    },
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now },
-});
+    }
+},
+    {
+        timestamps: true
+    });
 
 userSchema.pre('save', function(next) {
     var user = this;

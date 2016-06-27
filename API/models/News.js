@@ -8,10 +8,11 @@ var NewsSchema = new mongoose.Schema({
     description: String,
     picture: String,
     author: String,
-    slug: String,
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now },
-});
+    slug: String
+},
+    {
+        timestamps: true
+    });
 
 NewsSchema.pre('save', function(next) {
     this.updated_at = Date.now();

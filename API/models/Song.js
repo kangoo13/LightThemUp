@@ -11,10 +11,11 @@ var SongSchema = new mongoose.Schema({
     file: String,
     preview: String,
     difficulty: Number,
-    downloaded: Number,
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now }
-});
+    downloaded: Number
+},
+    {
+        timestamps: true
+    });
 
 SongSchema.pre('save', function(next) {
     this.updated_at = Date.now();
