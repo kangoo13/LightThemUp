@@ -40,6 +40,7 @@ var userSchema = mongoose.Schema({
 
 userSchema.pre('save', function(next) {
     var user = this;
+    user.updated_at = Date.now();
     if (user.isModified('passwordLocal')) {
         if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/.test(this.passwordLocal)) {
             var error = new Error("Invalid password")
@@ -52,7 +53,7 @@ userSchema.pre('save', function(next) {
             return next(error);
         }
     }
-    this.updated_at = Date.now();
+
     if (!user.isModified('passwordLocal')) return next();
     bcrypt.hash(user.passwordLocal, null, null, function (err, hash) {
         if (err) return next(err);
