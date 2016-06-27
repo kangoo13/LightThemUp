@@ -21,122 +21,121 @@
     <base href="/">
 </head>
 <body ng-app="LightThemUp">
-<header>
-    <div class="container">
-        <div class="row">
-            <div class="two columns siteName"><h5><a href="/" title="Accueil">Light Them Up</a></h5></div>
-            <nav class="ten columns">
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="two columns siteName"><h5><a href="/" title="Accueil">Light Them Up</a></h5></div>
+                <nav class="ten columns">
+                    <div class="row">
+                        <div class="two columns">
+                            <a href="/news" title="">Actualités</a>
+                        </div>
+                        <div class="two columns">
+                            <a href="/boutique" title="">Boutique</a>
+                        </div>
+                        <div class="two columns">
+                            <a href="/statistiques" title="">Statistiques</a>
+                        </div>
+                        <div class="two columns">
+                            <a href="/equipe" title="">L'équipe</a>
+                        </div>
+                        <div class="two columns">
+                            <a href="/contact" title="">Nous contacter</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div id="main-view" ng-controller="MainController">
+        <div class="container">
+            <div class="row">
+                <div class="two-thirds column">
+                    <div ng-view>
+                        <div style="display: block; width: 100%; height: 200px;"></div>
+                    </div>
+                </div>
+                <div class="one-third column" id="sidebar">
+                    <div class="twelve columns sidebarBlock firstBlock">
+                        <h5><i class="fa fa-user"></i>Espace membre</h5>
+                        <ul ng-cloak>
+                            <li ng-hide="isLogged"><a href="/inscription" title="Inscription">Inscription</a></li>
+                            <li ng-hide="isLogged"><a href="/connexion" title="Connexion">Connexion</a></li>
+                            <!-- Member area -->
+                            <li ng-show="isLogged"><a href="/compte" title="Inscription">Mon compte</a></li>
+                            <li ng-show="isLogged"><a href="/playlists" title="Playlists">Mes playlists</a></li>
+                            <!--End of member area-->
+                            <li ng-show="isLogged" ng-controller="LogoutController">
+                                <a ng-href="#" ng-click="LogoutUser()" title="Déconnexion">Déconnexion</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="twelve columns sidebarBlock">
+                        <h5><i class="fa fa-music"></i>Dernières sorties</h5>
+                    </div>
+                    <div class="twelve columns sidebarBlock">
+                        <h5><i class="fa fa-commenting"></i>Commentaires récents</h5>
+                    </div>
+                    <div class="twelve columns sidebarBlock">
+                        <h5><i class="fa fa-plus"></i>Publicité</h5>
+                    </div>
+                    <div class="twelve columns sidebarBlock">
+                        <h5><i class="fa fa-trophy"></i>Classement</h5>
+                    </div>
+                    <div class="twelve columns sidebarBlock">
+                        <h5><i class="fa fa-question-circle"></i>Support</h5>
+                        <p>Une question ? Une recommandation ?<br>N'hésitez pas à entrer en contact avec notre support.
+                            Suivez-le guide, <a href="/support" title="Support">c'est par ici</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer ng-controller="FooterController">
+            <div class="container">
                 <div class="row">
-                    <div class="two columns">
-                        <a href="/news" title="">Actualités</a>
+                    <div class="three columns">
+                        <h5><i class="fa fa-group"></i>L'équipe</h5>
+                        <p>L'équipe est composée de sept membres tous issus de l'école Epitech. <br/> Venant des quatre coins de
+                            la France, nous unissons nos
+                            connaissances pour réaliser un projet innovant et qui nous l'espérons vous plaira.</p>
+                        </div>
+                        <div class="three columns">
+                            <h5><i class="fa fa-heart"></i>Coup de coeur</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec scelerisque orci. Donec cursus
+                                neque vitae nulla mollis consectetur. Nunc vel euismod magna, vel condimentum est. Sed ut augue a
+                                eros tincidunt viverra id ac eros.</p>
+                        </div>
+                        <div class="three columns">
+                            <h5><i class="fa fa-hashtag"></i>Réseaux sociaux</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec scelerisque orci. Donec cursus
+                                neque vitae nulla mollis consectetur. Nunc vel euismod magna, vel condimentum est. Sed ut augue a
+                                eros tincidunt viverra id ac eros.</p>
+                        </div>
+                        <div class="three columns">
+                            <h5><i class="fa fa-envelope"></i>Contact</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec scelerisque orci. Donec cursus
+                                neque vitae nulla mollis consectetur. Nunc vel euismod magna, vel condimentum est. Sed ut augue a
+                                eros tincidunt viverra id ac eros.</p>
+                        </div>
                     </div>
-                    <div class="two columns">
-                        <a href="/boutique" title="">Boutique</a>
-                    </div>
-                    <div class="two columns">
-                        <a href="/statistiques" title="">Statistiques</a>
-                    </div>
-                    <div class="two columns">
-                        <a href="/equipe" title="">L'équipe</a>
-                    </div>
-                    <div class="two columns">
-                        <a href="/contact" title="">Nous contacter</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </div>
-</header>
+                    <i id="scrollToTop" class="fa fa-chevron-up" aria-hidden="true"></i>
+                    <p id="copyright">Conception et réalisation par Light Them Up - Tous droits réservés. 2015 - {{ currentYear }}</p>
+            </div>
+        </footer>
 
-<div id="main-view" ng-controller="MainController">
-    <div class="container">
-        <div class="row">
-            <div class="two-thirds column">
-                <div ng-view>
-                    <div style="display: block; width: 100%; height: 200px;"></div>
-                </div>
-            </div>
-            <div class="one-third column" id="sidebar">
-                <div class="twelve columns sidebarBlock firstBlock">
-                    <h5><i class="fa fa-user"></i>Espace membre</h5>
-                    <ul>
-                        <li ng-cloak ng-hide="isLogged"><a href="/inscription" title="Inscription">Inscription</a></li>
-                        <li ng-cloak ng-hide="isLogged"><a href="/connexion" title="Connexion">Connexion</a></li>
-                        <!-- Member area -->
-                        <li ng-cloak ng-show="isLogged"><a href="/compte" title="Inscription">Mon compte</a></li>
-                        <li ng-cloak ng-show="isLogged"><a href="/playlists" title="Playlists">Mes playlists</a></li>
-                        <!--End of member area-->
-                        <li ng-cloak ng-show="isLogged" ng-controller="LogoutController">
-                            <a ng-href="#" ng-click="LogoutUser()" title="Déconnexion">Déconnexion</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="twelve columns sidebarBlock">
-                    <h5><i class="fa fa-music"></i>Dernières sorties</h5>
-                </div>
-                <div class="twelve columns sidebarBlock">
-                    <h5><i class="fa fa-commenting"></i>Commentaires récents</h5>
-                </div>
-                <div class="twelve columns sidebarBlock">
-                    <h5><i class="fa fa-plus"></i>Publicité</h5>
-                </div>
-                <div class="twelve columns sidebarBlock">
-                    <h5><i class="fa fa-trophy"></i>Classement</h5>
-                </div>
-                <div class="twelve columns sidebarBlock">
-                    <h5><i class="fa fa-question-circle"></i>Support</h5>
-                    <p>Une question ? Une recommandation ?<br>N'hésitez pas à entrer en contact avec notre support.
-                        Suivez-le guide, <a href="/support" title="Support">c'est par ici</a>.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<footer ng-controller="FooterController">
-    <div class="container">
-        <div class="row">
-            <div class="three columns">
-                <h5><i class="fa fa-group"></i>L'équipe</h5>
-                <p>L'équipe est composée de sept membres tous issus de l'école Epitech. <br/> Venant des quatre coins de
-                    la France, nous unissons nos
-                    connaissances pour réaliser un projet innovant et qui nous l'espérons vous plaira.</p>
-            </div>
-            <div class="three columns">
-                <h5><i class="fa fa-heart"></i>Notre coup de coeur</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec scelerisque orci. Donec cursus
-                    neque vitae nulla mollis consectetur. Nunc vel euismod magna, vel condimentum est. Sed ut augue a
-                    eros tincidunt viverra id ac eros.</p>
-            </div>
-            <div class="three columns">
-                <h5><i class="fa fa-hashtag"></i>Réseaux sociaux</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec scelerisque orci. Donec cursus
-                    neque vitae nulla mollis consectetur. Nunc vel euismod magna, vel condimentum est. Sed ut augue a
-                    eros tincidunt viverra id ac eros.</p>
-            </div>
-            <div class="three columns">
-                <h5><i class="fa fa-envelope"></i>Nous contacter</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec scelerisque orci. Donec cursus
-                    neque vitae nulla mollis consectetur. Nunc vel euismod magna, vel condimentum est. Sed ut augue a
-                    eros tincidunt viverra id ac eros.</p>
-            </div>
-        </div>
-        <p id="copyright">Conception et réalisation par Light Them Up - Tous droits réservés. 2015 - {{ currentYear
-            }}</p>
-    </div>
-</footer>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>
-<script src="/js/app.js"></script>
-<script src="/js/resources.js"></script>
-<script src="/js/controllers.js"></script>
-<script src="//npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
-<script src="/cookies/angular-cookies.js"></script>
-<script src="/language/angular-locale_fr-fr.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/resources.js"></script>
+    <script src="/js/controllers.js"></script>
+    <script src="//npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <script src="/cookies/angular-cookies.js"></script>
+    <script src="/language/angular-locale_fr-fr.js"></script>
 </body>
 </html>

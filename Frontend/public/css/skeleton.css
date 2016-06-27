@@ -746,11 +746,29 @@ a:hover {
     margin: 0 auto;
 }
 
+/* Scroll To Top */ 
+
+#scrollToTop {
+    display: none;
+    position: fixed;
+    bottom: 2.5rem;
+    right: 2.5rem;
+    text-decoration: none;
+    background-color: #33C3F0;
+    cursor: pointer;
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 1.5em; 
+}
+
+
 /* Custom utilities */
 
 .u-text-right {
     text-align: right;
 }
+
+/* Angular */
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;

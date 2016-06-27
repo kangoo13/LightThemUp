@@ -4,8 +4,8 @@
 
 app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', function ($rootScope, $scope, $location, $cookies) {
 
-    // Set scope var isLogged depending on token existence
-    if ($cookies.get('token'))
+    // Set scope var isLogged depending on token && id existences
+    if ($cookies.get('token') && $cookies.get('id'))
         $scope.isLogged = true;
     else
         $scope.isLogged = false;
@@ -32,18 +32,19 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
     vm.CreateUser = CreateUser;
 
     function CreateUser() {
+        console.log(vm.user);
         vm.dataLoading = true;
         UserService.Create(vm.user)
-            .then(function (response) {
-                if (response.success) {
-                   /* toastr.success(response.message, "Success");*/
-                    toastr.success("Vous êtes inscrit(e).");
-                    $location.path('/connexion');
-                } else {
-                    toastr.error(response.message, "Error");
-                    vm.dataLoading = false;
-                }
-            });
+        .then(function (response) {
+            if (response.success) {
+             /* toastr.success(response.message, "Success");*/
+             toastr.success("Vous êtes inscrit(e).");
+             $location.path('/connexion');
+         } else {
+            toastr.error(response.message, "Error");
+            vm.dataLoading = false;
+        }
+    });
     }
 }]);
 
@@ -54,29 +55,82 @@ app.controller('LoginController', ['$rootScope', 'UserService', '$location', "$c
     function LoginUser() {
         vm.dataLoading = true;
         UserService.Login(vm.user)
-            .then(function (response) {
-                if (response.success) {
+        .then(function (response) {
+            if (response.success) {
                     // Save the token as a cookie
                     $cookies.put('token', response.token);
+                    $cookies.put('id', response.id);
                     // Send a broadcast to notify that user is now logged in
                     $rootScope.$broadcast('userLoggedIn');
-                  /*  toastr.success(response.message, "Success");*/
+                    /*  toastr.success(response.message, "Success");*/
                     toastr.success("Vous êtes connecté(e).");
                     $location.path('/');
                 } else {
-                    toastr.error(response.message, "Error");
+                    toastr.error(response.message, "Impossible de vous connecter.");
                     vm.dataLoading = false;
                 }
             });
     }
 }]);
 
+app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$location', '$scope', function (UserService, $cookies, toastr, $location, $scope) {
+
+    var vm = this;
+    vm.dataLoading = true;
+    UserService.Account($cookies.get("id")).then(function (response) {
+        if (response) {
+            vm.dataLoading = false;
+            $scope.account = response;
+        } else {
+            toastr.error("Compte indisponible.");
+            $location.path('/');
+        }
+    });
+
+    vm.UpdateUser = UpdateUser;
+    function UpdateUser() {
+        vm.dataLoading = true;
+        UserService.Update($cookies.get("id"), vm.user, $cookies.get("token"))
+        .then(function (response) {
+            if (response.success) {
+                console.log(response);
+                vm.dataLoading = false;
+                toastr.success("Modification réussie.");
+            } else {
+                $location.path('/');
+                toastr.error("Modification impossible.");
+            }
+        });
+    }
+}]);
+
+app.controller('DeleteUserController', ['$rootScope', 'UserService', "$cookies", 'toastr', '$location', '$scope', function ($rootScope, UserService, $cookies, toastr, $location, $scope) {
+    $scope.DeleteUser = function DeleteUser() {
+        UserService.Delete($cookies.get("id"), $cookies.get("token")).then(function (response) {
+            if (response.success) {
+                    // Remove cookies
+                    $cookies.remove('token');
+                    $cookies.remove('id');
+                    // Send a broadcast to notify that user is now logged out
+                    $rootScope.$broadcast('userLoggedOut');
+                    /*  toastr.success(response.message, "Success");*/
+                    toastr.success("Compte supprimé.");
+                    $location.path('/');
+                } else {
+                    toastr.error(response.message, "Impossible de supprimer votre compte.");
+                    vm.dataLoading = false;
+                }
+            });
+    };
+}]);
+
 app.controller('LogoutController', ['$rootScope', '$location', '$cookies', 'toastr', '$scope', function ($rootScope, $location, $cookies, toastr, $scope) {
     $scope.LogoutUser = function LogoutUser() {
         // Get cookie
         var token = $cookies.get('token');
-        // Remove token
+        // Remove cookies
         $cookies.remove('token');
+        $cookies.remove('id');
         // Send a broadcast to notify that user is now logged out
         $rootScope.$broadcast('userLoggedOut');
         toastr.success("Vous êtes déconnecté(e).");
@@ -129,16 +183,16 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
     function CreatePlaylist() {
         vm.dataLoading = true;
         PlaylistService.Create(vm.playlist, $cookies.get('token'))
-            .then(function (response) {
-                if (response.success) {
-                    /*  toastr.success(response.message, "Success");*/
-                    toastr.success("Playlist créée.");
-                    $location.path('/playlists');
-                } else {
-                    toastr.error(response.message, "Error");
-                    vm.dataLoading = false;
-                }
-            });
+        .then(function (response) {
+            if (response.success) {
+                /*  toastr.success(response.message, "Success");*/
+                toastr.success("Playlist créée.");
+                $location.path('/playlists');
+            } else {
+                toastr.error(response.message, "Error");
+                vm.dataLoading = false;
+            }
+        });
     }
 
 }]);

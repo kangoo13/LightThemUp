@@ -15,6 +15,11 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'LoginController',
         controllerAs: 'vm',
         authorizedAccess: false
+    }).when('/compte', {
+        templateUrl: '/compte.html',
+        controller: 'AccountController',
+        controllerAs: 'vm',
+        authorizedAccess: true
     }).when('/news', {
         templateUrl: '/news.html',
         controller: 'NewsController',
@@ -35,7 +40,6 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'CreatePlaylistController',
         controllerAs: 'vm',
         authorizedAccess: false
-
     }).otherwise({
         redirectTo: '/404',
         templateUrl: '404.html'

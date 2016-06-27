@@ -1,97 +1,151 @@
-var apiUrl = 'http://localhost:3000';
+
+$(window).scroll(function() {
+	if ($(this).scrollTop() > $(window).height()) {
+		$('#scrollToTop').fadeIn('slow');
+	} else {
+		$('#scrollToTop').fadeOut('slow');
+	}
+});
+
+$("#scrollToTop").click(function(){
+	$('html, body').animate({ scrollTop: 0 }, 'slow');
+});
+
+
+var apiUrl = 'http://95.85.2.100:3000';
 
 app.factory("UserService", function ($http) {
 
-    var service = {};
+	var service = {};
 
-    service.Create = Create;
-    service.Login = Login;
+	service.Create = Create;
+	service.Login = Login;
+	service.Account = Account;
+	service.Update = Update;
+	service.Delete = Delete;
 
-    return service;
+	return service;
 
-    function Create(user) {
-        return $http.post(apiUrl + '/users', user).then(handleSuccess, handleError);
-    }
+	function Create(user) {
+		return $http.post(apiUrl + '/users', user).then(handleSuccess, handleError);
+	}
 
-    function Login(user) {
-        return $http.post(apiUrl + '/users/authenticate', user).then(handleSuccess, handleError);
-    }
+	function Login(user) {
+		return $http.post(apiUrl + '/users/authenticate', user).then(handleSuccess, handleError);
+	}
 
-    function handleSuccess(res) {
-        return res.data;
-    }
+	function Update(id, user, token) {
+		console.log(user);
+		return $http.put(apiUrl + '/users/'+ id, user, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
 
-    function handleError(res) {
-        return res.data;
-    }
+	function Delete(id, token) {
+		return $http.delete(apiUrl + '/users/'+ id, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
+
+	function Account(id) {
+		return $http.get(apiUrl + '/users/' + id).then(handleSuccess, handleError);
+	}
+
+	function handleSuccess(res) {
+		return res.data;
+	}
+
+	function handleError(res) {
+		return res.data;
+	}
 });
 
 app.factory("NewsService", function ($http) {
 
-    var service = {};
+	var service = {};
 
-    service.GetAll = GetAll;
-    service.GetOneNews = GetOneNews;
+	service.GetAll = GetAll;
+	service.GetOneNews = GetOneNews;
 
-    return service;
+	return service;
 
-    function GetAll() {
-        return $http.get(apiUrl + '/news').then(handleSuccess, handleError);
-    }
+	function GetAll() {
+		return $http.get(apiUrl + '/news').then(handleSuccess, handleError);
+	}
 
-    function GetOneNews(slug) {
-        return $http.get(apiUrl + '/news/' + slug).then(handleSuccess, handleError);
-    }
+	function GetOneNews(slug) {
+		return $http.get(apiUrl + '/news/' + slug).then(handleSuccess, handleError);
+	}
 
-    function handleSuccess(res) {
-        return res.data;
-    }
+	function handleSuccess(res) {
+		return res.data;
+	}
 
-    function handleError(res) {
-        return res.data;
-    }
+	function handleError(res) {
+		return res.data;
+	}
 });
 
 
 app.factory("PlaylistService", function ($http) {
 
-    var service = {};
+	var service = {};
 
-    service.GetAllByUser = GetAllByUser;
-    service.Create = Create;
+	service.GetAllByUser = GetAllByUser;
+	service.Create = Create;
 
-    return service;
+	return service;
 
-    function GetAllByUser(token) {
-        return $http.get(apiUrl + '/playlists/user', {
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded',
-                "x-access-token": token
+	function GetAllByUser(token) {
+		return $http.get(apiUrl + '/playlists/user', {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
 
-            }
-        }).then(handleSuccess, handleError);
-    }
+			}
+		}).then(handleSuccess, handleError);
+	}
 
-    function Create(name, token) {
-        var data = $.param({
-            name: name.name
-        });
-        return $http.post(apiUrl + '/playlists/', data, {
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded',
-                "x-access-token": token
-            }
-        }).then(handleSuccess, handleError);
-    }
+	function Create(name, token) {
+		var data = $.param({
+			name: name.name
+		});
+		return $http.post(apiUrl + '/playlists/', data, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
 
-    function handleSuccess(res) {
-        console.log("success");
-        return res.data;
-    }
+	function handleSuccess(res) {
+		console.log("success");
+		return res.data;
+	}
 
-    function handleError(res) {
-        console.log("error");
-        return res.data;
-    }
+	function handleError(res) {
+		console.log("error");
+		return res.data;
+	}
 });
 
+app.directive('ngConfirmClick', [
+        function(){
+            return {
+                link: function (scope, element, attr) {
+                    var msg = attr.ngConfirmClick || "Are you sure?";
+                    var clickAction = attr.confirmedClick;
+                    element.bind('click',function (event) {
+                        if ( window.confirm(msg) ) {
+                            scope.$eval(clickAction)
+                        }
+                    });
+                }
+            };
+    }])
