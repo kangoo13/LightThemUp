@@ -41,7 +41,6 @@ var userSchema = mongoose.Schema({
 
 userSchema.pre('save', function(next) {
     var user = this;
-    user.updated_at = Date.now();
     if (user.isModified('passwordLocal')) {
         if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/.test(this.passwordLocal)) {
             var error = new Error("Invalid password")

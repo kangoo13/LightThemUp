@@ -12,9 +12,6 @@ var AchievementSchema = new mongoose.Schema({
         timestamps: true
     });
 
-AchievementSchema.pre('save', function(next) {
-    this.updated_at = Date.now();
-    next();
-});
+
 
 module.exports = mongoose.model('Achievement', AchievementSchema);

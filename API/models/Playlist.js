@@ -13,10 +13,7 @@ var PlaylistSchema = new mongoose.Schema({
         timestamps: true
     });
 
-PlaylistSchema.pre('save', function(next) {
-    this.updated_at = Date.now();
-    next();
-});
+
 
 
 module.exports = mongoose.model('Playlist', PlaylistSchema);
