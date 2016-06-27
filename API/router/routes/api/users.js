@@ -76,6 +76,7 @@ router.post('/', function(req, res, next) {
 
 router.put('/:idUser', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin || req.decoded.id == req.params.idUser) {
+    	console.log(req.body);
         User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
             if (err) return next(err);
             res.status(200).json({

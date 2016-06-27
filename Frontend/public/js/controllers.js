@@ -80,7 +80,7 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
     UserService.Account($cookies.get("id")).then(function (response) {
         if (response) {
             vm.dataLoading = false;
-            $scope.account = response;
+            vm.user = response;
         } else {
             toastr.error("Compte indisponible.");
             $location.path('/');
@@ -96,6 +96,7 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
                 console.log(response);
                 vm.dataLoading = false;
                 toastr.success("Modification réussie.");
+                $location.path("/compte");
             } else {
                 $location.path('/');
                 toastr.error("Modification impossible.");

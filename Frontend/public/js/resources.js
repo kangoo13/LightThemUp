@@ -35,8 +35,8 @@ app.factory("UserService", function ($http) {
 	}
 
 	function Update(id, user, token) {
-		console.log(user);
-		return $http.put(apiUrl + '/users/'+ id, user, {
+		var data = $.param(user, true);
+		return $http.put(apiUrl + '/users/'+ id, data, {
 			headers: {
 				'Content-Type' : 'application/x-www-form-urlencoded',
 				"x-access-token": token

@@ -6,35 +6,35 @@
 
         <form name="updateUser" ng-submit="vm.UpdateUser()" role="form" autocomplete="on">
             <label for="email">Email</label>
-            <input ng-model="vm.user.email" class="u-full-width" type="email" name="email"
-            ng-value="account.emailLocal" />
+            <input ng-model="vm.user.emailLocal" class="u-full-width" type="email" name="email"
+            ng-value="vm.user.emailLocal" />
             <label for="password">Mot de passe</label>
             <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
             placeholder="Saisir ici votre nouveau mot de passe"/>
             <p><em>Compris entre 4 et 12 caractères incluant au moins une majuscule et un chiffre</em></p>
             <label for="name">Nom</label>
             <input ng-model="vm.user.name" class="u-full-width" type="text" name="name"
-            ng-value="account.name" />
+            ng-value="vm.user.name" />
             <label for="description">Description</label>
-            <textarea ng-model="account.description" class="u-full-width" type="text" name="description"></textarea>
+            <textarea ng-model="vm.user.description" class="u-full-width" type="text" name="description"></textarea>
             <label for="address">Adresse</label>
             <input ng-model="vm.user.address" class="u-full-width" type="text" name="address"
-            ng-value="account.address" />
+            ng-value="vm.user.address" />
             <label for="city">Ville</label>
             <input ng-model="vm.user.city" class="u-full-width" type="text" name="city"
-            ng-value="account.city" />
+            ng-value="vm.user.city" />
             <label for="country">Pays</label>
             <input ng-model="vm.user.country" class="u-full-width" type="text" name="country"
-            ng-value="account.country" />
+            ng-value="vm.user.country" />
             <label for="achievements">Succès</label>
             <input disabled class="u-full-width" type="text" name="achievements"
-            ng-value="account.achievements.length" />
+            ng-value="vm.user.achievements.length" />
             <label for="created_at">Crée le</label>
             <input disabled class="u-full-width" type="text" name="created_at"
-            ng-value='account.created_at | date:"EEEE dd MMMM yyyy à HH:mm"' />
+            ng-value='vm.user.created_at | date:"EEEE dd MMMM yyyy à HH:mm"' />
             <label for="updated_at">Modifié le</label>
             <input disabled class="u-full-width" type="text" name="updated_at"
-            ng-value='account.updated_at | date:"EEEE dd MMMM yyyy à HH:mm"' />
+            ng-value='vm.user.updated_at | date:"EEEE dd MMMM yyyy à HH:mm"' />
             <div class="form-actions">
                 <button type="submit" class="button-primary">Modifier</button>
                 <a ng-controller="DeleteUserController" class="button" title="Supprimer mon compte" ng-confirm-click="Confirmez-vous la suppression de votre compte ?" confirmed-click="DeleteUser()">Supprimer mon compte</a>
