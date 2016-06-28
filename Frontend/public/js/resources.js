@@ -156,6 +156,41 @@ app.factory("PlaylistService", function ($http) {
 	}
 });
 
+app.factory("SuccesService", function ($http) {
+
+	var service = {};
+
+	service.GetAllByUser = GetAllByUser;
+	service.GetAll = GetAll;
+
+	return service;
+
+	function GetAllByUser(id) {
+		return $http.get(apiUrl + '/users/'+id, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+
+			}
+		}).then(handleSuccess, handleError);
+	}
+	
+	function GetAll()
+	{
+		return $http.get(apiUrl + '/achievements').then(handleSuccess, handleError);
+	}
+
+	function handleSuccess(res) {
+		console.log("success");
+		return res.data;
+	}
+
+	function handleError(res) {
+		console.log("error");
+		return res.data;
+	}
+});
+
 app.directive('ngConfirmClick', [
         function(){
             return {

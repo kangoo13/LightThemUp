@@ -168,6 +168,21 @@ app.controller('NewsController', ['$scope', 'NewsService', function ($scope, New
 
 }]);
 
+app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', function ($scope,  $cookies, SuccesService) {
+
+    var vm = this;
+    vm.dataLoading = true;
+    SuccesService.GetAllByUser($cookies.get('id')).then(function (response) {
+        vm.dataLoading = false;
+        $scope.achievementsWon = response.achievements;
+    });
+    SuccesService.GetAll().then(function (response) {
+        vm.dataLoading = false;
+        $scope.achievements = response;
+    });
+
+}]);
+
 
 app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService', '$location', 'toastr', function ($scope, $routeParams, NewsService, $location, toastr) {
 
