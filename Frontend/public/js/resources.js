@@ -66,6 +66,27 @@ app.factory("UserService", function ($http) {
 	}
 });
 
+app.factory("ContactService", function ($http) {
+
+	var service = {};
+
+	service.Send = Send;
+
+	return service;
+
+	function Send(data) {
+		return $http.post(apiUrl + '/contact', data).then(handleSuccess, handleError);
+	}
+
+	function handleSuccess(res) {
+		return res.data;
+	}
+
+	function handleError(res) {
+		return res.data;
+	}
+});
+
 app.factory("NewsService", function ($http) {
 
 	var service = {};

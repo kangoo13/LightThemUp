@@ -32,15 +32,14 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
     vm.CreateUser = CreateUser;
 
     function CreateUser() {
-        console.log(vm.user);
         vm.dataLoading = true;
         UserService.Create(vm.user)
         .then(function (response) {
             if (response.success) {
-             /* toastr.success(response.message, "Success");*/
-             toastr.success("Vous êtes inscrit(e).");
-             $location.path('/connexion');
-         } else {
+               /* toastr.success(response.message, "Success");*/
+               toastr.success("Vous êtes inscrit(e).");
+               $location.path('/connexion');
+           } else {
             toastr.error(response.message, "Error");
             vm.dataLoading = false;
         }
@@ -93,7 +92,6 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
         UserService.Update($cookies.get("id"), vm.user, $cookies.get("token"))
         .then(function (response) {
             if (response.success) {
-                console.log(response);
                 vm.dataLoading = false;
                 toastr.success("Modification réussie.");
                 $location.path("/compte");
@@ -137,6 +135,26 @@ app.controller('LogoutController', ['$rootScope', '$location', '$cookies', 'toas
         toastr.success("Vous êtes déconnecté(e).");
         $location.path('/');
     };
+}]);
+
+app.controller('ContactController', ['$scope', 'ContactService', 'toastr', function ($scope, ContactService, toastr) {
+
+    var vm = this;
+    vm.SendForm = SendForm;
+    function SendForm() {
+        vm.dataLoading = true;
+        vm.user.captcha = grecaptcha.getResponse();
+        ContactService.Send(vm.user)
+        .then(function (response) {
+            if (response.success) {
+                vm.dataLoading = false;
+                toastr.success("Message envoyé avec succès.");
+            } else {
+                toastr.error(response.message);
+            }
+        });
+    }
+
 }]);
 
 app.controller('NewsController', ['$scope', 'NewsService', function ($scope, NewsService) {

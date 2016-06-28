@@ -1,0 +1,19 @@
+<div class="content">
+	<h3>Contact</h3>
+	<p>Si vous ressentez le besoin de nous contacter, que ce soit parler du projet, établir un
+		partenariat ou pour eventuellement nous faire un don, n'hésitez pas !</p>
+		<form name="SendForm" ng-submit="vm.SendForm()" role="form" autocomplete="on">
+			<label for="name">Nom *</label>
+			<input required ng-model="vm.user.name" class="u-full-width" placeholder="Votre nom" type="text" name="name" />
+			<label for="email">Email *</label>
+			<input required ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com"/>	
+			<label for="description">Message *</label>
+			<textarea required ng-model="vm.user.message" class="u-full-width" type="text" name="description" placeholder="Votre message"></textarea>
+			<div class="g-recaptcha" data-sitekey="6Le_viMTAAAAAPLGia7Rqxpd6XUOhOEf2FCARkth"></div>
+			<div class="form-actions">
+				<button type="submit" class="button-primary">Envoyer</button>
+				<a class="button" href="/">Annuler</a>
+			</div>
+		</form>
+	</div>
+<script src='https://www.google.com/recaptcha/api.js'></script>

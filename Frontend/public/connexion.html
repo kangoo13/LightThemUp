@@ -1,11 +1,11 @@
 <div class="content">
     <h3>Connexion</h3>
     <form name="loginUser" ng-submit="vm.LoginUser()" role="form" autocomplete="on">
-        <label for="email">Votre email</label>
-        <input ng-model="vm.user.email" class="u-full-width" type="email" name="email"
+        <label for="email">Email *</label>
+        <input required ng-model="vm.user.email" class="u-full-width" type="email" name="email"
                placeholder="example@example.com"/>
-        <label for="password">Votre mot de passe</label>
-        <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
+        <label for="password">Mot de passe *</label>
+        <input required ng-model="vm.user.password" class="u-full-width" type="password" name="password"
                placeholder="Mot de passe"/>
         <div class="form-actions">
             <button type="submit" class="button-primary">Connexion</button>

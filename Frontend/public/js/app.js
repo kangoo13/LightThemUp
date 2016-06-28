@@ -20,6 +20,14 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'AccountController',
         controllerAs: 'vm',
         authorizedAccess: true
+    }).when('/equipe', {
+        templateUrl: '/equipe.html',
+        authorizedAccess: false
+    }).when('/contact', {
+        templateUrl: '/contact.html',
+        controller: 'ContactController',
+        controllerAs: 'vm',
+        authorizedAccess: false
     }).when('/news', {
         templateUrl: '/news.html',
         controller: 'NewsController',
