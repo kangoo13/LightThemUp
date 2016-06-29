@@ -14,7 +14,6 @@
   		message: 'Captcha non renseigné.'
   	});
   }
-  // Put your secret key here.
   var secretKey = " 6Le_viMTAAAAABg-0OH0SWYE-gJz1GXFJxDwSsum";
   // req.connection.remoteAddress will provide IP address of connected user.
   var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response=" + req.body['captcha'] + "&remoteip=" + req.connection.remoteAddress;
