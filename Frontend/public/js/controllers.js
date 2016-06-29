@@ -148,7 +148,7 @@ app.controller('ContactController', ['$scope', 'ContactService', 'toastr', funct
         .then(function (response) {
             if (response.success) {
                 vm.dataLoading = false;
-                toastr.success("Message envoyé avec succès.");
+                toastr.success(response.message);
             } else {
                 toastr.error(response.message);
             }
