@@ -1,3 +1,13 @@
+$(document).ready(function(){
+	$('.topnav li a').on('click', function(){
+		$('.topnav').removeClass('responsive');
+	});
+});
+
+/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+function displayNav() {
+	document.getElementsByClassName("topnav")[0].classList.toggle("responsive");
+}
 
 $(window).scroll(function() {
 	if ($(this).scrollTop() > $(window).height()) {
@@ -192,16 +202,16 @@ app.factory("SuccesService", function ($http) {
 });
 
 app.directive('ngConfirmClick', [
-        function(){
-            return {
-                link: function (scope, element, attr) {
-                    var msg = attr.ngConfirmClick || "Are you sure?";
-                    var clickAction = attr.confirmedClick;
-                    element.bind('click',function (event) {
-                        if ( window.confirm(msg) ) {
-                            scope.$eval(clickAction)
-                        }
-                    });
-                }
-            };
-    }])
+	function(){
+		return {
+			link: function (scope, element, attr) {
+				var msg = attr.ngConfirmClick || "Are you sure?";
+				var clickAction = attr.confirmedClick;
+				element.bind('click',function (event) {
+					if ( window.confirm(msg) ) {
+						scope.$eval(clickAction)
+					}
+				});
+			}
+		};
+	}])
