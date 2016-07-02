@@ -12,7 +12,7 @@
  var Promise     = require('bluebird');
  var util        = require("util");
  var Achievement = require("../../../models/Achievement.js");
- var upload      = multer({ dest: './public/uploads/avatar/'});
+ var upload      = multer({ dest: './public/uploads/tmp/'});
  var router      = express.Router();
 
  var uploadConfig = {
@@ -29,12 +29,49 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', upload.single('avatar'), function(req, res, next) {
     if (req.body.email && req.body.password){
         User.find({emailLocal : req.body.email}, function (err, docs) {
             if (!docs.length){
                 var user = new User();
-
+                if (req.file)
+                {
+                    var picturePath = "";
+                    var image = req.file;
+                    Promise.resolve(image)
+                        .then(function(image) {
+                            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+                                throw "Incorrect MIME type";
+                            }
+                            return image;
+                        })
+                        .then(function(image) {
+                            if (image.size > uploadConfig.maxFileSize) {
+                                throw "File is too large";
+                            }
+                            return image;
+                        })
+                        .then(function(image) {
+                            if (!fs.existsSync(process.cwd()+"/public/uploads/avatar/"+user._id+"/")){
+                                fs.mkdirSync(process.cwd()+"/public/uploads/avatar/"+user._id+"/");
+                            }
+                            var tempPath = image.path;
+                            var realPath = process.cwd()+"/public/uploads/avatar/"+user._id+"/";
+                            picturePath = "uploads/avatar/"+user._id+"/"+image.originalname;
+                            return fs.rename(tempPath, realPath+image.originalname);
+                        })
+                        .then(function(err) {
+                            if (err)
+                                throw err;
+                            else
+                            {
+                                console.log("picture");
+                                user.picture = picturePath;
+                            }
+                        }).catch(function(err) {
+                            res.status(500).send({success: false, message: err.toString()});
+                        });
+                }
                 user.emailLocal = req.body.email;
                 user.passwordLocal = req.body.password;
                 if (req.body.name)
@@ -115,68 +152,6 @@ router.get('/:idUser', function(req, res, next) {
         if (err) return next(err);
         res.status(200).json(post);
     });
-});
-
-router.post('/:idUser/avatar', upload.single('avatar'), auth({secret: superSecret}),  function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.idUser) {
-        var picturePath = "";
-        var image = req.file;
-        Promise.resolve(image)
-        .then(function(image) {
-            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
-                throw "Incorrect MIME type";
-            }
-            return image;
-        })
-        .then(function(image) {
-            if (image.size > uploadConfig.maxFileSize) {
-                throw "File is too large";
-            }
-            return image;
-        })
-        .then(function(image) {
-            if (!fs.existsSync(process.cwd()+"/public/uploads/avatar/"+req.params.idUser+"/")){
-                fs.mkdirSync(process.cwd()+"/public/uploads/avatar/"+req.params.idUser+"/");
-            }
-            var tempPath = image.path;
-            var realPath = process.cwd()+"/public/uploads/avatar/"+req.params.idUser+"/";
-            //var ext = image.originalname.substr(image.originalname.lastIndexOf('.') + 1);
-            picturePath = "uploads/avatar/"+req.params.idUser+"/"+image.originalname;
-            return fs.rename(tempPath, realPath+image.originalname);
-        })
-        .then(function(err) {
-            if (err)
-                throw err;
-            else
-            {
-                User.find({'_id': req.params.idUser}, function(err, user){
-                    if (user.length)
-                    {
-                        user[0].picture = picturePath;
-                        user[0].save(function (err) {
-                            if (err) {
-                                throw err.message;
-                            }
-                        });
-                    }
-                    else
-                        throw "User not found to apply the picture";
-                });
-            }
-        })
-        .then(function() {
-            res.send({success: true, message: "Your image has been saved"});
-        })
-        .catch(function(err) {
-            res.send({success: false, message: err});
-        });
-    }
-    else {
-        return res.status(401).send({
-            success: false,
-            message: 'Unauthorized.'
-        });
-    }
 });
 
 router.post('/authenticate', function(req, res) {

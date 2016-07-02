@@ -11,7 +11,7 @@
  var multer      = require('multer');
  var Promise     = require('bluebird');
  var mongoose    = require('mongoose');
- var upload      = multer({ dest: './public/uploads/avatar/'});
+ var upload      = multer({ dest: './public/uploads/tmp/'});
  var router      = express.Router();
 
  var uploadConfig = {
@@ -66,28 +66,66 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.post('/', auth({secret: superSecret}), function(req, res, next) {
-    if (req.body.name && req.body.description && req.body.picture) {
+router.post('/',  auth({secret: superSecret}), upload.single('picture'), function(req, res, next) {
+    if (req.body.name && req.body.description && req.file) {
         if (req.decoded.admin) {
             Achievement.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
+                    var picturePath = "";
+                    var image = req.file;
                     var achievement = new Achievement();
+                    Promise.resolve(image)
+                        .then(function(image) {
+                            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+                                throw "Incorrect MIME type";
+                            }
+                            return image;
+                        })
+                        .then(function(image) {
+                            if (image.size > uploadConfig.maxFileSize) {
+                                throw "File is too large";
+                            }
+                            return image;
+                        })
+                        .then(function(image) {
 
-                    achievement.name = req.body.name;
-                    achievement.description = req.body.description;
-                    achievement.picture = req.body.picture;
-                    achievement.save(function (err) {
-                        if (err) {
-                            return res.status(503).json({
-                                success: false,
-                                message: err.errors
+                            if (!fs.existsSync(process.cwd()+"/public/uploads/achievements/"+achievement._id+"/")){
+                                fs.mkdirSync(process.cwd()+"/public/uploads/achievements/"+achievement._id+"/");
+                            }
+                            var tempPath = image.path;
+                            var realPath = process.cwd()+"/public/uploads/achievements/"+achievement._id+"/";
+                            picturePath = "uploads/achievements/"+achievement._id+"/"+image.originalname;
+                            return fs.rename(tempPath, realPath+image.originalname);
+                        })
+                        .then(function(err) {
+                            if (err)
+                                throw err;
+                            else
+                            {
+                                achievement.name = req.body.name;
+                                achievement.description = req.body.description;
+                                achievement.picture = picturePath;
+                                achievement.save(function (err) {
+                                    if (err) {
+                                        return res.status(503).json({
+                                            success: false,
+                                            message: err.errors
+                                        });
+                                    }
+
+                                });
+                            }
+                        })
+                        .then(function() {
+                            return res.status(200).json({
+                                success: true,
+                                message: 'Achievement created !'
                             });
-                        }
-                        res.status(200).json({
-                            success: true,
-                            message: 'Achievement created !'
+                        })
+                        .catch(function(err) {
+                            res.status(500).send({success: false, message: err.toString()});
                         });
-                    });
+                    
                 } else {
                     return res.status(409).json({
                         success: false,
@@ -153,65 +191,5 @@ router.delete('/:idAchievement', auth({secret: superSecret}), function(req, res,
     }
 });
 
-router.post('/:idAchievement/picture', upload.single('picture'), auth({secret: superSecret}),  function(req, res, next) {
-    if (req.decoded.admin) {
-        var picturePath = "";
-        var image = req.file;
-        Promise.resolve(image)
-        .then(function(image) {
-            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
-                throw "Incorrect MIME type";
-            }
-            return image;
-        })
-        .then(function(image) {
-            if (image.size > uploadConfig.maxFileSize) {
-                throw "File is too large";
-            }
-            return image;
-        })
-        .then(function(image) {
-            if (!fs.existsSync(process.cwd()+"/public/uploads/achievements/"+req.params.idAchievement+"/")){
-                fs.mkdirSync(process.cwd()+"/public/uploads/achievements/"+req.params.idAchievement+"/");
-            }
-            var tempPath = image.path;
-            var realPath = process.cwd()+"/public/uploads/achievements/"+req.params.idAchievement+"/";
-            picturePath = "uploads/achievements/"+req.params.idAchievement+"/"+image.originalname;
-            return fs.rename(tempPath, realPath+image.originalname);
-        })
-        .then(function(err) {
-            if (err)
-                throw err;
-            else
-            {
-                Achievement.find({'_id': req.params.idAchievement}, function(err, achievement){
-                    if (achievement.length)
-                    {
-                        achievement[0].picture = picturePath;
-                        achievement[0].save(function (err) {
-                            if (err) {
-                                throw err.message;
-                            }
-                        });
-                    }
-                    else
-                        throw "Achievement not found to apply the picture";
-                });
-            }
-        })
-        .then(function() {
-            res.send({success: true, message: "Your image has been saved"});
-        })
-        .catch(function(err) {
-            res.send({success: false, message: err});
-        });
-    }
-    else {
-        return res.status(401).send({
-            success: false,
-            message: 'Unauthorized.'
-        });
-    }
-});
 
 module.exports = router;

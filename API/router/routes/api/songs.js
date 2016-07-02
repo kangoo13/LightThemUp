@@ -31,31 +31,79 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.post('/', auth({secret: superSecret}), function(req, res, next) {
-    if (req.body.name && req.body.artist && req.body.picture && req.body.price && req.body.file && req.body.difficulty ) {
+router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'file', maxCount: 1 }]), auth({secret: superSecret}), function(req, res, next) {
+    if (req.body.name && req.body.artist && req.files['picture'][0] && req.body.price && req.files['file'][0] && req.body.difficulty ) {
         if (req.decoded.admin) {
             Song.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
                     var song = new Song();
+                    var picturePath = "";
+                    var filePath = "";
+                    var image = req.files;
+                    Promise.resolve(image)
+                        .then(function(image) {
+                            if (uploadConfig.acceptedMimeTypes.indexOf(image['picture'][0].mimetype) == -1) {
+                                throw "Incorrect MIME type for the picture";
+                            }
+                            if (uploadMusicConfig.acceptedMimeTypes.indexOf(image['file'][0].mimetype) == -1) {
+                                throw "Incorrect MIME type for the song";
+                            }
+                            return image;
+                        })
+                        .then(function(image) {
+                            if (image['picture'][0].size > uploadConfig.maxFileSize) {
+                                throw "File is too large for the picture";
+                            }
+                            if (image['file'][0].size > uploadMusicConfig.maxFileSize) {
+                                throw "File is too large for the song";
+                            }
+                            return image;
+                        })
+                        .then(function(image) {
 
-                    song.name = req.body.name;
-                    song.artist = req.body.artist;
-                    song.picture = req.body.picture;
-                    song.price = req.body.price;
-                    song.file = req.body.file;
-                    song.difficulty = req.body.difficulty;
-                    song.save(function (err) {
-                        if (err) {
-                            return res.status(503).json({
-                                success: false,
-                                message: err.errors
+                            if (!fs.existsSync(process.cwd()+"/public/uploads/songs/"+song._id+"/")){
+                                fs.mkdirSync(process.cwd()+"/public/uploads/songs/"+song._id+"/");
+                            }
+                            var tempPath = image['picture'][0].path;
+                            var realPath = process.cwd()+"/public/uploads/songs/"+song._id+"/";
+                            picturePath = "uploads/songs/"+song._id+"/"+image['picture'][0].originalname;
+                            var tempFilePath = image['file'][0].path;
+                            filePath = "uploads/songs/"+song._id+"/"+image['file'][0].originalname;
+                            fs.renameSync(tempFilePath, realPath+image['file'][0].originalname);
+                            return fs.rename(tempPath, realPath+image['picture'][0].originalname);
+                        }).then(function(err) {
+                            if (err)
+                                throw err;
+                            else
+                            {
+                                song.name = req.body.name;
+                                song.artist = req.body.artist;
+                                song.picture = picturePath;
+                                song.price = req.body.price;
+                                song.difficulty = req.body.difficulty;
+                                song.file = filePath;
+                                song.save(function (err) {
+                                    if (err) {
+                                        return res.status(503).json({
+                                            success: false,
+                                            message: err
+                                        });
+                                    }
+
+                                });
+
+                            }
+                        })
+                        .then(function() {
+                            return res.status(200).json({
+                                success: true,
+                                message: 'Song created !'
                             });
-                        }
-                        res.status(200).json({
-                            success: true,
-                            message: 'Song created !'
+                        })
+                        .catch(function(err) {
+                            res.status(500).send({success: false, message: err.toString()});
                         });
-                    });
+
                 } else {
                     return res.status(409).json({
                         success: false,

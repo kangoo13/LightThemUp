@@ -41,6 +41,12 @@ if (!fs.existsSync("public/uploads/achievements")){
 if (!fs.existsSync("public/uploads/songs")){
     fs.mkdirSync("public/uploads/songs");
 }
+if (!fs.existsSync("public/uploads/news")){
+    fs.mkdirSync("public/uploads/news");
+}
+if (!fs.existsSync("public/uploads/tmp")){
+    fs.mkdirSync("public/uploads/tmp");
+}
 // Add headers
 app.use(function (req, res, next) {
 
@@ -66,7 +72,7 @@ app.use('/', routes);
 app.use(function(err, req, res, next) {
     return res.status(500).send({
         success: false,
-        message: err.toString(),
+        message: err,
     });
 });
 
