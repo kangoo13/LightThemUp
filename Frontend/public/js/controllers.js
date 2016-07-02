@@ -36,10 +36,10 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
         UserService.Create(vm.user)
         .then(function (response) {
             if (response.success) {
-               /* toastr.success(response.message, "Success");*/
-               toastr.success("Vous êtes inscrit(e).");
-               $location.path('/connexion');
-           } else {
+             /* toastr.success(response.message, "Success");*/
+             toastr.success("Vous êtes inscrit(e).");
+             $location.path('/connexion');
+         } else {
             toastr.error(response.message, "Error");
             vm.dataLoading = false;
         }
@@ -137,18 +137,18 @@ app.controller('LogoutController', ['$rootScope', '$location', '$cookies', 'toas
     };
 }]);
 
-app.controller('ContactController', ['$scope', 'ContactService', 'toastr', function ($scope, ContactService, toastr) {
+app.controller('ContactController', ['$scope', 'ContactService', 'toastr', '$location', function ($scope, ContactService, toastr, $location) {
 
     var vm = this;
     vm.SendForm = SendForm;
     function SendForm() {
-        vm.dataLoading = true;
         vm.user.captcha = grecaptcha.getResponse();
         ContactService.Send(vm.user)
         .then(function (response) {
             if (response.success) {
-                vm.dataLoading = false;
-                toastr.success("Message envoyé avec succès.");
+                toastr.success(response.message);
+                $location.path("/");
+
             } else {
                 toastr.error(response.message);
             }
