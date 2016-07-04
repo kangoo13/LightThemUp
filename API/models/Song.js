@@ -11,7 +11,7 @@ var SongSchema = new mongoose.Schema({
     file: String,
     preview: String,
     difficulty: Number,
-    downloaded: Number
+    bought: Number
 },
     {
         timestamps: true
