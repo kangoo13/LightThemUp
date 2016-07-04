@@ -44,6 +44,8 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
                     var image = req.files;
                     Promise.resolve(image)
                         .then(function(image) {
+                            console.log("before mime");
+
                             if (uploadConfig.acceptedMimeTypes.indexOf(image['picture'][0].mimetype) == -1) {
                                 throw "Incorrect MIME type for the picture";
                             }
@@ -53,6 +55,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
                             if (uploadMusicConfig.acceptedMimeTypes.indexOf(image['preview'][0].mimetype) == -1) {
                                 throw "Incorrect MIME type for the song";
                             }
+                            console.log("mime");
                             return image;
                         })
                         .then(function(image) {
@@ -65,6 +68,8 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
                             if (image['preview'][0].size > uploadMusicConfig.maxFileSize) {
                                 throw "File is too large for the song";
                             }
+                            console.log("size");
+
                             return image;
                         })
                         .then(function(image) {
