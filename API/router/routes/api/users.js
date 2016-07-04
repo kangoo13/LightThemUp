@@ -62,6 +62,8 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
 
 router.delete('/songs/:idSong', auth({secret: superSecret}), function(req, res, next) {
     User.find({_id: req.decoded.id}, function (err, user) {
+        console.log(req.body.idSong);
+        console.log(req.params.idSong);
         var objectid = new mongoose.mongo.ObjectID(req.body.idSong);
         user.songs.pull(objectid);
         user.save(function (err) {
