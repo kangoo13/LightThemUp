@@ -213,7 +213,7 @@ router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) 
 });
 
 router.get('/:idUser', function(req, res, next) {
-    User.findById(req.params.idUser).populate("achievements").exec(function (err, post) {
+    User.findById(req.params.idUser).populate("achievements").populate("songs").exec(function (err, post) {
         if (err) return next(err);
         res.status(200).json(post);
     });
