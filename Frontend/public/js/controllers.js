@@ -330,12 +330,17 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 
     var vm = this;
 
+    $scope.bought = false;
     SongService.GetOneSong($routeParams.slug).then(function (response) {
         $scope.song = response;
         vm.dataLoading = false;
-
     });
-    $scope.bought = true;
+    UserService.Account($cookies.get('id')).then(function (response) {
+        for(var i = 0; i < response.songs.length; i++) {
+            if (response.songs[i].slug == $routeParams.slug)
+                $scope.bought = true;
+        }
+    });
     vm.RemoveSongFromUser = RemoveSongFromUser;
     vm.AddSongToUser = AddSongToUser;
     function RemoveSongFromUser(idSong) {
