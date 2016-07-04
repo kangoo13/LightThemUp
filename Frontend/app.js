@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Get some modules from node_modules
 app.use('/cookies', express.static(__dirname + '/node_modules/angular-cookies/'));
 app.use('/language', express.static(__dirname + '/node_modules/angular-i18n/'));
+app.use('/uploads', express.static(__dirname + '/../API/public/uploads/'));
 
 var env = process.env.NODE_ENV || 'development';
 app.use(function (err, req, res, next) {

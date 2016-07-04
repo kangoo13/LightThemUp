@@ -5,6 +5,7 @@
     <div ng-hide="vm.dataLoading">
 
         <form name="updateUser" ng-submit="vm.UpdateUser()" role="form" autocomplete="on">
+            <img class="avatar" src="/{{ vm.user.picture }}" title="Mon avatar" alt="Avatar" />
             <label for="email">Email</label>
             <input ng-model="vm.user.emailLocal" class="u-full-width" type="email" name="email"
             ng-value="vm.user.emailLocal" />

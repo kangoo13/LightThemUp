@@ -34,44 +34,6 @@ router.post('/', upload.single('avatar'), function(req, res, next) {
         User.find({emailLocal : req.body.email}, function (err, docs) {
             if (!docs.length){
                 var user = new User();
-                if (req.file)
-                {
-                    var picturePath = "";
-                    var image = req.file;
-                    Promise.resolve(image)
-                        .then(function(image) {
-                            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
-                                throw "Incorrect MIME type";
-                            }
-                            return image;
-                        })
-                        .then(function(image) {
-                            if (image.size > uploadConfig.maxFileSize) {
-                                throw "File is too large";
-                            }
-                            return image;
-                        })
-                        .then(function(image) {
-                            if (!fs.existsSync(process.cwd()+"/public/uploads/avatar/"+user._id+"/")){
-                                fs.mkdirSync(process.cwd()+"/public/uploads/avatar/"+user._id+"/");
-                            }
-                            var tempPath = image.path;
-                            var realPath = process.cwd()+"/public/uploads/avatar/"+user._id+"/";
-                            picturePath = "uploads/avatar/"+user._id+"/"+image.originalname;
-                            return fs.rename(tempPath, realPath+image.originalname);
-                        })
-                        .then(function(err) {
-                            if (err)
-                                throw err;
-                            else
-                            {
-                                console.log("picture");
-                                user.picture = picturePath;
-                            }
-                        }).catch(function(err) {
-                            res.status(500).send({success: false, message: err.toString()});
-                        });
-                }
                 user.emailLocal = req.body.email;
                 user.passwordLocal = req.body.password;
                 if (req.body.name)
@@ -84,7 +46,57 @@ router.post('/', upload.single('avatar'), function(req, res, next) {
                     user.city = req.body.city;
                 if (req.body.country)
                     user.country = req.body.country;
-                user.save(function (err) {
+                if (req.file)
+                {
+                    var picturePath = "";
+                    var image = req.file;
+                    Promise.resolve(image)
+                    .then(function(image) {
+                        if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+                            throw "Incorrect MIME type";
+                        }
+                        return image;
+                    })
+                    .then(function(image) {
+                        if (image.size > uploadConfig.maxFileSize) {
+                            throw "File is too large";
+                        }
+                        return image;
+                    })
+                    .then(function(image) {
+                        if (!fs.existsSync(process.cwd()+"/public/uploads/avatar/"+user._id+"/")){
+                            fs.mkdirSync(process.cwd()+"/public/uploads/avatar/"+user._id+"/");
+                        }
+                        var tempPath = image.path;
+                        var realPath = process.cwd()+"/public/uploads/avatar/"+user._id+"/";
+                        picturePath = "uploads/avatar/"+user._id+"/"+image.originalname;
+                        return fs.rename(tempPath, realPath+image.originalname);
+                    })
+                    .then(function(err) {
+                        if (err)
+                            throw err;
+                        else
+                        {
+                            user.picture = picturePath;
+                            user.save(function (err) {
+                                if (err) {
+                                    return res.status(503).json({
+                                        success: false,
+                                        message: err.message
+                                    });
+                                }
+                                res.status(200).json({
+                                    success: true,
+                                    message: 'User created !'
+                                });
+                            });
+                        }
+                    }).catch(function(err) {
+                        res.status(500).send({success: false, message: err.toString()});
+                    });
+                }
+                else {
+                  user.save(function (err) {
                     if (err) {
                         return res.status(503).json({
                             success: false,
@@ -96,13 +108,14 @@ router.post('/', upload.single('avatar'), function(req, res, next) {
                         message: 'User created !'
                     });
                 });
-            }else{
-                return res.status(409).json({
-                    success: false,
-                    message: 'User already exists'
-                });
-            }
-        });
+              }
+          }else{
+            return res.status(409).json({
+                success: false,
+                message: 'User already exists'
+            });
+        }
+    });
     }
     else
         return res.status(400).json({

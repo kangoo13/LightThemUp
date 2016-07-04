@@ -97,6 +97,28 @@ app.factory("ContactService", function ($http) {
 	}
 });
 
+app.factory("CommentsService", function ($http) {
+
+	var service = {};
+
+	service.GetAll = GetAll;
+
+	return service;
+
+	function GetAll(slug) {
+		return $http.get(apiUrl + '/comments/' + slug).then(handleSuccess, handleError);
+	}
+
+	function handleSuccess(res) {
+		return res.data;
+	}
+
+	function handleError(res) {
+		return res.data;
+	}
+});
+
+
 app.factory("NewsService", function ($http) {
 
 	var service = {};

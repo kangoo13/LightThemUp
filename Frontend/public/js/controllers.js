@@ -168,6 +168,40 @@ app.controller('NewsController', ['$scope', 'NewsService', function ($scope, New
 
 }]);
 
+
+app.controller('CommentsController', ['$scope', '$cookies', '$routeParams', 'CommentsService', 'UserService', function ($scope, $cookies, $routeParams, CommentsService, UserService) {
+
+    var vm = this;
+    vm.dataLoading = true;
+
+       UserService.Account($cookies.get('id')).then(function (responseUsers) {
+            if (responseUsers) {
+                vm.dataLoading = false;
+                $scope.user = responseUsers;
+            } else {
+                toastr.error("Compte indisponible.");
+            }
+        });
+
+/*    CommentsService.GetAll($routeParams.slug).then(function (responseComments) {
+        if (responseComments) {
+         UserService.Account(responseComments[0].author).then(function (responseUsers) {
+            if (responseUsers) {
+                vm.dataLoading = false;
+                console.log(responseUsers);
+                $scope.comments = responseComments;
+                $scope.user = responseUsers;
+            } else {
+                toastr.error("Compte indisponible.");
+            }
+        });
+     }
+     else {
+        toastr.error("Compte indisponible.");
+    }
+});*/
+}]);
+
 app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', function ($scope,  $cookies, SuccesService) {
     console.log("hey");
     var vm = this;
@@ -235,15 +269,15 @@ app.controller('AddSongPlaylistController', ['$scope', '$cookies', 'PlaylistServ
     function CreatePlaylist() {
         vm.dataLoading = true;
         PlaylistService.Create(vm.playlist, $cookies.get('token'))
-            .then(function (response) {
-                if (response.success) {
-                    toastr.success("Playlist créée.");
-                    $location.path('/playlists');
-                } else {
-                    toastr.error(response.message, "Error");
-                    vm.dataLoading = false;
-                }
-            });
+        .then(function (response) {
+            if (response.success) {
+                toastr.success("Playlist créée.");
+                $location.path('/playlists');
+            } else {
+                toastr.error(response.message, "Error");
+                vm.dataLoading = false;
+            }
+        });
     }
     vm.dataLoading = false;
 }]);

@@ -1,6 +1,3 @@
-/**
- * Created by Kangoo13 on 15/10/2015.
- */
  var mongoose = require('mongoose');
 
  var NewsSchema = new mongoose.Schema({
