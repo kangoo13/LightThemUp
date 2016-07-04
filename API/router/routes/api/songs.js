@@ -33,6 +33,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }]),  function(req, res, next) {
+    console.log(req.body);
+    console.log(req.files['picture']);
+    console.log(req.files['file']);
+    console.log(req.files['preview']);
     if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.files['file'] && req.files['preview'] && req.body.difficulty ) {
         if (true) {
             Song.find({name: req.body.name}, function (err, docs) {
