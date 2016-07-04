@@ -6,6 +6,7 @@ var News        = require('../../../models/News.js');
 var superSecret = require('../../../config.js').secret;
 var auth        = require('authenticate');
 var fs          = require('fs');
+var slug        = require('slug')
 var path        = require('path');
 var multer      = require('multer');
 var Promise     = require('bluebird');
@@ -27,7 +28,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', auth({secret: superSecret}), upload.single('picture'), function(req, res, next) {
-    if (req.body.name && req.body.description && req.file && req.body.slug) {
+    if (req.body.name && req.body.description && req.file) {
         if (req.decoded.admin) {
             News.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
@@ -67,7 +68,7 @@ router.post('/', auth({secret: superSecret}), upload.single('picture'), function
                                 news.description = req.body.description;
                                 news.picture = picturePath;
                                 news.author = req.decoded.id;
-                                news.slug = req.body.slug;
+                                news.slug = slug(req.body.name);
                                 news.save(function (err) {
                                     if (err) {
                                         return res.status(503).json({

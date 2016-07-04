@@ -10,8 +10,9 @@ var SongSchema = new mongoose.Schema({
     price: Number,
     file: String,
     preview: String,
+    slug: String,
     difficulty: Number,
-    downloaded: Number
+    bought: Number
 },
     {
         timestamps: true
