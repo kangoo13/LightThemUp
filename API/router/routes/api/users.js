@@ -41,7 +41,7 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
                     if (err) {
                         return res.status(503).json({
                             success: false,
-                            message: err.errors
+                            message: err.toString()
                         });
                     }
                     res.status(200).json({
@@ -62,13 +62,13 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
 
 router.delete('/songs/:idSong', auth({secret: superSecret}), function(req, res, next) {
     User.find({_id: req.decoded.id}, function (err, user) {
-        var objectid = new mongoose.mongo.ObjectID(req.params.idSong);
+        var objectid = new mongoose.mongo.ObjectID(req.body.idSong);
         user.songs.pull(objectid);
         user.save(function (err) {
             if (err) {
                 return res.status(503).json({
                     success: false,
-                    message: err.errors
+                    message: err.toString()
                 });
             }
             res.status(200).json({
