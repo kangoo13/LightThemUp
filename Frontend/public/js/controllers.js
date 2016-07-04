@@ -330,12 +330,12 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 
     var vm = this;
 
-    $scope.bought = false;
     SongService.GetOneSong($routeParams.slug).then(function (response) {
         $scope.song = response;
         vm.dataLoading = false;
     });
     UserService.Account($cookies.get('id')).then(function (response) {
+        $scope.bought = false;
         for(var i = 0; i < response.songs.length; i++) {
             if (response.songs[i].slug == $routeParams.slug)
                 $scope.bought = true;
