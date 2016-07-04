@@ -326,11 +326,11 @@ app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserServ
 
 }]);
 
-app.controller('SongDetailController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams, $cookies, SongService, UserService, $location, toastr) {
 
     var vm = this;
 
-    SongService.GetOneSong().then(function (response) {
+    SongService.GetOneSong($routeParams.slug).then(function (response) {
         $scope.song = response;
         vm.dataLoading = false;
 
