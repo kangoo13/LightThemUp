@@ -173,6 +173,7 @@ app.controller('CommentsController', ['$scope', '$cookies', '$routeParams', 'Com
 
     displayAll();
 
+
     UserService.Account($cookies.get('id')).then(function (responseUsers) {
         if (responseUsers) {
             $scope.user = responseUsers;
@@ -196,23 +197,15 @@ app.controller('CommentsController', ['$scope', '$cookies', '$routeParams', 'Com
         });
     }
 
+    $scope.commentLoading = false;
     function displayAll() {
         CommentsService.GetAll($routeParams.slug).then(function (responseComments) {
-
             if (responseComments) {
-               /* UserService.Account(responseComments[0].author).then(function (responseUsers) {
-                    if (responseUsers) {
-                        responseComments[0].author = responseUsers.name;
-                        responseComments[0].picture = responseUsers.picture;
-                    } else {
-                        toastr.error("Compte indisponible.");
-                    }
-                });*/
-                console.log(responseComments);
                 $scope.comments = responseComments;
+                $scope.commentLoading = true;
             }
             else {
-                toastr.error("Compte indisponible.");
+                toastr.error("Commentaires indisponibles.");
             }
         });
     }
