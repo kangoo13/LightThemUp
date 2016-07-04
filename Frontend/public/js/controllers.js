@@ -55,7 +55,7 @@ app.controller('LoginController', ['$rootScope', 'UserService', '$location', "$c
         vm.dataLoading = true;
         UserService.Login(vm.user)
         .then(function (response) {
-            if (response.success) {
+            if (response && response.success) {
                     // Save the token as a cookie
                     $cookies.put('token', response.token);
                     $cookies.put('id', response.id);
@@ -65,8 +65,12 @@ app.controller('LoginController', ['$rootScope', 'UserService', '$location', "$c
                     toastr.success("Vous êtes connecté(e).");
                     $location.path('/');
                 } else {
+                if (response)
                     toastr.error(response.message, "Impossible de vous connecter.");
-                    vm.dataLoading = false;
+                else
+                    toastr.error("Le site subit une maintenance", "Impossible de vous connecter.");
+
+                vm.dataLoading = false;
                 }
             });
     }
