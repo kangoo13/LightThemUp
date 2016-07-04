@@ -4,11 +4,12 @@
     src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
 </div>
 
-<div class="row content songs" ng-repeat="song in songs">
-    <div class="one-third column">
-        <a href="songs/{{ song.slug }}">
-            <img class="u-max-full-width" src="{{ song.picture }}">
-        </a>
-        <a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
+<div class="row content songs">
+{{ song.name }} artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
+    <div ng-if="bought == true">
+        <img src="/images/delete.png" ng-click="vm.RemoveSongFromUser({{ song.id }})" />
+    </div>
+    <div ng-if="bought == false">
+        <img src="/images/add.png" ng-click="vm.AddSongToUser({{ song.id }})" />
     </div>
 </div>

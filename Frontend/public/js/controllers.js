@@ -281,22 +281,24 @@ app.controller('AddSongPlaylistController', ['$scope', '$cookies', 'PlaylistServ
     vm.CreatePlaylist = CreatePlaylist;
     SongService.GetAll().then(function (response) {
         $scope.songs = response;
+        vm.dataLoading = false;
     });
     function CreatePlaylist() {
         vm.dataLoading = true;
         PlaylistService.Create(vm.playlist, $cookies.get('token'))
-        .then(function (response) {
-            if (response.success) {
-                toastr.success("Playlist créée.");
-                $location.path('/playlists');
-            } else {
-                toastr.error(response.message, "Error");
-                vm.dataLoading = false;
-            }
-        });
+            .then(function (response) {
+                if (response.success) {
+                    toastr.success("Playlist créée.");
+                    $location.path('/playlists');
+                } else {
+                    toastr.error(response.message, "Error");
+                    vm.dataLoading = false;
+                }
+            });
     }
-    vm.dataLoading = false;
 }]);
+
+
 app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
 
     var vm = this;
@@ -316,3 +318,58 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
     }
 
 }]);
+
+
+
+app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+
+    var vm = this;
+
+    SongService.GetAll().then(function (response) {
+        $scope.songs = response;
+        vm.dataLoading = false;
+
+    });
+
+}]);
+
+app.controller('SongDetailController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+
+    var vm = this;
+
+    SongService.GetOneSong().then(function (response) {
+        $scope.song = response;
+        vm.dataLoading = false;
+
+    });
+    $scope.bought = true;
+    vm.RemoveSongFromUser = RemoveSongFromUser;
+    vm.AddSongToUser = AddSongToUser;
+    function RemoveSongFromUser(idSong) {
+        vm.dataLoading = true;
+        UserService.RemoveSong(idSong, $cookies.get('token')).then(function (response) {
+            if (response.success) {
+                toastr.success("Musique supprimée.");
+                $scope.bought = false;
+            } else {
+                toastr.error(response.message, "Error");
+            }
+            vm.dataLoading = false;
+        })
+    }
+    function AddSongToUser(idSong)
+    {
+        vm.dataLoading = true;
+        UserService.AddSong(idSong, $cookies.get('token')).then(function (response) {
+            if (response.success) {
+                toastr.success("Musique ajoutée.");
+                $scope.bought = true;
+            } else {
+                toastr.error(response.message, "Error");
+            }
+            vm.dataLoading = false;
+        })
+    }
+
+}]);
+
