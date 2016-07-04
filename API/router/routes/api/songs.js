@@ -7,6 +7,7 @@ var superSecret = require('../../../config.js').secret;
 var auth        = require('authenticate');
 var fs          = require('fs');
 var path        = require('path');
+var slug        = require('slug')
 var multer      = require('multer');
 var Promise     = require('bluebird');
 var upload      = multer({ dest: './public/uploads/avatar/'});
@@ -93,6 +94,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
                                 song.difficulty = req.body.difficulty;
                                 song.file = filePath;
                                 song.preview = previewPath;
+                                song.slug = slug(req.body.name);
                                 song.save(function (err) {
                                     if (err) {
                                         return res.status(503).json({
