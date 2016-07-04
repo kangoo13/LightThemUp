@@ -33,8 +33,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }]),  function(req, res, next) {
-    console.log("before mime");
-    if (req.body.name && req.body.artist && req.files['picture'][0] && req.body.price && req.files['file'][0] && req.files['preview'][0] && req.body.difficulty ) {
+    if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.files['file'] && req.files['preview'] && req.body.difficulty ) {
         if (true) {
             Song.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
