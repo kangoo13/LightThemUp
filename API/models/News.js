@@ -1,16 +1,16 @@
  var mongoose = require('mongoose');
+ var Schema   = mongoose.Schema;
 
  var NewsSchema = new mongoose.Schema({
  	name: String,
  	description: String,
  	picture: String,
  	author: String,
+ 	comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
  	slug: String
  },
  {
  	timestamps: true
  });
-
-
 
  module.exports = mongoose.model('News', NewsSchema);

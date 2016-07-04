@@ -1,11 +1,11 @@
 /**
  * Created by Kangoo13 on 18/10/2015.
  */
-var mongoose    = require('mongoose');
-var bcrypt      = require('bcrypt-nodejs');
-var Schema      = mongoose.Schema;
+ var mongoose    = require('mongoose');
+ var bcrypt      = require('bcrypt-nodejs');
+ var Schema      = mongoose.Schema;
 
-var userSchema = mongoose.Schema({
+ var userSchema = mongoose.Schema({
     admin: { type: Boolean, default: false, select: false },
     emailLocal        : { type: String },
     passwordLocal     : { type: String , select: false},
@@ -36,11 +36,11 @@ var userSchema = mongoose.Schema({
         name         : String
     }
 },
-    {
-        timestamps: true
-    });
+{
+    timestamps: true
+});
 
-userSchema.pre('save', function(next) {
+ userSchema.pre('save', function(next) {
     var user = this;
     if (user.isModified('passwordLocal')) {
         if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/.test(this.passwordLocal)) {
@@ -65,10 +65,10 @@ userSchema.pre('save', function(next) {
     });
 });
 
-userSchema.methods.comparePassword = function(password) {
+ userSchema.methods.comparePassword = function(password) {
     var user = this;
     return bcrypt.compareSync(password, user.passwordLocal);
-    };
+};
 
 userSchema.methods.isAdmin = function(){
     return this.admin;

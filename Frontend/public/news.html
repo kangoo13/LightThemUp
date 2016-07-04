@@ -15,7 +15,7 @@
     </div>
     <div class="two-thirds column">
         <h2><a href="news/{{ new.slug }}">{{ new.name }}</a></h2>
-        <p>Publiée le <span class="news-date">{{ new.created_at | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
+        <p>Publiée le <span class="news-date">{{ new.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
         <p>{{ new.description | limitTo : 200 }}</p>
     </div>
 </div>

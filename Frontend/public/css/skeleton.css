@@ -828,8 +828,14 @@ a:hover {
 
 /* Comments */
 
-.comment {
+.comment, .first-comment {
 	margin-top: 2.5rem;
+	background-color: #f1f1f1;
+	padding: 1.5rem;
+}
+
+.first-comment {
+	margin-top: 0;
 }
 
 /* Captcha Google */

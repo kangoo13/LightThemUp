@@ -1,27 +1,28 @@
 /**
  * Created by Kangoo13 on 17/10/2015.
  */
-var express     = require('express');
-var News        = require('../../../models/News.js');
-var superSecret = require('../../../config.js').secret;
-var auth        = require('authenticate');
-var fs          = require('fs');
-var slug        = require('slug')
-var path        = require('path');
-var multer      = require('multer');
-var Promise     = require('bluebird');
-var mongoose    = require('mongoose');
-var upload      = multer({ dest: './public/uploads/tmp/'});
-var router      = express.Router();
+ var express     = require('express');
+ var News        = require('../../../models/News.js');
+ var Comment     = require('../../../models/Comment.js');
+ var superSecret = require('../../../config.js').secret;
+ var auth        = require('authenticate');
+ var fs          = require('fs');
+ var slug        = require('slug')
+ var path        = require('path');
+ var multer      = require('multer');
+ var Promise     = require('bluebird');
+ var mongoose    = require('mongoose');
+ var upload      = multer({ dest: './public/uploads/tmp/'});
+ var router      = express.Router();
 
-var uploadConfig = {
+ var uploadConfig = {
     acceptedMimeTypes : [ "image/jpeg", "image/png", "image/gif", "image/tiff" ],
     acceptedExtensions : [ "jpg", "jpeg", "png", "gif", "tiff" ],
     maxFileSize : 2000000
 };
 
 router.get('/', function(req, res, next) {
-    News.find().sort("-created_at").exec(function (err, news) {
+    News.find().sort("-createdAt").exec(function (err, news) {
         if (err) return next(err);
         res.status(200).json(news);
     });
@@ -37,58 +38,58 @@ router.post('/', auth({secret: superSecret}), upload.single('picture'), function
                     var picturePath = "";
                     var image = req.file;
                     Promise.resolve(image)
-                        .then(function(image) {
-                            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
-                                throw "Incorrect MIME type";
-                            }
-                            return image;
-                        })
-                        .then(function(image) {
-                            if (image.size > uploadConfig.maxFileSize) {
-                                throw "File is too large";
-                            }
-                            return image;
-                        })
-                        .then(function(image) {
+                    .then(function(image) {
+                        if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+                            throw "Incorrect MIME type";
+                        }
+                        return image;
+                    })
+                    .then(function(image) {
+                        if (image.size > uploadConfig.maxFileSize) {
+                            throw "File is too large";
+                        }
+                        return image;
+                    })
+                    .then(function(image) {
 
-                            if (!fs.existsSync(process.cwd()+"/public/uploads/news/"+news._id+"/")){
-                                fs.mkdirSync(process.cwd()+"/public/uploads/news/"+news._id+"/");
-                            }
-                            var tempPath = image.path;
-                            var realPath = process.cwd()+"/public/uploads/news/"+news._id+"/";
-                            picturePath = "uploads/news/"+news._id+"/"+image.originalname;
-                            return fs.rename(tempPath, realPath+image.originalname);
-                        })
-                        .then(function(err) {
-                            if (err)
-                                throw err;
-                            else
-                            {
-                                news.name = req.body.name;
-                                news.description = req.body.description;
-                                news.picture = picturePath;
-                                news.author = req.decoded.id;
-                                news.slug = slug(req.body.name);
-                                news.save(function (err) {
-                                    if (err) {
-                                        return res.status(503).json({
-                                            success: false,
-                                            message: err
-                                        });
-                                    }
+                        if (!fs.existsSync(process.cwd()+"/public/uploads/news/"+news._id+"/")){
+                            fs.mkdirSync(process.cwd()+"/public/uploads/news/"+news._id+"/");
+                        }
+                        var tempPath = image.path;
+                        var realPath = process.cwd()+"/public/uploads/news/"+news._id+"/";
+                        picturePath = "uploads/news/"+news._id+"/"+image.originalname;
+                        return fs.rename(tempPath, realPath+image.originalname);
+                    })
+                    .then(function(err) {
+                        if (err)
+                            throw err;
+                        else
+                        {
+                            news.name = req.body.name;
+                            news.description = req.body.description;
+                            news.picture = picturePath;
+                            news.author = req.decoded.id;
+                            news.slug = slug(req.body.name);
+                            news.save(function (err) {
+                                if (err) {
+                                    return res.status(503).json({
+                                        success: false,
+                                        message: err
+                                    });
+                                }
 
-                                });
-                            }
-                        })
-                        .then(function() {
-                            return res.status(200).json({
-                                success: true,
-                                message: 'News created !'
                             });
-                        })
-                        .catch(function(err) {
-                            res.status(500).send({success: false, message: err.toString()});
+                        }
+                    })
+                    .then(function() {
+                        return res.status(200).json({
+                            success: true,
+                            message: 'News created !'
                         });
+                    })
+                    .catch(function(err) {
+                        res.status(500).send({success: false, message: err.toString()});
+                    });
 
                 } else {
                     return res.status(409).json({
@@ -113,11 +114,60 @@ router.post('/', auth({secret: superSecret}), upload.single('picture'), function
 });
 
 router.get('/:idNews', function(req, res, next) {
-        News.findOne({ 'slug': req.params.idNews }, function (err, post) {
-            if (err) return next(err);
-            res.status(200).json(post);
-        });
+    News.findOne({ 'slug': req.params.idNews }).populate({ 
+       path: 'comments',
+       populate: {
+         path: 'author',
+         model: 'User'
+     } 
+ }).exec(function (err, post) {
+    if (err) return next(err);
+    res.status(200).json(post);
 });
+});
+
+router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
+    News.findOne({ 'slug': req.params.idNews }).exec(function (err, post) {
+        if (err) return next(err);
+        if (req.decoded.id && req.body.message) {
+            var comment = new Comment();
+            if (err) return next(err);
+            var author = new mongoose.mongo.ObjectID(req.decoded.id);
+            comment.author = author;
+            comment.message = req.body.message;
+            comment.save(function (err) {
+                if (err) {
+                    return res.status(503).json({
+                        success: false,
+                        message: err.errors
+                    });
+                }
+                else {
+                 var objectid = new mongoose.mongo.ObjectID(comment._id);
+                 post.comments.push(objectid);
+                 post.save(function (err) {
+                    if (err) {
+                        return res.status(503).json({
+                            success: false,
+                            message: err.errors
+                        });
+                    }
+                    res.status(200).json({
+                        success: true,
+                        message: 'Comment added !'
+                    });
+                });
+             }
+         });
+        }
+        else
+            return res.status(400).json({
+                success: false,
+                message: 'Wrong arguments'
+            });
+    });
+});
+
 
 router.put('/:idNews', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {

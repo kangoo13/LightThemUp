@@ -168,50 +168,6 @@ app.controller('NewsController', ['$scope', 'NewsService', function ($scope, New
 
 }]);
 
-
-app.controller('CommentsController', ['$scope', '$cookies', '$routeParams', 'CommentsService', 'UserService','toastr', function ($scope, $cookies, $routeParams, CommentsService, UserService, toastr) {
-
-    displayAll();
-
-
-    UserService.Account($cookies.get('id')).then(function (responseUsers) {
-        if (responseUsers) {
-            $scope.user = responseUsers;
-        } else {
-            toastr.error("Compte indisponible.");
-        }
-    });
-
-    $scope.SendComment = function(data) {
-        data.slug = $routeParams.slug;
-        data.author = $cookies.get('id');
-        CommentsService.SendComment(data, $cookies.get('token'))
-        .then(function (response) {
-            console.log(response);
-            if (response.success) {
-                toastr.success(response.message);
-                displayAll();
-            } else {
-                toastr.error(response.message);
-            }
-        });
-    }
-
-    $scope.commentLoading = false;
-    function displayAll() {
-        CommentsService.GetAll($routeParams.slug).then(function (responseComments) {
-            if (responseComments) {
-                $scope.comments = responseComments;
-                $scope.commentLoading = true;
-            }
-            else {
-                toastr.error("Commentaires indisponibles.");
-            }
-        });
-    }
-
-}]);
-
 app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', function ($scope,  $cookies, SuccesService) {
     var vm = this;
     vm.dataLoading = true;
@@ -241,7 +197,7 @@ app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', funct
 }]);
 
 
-app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService', '$location', 'toastr', function ($scope, $routeParams, NewsService, $location, toastr) {
+app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService', 'UserService', '$location', 'toastr', '$cookies', function ($scope, $routeParams, NewsService, UserService, $location, toastr, $cookies) {
 
     var vm = this;
     vm.dataLoading = true;
@@ -251,7 +207,33 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
         if (response == null)
             $location.path("/404");
         $scope.newsDetails = response;
+        $scope.comments = response.comments;
     });
+
+    UserService.Account($cookies.get('id')).then(function (responseUsers) {
+        if (responseUsers) {
+            $scope.user = responseUsers;
+        } else {
+            toastr.error("Compte indisponible.");
+        }
+    });
+
+    $scope.SendComment = function(data) {
+        NewsService.SendComment(data, $routeParams.slug, $cookies.get('token'))
+        .then(function (response) {
+            if (response.success) {
+                toastr.success(response.message);
+                // Refresh comments and remove form's message
+                NewsService.GetOneNews($routeParams.slug).then(function (response) {
+                   $scope.comments = response.comments;
+                   $scope.data.message = "";
+                   $scope.sendComment.$setPristine();
+               });
+            } else {
+                toastr.error(response.message);
+            }
+        });
+    }
 
 }]);
 
@@ -274,24 +256,22 @@ app.controller('AddSongPlaylistController', ['$scope', '$cookies', 'PlaylistServ
     vm.CreatePlaylist = CreatePlaylist;
     SongService.GetAll().then(function (response) {
         $scope.songs = response;
-        vm.dataLoading = false;
     });
     function CreatePlaylist() {
         vm.dataLoading = true;
         PlaylistService.Create(vm.playlist, $cookies.get('token'))
-            .then(function (response) {
-                if (response.success) {
-                    toastr.success("Playlist créée.");
-                    $location.path('/playlists');
-                } else {
-                    toastr.error(response.message, "Error");
-                    vm.dataLoading = false;
-                }
-            });
+        .then(function (response) {
+            if (response.success) {
+                toastr.success("Playlist créée.");
+                $location.path('/playlists');
+            } else {
+                toastr.error(response.message, "Error");
+                vm.dataLoading = false;
+            }
+        });
     }
+    vm.dataLoading = false;
 }]);
-
-
 app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
 
     var vm = this;
@@ -311,63 +291,3 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
     }
 
 }]);
-
-
-
-app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
-
-    var vm = this;
-
-    SongService.GetAll().then(function (response) {
-        $scope.songs = response;
-        vm.dataLoading = false;
-
-    });
-
-}]);
-
-app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams, $cookies, SongService, UserService, $location, toastr) {
-
-    var vm = this;
-
-    SongService.GetOneSong($routeParams.slug).then(function (response) {
-        $scope.song = response;
-        vm.dataLoading = false;
-    });
-    UserService.Account($cookies.get('id')).then(function (response) {
-        $scope.bought = false;
-        for(var i = 0; i < response.songs.length; i++) {
-            if (response.songs[i].slug == $routeParams.slug)
-                $scope.bought = true;
-        }
-    });
-    vm.RemoveSongFromUser = RemoveSongFromUser;
-    vm.AddSongToUser = AddSongToUser;
-    function RemoveSongFromUser() {
-        vm.dataLoading = true;
-        UserService.RemoveSong($scope.song._id, $cookies.get('token')).then(function (response) {
-            if (response.success) {
-                toastr.success("Musique supprimée.");
-                $scope.bought = false;
-            } else {
-                toastr.error(response.message, "Error");
-            }
-            vm.dataLoading = false;
-        })
-    }
-    function AddSongToUser()
-    {
-        vm.dataLoading = true;
-        UserService.AddSong($scope.song._id, $cookies.get('token')).then(function (response) {
-            if (response.success) {
-                toastr.success("Musique ajoutée.");
-                $scope.bought = true;
-            } else {
-                toastr.error(response.message, "Error");
-            }
-            vm.dataLoading = false;
-        })
-    }
-
-}]);
-
