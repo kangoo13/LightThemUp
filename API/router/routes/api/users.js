@@ -2,6 +2,7 @@
  * Created by Kangoo13 on 18/10/2015.
  */
  var express     = require('express');
+ var Song        = require('../../../models/Song.js');
  var User        = require('../../../models/User.js');
  var superSecret = require('../../../config.js').secret;
  var jwt         = require('jsonwebtoken');
@@ -26,6 +27,55 @@ router.get('/', function(req, res, next) {
         if (err) return next(err);
 
         res.status(200).json(users);
+    });
+});
+
+
+router.post('/songs', auth({secret: superSecret}), function(req, res) {
+    if (req.body.idSong) {
+        User.findOne({_id: req.decoded.id}, function (err, user) {
+            Song.find({_id: req.body.idSong}, function (err, song) {
+                var objectid = new mongoose.mongo.ObjectID(req.body.idSong);
+                user.songs.push(objectid);
+                user.save(function (err) {
+                    if (err) {
+                        return res.status(503).json({
+                            success: false,
+                            message: err.errors
+                        });
+                    }
+                    res.status(200).json({
+                        success: true,
+                        message: 'Musique ajouté à l\'utilisateur !'
+                    });
+                });
+            });
+        });
+    }
+    else
+        return res.json({
+            success: false,
+            message: 'Wrong arguments'
+        });
+});
+
+
+router.delete('/songs/:idSong', auth({secret: superSecret}), function(req, res, next) {
+    User.find({_id: req.decoded.id}, function (err, user) {
+        var objectid = new mongoose.mongo.ObjectID(req.params.idSong);
+        user.songs.pull(objectid);
+        user.save(function (err) {
+            if (err) {
+                return res.status(503).json({
+                    success: false,
+                    message: err.errors
+                });
+            }
+            res.status(200).json({
+                success: true,
+                message: 'Musique supprimée !'
+            });
+        });
     });
 });
 
