@@ -145,7 +145,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
 });
 
 router.get('/:slug', function(req, res, next) {
-        Song.find({'slug': req.params.slug}, function (err, post) {
+        Song.findOne({'slug': req.params.slug}, function (err, post) {
             if (err) return next(err);
             res.status(200).json(post);
         });
