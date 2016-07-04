@@ -11,6 +11,7 @@
  var path        = require('path');
  var multer      = require('multer');
  var Promise     = require('bluebird');
+ var mongoose        = require('mongoose');
  var util        = require("util");
  var Achievement = require("../../../models/Achievement.js");
  var upload      = multer({ dest: './public/uploads/tmp/'});
