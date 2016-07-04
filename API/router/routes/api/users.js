@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.post('/', upload.single('avatar'), function(req, res, next) {
+router.post('/', upload.single('picture'), function(req, res, next) {
     if (req.body.email && req.body.password){
         User.find({emailLocal : req.body.email}, function (err, docs) {
             if (!docs.length){

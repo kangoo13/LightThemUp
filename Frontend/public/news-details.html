@@ -8,17 +8,18 @@
 	<p>{{ newsDetails.description }}</p>
 	<p class="u-text-right">Publiée le <span class="news-date">{{ newsDetails.created_at | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
 </div>
-<div class="content">
-	<h3>Commentaires</h3>
-	<div ng-controller="CommentsController" >	
+<div ng-controller="CommentsController">
+	<div class="content">
+		<h3>Commentaires</h3>
+		
 		<div class="row">
 			<div class="two columns">
 				<img class="u-full-width" src="/{{ user.picture }}" alt="Avatar de {{ user.name }}" title="{{user.name}}" />
 			</div>
 			<div class="ten columns">
-				<form name="SendComment" ng-submit="vm.SendComment()" role="form" autocomplete="on">
+				<form name="sendComment" ng-submit="SendComment(data)" role="form" autocomplete="on">
 					<label for="comment">Laisser un commentaire (en tant que {{ user.name }})</label>
-					<textarea required ng-model="vm.comment" class="u-full-width" type="text" name="comment" placeholder="Votre commentaire"></textarea>
+					<textarea required ng-model="data.message" class="u-full-width" type="text" name="comment" placeholder="Votre commentaire"></textarea>
 					<div class="form-actions">
 						<button type="submit" class="button-primary">Envoyer</button>
 					</div>
@@ -26,10 +27,17 @@
 			</div>
 		</div>
 
-		<div ng-repeat="comment in comments">
-			{{ user.name }}
-			{{ comment.message }}
-			{{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}
+		<div class="comment" ng-repeat="comment in comments">
+			<div class="row">
+				<div class="two columns">
+					<img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author }}" title="{{comment.author}}" />
+				</div>
+				<div class="ten columns">
+					<p>{{ comment.message }}</p>
+					<p>{{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</p>
+				</div>
+			</div>
 		</div>
 	</div>
+
 </div>

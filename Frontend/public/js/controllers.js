@@ -55,7 +55,7 @@ app.controller('LoginController', ['$rootScope', 'UserService', '$location', "$c
         vm.dataLoading = true;
         UserService.Login(vm.user)
         .then(function (response) {
-            if (response && response.success) {
+            if (response.success) {
                     // Save the token as a cookie
                     $cookies.put('token', response.token);
                     $cookies.put('id', response.id);
@@ -65,12 +65,8 @@ app.controller('LoginController', ['$rootScope', 'UserService', '$location', "$c
                     toastr.success("Vous êtes connecté(e).");
                     $location.path('/');
                 } else {
-                if (response)
                     toastr.error(response.message, "Impossible de vous connecter.");
-                else
-                    toastr.error("Le site subit une maintenance", "Impossible de vous connecter.");
-
-                vm.dataLoading = false;
+                    vm.dataLoading = false;
                 }
             });
     }
@@ -173,41 +169,57 @@ app.controller('NewsController', ['$scope', 'NewsService', function ($scope, New
 }]);
 
 
-app.controller('CommentsController', ['$scope', '$cookies', '$routeParams', 'CommentsService', 'UserService', function ($scope, $cookies, $routeParams, CommentsService, UserService) {
+app.controller('CommentsController', ['$scope', '$cookies', '$routeParams', 'CommentsService', 'UserService','toastr', function ($scope, $cookies, $routeParams, CommentsService, UserService, toastr) {
 
-    var vm = this;
-    vm.dataLoading = true;
+    displayAll();
 
-       UserService.Account($cookies.get('id')).then(function (responseUsers) {
-            if (responseUsers) {
-                vm.dataLoading = false;
-                $scope.user = responseUsers;
+    UserService.Account($cookies.get('id')).then(function (responseUsers) {
+        if (responseUsers) {
+            $scope.user = responseUsers;
+        } else {
+            toastr.error("Compte indisponible.");
+        }
+    });
+
+    $scope.SendComment = function(data) {
+        data.slug = $routeParams.slug;
+        data.author = $cookies.get('id');
+        CommentsService.SendComment(data, $cookies.get('token'))
+        .then(function (response) {
+            console.log(response);
+            if (response.success) {
+                toastr.success(response.message);
+                displayAll();
             } else {
-                toastr.error("Compte indisponible.");
+                toastr.error(response.message);
             }
         });
-
-/*    CommentsService.GetAll($routeParams.slug).then(function (responseComments) {
-        if (responseComments) {
-         UserService.Account(responseComments[0].author).then(function (responseUsers) {
-            if (responseUsers) {
-                vm.dataLoading = false;
-                console.log(responseUsers);
-                $scope.comments = responseComments;
-                $scope.user = responseUsers;
-            } else {
-                toastr.error("Compte indisponible.");
-            }
-        });
-     }
-     else {
-        toastr.error("Compte indisponible.");
     }
-});*/
+
+    function displayAll() {
+        CommentsService.GetAll($routeParams.slug).then(function (responseComments) {
+
+            if (responseComments) {
+               /* UserService.Account(responseComments[0].author).then(function (responseUsers) {
+                    if (responseUsers) {
+                        responseComments[0].author = responseUsers.name;
+                        responseComments[0].picture = responseUsers.picture;
+                    } else {
+                        toastr.error("Compte indisponible.");
+                    }
+                });*/
+                console.log(responseComments);
+                $scope.comments = responseComments;
+            }
+            else {
+                toastr.error("Compte indisponible.");
+            }
+        });
+    }
+
 }]);
 
 app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', function ($scope,  $cookies, SuccesService) {
-    console.log("hey");
     var vm = this;
     vm.dataLoading = true;
     SuccesService.GetAllByUser($cookies.get('id'), $cookies.get('token')).then(function (responseUser) {
