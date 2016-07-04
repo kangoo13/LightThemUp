@@ -48,6 +48,11 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'PlaylistController',
         controllerAs: 'vm',
         authorizedAccess: false
+    }).when('/playlists/ajout-musique', {
+        templateUrl: '/playlist-ajout-musique.html',
+        controller: 'AddSongPlaylistController',
+        controllerAs: 'vm',
+        authorizedAccess: false
     }).when('/playlists/create', {
         templateUrl: '/create-playlist.html',
         controller: 'CreatePlaylistController',

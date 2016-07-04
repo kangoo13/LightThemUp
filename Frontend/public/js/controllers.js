@@ -169,17 +169,31 @@ app.controller('NewsController', ['$scope', 'NewsService', function ($scope, New
 }]);
 
 app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', function ($scope,  $cookies, SuccesService) {
-
+    console.log("hey");
     var vm = this;
     vm.dataLoading = true;
-    SuccesService.GetAllByUser($cookies.get('id')).then(function (response) {
-        vm.dataLoading = false;
-        $scope.achievementsWon = response.achievements;
+    SuccesService.GetAllByUser($cookies.get('id'), $cookies.get('token')).then(function (responseUser) {
+        SuccesService.GetAll().then(function (response) {
+            vm.dataLoading = false;
+            var lockedAchievements = [];
+            console.log(response);
+            var found;
+            for(var i = 0; i < response.length; i++) {
+                found = 0;
+                for (var j = 0; responseUser.length; j++){
+                    if(responseUser[j].name = response[i].name) {
+                        found = 1;
+                    }
+                }
+                if (found == 0)
+                    lockedAchievements.push(response[i]);
+                found = 0;
+            }
+            $scope.unlockedAchievements = responseUser.achievements;
+            $scope.lockedAchievements = lockedAchievements;
+        });
     });
-    SuccesService.GetAll().then(function (response) {
-        vm.dataLoading = false;
-        $scope.achievements = response;
-    });
+
 
 }]);
 
@@ -210,6 +224,29 @@ app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', f
 
 }]);
 
+
+app.controller('AddSongPlaylistController', ['$scope', '$cookies', 'PlaylistService', 'SongService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, SongService, $location, toastr) {
+
+    var vm = this;
+    vm.CreatePlaylist = CreatePlaylist;
+    SongService.GetAll().then(function (response) {
+        $scope.songs = response;
+    });
+    function CreatePlaylist() {
+        vm.dataLoading = true;
+        PlaylistService.Create(vm.playlist, $cookies.get('token'))
+            .then(function (response) {
+                if (response.success) {
+                    toastr.success("Playlist créée.");
+                    $location.path('/playlists');
+                } else {
+                    toastr.error(response.message, "Error");
+                    vm.dataLoading = false;
+                }
+            });
+    }
+    vm.dataLoading = false;
+}]);
 app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
 
     var vm = this;
@@ -219,7 +256,6 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
         PlaylistService.Create(vm.playlist, $cookies.get('token'))
         .then(function (response) {
             if (response.success) {
-                /*  toastr.success(response.message, "Success");*/
                 toastr.success("Playlist créée.");
                 $location.path('/playlists');
             } else {

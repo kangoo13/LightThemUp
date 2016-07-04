@@ -123,6 +123,32 @@ app.factory("NewsService", function ($http) {
 	}
 });
 
+app.factory("SongService", function ($http) {
+
+	var service = {};
+
+	service.GetAll = GetAll;
+	service.GetOneSong = GetOneSong;
+
+	return service;
+
+	function GetAll() {
+		return $http.get(apiUrl + '/songs').then(handleSuccess, handleError);
+	}
+
+	function GetOneSong(id) {
+		return $http.get(apiUrl + '/songs/' + id).then(handleSuccess, handleError);
+	}
+
+	function handleSuccess(res) {
+		return res.data;
+	}
+
+	function handleError(res) {
+		return res.data;
+	}
+});
+
 
 app.factory("PlaylistService", function ($http) {
 
@@ -175,7 +201,7 @@ app.factory("SuccesService", function ($http) {
 
 	return service;
 
-	function GetAllByUser(id) {
+	function GetAllByUser(id, token) {
 		return $http.get(apiUrl + '/users/'+id, {
 			headers: {
 				'Content-Type' : 'application/x-www-form-urlencoded',

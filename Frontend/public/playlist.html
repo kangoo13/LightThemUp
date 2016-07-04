@@ -11,6 +11,7 @@
 
     <div class="row content" ng-repeat="playlist in playlists">
        Playlist name : {{ playlist.name }}
+        <a href="/playlists/ajout-musique">Ajouter une ou plusieurs musiques</a>
        <div class="row content" ng-repeat="song in playlist.songs">
         Song name : {{ song.name }}
     </div>
