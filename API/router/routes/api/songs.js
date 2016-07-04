@@ -99,7 +99,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
                                     if (err) {
                                         return res.status(503).json({
                                             success: false,
-                                            message: err
+                                            message: err.toString()
                                         });
                                     }
 
