@@ -7,9 +7,9 @@
 <div class="row content songs">
 {{ song.name }} artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
     <div ng-if="bought == true">
-        <img src="/images/delete.png" ng-click="vm.RemoveSongFromUser(song.id)" />
+        <img src="/images/delete.png" ng-click="vm.RemoveSongFromUser()" />
     </div>
     <div ng-if="bought == false">
-        <img src="/images/add.png" ng-click="vm.AddSongToUser(song.id)" />
+        <img src="/images/add.png" ng-click="vm.AddSongToUser()" />
     </div>
 </div>

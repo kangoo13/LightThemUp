@@ -343,9 +343,9 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
     });
     vm.RemoveSongFromUser = RemoveSongFromUser;
     vm.AddSongToUser = AddSongToUser;
-    function RemoveSongFromUser(idSong) {
+    function RemoveSongFromUser() {
         vm.dataLoading = true;
-        UserService.RemoveSong(idSong, $cookies.get('token')).then(function (response) {
+        UserService.RemoveSong($scope.song._id, $cookies.get('token')).then(function (response) {
             if (response.success) {
                 toastr.success("Musique supprimée.");
                 $scope.bought = false;
@@ -355,10 +355,10 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
             vm.dataLoading = false;
         })
     }
-    function AddSongToUser(idSong)
+    function AddSongToUser()
     {
         vm.dataLoading = true;
-        UserService.AddSong(idSong, $cookies.get('token')).then(function (response) {
+        UserService.AddSong($scope.song._id, $cookies.get('token')).then(function (response) {
             if (response.success) {
                 toastr.success("Musique ajoutée.");
                 $scope.bought = true;
