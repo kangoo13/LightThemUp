@@ -32,13 +32,9 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }]),  function(req, res, next) {
-    console.log(req.body);
-    console.log(req.files['picture']);
-    console.log(req.files['file']);
-    console.log(req.files['preview']);
+router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }]), auth({secret: superSecret}), function(req, res, next) {
     if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.files['file'] && req.files['preview'] && req.body.difficulty ) {
-        if (true) {
+        if (req.decoded.admin) {
             Song.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
                     var song = new Song();
@@ -148,8 +144,8 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
         });
 });
 
-router.get('/:idSong', function(req, res, next) {
-        Song.findById(req.params.idSong, function (err, post) {
+router.get('/:slug', function(req, res, next) {
+        Song.find({'slug': req.params.slug}, function (err, post) {
             if (err) return next(err);
             res.status(200).json(post);
         });
