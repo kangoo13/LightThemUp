@@ -12,7 +12,7 @@ var SongSchema = new mongoose.Schema({
     preview: String,
     slug: String,
     difficulty: { type: Number, default: 0},
-    bought: Number
+    bought:  { type: Number, default: 0}
 },
     {
         timestamps: true
