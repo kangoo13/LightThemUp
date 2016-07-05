@@ -275,12 +275,15 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
             //$scope.songs = response.songs;
             for(var i = 0; i < response.songs.length; i++) {
                 response.songs[i].added = false;
-                for (var j = 0; j < playlistUser.length; j++)
+                for (var j = 0; j < playlistUser.songs.length; j++)
                 {
-                    if (playlistUser[j].name = response.songs[i].name)
+                    console.log(playlistUser.songs[j]);
+                    console.log(response.songs[i]);
+                    if (playlistUser.songs[j].name = response.songs[i].name)
                         response.songs[i].added = true;
                 }
             }
+                $scope.songs = response.songs;
                 vm.dataLoading = false; 
         });
     });

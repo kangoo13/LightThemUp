@@ -53,7 +53,7 @@
     Playlist.findOne({_id: req.params.idPlaylist}, function (err, playlist) {
         if (req.decoded.admin || req.decoded.id == playlist.created_by) {
             Song.find({_id: req.body.idSong}, function (err, song) {
-                var objectid = new mongoose.mongo.ObjectID(req.body.idSong);
+                var objectid = new mongoose.mongo.ObjectID(req.params.idSong);
                 playlist.songs.pull(objectid);
                 playlist.save(function (err) {
                     if (err) {

@@ -267,12 +267,10 @@ app.factory("PlaylistService", function ($http) {
 	}
 
 	function handleSuccess(res) {
-		console.log("success");
 		return res.data;
 	}
 
 	function handleError(res) {
-		console.log("error");
 		return res.data;
 	}
 });
@@ -302,12 +300,10 @@ app.factory("SuccesService", function ($http) {
 	}
 
 	function handleSuccess(res) {
-		console.log("success");
 		return res.data;
 	}
 
 	function handleError(res) {
-		console.log("error");
 		return res.data;
 	}
 });
