@@ -429,10 +429,13 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 	SongService.GetOneSong($routeParams.slug).then(function (response) {
 		$scope.song = response;
 		vm.dataLoading = false;
+        $scope.comments = response.comments;
 	});
 	UserService.Account($cookies.get('id')).then(function (response) {
 		$scope.bought = false;
-		for(var i = 0; i < response.songs.length; i++) {
+        $scope.user = response;
+
+        for(var i = 0; i < response.songs.length; i++) {
 			if (response.songs[i].slug == $routeParams.slug)
 				$scope.bought = true;
 		}
@@ -464,5 +467,58 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 			vm.dataLoading = false;
 		})
 	}
+
+
+    $scope.SendComment = function(data) {
+        SongService.SendComment(data, $routeParams.slug, $cookies.get('token'))
+            .then(function (response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    // Refresh comments and remove form's message
+                    SongService.GetOneSong($routeParams.slug).then(function (response) {
+                        $scope.comments = response.comments;
+                        $scope.data.message = "";
+                        $scope.sendComment.$setPristine();
+                    });
+                } else {
+                    toastr.error(response.message);
+                }
+            });
+    }
+
+    $scope.EditComment = function(data, idComment) {
+        SongService.EditComment(data, $routeParams.slug, $cookies.get('token'), idComment)
+            .then(function (response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    // Refresh comments and remove form's message
+                    SongService.GetOneSong($routeParams.slug).then(function (response) {
+                        $scope.comments = response.comments;
+                    });
+                } else {
+                    toastr.error(response.message);
+                }
+            });
+    }
+
+    $scope.resetEditComment = function(comment) {
+        this.editing = false;
+        this.data.message = comment.message;
+    }
+
+    $scope.RemoveComment = function(idComment) {
+        SongService.RemoveComment(idComment, $routeParams.slug, $cookies.get('token'))
+            .then(function (response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    // Refresh comments and remove form's message
+                    SongService.GetOneSong($routeParams.slug).then(function (response) {
+                        $scope.comments = response.comments;
+                    });
+                } else {
+                    toastr.error(response.message);
+                }
+            });
+    }
 
 }]);

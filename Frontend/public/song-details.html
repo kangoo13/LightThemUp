@@ -12,4 +12,29 @@
     <div ng-if="bought == false">
         <img src="/images/add.png" ng-click="vm.AddSongToUser()" />
     </div>
+    <!-- Error message for empty comments -->
+    <p ng-hide="vm.dataLoading" ng-if="!comments.length">Pas de commentaires pour cette musique.</p>
+
+    <div ng-repeat="comment in comments" ng-class="!$first ? 'box_one' : 'first-box_one'">
+        <div class="row">
+            <div class="two columns">
+                <img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.name }}" title="{{ comment.author.name }}" />
+            </div>
+            <div class="ten columns">
+                <p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}} -
+                    <span title="Modifier" ng-click="editing = true" ng-show="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                    <span title="Supprimer" ng-confirm-click="Confirmez-vous la suppression de votre commentaire ?" confirmed-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    <br>
+                    <span ng-hide="editing"> {{ comment.message }} </span>
+                </p>
+                <form name="editComment" ng-submit="EditComment(data, comment._id)" role="form" autocomplete="on" ng-show="editing" ng-submit="editing = false">
+                    <textarea required ng-init="data.message=comment.message" ng-model="data.message" class="u-full-width" type="text" name="comment"></textarea>
+                    <div class="form-actions">
+                        <button type="submit" class="button-primary">Envoyer</button>
+                        <a class="button" ng-click="resetEditComment(comment)" href="#">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

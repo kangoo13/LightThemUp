@@ -3,7 +3,8 @@ var Schema   = mongoose.Schema;
 
 var CommentSchema = new mongoose.Schema({
 	author: {type: Schema.Types.ObjectId, ref: 'User'},
-	message: String
+	message: String,
+	type: String
 },
 {
 	timestamps: true
