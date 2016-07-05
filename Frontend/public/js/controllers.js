@@ -387,13 +387,13 @@ app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserServ
 
     var vm = this;
     vm.dataLoading = true;
-    SongService.GetMostBoughtSongs(5).then(function (response) {
+    SongService.GetMostBoughtSongs(3).then(function (response) {
         $scope.mostBoughtSongs = response;
     });
-    SongService.GetRandomSongs(5).then(function (response) {
+    SongService.GetRandomSongs(3).then(function (response) {
         $scope.randomSongs = response;
     });
-    SongService.GetNewSongs(5).then(function (response) {
+    SongService.GetNewSongs(3).then(function (response) {
         $scope.newSongs = response;
         vm.dataLoading = false;
     });
