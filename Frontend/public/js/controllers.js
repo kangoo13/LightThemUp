@@ -36,10 +36,10 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
         UserService.Create(vm.user)
         .then(function (response) {
             if (response.success) {
-             /* toastr.success(response.message, "Success");*/
-             toastr.success("Vous êtes inscrit(e).");
-             $location.path('/connexion');
-         } else {
+               /* toastr.success(response.message, "Success");*/
+               toastr.success("Vous êtes inscrit(e).");
+               $location.path('/connexion');
+           } else {
             toastr.error(response.message, "Error");
             vm.dataLoading = false;
         }
@@ -225,10 +225,25 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
                 toastr.success(response.message);
                 // Refresh comments and remove form's message
                 NewsService.GetOneNews($routeParams.slug).then(function (response) {
-                   $scope.comments = response.comments;
-                   $scope.data.message = "";
-                   $scope.sendComment.$setPristine();
-               });
+                 $scope.comments = response.comments;
+                 $scope.data.message = "";
+                 $scope.sendComment.$setPristine();
+             });
+            } else {
+                toastr.error(response.message);
+            }
+        });
+    }
+
+    $scope.RemoveComment = function(idComment) {
+        NewsService.RemoveComment(idComment, $routeParams.slug, $cookies.get('token'))
+        .then(function (response) {
+            if (response.success) {
+                toastr.success(response.message);
+                // Refresh comments and remove form's message
+                NewsService.GetOneNews($routeParams.slug).then(function (response) {
+                 $scope.comments = response.comments;
+             });
             } else {
                 toastr.error(response.message);
             }

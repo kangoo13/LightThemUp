@@ -1,9 +1,9 @@
 <div class="content">
     <h3>Création d'une playlist</h3>
     <form name="createPlaylist" ng-submit="vm.CreatePlaylist()" role="form" autocomplete="on">
-        <label for="name">Nom de la playlist</label>
-        <input ng-model="vm.playlist.name" class="u-full-width" type="name" name="name"
-               placeholder="Ma super playlist"/>
+        <label for="name">Titre de la playlist</label>
+        <input required ng-model="vm.playlist.name" class="u-full-width" type="text" name="name"
+               placeholder="Ma playlist"/>
         <div class="form-actions">
             <button type="submit" class="button-primary">Créer ma playlist</button>
             <a class="button" href="/playlists">Annuler</a>

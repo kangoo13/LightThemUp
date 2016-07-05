@@ -838,6 +838,10 @@ a:hover {
 	margin-top: 0;
 }
 
+.comment span {
+	cursor: pointer;
+}
+
 /* Captcha Google */
 
 .g-recaptcha {

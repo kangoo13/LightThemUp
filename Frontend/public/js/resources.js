@@ -97,39 +97,6 @@ app.factory("ContactService", function ($http) {
 	}
 });
 
-/*app.factory("CommentsService", function ($http) {
-
-	var service = {};
-
-	service.GetAll = GetAll;
-	service.SendComment = SendComment;
-
-	return service;
-
-	function GetAll(slug) {
-		return $http.get(apiUrl + '/comments/' + slug).then(handleSuccess, handleError);
-	}
-
-	function SendComment(form, token) {
-		var data = $.param(form, true);
-		return $http.post(apiUrl + '/comments/', data, {
-			headers: {
-				'Content-Type' : 'application/x-www-form-urlencoded',
-				"x-access-token": token
-			}
-		}).then(handleSuccess, handleError);
-	}
-
-	function handleSuccess(res) {
-		return res.data;
-	}
-
-	function handleError(res) {
-		return res.data;
-	}
-});*/
-
-
 app.factory("NewsService", function ($http) {
 
 	var service = {};
@@ -137,6 +104,7 @@ app.factory("NewsService", function ($http) {
 	service.GetAll = GetAll;
 	service.GetOneNews = GetOneNews;
 	service.SendComment = SendComment;
+	service.RemoveComment = RemoveComment;
 
 	return service;
 
@@ -155,6 +123,18 @@ app.factory("NewsService", function ($http) {
 				'Content-Type' : 'application/x-www-form-urlencoded',
 				"x-access-token": token
 			}
+		}).then(handleSuccess, handleError);
+	}
+
+	function RemoveComment(id, slug, token) {
+		return $http({
+			method: 'DELETE',
+			url: apiUrl + '/news/' + slug + "/comments",
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			},
+			data: {"idComment": id}
 		}).then(handleSuccess, handleError);
 	}
 

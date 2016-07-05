@@ -118,12 +118,103 @@ router.get('/:idNews', function(req, res, next) {
        path: 'comments',
        populate: {
          path: 'author',
+         select: "name picture",
          model: 'User'
      } 
  }).exec(function (err, post) {
     if (err) return next(err);
     res.status(200).json(post);
 });
+});
+
+router.put('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
+   if (req.body.idComment && req.body.message) {
+    News.findOne({ 'slug': req.params.idNews }).exec(function (err, news) {
+        Comment.findById(req.body.idComment, function (err, comment) {
+            if (comment == null) {
+                return res.status(503).json({
+                    success: false,
+                    message: "Comment doesn't exist."
+                });
+            }
+            if (req.decoded.admin || req.decoded.id == comment.author) {
+                comment.message = req.body.message;
+                comment.save(function (err) {
+                    if (err) {
+                        return res.status(503).json({
+                            success: false,
+                            message: err.errors
+                        });
+                    }
+                    res.status(200).json({
+                        success: true,
+                        message: 'Comment edited.'
+                    });
+                });
+            }
+            else {
+                return res.status(401).send({
+                    success: false,
+                    message: 'Unauthorized.'
+                });
+            }
+        });
+        if (err) return next(err)
+    });
+}
+else {
+  return res.status(400).json({
+    success: false,
+    message: 'Wrong arguments'
+});
+}
+});
+
+router.delete('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
+    if (req.body.idComment) {
+      News.findOne({ 'slug': req.params.idNews }).exec(function (err, news) {
+        console.log(req.body);
+        console.log(req.body.idComment);
+        Comment.findById(req.body.idComment, function (err, comment) {
+            if (comment == null) {
+                return res.status(503).json({
+                    success: false,
+                    message: "Comment doesn't exist."
+                });
+            }
+            if (req.decoded.admin || req.decoded.id == comment.author) {
+                var objectid = new mongoose.mongo.ObjectID(req.body.idComment);
+                news.comments.pull(objectid);
+                comment.remove();
+                news.save(function (err) {
+                    if (err) {
+                        return res.status(503).json({
+                            success: false,
+                            message: err.errors
+                        });
+                    }
+                    res.status(200).json({
+                        success: true,
+                        message: 'Comment removed.'
+                    });
+                });
+            }
+            else {
+                return res.status(401).send({
+                    success: false,
+                    message: 'Unauthorized.'
+                });
+            }
+        });
+        if (err) return next(err);
+    });
+  }
+  else {
+      return res.status(400).json({
+        success: false,
+        message: 'Wrong arguments'
+    });
+  }
 });
 
 router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
@@ -154,7 +245,7 @@ router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res,
                     }
                     res.status(200).json({
                         success: true,
-                        message: 'Comment added !'
+                        message: 'Comment added.'
                     });
                 });
              }

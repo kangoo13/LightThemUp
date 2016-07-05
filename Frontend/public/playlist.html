@@ -1,4 +1,4 @@
-<div class="row content">
+<div class="content">
     <h3>Mes playlists</h3>
     <a title="Créer une playlist" class="button button-primary" href="playlists/create">Créer une playlist</a>
     
@@ -9,10 +9,10 @@
     <!-- Error message for empty playlists -->
     <p ng-hide="vm.dataLoading" ng-if="!playlists.length">Vous n'avez pas de playlists pour le moment.</p>
 
-    <div class="row content" ng-repeat="playlist in playlists">
-       Playlist name : {{ playlist.name }}
-        <a href="/playlists/ajout-musique">Ajouter une ou plusieurs musiques</a>
-       <div class="row content" ng-repeat="song in playlist.songs">
+    <div ng-repeat="playlist in playlists">
+     Playlist name : {{ playlist.name }}
+     <a href="/playlists/ajout-musique">Ajouter une ou plusieurs musiques</a>
+     <div ng-repeat="song in playlist.songs">
         Song name : {{ song.name }}
     </div>
 </div>
