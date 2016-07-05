@@ -37,7 +37,7 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         templateUrl: '/song-details.html',
         controller: 'SongDetailController',
         controllerAs: 'vm',
-        authorizedAccess: true
+        authorizedAccess: false
     }).when('/news', {
         templateUrl: '/news.html',
         controller: 'NewsController',

@@ -57,10 +57,26 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
             });
         else
         {
-            
+            var randomTab = [];
+            var isContained;
+            while (randomTab.length != req.params.nbSong)
+            {
+                var randTab = songs[Math.floor(Math.random() * songs.length - 1)];
+                isContained = false;
+                for (var i = 0; i != randomTab.length; i++)
+                {
+                    if (randomTab[i].name == randTab.name) {
+                        isContained = true;
+                        break;
+                    }
+                }
+                if (isContained == false)
+                    randomTab.push(randTab);
+            }
+            res.status(200).json(randomTab);
+
         }
         if (err) return next(err);
-        res.status(200).json(songs);
     });
 });
 
