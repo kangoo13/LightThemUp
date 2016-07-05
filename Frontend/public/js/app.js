@@ -58,7 +58,7 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'PlaylistController',
         controllerAs: 'vm',
         authorizedAccess: false
-    }).when('/playlists/ajout-musique', {
+    }).when('/playlists/:slug/ajout', {
         templateUrl: '/playlist-ajout-musique.html',
         controller: 'AddSongPlaylistController',
         controllerAs: 'vm',

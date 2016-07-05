@@ -2,12 +2,13 @@
  var Schema      = mongoose.Schema;
 
  var PlaylistSchema = new mongoose.Schema({
- 	name: String,
- 	created_by: String,
- 	songs: [{type: Schema.Types.ObjectId, ref: 'Song'}]
+     name: String,
+ 	 created_by: String, 
+     slug: String,
+ 	 songs: [{type: Schema.Types.ObjectId, ref: 'Song'}]
  },
  {
- 	timestamps: true
+     timestamps: true
  });
 
  module.exports = mongoose.model('Playlist', PlaylistSchema);
