@@ -61,7 +61,7 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
             var isContained;
             while (randomTab.length != req.params.nbSong)
             {
-                var randTab = songs[Math.floor(Math.random() * songs.length - 1)];
+                var randTab = songs[Math.floor(Math.random() * (maxRandom - 0)) + 0];
                 isContained = false;
                 for (var i = 0; i != randomTab.length; i++)
                 {
