@@ -309,6 +309,13 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
         UserService.AddSongToPlaylist(idSong, $routeParams.slug, $cookies.get('token')).then(function (response) {
             if (response.success) {
                 toastr.success("Musique ajoutée à la playlist.");
+                for (var i = 0; i < $scope.songs.length; i++)
+                {
+                    if ($scope.songs[i]._id == idSong) {
+                        $scope.songs[i].added = true;
+                        break;
+                    }
+                }
             } else {
                 toastr.error(response.message, "Error");
             }
@@ -321,6 +328,13 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
         UserService.RemoveSongFromPlaylist(idSong, $routeParams.slug, $cookies.get('token')).then(function (response) {
             if (response.success) {
                 toastr.success("Musique supprimée de la playlist.");
+                for (var i = 0; i < $scope.songs.length; i++)
+                {
+                    if ($scope.songs[i]._id == idSong) {
+                        $scope.songs[i].added = false;
+                        break;
+                    }
+                }
             } else {
                 toastr.error(response.message, "Error");
             }
