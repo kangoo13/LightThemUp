@@ -245,12 +245,16 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
                 // Refresh comments and remove form's message
                 NewsService.GetOneNews($routeParams.slug).then(function (response) {
                 	$scope.comments = response.comments;
-                	$scope.editComment.$setPristine();
                 });
             } else {
             	toastr.error(response.message);
             }
         });
+	}
+
+	$scope.resetEditComment = function(comment) {
+		this.editing = false;
+		this.data.message = comment.message;
 	}
 
 	$scope.RemoveComment = function(idComment) {
