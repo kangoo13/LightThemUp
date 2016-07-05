@@ -385,13 +385,29 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 
 app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
 
-	var vm = this;
+    var vm = this;
+    vm.dataLoading = true;
+    SongService.GetMostBoughtSongs(5).then(function (response) {
+        $scope.mostBoughtSongs = response;
+    });
+    SongService.GetRandomSongs(5).then(function (response) {
+        $scope.randomSongs = response;
+    });
+    SongService.GetNewSongs(5).then(function (response) {
+        $scope.newSongs = response;
+        vm.dataLoading = false;
+    });
 
-	SongService.GetAll().then(function (response) {
-		$scope.songs = response;
-		vm.dataLoading = false;
+}]);
 
-	});
+app.controller('ShopAllSongsController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+
+    var vm = this;
+    vm.dataLoading = true;
+    SongService.GetAll().then(function (response){
+        $scope.songs = response;
+        vm.dataLoading = false;
+    });
 
 }]);
 

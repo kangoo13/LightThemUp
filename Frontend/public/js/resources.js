@@ -213,6 +213,9 @@ app.factory("SongService", function ($http) {
 
 	service.GetAll = GetAll;
 	service.GetOneSong = GetOneSong;
+    service.GetMostBoughtSongs = GetMostBoughtSongs;
+    service.GetRandomSongs = GetRandomSongs;
+    service.GetNewSongs = GetNewSongs;
 
 	return service;
 
@@ -223,6 +226,21 @@ app.factory("SongService", function ($http) {
 	function GetOneSong(slug) {
 		return $http.get(apiUrl + '/songs/' + slug).then(handleSuccess, handleError);
 	}
+
+    function GetMostBoughtSongs(nbSong)
+    {
+        return $http.get(apiUrl + '/songs/mostBoughtSongs/' + nbSong).then(handleSuccess, handleError);
+    }
+
+    function GetRandomSongs(nbSong)
+    {
+        return $http.get(apiUrl + '/songs/randomSongs/' + nbSong).then(handleSuccess, handleError);
+    }
+
+    function GetNewSongs(nbSong)
+    {
+        return $http.get(apiUrl + '/songs/newSongs/' + nbSong).then(handleSuccess, handleError);
+    }
 
 	function handleSuccess(res) {
 		return res.data;
