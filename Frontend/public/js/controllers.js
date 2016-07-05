@@ -368,13 +368,24 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 
 app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
 
-	var vm = this;
+    var vm = this;
 
-	SongService.GetAll().then(function (response) {
-		$scope.songs = response;
-		vm.dataLoading = false;
+    SongService.GetAll().then(function (response) {
+        $scope.songs = response;
+        vm.dataLoading = false;
 
-	});
+    });
+
+}]);
+
+
+app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+
+    var vm = this;
+
+    UserService.Account($cookies.get('id')).then(function (response) {
+        $scope.songs = response.songs;
+    });
 
 }]);
 

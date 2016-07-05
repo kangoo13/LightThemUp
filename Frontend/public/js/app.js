@@ -53,6 +53,11 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'SuccesController',
         controllerAs: 'vm',
         authorizedAccess: false
+    }).when('/mes-musiques', {
+        templateUrl: '/mes-musiques.html',
+        controller: 'MySongsController',
+        controllerAs: 'vm',
+        authorizedAccess: false
     }).when('/playlists', {
         templateUrl: '/playlist.html',
         controller: 'PlaylistController',
