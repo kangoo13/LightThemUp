@@ -34,7 +34,7 @@ router.get('/', function(req, res, next) {
 router.post('/songs', auth({secret: superSecret}), function(req, res) {
     if (req.body.idSong) {
         User.findOne({_id: req.decoded.id}, function (err, user) {
-            Song.find({_id: req.body.idSong}, function (err, song) {
+            Song.findOne({_id: req.body.idSong}, function (err, song) {
                 var objectid = new mongoose.mongo.ObjectID(req.body.idSong);
                 user.songs.push(objectid);
                 user.save(function (err) {
@@ -44,6 +44,15 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
                             message: err.toString()
                         });
                     }
+                    song.bought += 1;
+                    song.save(function (err){
+                        if (err) {
+                            return res.status(503).json({
+                                success: false,
+                                message: err.toString()
+                            });
+                        }
+                    });
                     res.status(200).json({
                         success: true,
                         message: 'Musique ajouté à l\'utilisateur !'
@@ -71,6 +80,17 @@ router.delete('/songs/:idSong', auth({secret: superSecret}), function(req, res, 
                     message: err.toString()
                 });
             }
+            Song.findOne({_id: req.body.idSong}, function (err, song) {
+                song.bought -= 1;
+                song.save(function (err){
+                    if (err) {
+                        return res.status(503).json({
+                            success: false,
+                            message: err.toString()
+                        });
+                    }
+                });
+            });
             res.status(200).json({
                 success: true,
                 message: 'Musique supprimée !'
