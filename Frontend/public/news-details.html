@@ -39,7 +39,7 @@
 			<div class="ten columns">
 				<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}} -
 					<span title="Modifier" ng-click="editing = true" ng-show="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-					<span title="Supprimer" ng-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-times" aria-hidden="true"></i></span>
+					<span title="Supprimer" ng-confirm-click="Confirmez-vous la suppression de votre commentaire ?" confirmed-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-times" aria-hidden="true"></i></span>
 					<br>
 					<span ng-hide="editing"> {{ comment.message }} </span>
 				</p>
