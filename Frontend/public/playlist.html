@@ -1,6 +1,5 @@
 <div class="content">
     <h3>Mes playlists</h3>
-    <a title="Créer une playlist" class="button button-primary" href="playlists/create">Ajouter une playlist</a>
 
     <!-- Data loading -->
     <img ng-if="vm.dataLoading" class="dataLoading"
@@ -9,14 +8,16 @@
     <!-- Error message for empty playlists -->
     <p ng-hide="vm.dataLoading" ng-if="!playlists.length">Vous n'avez pas de playlists pour le moment.</p>
 
-    <ul>
-        <div ng-repeat="playlist in playlists">
-            <li><h5>{{ playlist.name }}</h5></li>
-            <a title="Ajouter des musiques" class="button button-primary" href="/playlists/{{ playlist.slug }}/ajout">Ajouter des musiques</a>
-            <a title="Supprimer" class="button" ng-click="RemovePlaylist(playlist._id)" href="#">Supprimer</a>
+    <div ng-repeat="playlist in playlists">
+        <h5 ng-click="showDetails = ! showDetails">{{ playlist.name }} - {{ playlist.songs.length }} musique(s)</h5>
+        <div ng-show="showDetails">
             <ol>
                 <li ng-repeat="song in playlist.songs">{{ song.name }}</li>
             </ol>
+            <a title="Ajouter des musiques" class="button button-primary" href="/playlists/{{ playlist.slug }}/ajout">Ajouter des musiques</a>
+            <a title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la playlist ?" confirmed-click="RemovePlaylist(playlist._id)" href="#">Supprimer</a>
         </div>
-    </ul>
+    </div>
+    <a title="Créer une playlist" class="button button-primary" href="playlists/create">Ajouter une playlist</a>
+
 </div>
