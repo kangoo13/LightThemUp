@@ -12,6 +12,25 @@
     <div ng-if="bought == false">
         <img src="/images/add.png" ng-click="vm.AddSongToUser()" />
     </div>
+
+
+    <div ng-hide="vm.dataLoading" class="content">
+        <h3>Commentaires</h3>
+
+        <div class="row">
+            <div class="two columns">
+                <img class="u-full-width" src="/{{ user.picture }}" alt="Avatar de {{ user.name }}" title="{{user.name}}" />
+            </div>
+            <div class="ten columns">
+                <form name="sendComment" ng-submit="SendComment(data)" role="form" autocomplete="on">
+                    <label for="comment">Laisser un commentaire (en tant que {{ user.name }})</label>
+                    <textarea required ng-model="data.message" class="u-full-width" type="text" name="comment" placeholder="Votre commentaire"></textarea>
+                    <div class="form-actions">
+                        <button type="submit" class="button-primary">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     <!-- Error message for empty comments -->
     <p ng-hide="vm.dataLoading" ng-if="!comments.length">Pas de commentaires pour cette musique.</p>
 
