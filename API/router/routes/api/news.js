@@ -218,7 +218,7 @@ router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), funct
 router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
     News.findOne({ 'slug': req.params.idNews }).exec(function (err, post) {
         if (err) return next(err);
-        if (req.decoded.id && req.body.message && req.body.type) {
+        if (req.decoded.id && req.body.message) {
             var comment = new Comment();
             if (err) return next(err);
             var author = new mongoose.mongo.ObjectID(req.decoded.id);
