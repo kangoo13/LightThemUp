@@ -8,6 +8,7 @@ var passport        = require('passport');
 var expressSession  = require('express-session');
 var initPassport    = require('./passport/init');
 var fs              = require('fs');
+var path            = require('path');
 var app             = express();
 
 
@@ -17,7 +18,7 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-
+app.use("/public", express.static(path.join(__dirname, 'public')));
 mongoose.connect(config.database, function(err) {
     if(err) {
         console.log('connection error', err);

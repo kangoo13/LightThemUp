@@ -32,6 +32,38 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.get('/newSongs/:nbSong', function(req, res, next) {
+    Song.find().limit(req.params.nbSong).sort({'createdAt': -1}).exec(function (err, songs) {
+        if (err) return next(err);
+        res.status(200).json(songs);
+    });
+});
+
+
+router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
+    Song.find().limit(req.params.nbSong).sort({'bought': -1}).exec(function (err, songs) {
+        if (err) return next(err);
+        res.status(200).json(songs);
+    });
+});
+
+router.get('/randomSongs/:nbSong', function(req, res, next) {
+    Song.find().exec(function (err, songs) {
+        var maxRandom = songs.length - 1;
+        if (req.params.nbSong-1 > maxRandom)
+            return res.status(503).json({
+                success: false,
+                message: "Il n'y a pas assez de musiques pour cette demande."
+            });
+        else
+        {
+            
+        }
+        if (err) return next(err);
+        res.status(200).json(songs);
+    });
+});
+
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }]), auth({secret: superSecret}), function(req, res, next) {
     if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.files['file'] && req.files['preview'] && req.body.difficulty ) {
         if (req.decoded.admin) {
@@ -145,11 +177,13 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
 });
 
 router.get('/:slug', function(req, res, next) {
-        Song.findOne({'slug': req.params.slug}, function (err, post) {
-            if (err) return next(err);
-            res.status(200).json(post);
-        });
+    Song.findOne({'slug': req.params.slug}, function (err, post) {
+        if (err) return next(err);
+        res.status(200).json(post);
+    });
 });
+
+
 
 router.put('/:idSong', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
