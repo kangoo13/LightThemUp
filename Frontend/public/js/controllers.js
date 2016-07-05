@@ -275,14 +275,31 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
 }]);
 
 
-app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', function ($scope, $cookies, PlaylistService) {
+app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', 'toastr', function ($scope, $cookies, PlaylistService, toastr) {
 
 	var vm = this;
-	vm.dataLoading = true;
-	PlaylistService.GetAllByUser($cookies.get('token')).then(function (response) {
-		vm.dataLoading = false;
-		$scope.playlists = response;
-	});
+
+	displayAll();
+
+	function displayAll() {
+		vm.dataLoading = true;
+		PlaylistService.GetAllByUser($cookies.get('token')).then(function (response) {
+			vm.dataLoading = false;
+			$scope.playlists = response;
+		});
+	}
+
+	$scope.RemovePlaylist = function(playlistId) {
+		PlaylistService.RemovePlaylist(playlistId, $cookies.get('token'))
+		.then(function (response) {
+			if (response.success) {
+				toastr.success(response.message);
+				displayAll();
+			} else {
+				toastr.error(response.message);
+			}
+		});
+	}
 
 }]);
 
@@ -291,59 +308,59 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
 
 	var vm = this;
 	vm.AddSongToPlaylist = AddSongToPlaylist;
-    vm.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
+	vm.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
 	UserService.Account($cookies.get('id')).then(function (response) {
-        PlaylistService.GetOneByUser($routeParams.slug, $cookies.get('token')).then(function (playlistUser) {
-            for(var i = 0; i < response.songs.length; i++) {
-                response.songs[i].added = false;
-                for (var j = 0; j < playlistUser.songs.length; j++)
-                {
-                    if (playlistUser.songs[j].name = response.songs[i].name)
-                        response.songs[i].added = true;
-                }
-            }
-                $scope.songs = response.songs;
-                vm.dataLoading = false; 
-        });
-    });
-    function AddSongToPlaylist(idSong)
-    {
-        vm.dataLoading = true;
-        UserService.AddSongToPlaylist(idSong, $routeParams.slug, $cookies.get('token')).then(function (response) {
-            if (response.success) {
-                toastr.success("Musique ajoutée à la playlist.");
-                for (var i = 0; i < $scope.songs.length; i++)
-                {
-                    if ($scope.songs[i]._id == idSong) {
-                        $scope.songs[i].added = true;
-                        break;
-                    }
-                }
-            } else {
-                toastr.error(response.message, "Error");
-            }
-            vm.dataLoading = false;
-        })
-    }
-    function RemoveSongFromPlaylist(idSong)
-    {
-        vm.dataLoading = true;
-        UserService.RemoveSongFromPlaylist(idSong, $routeParams.slug, $cookies.get('token')).then(function (response) {
-            if (response.success) {
-                toastr.success("Musique supprimée de la playlist.");
-                for (var i = 0; i < $scope.songs.length; i++)
-                {
-                    if ($scope.songs[i]._id == idSong) {
-                        $scope.songs[i].added = false;
-                        break;
-                    }
-                }
-            } else {
-                toastr.error(response.message, "Error");
-            }
-            vm.dataLoading = false;
-        })
-    }
+		PlaylistService.GetOneByUser($routeParams.slug, $cookies.get('token')).then(function (playlistUser) {
+			for(var i = 0; i < response.songs.length; i++) {
+				response.songs[i].added = false;
+				for (var j = 0; j < playlistUser.songs.length; j++)
+				{
+					if (playlistUser.songs[j].name = response.songs[i].name)
+						response.songs[i].added = true;
+				}
+			}
+			$scope.songs = response.songs;
+			vm.dataLoading = false; 
+		});
+	});
+	function AddSongToPlaylist(idSong)
+	{
+		vm.dataLoading = true;
+		UserService.AddSongToPlaylist(idSong, $routeParams.slug, $cookies.get('token')).then(function (response) {
+			if (response.success) {
+				toastr.success("Musique ajoutée à la playlist.");
+				for (var i = 0; i < $scope.songs.length; i++)
+				{
+					if ($scope.songs[i]._id == idSong) {
+						$scope.songs[i].added = true;
+						break;
+					}
+				}
+			} else {
+				toastr.error(response.message, "Error");
+			}
+			vm.dataLoading = false;
+		})
+	}
+	function RemoveSongFromPlaylist(idSong)
+	{
+		vm.dataLoading = true;
+		UserService.RemoveSongFromPlaylist(idSong, $routeParams.slug, $cookies.get('token')).then(function (response) {
+			if (response.success) {
+				toastr.success("Musique supprimée de la playlist.");
+				for (var i = 0; i < $scope.songs.length; i++)
+				{
+					if ($scope.songs[i]._id == idSong) {
+						$scope.songs[i].added = false;
+						break;
+					}
+				}
+			} else {
+				toastr.error(response.message, "Error");
+			}
+			vm.dataLoading = false;
+		})
+	}
 }]);
 
 app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
@@ -368,24 +385,24 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 
 app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
 
-    var vm = this;
+	var vm = this;
 
-    SongService.GetAll().then(function (response) {
-        $scope.songs = response;
-        vm.dataLoading = false;
+	SongService.GetAll().then(function (response) {
+		$scope.songs = response;
+		vm.dataLoading = false;
 
-    });
+	});
 
 }]);
 
 
 app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
 
-    var vm = this;
+	var vm = this;
 
-    UserService.Account($cookies.get('id')).then(function (response) {
-        $scope.songs = response.songs;
-    });
+	UserService.Account($cookies.get('id')).then(function (response) {
+		$scope.songs = response.songs;
+	});
 
 }]);
 

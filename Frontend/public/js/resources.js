@@ -241,6 +241,7 @@ app.factory("PlaylistService", function ($http) {
 	service.GetAllByUser = GetAllByUser;
 	service.Create = Create;
 	service.GetOneByUser = GetOneByUser;
+	service.RemovePlaylist = RemovePlaylist;
 
 	return service;
 
@@ -270,6 +271,16 @@ app.factory("PlaylistService", function ($http) {
 			name: name.name
 		});
 		return $http.post(apiUrl + '/playlists/', data, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
+
+	function RemovePlaylist(playlistId, token)
+	{
+		return $http.delete(apiUrl + '/playlists/'+ playlistId, {
 			headers: {
 				'Content-Type' : 'application/x-www-form-urlencoded',
 				"x-access-token": token

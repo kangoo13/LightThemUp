@@ -18,7 +18,7 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use("/public", express.static(path.join(__dirname, 'public')));
+app.use("/", express.static(path.join(__dirname, 'public')));
 mongoose.connect(config.database, function(err) {
     if(err) {
         console.log('connection error', err);

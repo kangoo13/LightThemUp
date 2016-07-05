@@ -1,7 +1,6 @@
 <div class="content">
     <h3>Mes playlists</h3>
-    <a title="Créer une playlist" class="button button-primary" href="playlists/create">Créer une playlist</a>
-    
+
     <!-- Data loading -->
     <img ng-if="" class="dataLoading"
     src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
@@ -10,11 +9,16 @@
     <p ng-hide="vm.dataLoading" ng-if="!playlists.length">Vous n'avez pas de playlists pour le moment.</p>
 
     <div ng-repeat="playlist in playlists">
-       <ul>Playlist name : {{ playlist.name }}</ul>
-       <a href="/playlists/{{ playlist.slug }}/ajout">Ajouter une ou plusieurs musiques</a>
-       <li><div ng-repeat="song in playlist.songs">
-        Song name : {{ song.name }}
-    </div></li>
-</div>
-</div>
+        <ul>
+            <li><h5>{{ playlist.name }}</h5></li>
+            <ul>
+                <a href="/playlists/{{ playlist.slug }}/ajout">Ajouter une ou plusieurs musiques</a>
+                <a ng-click="RemovePlaylist(playlist._id)" href="#">Supprimer la playlist</a>
+            </div>
+            <li ng-repeat="song in playlist.songs">{{ song.name }}</li>
+        </ul>
+    </ul>
+
+    <a title="Créer une playlist" class="button button-primary" href="playlists/create">Ajouter une playlist</a>
+
 </div>
