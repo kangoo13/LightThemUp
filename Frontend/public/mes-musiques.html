@@ -5,5 +5,5 @@
 </div>
 
 <div ng-repeat="song in songs" class="row content songs">
-{{ song.name }} artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
+    <a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
 </div>
