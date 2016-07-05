@@ -91,7 +91,7 @@
 
  router.post('/', auth({secret: superSecret}), function(req, res, next) {
     if (req.body.name ) {
-        Playlist.find({name : req.body.name}, function (err, docs) {
+        Playlist.find({name : req.body.name, 'created_by': req.decoded.id}, function (err, docs) {
             if (!docs.length){
                 var playlist = new Playlist();
 
