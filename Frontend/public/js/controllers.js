@@ -265,27 +265,49 @@ app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', f
 }]);
 
 
-app.controller('AddSongPlaylistController', ['$scope', '$cookies', 'PlaylistService', 'SongService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, SongService, $location, toastr) {
+app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies', 'PlaylistService', 'SongService', '$location', 'toastr', function ($scope, $routeParams, $cookies, PlaylistService, SongService, $location, toastr) {
 
 	var vm = this;
-	vm.CreatePlaylist = CreatePlaylist;
-	SongService.GetAll().then(function (response) {
-		$scope.songs = response;
-	});
-	function CreatePlaylist() {
-		vm.dataLoading = true;
-		PlaylistService.Create(vm.playlist, $cookies.get('token'))
-		.then(function (response) {
-			if (response.success) {
-				toastr.success("Playlist créée.");
-				$location.path('/playlists');
-			} else {
-				toastr.error(response.message, "Error");
-				vm.dataLoading = false;
-			}
-		});
-	}
-	vm.dataLoading = false;
+	vm.AddSongToPlaylist = AddSongToPlaylist;
+    vm.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
+	UserService.Account($cookies.get('id')).then(function (response) {
+        PlaylistService.GetOneByUser($routeParams.slug, $cookies.get('token')).then(function (playlistUser) {
+            //$scope.songs = response.songs;
+            for(var i = 0; i < response.songs.length; i++) {
+                response.songs[i].added = false;
+                for (var j = 0; j < playlistUser.length; j++)
+                {
+                    if (playlistUser[j].name = response.songs[i].name)
+                        response.songs[i].added = true;
+                }
+            }
+                vm.dataLoading = false; 
+        });
+    });
+    function AddSongToPlaylist(idSong)
+    {
+        vm.dataLoading = true;
+        UserService.AddSongToPlaylist(idSong, $routeParams.slug, $cookies.get('token')).then(function (response) {
+            if (response.success) {
+                toastr.success("Musique ajoutée à la playlist.");
+            } else {
+                toastr.error(response.message, "Error");
+            }
+            vm.dataLoading = false;
+        })
+    }
+    function RemoveSongFromPlaylist(idSong)
+    {
+        vm.dataLoading = true;
+        UserService.RemoveSongFromPlaylist(idSong, $routeParams.slug, $cookies.get('token')).then(function (response) {
+            if (response.success) {
+                toastr.success("Musique supprimée de la playlist.");
+            } else {
+                toastr.error(response.message, "Error");
+            }
+            vm.dataLoading = false;
+        })
+    }
 }]);
 
 app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {

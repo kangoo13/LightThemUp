@@ -3,6 +3,7 @@
  */
  var express         = require('express');
  var mongoose        = require('mongoose');
+ var slug            = require('slug');
  var Playlist        = require('../../../models/Playlist.js');
  var Song            = require('../../../models/Song.js');
  var superSecret     = require('../../../config.js').secret;
@@ -10,9 +11,9 @@
  var async           = require('async');
  var router          = express.Router();
 
- router.post('/:idPlaylist/', auth({secret: superSecret}), function(req, res, next) {
+ router.post('/:slug/', auth({secret: superSecret}), function(req, res, next) {
     if (req.body.idSong) {
-        Playlist.findOne({_id: req.params.idPlaylist}, function (err, playlist) {
+        Playlist.findOne({slug: req.params.slug}, function (err, playlist) {
             if (req.decoded.admin || req.decoded.id == playlist.created_by) {
                 Song.find({_id: req.body.idSong}, function (err, song) {
                     var objectid = new mongoose.mongo.ObjectID(req.body.idSong);
@@ -96,6 +97,7 @@
 
                 playlist.name = req.body.name;
                 playlist.created_by = req.decoded.id;
+                playlist.slug = slug(req.body.name);
                 playlist.save(function (err) {
                     if (err) {
                         return res.status(503).json({
@@ -130,12 +132,20 @@ router.get('/user', auth({secret: superSecret}), function(req, res, next) {
     });
 });
 
+router.get('/user/:slug', auth({secret: superSecret}), function(req, res, next) {
+    Playlist.findOne({'slug': req.params.slug, 'created_by': req.decoded.id}).populate("songs").exec(function (err, post) {
+        if (err) return next(err);
+        res.status(200).json(post);
+    });
+});
+
 router.get('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
     Playlist.findById(req.params.idPlaylist).populate("songs").exec(function (err, post) {
         if (err) return next(err);
         res.status(200).json(post);
     });
 });
+
 
 
  router.put('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
