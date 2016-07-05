@@ -6,7 +6,7 @@
 
 <div class="content">
 	<h3>Boutique</h3>
-	<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
+<!-- 	<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
 		<div class="row">
 			<div class="two columns">
 				<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
@@ -19,33 +19,41 @@
 					Difficulté: {{ song.difficulty }}
 					<br>
 					{{ song.bought }}
-				</p>
+				</p> -->
 
 				<!-- <a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste :  prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }} -->
 
-			</div>
+<!-- 			</div>
 		</div>
-	</div>
-<!-- <div class="one-third column">
-
+	</div> -->
+	LES PLUS ACHETES
+	<div class="row content songs" ng-repeat="song in mostBoughtSongs">
+		<div class="one-third column">
 			<a href="songs/{{ song.slug }}">
 				<img class="u-max-full-width" src="{{ song.picture }}">
 			</a>
+			<a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
 		</div>
+	</div>
 
-	<div ng-repeat="achievementsLocked in lockedAchievements" ng-class="!$first ? 'box_one' : 'first-box_one'">
-		<div class="row">
-			<div class="two columns">
-				<img class="u-full-width" src="/{{ achievementsLocked.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
-			</div>
-			<div class="ten columns">
-				<p><b>{{ achievementsLocked.name }}</b>
-					<br>
-					{{ achievementsLocked.description }}
-				</p>
-			</div>
+	LES NOUVELLES
+	<div class="row content songs" ng-repeat="song in newSongs">
+		<div class="one-third column">
+			<a href="songs/{{ song.slug }}">
+				<img class="u-max-full-width" src="{{ song.picture }}">
+			</a>
+			<a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
 		</div>
-	</div> -->
+	</div>
+
+	5 random :
+	<div class="row content songs" ng-repeat="song in randomSongs">
+		<div class="one-third column">
+			<a href="songs/{{ song.slug }}">
+				<img class="u-max-full-width" src="{{ song.picture }}">
+			</a>
+			<a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
+		</div>
+	</div>
 </div>
-
 

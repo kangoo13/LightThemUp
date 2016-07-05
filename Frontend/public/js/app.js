@@ -33,6 +33,11 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'ShopController',
         controllerAs: 'vm',
         authorizedAccess: true
+    }).when('/boutique/all', {
+        templateUrl: '/boutique-all-songs.html',
+        controller: 'ShopAllSongsController',
+        controllerAs: 'vm',
+        authorizedAccess: true
     }).when('/songs/:slug', {
         templateUrl: '/song-details.html',
         controller: 'SongDetailController',
