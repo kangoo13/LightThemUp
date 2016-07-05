@@ -235,6 +235,23 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
         });
 	}
 
+	$scope.EditComment = function(data) {
+		NewsService.EditComment(data, $routeParams.slug, $cookies.get('token'))
+		.then(function (response) {
+			if (response.success) {
+				toastr.success(response.message);
+                // Refresh comments and remove form's message
+                NewsService.GetOneNews($routeParams.slug).then(function (response) {
+                	$scope.comments = response.comments;
+                	$scope.editedComment = "";
+                	$scope.sendComment.$setPristine();
+                });
+            } else {
+            	toastr.error(response.message);
+            }
+        });
+	}
+
 	$scope.RemoveComment = function(idComment) {
 		NewsService.RemoveComment(idComment, $routeParams.slug, $cookies.get('token'))
 		.then(function (response) {
