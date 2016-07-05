@@ -67,7 +67,7 @@ router.get('/', function(req, res, next) {
 
 
 router.post('/',  auth({secret: superSecret}), upload.single('picture'), function(req, res, next) {
-    if (req.body.name && req.body.description && req.file) {
+    if (req.body.name && req.body.description && req.file && req.body.explanation) {
         if (req.decoded.admin) {
             Achievement.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
@@ -105,6 +105,7 @@ router.post('/',  auth({secret: superSecret}), upload.single('picture'), functio
                                 achievement.name = req.body.name;
                                 achievement.description = req.body.description;
                                 achievement.picture = picturePath;
+                                achievement.explanation = req.body.explanation;
                                 achievement.save(function (err) {
                                     if (err) {
                                         return res.status(503).json({

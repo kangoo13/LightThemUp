@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var AchievementSchema = new mongoose.Schema({
     name: String,
     description: String,
+    explanation: String,
     picture: String
 },
     {
