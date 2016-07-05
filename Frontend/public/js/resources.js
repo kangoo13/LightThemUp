@@ -155,6 +155,7 @@ app.factory("NewsService", function ($http) {
 	service.GetOneNews = GetOneNews;
 	service.SendComment = SendComment;
 	service.RemoveComment = RemoveComment;
+	/*service.EditComment = EditComment;*/
 
 	return service;
 
@@ -176,7 +177,7 @@ app.factory("NewsService", function ($http) {
 		}).then(handleSuccess, handleError);
 	}
 
-	function EditComment(form, slug, token) {
+	/*function EditComment(form, slug, token) {
 		var data = $.param(form, true);
 		return $http.put(apiUrl + '/news/' + slug + "/comments/" + id, data, {
 			headers: {
@@ -184,7 +185,7 @@ app.factory("NewsService", function ($http) {
 				"x-access-token": token
 			}
 		}).then(handleSuccess, handleError);
-	}
+	}*/
 
 	function RemoveComment(id, slug, token) {
 		return $http({

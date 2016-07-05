@@ -80,6 +80,8 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
 		if (response) {
 			vm.dataLoading = false;
 			vm.user = response;
+			delete vm.user.achievements;
+			delete vm.user.songs;
 		} else {
 			toastr.error("Compte indisponible.");
 			$location.path('/');
