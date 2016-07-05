@@ -43,8 +43,8 @@
 					<br>
 					<span ng-hide="editing"> {{ comment.message }} </span>
 				</p>
-				<form name="editComment" ng-submit="EditComment(data)" role="form" autocomplete="on" ng-show="editing" ng-submit="editing = false">
-					<textarea required ng-init="editedComment=comment.message" ng-model="editedComment" class="u-full-width" type="text" name="editedComment"></textarea>
+				<form name="editComment" ng-submit="EditComment(data, comment._id)" role="form" autocomplete="on" ng-show="editing" ng-submit="editing = false">
+					<textarea required ng-init="data.message=comment.message" ng-model="data.message" class="u-full-width" type="text" name="comment"></textarea>
 					<div class="form-actions">
 						<button type="submit" class="button-primary">Envoyer</button>
 						<a class="button" ng-click="editing = false" href="#">Annuler</a>
