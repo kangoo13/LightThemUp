@@ -49,10 +49,10 @@
         });
 });
 
- router.delete('/:idPlaylist/:idSong', auth({secret: superSecret}), function(req, res, next) {
-    Playlist.findOne({_id: req.params.idPlaylist}, function (err, playlist) {
+ router.delete('/:slugPlaylist/:idSong', auth({secret: superSecret}), function(req, res, next) {
+    Playlist.findOne({'slug': req.params.slugPlaylist}, function (err, playlist) {
         if (req.decoded.admin || req.decoded.id == playlist.created_by) {
-            Song.find({_id: req.body.idSong}, function (err, song) {
+            Song.find({_id: req.params.idSong}, function (err, song) {
                 var objectid = new mongoose.mongo.ObjectID(req.params.idSong);
                 playlist.songs.pull(objectid);
                 playlist.save(function (err) {
