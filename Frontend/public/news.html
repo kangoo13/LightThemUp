@@ -7,15 +7,17 @@
 <!-- Error message for empty news -->
 <p class="content" ng-hide="vm.dataLoading" ng-if="!news.length">Pas d'actualités disponibles.</p>
 
-<div class="row content news" ng-repeat="new in news">
-    <div class="one-third column">
-        <a href="news/{{ new.slug }}">
-            <img class="u-max-full-width" src="http://main.its.utoronto.ca/wp-content/uploads/2016/02/news.jpg">
-        </a>
-    </div>
-    <div class="two-thirds column">
-        <h2><a href="news/{{ new.slug }}">{{ new.name }}</a></h2>
-        <p>Publiée le <span class="news-date">{{ new.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
-        <p>{{ new.description | limitTo : 200 }}</p>
+<div class="content news" ng-repeat="new in news">
+    <div class="row">
+        <div class="one-third column">
+            <a href="news/{{ new.slug }}">
+                <img title="{{ new.name }}" alt="Miniature de {{ new.name }}" class="u-max-full-width" src="/{{ new.picture }}">
+            </a>
+        </div>
+        <div class="two-thirds column">
+            <h5><a href="news/{{ new.slug }}">{{ new.name }}</a></h5>
+            <p>Publiée le <span class="news-date">{{ new.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
+            <p>{{ new.description | limitTo : 200 }}</p>
+        </div>
     </div>
 </div>

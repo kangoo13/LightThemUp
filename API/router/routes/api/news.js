@@ -1,6 +1,3 @@
-/**
- * Created by Kangoo13 on 17/10/2015.
- */
  var express     = require('express');
  var News        = require('../../../models/News.js');
  var Comment     = require('../../../models/Comment.js');

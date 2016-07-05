@@ -54,7 +54,7 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controllerAs: 'vm',
         authorizedAccess: true
     }).when('/succes', {
-        templateUrl: '/succes.html',
+        templateUrl: '/mes-succes.html',
         controller: 'SuccesController',
         controllerAs: 'vm',
         authorizedAccess: false
