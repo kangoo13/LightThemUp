@@ -176,6 +176,16 @@ app.factory("NewsService", function ($http) {
 		}).then(handleSuccess, handleError);
 	}
 
+	function EditComment(form, slug, token) {
+		var data = $.param(form, true);
+		return $http.put(apiUrl + '/news/' + slug + "/comments/" + id, data, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
+
 	function RemoveComment(id, slug, token) {
 		return $http({
 			method: 'DELETE',

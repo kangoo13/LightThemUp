@@ -38,22 +38,19 @@
 			</div>
 			<div class="ten columns">
 				<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}} -
-					<span title="Modifier"  ng-click="editing = true" ng-if="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+					<span title="Modifier" ng-click="editing = true" ng-show="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
 					<span title="Supprimer" ng-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-times" aria-hidden="true"></i></span>
 					<br>
-					{{ comment.message }}
+					<span ng-hide="editing"> {{ comment.message }} </span>
 				</p>
-				<form ng-show="editing" ng-submit="editing = false">
-					<label>Name:</label>
-					<input type="text" ng-model="bday.name" placeholder="Name" ng-required/>
-					<label>Date:</label>
-					<input type="date" ng-model="bday.date" placeholder="Date" ng-required/>
-					<br/>
-					<button class="btn" type="submit">Save</button>
+				<form name="editComment" ng-submit="editComment(data)" role="form" autocomplete="on" ng-show="editing" ng-submit="editing = false">
+					<textarea required ng-init="editedComment=comment.message" ng-model="editedComment" class="u-full-width" type="text" name="editedComment"></textarea>
+					<div class="form-actions">
+						<button type="submit" class="button-primary">Envoyer</button>
+						<a class="button" ng-click="editing = false" href="#">Annuler</a>
+					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
-
-<span  ng-click="editing = true">dsqdqsdq</span>
