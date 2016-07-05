@@ -265,7 +265,7 @@ app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', f
 }]);
 
 
-app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies', 'PlaylistService', 'SongService', '$location', 'toastr', function ($scope, $routeParams, $cookies, PlaylistService, SongService, $location, toastr) {
+app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies', 'PlaylistService', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams, $cookies, PlaylistService, SongService, UserService, $location, toastr) {
 
 	var vm = this;
 	vm.AddSongToPlaylist = AddSongToPlaylist;
