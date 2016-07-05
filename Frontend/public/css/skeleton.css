@@ -826,7 +826,7 @@ a:hover {
 	width: 120px;
 }
 
-/* Box 1 */
+/* Box One */
 
 .box_one, .first-box_one {
 	margin-top: 2.5rem;
@@ -842,6 +842,17 @@ a:hover {
 	cursor: pointer;
 }
 
+/* Boutique */
+
+#boutiquePanel {
+	text-align: center;
+}
+
+#boutiquePanel img {
+	width: 100%;
+	max-height: 211px;
+	min-height: 211px;
+}
 /* Captcha Google */
 
 .g-recaptcha {

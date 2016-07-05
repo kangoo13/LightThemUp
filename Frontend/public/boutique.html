@@ -6,54 +6,65 @@
 
 <div ng-hide="vm.dataLoading" class="content">
 	<h3>Boutique</h3>
-<!-- 	<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
+	<div id="boutiquePanel">
 		<div class="row">
-			<div class="two columns">
-				<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+			<div class="one-third column">
+				<h5>Meilleures ventes</h5>
+				<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in mostBoughtSongs">
+					<div class="row">
+						<a href="songs/{{ song.slug }}">
+							<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+						</a>
+						<p><b>{{ song.artist }} - {{ song.name }}</b>
+							<br>
+							Prix : {{ song.price }}€ - Achetée : {{ song.bought }}
+							<br>
+							Difficulté: {{ song.difficulty }}
+							<br>
+						</p>
+						<a title="Acheter" class="button button-primary" href="#">Acheter</a>
+						<a title="Ecouter" class="button" href="{{ song.preview }}">Ecouter</a>
+					</div>
+				</div>
 			</div>
-			<div class="ten columns">
-				<p>{{ song.artist }} - {{ song.name }}
-					<br>
-					Prix : {{ song.price }}€ - Achetée : {{ song.bought }}
-					<br>
-					Difficulté: {{ song.difficulty }}
-					<br>
-					{{ song.bought }}
-				</p> -->
-
-				<!-- <a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste :  prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }} -->
-
-<!-- 			</div>
-		</div>
-	</div> -->
-	LES PLUS ACHETES
-	<div class="row content songs" ng-repeat="song in mostBoughtSongs">
-		<div class="one-third column">
-			<a href="songs/{{ song.slug }}">
-				<img class="u-max-full-width" src="{{ song.picture }}">
-			</a>
-			<a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
-		</div>
-	</div>
-
-	LES NOUVELLES
-	<div class="row content songs" ng-repeat="song in newSongs">
-		<div class="one-third column">
-			<a href="songs/{{ song.slug }}">
-				<img class="u-max-full-width" src="{{ song.picture }}">
-			</a>
-			<a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
-		</div>
-	</div>
-
-	5 random :
-	<div class="row content songs" ng-repeat="song in randomSongs">
-		<div class="one-third column">
-			<a href="songs/{{ song.slug }}">
-				<img class="u-max-full-width" src="{{ song.picture }}">
-			</a>
-			<a href="/songs/{{ song.slug }}">{{ song.name }}</a> artiste : {{ song.artist }} prix : {{ song.price }} preview : {{ song.preview }} difficulté : {{ song.difficulty }} téléchargé: {{ song.bought }}
+			<div class="one-third column">
+				<h5>Derniers ajouts</h5>
+				<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in newSongs">
+					<div class="row">
+						<a href="songs/{{ song.slug }}">
+							<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+						</a>
+						<p><b>{{ song.artist }} - {{ song.name }}</b>
+							<br>
+							Prix : {{ song.price }}€ - Achetée : {{ song.bought }}
+							<br>
+							Difficulté: {{ song.difficulty }}
+							<br>
+						</p>
+						<a title="Acheter" class="button button-primary" href="#">Acheter</a>
+						<a title="Ecouter" class="button" href="{{ song.preview }}">Ecouter</a>
+					</div>
+				</div>
+			</div>
+			<div class="one-third column">
+				<h5>Sélection aléatoire</h5>
+				<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in randomSongs">
+					<div class="row">
+						<a href="songs/{{ song.slug }}">
+							<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+						</a>
+						<p><b>{{ song.artist }} - {{ song.name }}</b>
+							<br>
+							Prix : {{ song.price }}€ - Achetée : {{ song.bought }}
+							<br>
+							Difficulté: {{ song.difficulty }}
+							<br>
+						</p>
+						<a title="Acheter" class="button button-primary" href="#">Acheter</a>
+						<a title="Ecouter" class="button" href="{{ song.preview }}">Ecouter</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-
