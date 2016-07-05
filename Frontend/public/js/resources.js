@@ -35,8 +35,8 @@ app.factory("UserService", function ($http) {
 	service.Delete = Delete;
 	service.AddSong = AddSong;
 	service.RemoveSong = RemoveSong;
-    service.AddSongToPlaylist = AddSongToPlaylist;
-    service.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
+	service.AddSongToPlaylist = AddSongToPlaylist;
+	service.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
 
 	return service;
 
@@ -70,29 +70,29 @@ app.factory("UserService", function ($http) {
 	function Account(id) {
 		return $http.get(apiUrl + '/users/' + id).then(handleSuccess, handleError);
 	}
-    
-    function AddSongToPlaylist(songId, slug, token)
-    {
-        var data = $.param({
-            idSong: songId
-        });
-        return $http.post(apiUrl + '/playlists/'+slug, data, {
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded',
-                "x-access-token": token
-            }
-        }).then(handleSuccess, handleError);
-    }
 
-    function RemoveSongFromPlaylist(songId, slug, token)
-    {
-        return $http.delete(apiUrl + '/playlists/'+slug+'/'+songId, {
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded',
-                "x-access-token": token
-            }
-        }).then(handleSuccess, handleError);
-    }
+	function AddSongToPlaylist(songId, slug, token)
+	{
+		var data = $.param({
+			idSong: songId
+		});
+		return $http.post(apiUrl + '/playlists/'+slug, data, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
+
+	function RemoveSongFromPlaylist(songId, slug, token)
+	{
+		return $http.delete(apiUrl + '/playlists/'+slug+'/'+songId, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
 
 	function AddSong(songId, token)
 	{
@@ -155,7 +155,7 @@ app.factory("NewsService", function ($http) {
 	service.GetOneNews = GetOneNews;
 	service.SendComment = SendComment;
 	service.RemoveComment = RemoveComment;
-	/*service.EditComment = EditComment;*/
+	service.EditComment = EditComment;
 
 	return service;
 
@@ -177,7 +177,7 @@ app.factory("NewsService", function ($http) {
 		}).then(handleSuccess, handleError);
 	}
 
-	/*function EditComment(form, slug, token) {
+	function EditComment(form, slug, token, id) {
 		var data = $.param(form, true);
 		return $http.put(apiUrl + '/news/' + slug + "/comments/" + id, data, {
 			headers: {
@@ -185,7 +185,7 @@ app.factory("NewsService", function ($http) {
 				"x-access-token": token
 			}
 		}).then(handleSuccess, handleError);
-	}*/
+	}
 
 	function RemoveComment(id, slug, token) {
 		return $http({
@@ -240,7 +240,7 @@ app.factory("PlaylistService", function ($http) {
 
 	service.GetAllByUser = GetAllByUser;
 	service.Create = Create;
-    service.GetOneByUser = GetOneByUser;
+	service.GetOneByUser = GetOneByUser;
 
 	return service;
 
@@ -253,17 +253,17 @@ app.factory("PlaylistService", function ($http) {
 			}
 		}).then(handleSuccess, handleError);
 	}
-    
-    function GetOneByUser(slug, token)
-    {
-        return $http.get(apiUrl + '/playlists/user/'+slug, {
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded',
-                "x-access-token": token
 
-            }
-        }).then(handleSuccess, handleError);
-    }
+	function GetOneByUser(slug, token)
+	{
+		return $http.get(apiUrl + '/playlists/user/'+slug, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+
+			}
+		}).then(handleSuccess, handleError);
+	}
 
 	function Create(name, token) {
 		var data = $.param({
