@@ -127,10 +127,10 @@ router.get('/:idNews', function(req, res, next) {
 });
 });
 
-router.put('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
-   if (req.body.idComment && req.body.message) {
+router.put('/:idNews/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+   if (req.params.idComment && req.body.message) {
     News.findOne({ 'slug': req.params.idNews }).exec(function (err, news) {
-        Comment.findById(req.body.idComment, function (err, comment) {
+        Comment.findById(req.params.idComment, function (err, comment) {
             if (comment == null) {
                 return res.status(503).json({
                     success: false,
@@ -170,12 +170,10 @@ else {
 }
 });
 
-router.delete('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
-    if (req.body.idComment) {
+router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+    if (req.params.idComment) {
       News.findOne({ 'slug': req.params.idNews }).exec(function (err, news) {
-        console.log(req.body);
-        console.log(req.body.idComment);
-        Comment.findById(req.body.idComment, function (err, comment) {
+        Comment.findById(req.params.idComment, function (err, comment) {
             if (comment == null) {
                 return res.status(503).json({
                     success: false,
@@ -183,7 +181,7 @@ router.delete('/:idNews/comments', auth({secret: superSecret}), function(req, re
                 });
             }
             if (req.decoded.admin || req.decoded.id == comment.author) {
-                var objectid = new mongoose.mongo.ObjectID(req.body.idComment);
+                var objectid = new mongoose.mongo.ObjectID(req.params.idComment);
                 news.comments.pull(objectid);
                 comment.remove();
                 news.save(function (err) {

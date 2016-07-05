@@ -31,19 +31,29 @@
 	<!-- Error message for empty comments -->
 	<p ng-hide="vm.dataLoading" ng-if="!comments.length">Pas de commentaires pour cette actualité.</p>
 
-	<div ng-repeat="comment in comments" ng-class="!$first ? 'comment' : 'first-comment'">
+	<div ng-repeat="comment in comments" ng-class="!$first ? 'box_one' : 'first-box_one'">
 		<div class="row">
 			<div class="two columns">
 				<img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.name }}" title="{{ comment.author.name }}" />
 			</div>
 			<div class="ten columns">
-				<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}} - 
-					<span title="Modifier" ng-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+				<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}} -
+					<span title="Modifier"  ng-click="editing = true" ng-if="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
 					<span title="Supprimer" ng-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-times" aria-hidden="true"></i></span>
 					<br>
 					{{ comment.message }}
 				</p>
+				<form ng-show="editing" ng-submit="editing = false">
+					<label>Name:</label>
+					<input type="text" ng-model="bday.name" placeholder="Name" ng-required/>
+					<label>Date:</label>
+					<input type="date" ng-model="bday.date" placeholder="Date" ng-required/>
+					<br/>
+					<button class="btn" type="submit">Save</button>
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
+
+<span  ng-click="editing = true">dsqdqsdq</span>

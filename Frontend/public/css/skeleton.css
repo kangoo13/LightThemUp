@@ -826,19 +826,19 @@ a:hover {
 	width: 120px;
 }
 
-/* Comments */
+/* Box 1 */
 
-.comment, .first-comment {
+.box_one, .first-box_one {
 	margin-top: 2.5rem;
 	background-color: #f1f1f1;
 	padding: 1.5rem;
 }
 
-.first-comment {
+.first-box_one {
 	margin-top: 0;
 }
 
-.comment span {
+.box_one span {
 	cursor: pointer;
 }
 
