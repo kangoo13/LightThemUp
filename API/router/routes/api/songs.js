@@ -10,6 +10,7 @@ var path        = require('path');
 var slug        = require('slug')
 var multer      = require('multer');
 var Promise     = require('bluebird');
+var mongoose    = require('mongoose');
 var upload      = multer({ dest: './public/uploads/avatar/'});
 var router      = express.Router();
 
@@ -79,6 +80,139 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
         if (err) return next(err);
     });
 });
+
+
+router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+    if (req.params.idComment && req.body.message) {
+        Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
+            Comment.findById(req.params.idComment, function (err, comment) {
+                if (comment == null) {
+                    return res.status(503).json({
+                        success: false,
+                        message: "Comment doesn't exist."
+                    });
+                }
+                if (req.decoded.admin || req.decoded.id == comment.author) {
+                    comment.message = req.body.message;
+                    comment.save(function (err) {
+                        if (err) {
+                            return res.status(503).json({
+                                success: false,
+                                message: err.errors
+                            });
+                        }
+                        res.status(200).json({
+                            success: true,
+                            message: 'Comment edited.'
+                        });
+                    });
+                }
+                else {
+                    return res.status(401).send({
+                        success: false,
+                        message: 'Unauthorized.'
+                    });
+                }
+            });
+            if (err) return next(err)
+        });
+    }
+    else {
+        return res.status(400).json({
+            success: false,
+            message: 'Wrong arguments'
+        });
+    }
+});
+
+router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+    if (req.params.idComment) {
+        Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
+            Comment.findById(req.params.idComment, function (err, comment) {
+                if (comment == null) {
+                    return res.status(503).json({
+                        success: false,
+                        message: "Comment doesn't exist."
+                    });
+                }
+                if (req.decoded.admin || req.decoded.id == comment.author) {
+                    var objectid = new mongoose.mongo.ObjectID(req.params.idComment);
+                    song.comments.pull(objectid);
+                    comment.remove();
+                    song.save(function (err) {
+                        if (err) {
+                            return res.status(503).json({
+                                success: false,
+                                message: err.errors
+                            });
+                        }
+                        res.status(200).json({
+                            success: true,
+                            message: 'Comment removed.'
+                        });
+                    });
+                }
+                else {
+                    return res.status(401).send({
+                        success: false,
+                        message: 'Unauthorized.'
+                    });
+                }
+            });
+            if (err) return next(err);
+        });
+    }
+    else {
+        return res.status(400).json({
+            success: false,
+            message: 'Wrong arguments'
+        });
+    }
+});
+
+router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res, next) {
+    Song.findOne({ 'slug': req.params.idSong }).exec(function (err, post) {
+        if (err) return next(err);
+        if (req.decoded.id && req.body.message && req.body.type) {
+            var comment = new Comment();
+            if (err) return next(err);
+            var author = new mongoose.mongo.ObjectID(req.decoded.id);
+            comment.author = author;
+            comment.message = req.body.message;
+            comment.type = "song";
+            comment.save(function (err) {
+                if (err) {
+                    return res.status(503).json({
+                        success: false,
+                        message: err.errors
+                    });
+                }
+                else {
+                    var objectid = new mongoose.mongo.ObjectID(comment._id);
+                    post.comments.push(objectid);
+                    post.save(function (err) {
+                        if (err) {
+                            return res.status(503).json({
+                                success: false,
+                                message: err.errors
+                            });
+                        }
+                        res.status(200).json({
+                            success: true,
+                            message: 'Comment added.'
+                        });
+                    });
+                }
+            });
+        }
+        else
+            return res.status(400).json({
+                success: false,
+                message: 'Wrong arguments'
+            });
+    });
+});
+
 
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }]), auth({secret: superSecret}), function(req, res, next) {
     if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.files['file'] && req.files['preview'] && req.body.difficulty ) {
@@ -193,7 +327,14 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
 });
 
 router.get('/:slug', function(req, res, next) {
-    Song.findOne({'slug': req.params.slug}, function (err, post) {
+    Song.findOne({'slug': req.params.slug}).populate({
+        path: 'comments',
+        populate: {
+            path: 'author',
+            select: "name picture",
+            model: 'User'
+        }
+    }).exec(function (err, post) {
         if (err) return next(err);
         res.status(200).json(post);
     });

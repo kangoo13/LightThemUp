@@ -218,12 +218,13 @@ router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), funct
 router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
     News.findOne({ 'slug': req.params.idNews }).exec(function (err, post) {
         if (err) return next(err);
-        if (req.decoded.id && req.body.message) {
+        if (req.decoded.id && req.body.message && req.body.type) {
             var comment = new Comment();
             if (err) return next(err);
             var author = new mongoose.mongo.ObjectID(req.decoded.id);
             comment.author = author;
             comment.message = req.body.message;
+            comment.type = "news";
             comment.save(function (err) {
                 if (err) {
                     return res.status(503).json({
