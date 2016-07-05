@@ -33,6 +33,8 @@ app.factory("UserService", function ($http) {
 	service.Account = Account;
 	service.Update = Update;
 	service.Delete = Delete;
+	service.AddSong = AddSong;
+	service.RemoveSong = RemoveSong;
 
 	return service;
 
@@ -65,6 +67,29 @@ app.factory("UserService", function ($http) {
 
 	function Account(id) {
 		return $http.get(apiUrl + '/users/' + id).then(handleSuccess, handleError);
+	}
+
+	function AddSong(songId, token)
+	{
+		var data = $.param({
+			idSong: songId
+		});
+		return $http.post(apiUrl + '/users/songs/', data, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
+
+	function RemoveSong(songId, token)
+	{
+		return $http.delete(apiUrl + '/users/songs/'+songId, {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
 	}
 
 	function handleSuccess(res) {
@@ -129,12 +154,11 @@ app.factory("NewsService", function ($http) {
 	function RemoveComment(id, slug, token) {
 		return $http({
 			method: 'DELETE',
-			url: apiUrl + '/news/' + slug + "/comments",
+			url: apiUrl + '/news/' + slug + "/comments/" + id,
 			headers: {
 				'Content-Type' : 'application/x-www-form-urlencoded',
 				"x-access-token": token
 			},
-			data: {"idComment": id}
 		}).then(handleSuccess, handleError);
 	}
 
@@ -160,8 +184,8 @@ app.factory("SongService", function ($http) {
 		return $http.get(apiUrl + '/songs').then(handleSuccess, handleError);
 	}
 
-	function GetOneSong(id) {
-		return $http.get(apiUrl + '/songs/' + id).then(handleSuccess, handleError);
+	function GetOneSong(slug) {
+		return $http.get(apiUrl + '/songs/' + slug).then(handleSuccess, handleError);
 	}
 
 	function handleSuccess(res) {
