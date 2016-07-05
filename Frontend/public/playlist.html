@@ -10,10 +10,11 @@
     <p ng-hide="vm.dataLoading" ng-if="!playlists.length">Vous n'avez pas de playlists pour le moment.</p>
 
     <div ng-repeat="playlist in playlists">
-     Playlist name : {{ playlist.name }}
-     <a href="/playlists/{{ playlist.slug }}/ajout">Ajouter une ou plusieurs musiques</a>
-     <div ng-repeat="song in playlist.songs">
+       <ul>Playlist name : {{ playlist.name }}</ul>
+       <a href="/playlists/{{ playlist.slug }}/ajout">Ajouter une ou plusieurs musiques</a>
+       <li><div ng-repeat="song in playlist.songs">
         Song name : {{ song.name }}
-    </div>
+    </div></li>
+</div>
 </div>
 </div>
