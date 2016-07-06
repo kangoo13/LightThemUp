@@ -46,7 +46,7 @@ router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
     });
 });
  
-router.get('/getSongFromComment/:idComment', function(req, res, next){
+router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
      Song.find().populate("comments").exec(function (err, songs){
          if (err) return next(err);
          var goodSong = null;
@@ -56,6 +56,7 @@ router.get('/getSongFromComment/:idComment', function(req, res, next){
              {
                  if (songs[i].comments[j]._id == req.params.idComment) {
                      goodSong = songs[i];
+                     goodSong.index = req.params.index;
                      break;
                  }
              }
