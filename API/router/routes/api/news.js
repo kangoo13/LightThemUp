@@ -213,7 +213,7 @@ router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), funct
 });
 
 
-router.get('/getNewsFromComment/:idComment', function(req, res, next){
+router.get('/getNewsFromComment/:idComment/:index', function(req, res, next){
     News.find().populate("comments").exec(function (err, news){
         if (err) return next(err);
         var goodNews = null;
@@ -223,6 +223,7 @@ router.get('/getNewsFromComment/:idComment', function(req, res, next){
             {
                 if (news[i].comments[j]._id == req.params.idComment) {
                     goodNews = news[i];
+                    goodNews.index = req.params.index;
                     break;
                 }
             }

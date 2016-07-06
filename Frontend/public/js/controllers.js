@@ -397,23 +397,17 @@ app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'N
         for (var i = 0; i != comments.length; i++)
         {
             if (comments[i].type == "news") {
-                var j = i;
-                NewsService.GetNewsByComment(comments[j]._id).then(function (response) {
-                    var k = j;
-                    comments[k].url = '/news/'+response.slug;
-                    console.log(comments);
+                NewsService.GetNewsByComment(comments[i]._id, i).then(function (response) {
+                    comments[response.index].url = '/news/'+response.slug;
                 });
             }
             else if (comments[i].type == "song") {
-                var j = i;
-                SongService.GetSongByComment(comments[j]._id).then(function (response) {
-                    var k = j;
-                    comments[k].url = '/news/'+response.slug;
-                    console.log(comments);
+                SongService.GetSongByComment(comments[i]._id, i).then(function (response) {
+                    comments[response.index].url = '/news/'+response.slug;
                 });
             }
         }
-		//$scope.lastComments = comments;
+		$scope.lastComments = comments;
 	});
 
 }]);

@@ -83,7 +83,7 @@
 										<img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.name }}" title="{{ comment.author.name }}" />
 									</div>
 									<div class="ten columns">
-										<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"short"}}
+										<p><b><a href="{{ comment.url }}">{{ comment.author.name }}</a></b> - le {{ comment.createdAt | date:"short"}}
 											<br>
 											<span>{{ comment.message | limitTo : 200 }} </span>
 										</p>
