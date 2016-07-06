@@ -860,10 +860,6 @@ a:hover {
 	margin-top: 0;
 }
 
-.box_one span {
-	cursor: pointer;
-}
-
 /* Boutique */
 
 #boutiquePanel {
@@ -902,6 +898,12 @@ textarea {
 .logo {
 	display: block;
 	margin: 0 auto 2.5rem auto;
+}
+
+/* Comments */
+
+.comments-buttons {
+	cursor: pointer;
 }
 
 
