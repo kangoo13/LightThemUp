@@ -12,10 +12,11 @@ app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies
 		}
 		else {
 			// Token isn't valid anymore
-			toastr.error(response.message, "Vous devez vous reconnectez");
+			toastr.error("Vous devez vous reconnecter.");
     		 // Remove cookies
     		 $cookies.remove('token');
     		 $cookies.remove('id');
+    		 $scope.isLogged = false;
     		}
     	});
 	}
@@ -405,20 +406,20 @@ app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'N
 	$scope.dataLoading = true;
 	CommentService.GetLastComments(5).then(function (response) {
 		$scope.dataLoading = false;
-        var comments = response;
-        for (var i = 0; i != comments.length; i++)
-        {
-            if (comments[i].type == "news") {
-                NewsService.GetNewsByComment(comments[i]._id, i).then(function (response) {
-                    comments[response.index].url = '/news/'+response.slug;
-                });
-            }
-            else if (comments[i].type == "song") {
-                SongService.GetSongByComment(comments[i]._id, i).then(function (response) {
-                    comments[response.index].url = '/news/'+response.slug;
-                });
-            }
-        }
+		var comments = response;
+		for (var i = 0; i != comments.length; i++)
+		{
+			if (comments[i].type == "news") {
+				NewsService.GetNewsByComment(comments[i]._id, i).then(function (response) {
+					comments[response.index].url = '/news/'+response.slug;
+				});
+			}
+			else if (comments[i].type == "song") {
+				SongService.GetSongByComment(comments[i]._id, i).then(function (response) {
+					comments[response.index].url = '/news/'+response.slug;
+				});
+			}
+		}
 		$scope.lastComments = comments;
 	});
 }]);
