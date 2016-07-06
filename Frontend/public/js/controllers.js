@@ -383,13 +383,33 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 
 }]);
 
-app.controller('CommentsController', ['$scope', 'CommentService', function ($scope, CommentService) {
+app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'NewsService', 'CommentService', function ($scope, UserService, SongService, NewsService, CommentService) {
 
 	var vm = this;
 	$scope.dataLoading = true;
-	CommentService.GetLastComments(2).then(function (response) {
+	CommentService.GetLastComments(5).then(function (response) {
 		$scope.dataLoading = false;
-		$scope.lastComments = response;
+        var comments = response;
+        for (var i = 0; i != comments.length; i++)
+        {
+            if (comments[i].type == "news") {
+                var j = i;
+                NewsService.GetNewsByComment(comments[j]._id).then(function (response) {
+                    var k = j;
+                    comments[k].url = '/news/'+response.slug;
+                    console.log(comments);
+                });
+            }
+            else if (comments[i].type == "song") {
+                var j = i;
+                SongService.GetSongByComment(comments[j]._id).then(function (response) {
+                    var k = j;
+                    comments[k].url = '/news/'+response.slug;
+                    console.log(comments);
+                });
+            }
+        }
+		//$scope.lastComments = comments;
 	});
 
 }]);

@@ -156,6 +156,7 @@ app.factory("NewsService", function ($http) {
 	service.SendComment = SendComment;
 	service.RemoveComment = RemoveComment;
 	service.EditComment = EditComment;
+    service.GetNewsByComment = GetNewsByComment;
 
 	return service;
 
@@ -166,6 +167,10 @@ app.factory("NewsService", function ($http) {
 	function GetOneNews(slug) {
 		return $http.get(apiUrl + '/news/' + slug).then(handleSuccess, handleError);
 	}
+
+    function GetNewsByComment(idComment) {
+        return $http.get(apiUrl + '/news/getNewsFromComment/'+idComment).then(handleSuccess, handleError);
+    }
 
 	function SendComment(form, slug, token) {
 		var data = $.param(form, true);
@@ -241,6 +246,7 @@ app.factory("SongService", function ($http) {
 	service.SendComment = SendComment;
 	service.RemoveComment = RemoveComment;
 	service.EditComment = EditComment;
+    service.GetSongByComment = GetSongByComment;
 
 	return service;
 
@@ -251,6 +257,10 @@ app.factory("SongService", function ($http) {
 	function GetOneSong(slug) {
 		return $http.get(apiUrl + '/songs/' + slug).then(handleSuccess, handleError);
 	}
+    
+    function GetSongByComment(idComment) {
+        return $http.get(apiUrl + '/songs/getSongFromComment/'+idComment).then(handleSuccess, handleError);
+    }
 
 	function GetMostBoughtSongs(nbSong)
 	{

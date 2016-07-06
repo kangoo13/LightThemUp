@@ -45,7 +45,33 @@ router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
         res.status(200).json(songs);
     });
 });
-
+ 
+router.get('/getSongFromComment/:idComment', function(req, res, next){
+     Song.find().exec(function (err, songs){
+         if (err) return next(err);
+         var goodSong = null;
+         for (var i = 0; i != songs.length; i++)
+         {
+             for (var j = 0; j != songs[i].comments.length; j++)
+             {
+                 if (songs[i].comments[j]._id == req.params.idComment) {
+                     goodSong = songs[i];
+                     break;
+                 }
+             }
+             if (goodSong != null)
+                 break;
+         }
+         if (goodSong)
+             return res.status(200).json(goodSong);
+         else
+             return res.status(503).json({
+                 success: false,
+                 message: "La musique n'a pas été trouvée"
+             });
+     })
+}); 
+ 
 router.get('/randomSongs/:nbSong', function(req, res, next) {
     Song.find().exec(function (err, songs) {
         var maxRandom = songs.length - 1;
