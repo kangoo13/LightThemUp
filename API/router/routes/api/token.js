@@ -4,7 +4,11 @@
  var auth        = require('authenticate');
  var router      = express.Router();
 
- router.get('/', auth({secret: superSecret}), function(req, res, next) {
+ router.post('/', auth({secret: superSecret}), function(req, res, next) {
+ 	res.status(200).json({
+ 		success: true,
+ 		message: 'Token valid'
+ 	});
  });
 
  module.exports = router;

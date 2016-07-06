@@ -2,13 +2,25 @@
 
 /* Controllers */
 
-app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', 'UserService',  function ($rootScope, $scope, $location, $cookies, UserService) {
-    // Set scope var isLogged depending on token && id existences
+app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', 'UserService', 'toastr',  function ($rootScope, $scope, $location, $cookies, UserService, toastr) {
 
-/*    UserService.Token($cookies.get('token')).then(function (response) {
-    	console.log(response);
-    });
-*/
+	if ($cookies.get('token')) {
+		UserService.Token($cookies.get('token'))
+		.then(function (response) {
+			if (response.success) {
+			//Nothing here yet
+		}
+		else {
+			// Token isn't valid anymore
+			toastr.error(response.message, "Vous devez vous reconnectez");
+    		 // Remove cookies
+    		 $cookies.remove('token');
+    		 $cookies.remove('id');
+    		}
+    	});
+	}
+
+    // Set scope var isLogged depending on token && id existences
     if ($cookies.get('token') && $cookies.get('id'))
     	$scope.isLogged = true;
     else
@@ -409,7 +421,6 @@ app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'N
         }
 		$scope.lastComments = comments;
 	});
-
 }]);
 
 app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
@@ -463,7 +474,7 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 		vm.dataLoading = false;
 		$scope.comments = response.comments;
 	});
-	
+
 	UserService.Account($cookies.get('id')).then(function (response) {
 		$scope.bought = false;
 		$scope.user = response;
