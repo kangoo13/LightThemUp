@@ -1,74 +1,75 @@
 <!-- Data loading -->
 <div class="content" ng-if="vm.dataLoading">
-    <img class="dataLoading"
-    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+	<img class="dataLoading"
+	src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
 </div>
 
 <div ng-hide="vm.dataLoading" class="content">
-    <h3>{{ song.artist }} - {{ song.name }}</h3>
-    <div class="row">
-        <div class="two columns">
-            <img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
-        </div>
-        <div class="ten columns">
-            <p><b>{{ song.artist }} - {{ song.name }}</b>
-                <br>
-                Prix : {{ song.price }}€ - Achetée : {{ song.bought }}
-                <br>
-                Difficulté: {{ song.difficulty }}
-                <br>
-            </p>
-        </div>
-    </div>
-    <div ng-if="bought == true">
-        <img src="/images/delete.png" ng-click="vm.RemoveSongFromUser()" />
-    </div>
-    <div ng-if="bought == false">
-        <img src="/images/add.png" ng-click="vm.AddSongToUser()" />
-    </div>
+	<a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
+	<h3>{{ song.artist }} - {{ song.name }}</h3>
+	<div class="row">
+		<div class="two columns">
+			<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+		</div>
+		<div class="ten columns">
+			<p><b>{{ song.artist }} - {{ song.name }}</b>
+				<br>
+				Prix : {{ song.price }}€ - Achetée : {{ song.bought }}
+				<br>
+				Difficulté: {{ song.difficulty }}
+				<br>
+			</p>
+			<div ng-if="bought == true">
+			<a title="Supprimer" class="button" ng-click="vm.RemoveSongFromUser()" href="#">Supprimer</a>
+			</div>
+			<div ng-if="bought == false">
+				<a title="Ajouter" class="button button-primary" ng-click="vm.AddSongToUser()" href="#">Ajouter</a>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 <div ng-hide="vm.dataLoading" class="content">
-    <h3>Commentaires</h3>
+	<h3>Commentaires</h3>
 
-    <div class="row">
-        <div class="two columns">
-            <img class="u-full-width" src="/{{ user.picture }}" alt="Avatar de {{ user.name }}" title="{{user.name}}" />
-        </div>
-        <div class="ten columns">
-            <form name="sendComment" ng-submit="SendComment(data)" role="form" autocomplete="on">
-                <label for="comment">Laisser un commentaire (en tant que {{ user.name }})</label>
-                <textarea required ng-model="data.message" class="u-full-width" type="text" name="comment" placeholder="Votre commentaire"></textarea>
-                <div class="form-actions">
-                    <button type="submit" class="button-primary">Envoyer</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Error message for empty comments -->
-    <p ng-hide="vm.dataLoading" ng-if="!comments.length">Pas de commentaires pour cette musique.</p>
+	<div class="row">
+		<div class="two columns">
+			<img class="u-full-width" src="/{{ user.picture }}" alt="Avatar de {{ user.name }}" title="{{user.name}}" />
+		</div>
+		<div class="ten columns">
+			<form name="sendComment" ng-submit="SendComment(data)" role="form" autocomplete="on">
+				<label for="comment">Laisser un commentaire (en tant que {{ user.name }})</label>
+				<textarea required ng-model="data.message" class="u-full-width" type="text" name="comment" placeholder="Votre commentaire"></textarea>
+				<div class="form-actions">
+					<button type="submit" class="button-primary">Envoyer</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- Error message for empty comments -->
+	<p ng-hide="vm.dataLoading" ng-if="!comments.length">Pas de commentaires pour cette musique.</p>
 
-    <div ng-repeat="comment in comments" ng-class="!$first ? 'box_one' : 'first-box_one'">
-        <div class="row">
-            <div class="two columns">
-                <img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.name }}" title="{{ comment.author.name }}" />
-            </div>
-            <div class="ten columns">
-                <p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}} -
-                    <span title="Modifier" ng-click="editing = true" ng-show="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-                    <span title="Supprimer" ng-confirm-click="Confirmez-vous la suppression de votre commentaire ?" confirmed-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    <br>
-                    <span ng-hide="editing"> {{ comment.message }} </span>
-                </p>
-                <form name="editComment" ng-submit="EditComment(data, comment._id)" role="form" autocomplete="on" ng-show="editing" ng-submit="editing = false">
-                    <textarea required ng-init="data.message=comment.message" ng-model="data.message" class="u-full-width" type="text" name="comment"></textarea>
-                    <div class="form-actions">
-                        <button type="submit" class="button-primary">Envoyer</button>
-                        <a class="button" ng-click="resetEditComment(comment)" href="#">Annuler</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+	<div ng-repeat="comment in comments" ng-class="!$first ? 'box_one' : 'first-box_one'">
+		<div class="row">
+			<div class="two columns">
+				<img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.name }}" title="{{ comment.author.name }}" />
+			</div>
+			<div class="ten columns">
+				<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}} -
+					<span title="Modifier" ng-click="editing = true" ng-show="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+					<span title="Supprimer" ng-confirm-click="Confirmez-vous la suppression de votre commentaire ?" confirmed-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-times" aria-hidden="true"></i></span>
+					<br>
+					<span ng-hide="editing"> {{ comment.message }} </span>
+				</p>
+				<form name="editComment" ng-submit="EditComment(data, comment._id)" role="form" autocomplete="on" ng-show="editing" ng-submit="editing = false">
+					<textarea required ng-init="data.message=comment.message" ng-model="data.message" class="u-full-width" type="text" name="comment"></textarea>
+					<div class="form-actions">
+						<button type="submit" class="button-primary">Envoyer</button>
+						<a class="button" ng-click="resetEditComment(comment)" href="#">Annuler</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>

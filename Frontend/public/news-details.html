@@ -5,6 +5,7 @@
 </div>
 
 <div ng-hide="vm.dataLoading" class="content news">
+	<a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
 	<h3>{{ newsDetails.name }}</h3>
 	<img title="{{ newsDetails.name }}" alt="Miniature de {{ newsDetails.name }}" class="u-max-full-width" src="/{{ newsDetails.picture }}">
 	<p>{{ newsDetails.description }}</p>

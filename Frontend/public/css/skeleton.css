@@ -858,6 +858,14 @@ a:hover {
 	margin-bottom: 1.5rem;
 }
 
+/* GoBack */
+
+#goBack {
+	float: right;
+	font-size: 2.5em;
+}
+
+
 /* Default tags */
 
 textarea {

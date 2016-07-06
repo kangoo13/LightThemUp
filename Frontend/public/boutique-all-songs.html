@@ -5,6 +5,7 @@
 </div>
 
 <div ng-hide="vm.dataLoading" class="content">
+	<a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
 	<h3>Boutique</h3>
 	<h5>Toutes les musiques</h5>
 	<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
