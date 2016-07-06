@@ -212,6 +212,33 @@ router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), funct
   }
 });
 
+
+router.get('/getNewsFromComment/:idComment', function(req, res, next){
+    News.find().exec(function (err, news){
+        if (err) return next(err);
+        var goodNews = null;
+        for (var i = 0; i != news.length; i++)
+        {
+            for (var j = 0; j != news[i].comments.length; j++)
+            {
+                if (news[i].comments[j]._id == req.params.idComment) {
+                    goodNews = news[i];
+                    break;
+                }
+            }
+            if (goodNews != null)
+                break;
+        }
+        if (goodNews)
+            return res.status(200).json(goodNews);
+        else
+            return res.status(503).json({
+                success: false,
+                message: "La news n'a pas été trouvée"
+            });
+    })
+});
+
 router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
     News.findOne({ 'slug': req.params.idNews }).exec(function (err, post) {
         if (err) return next(err);
