@@ -28,6 +28,7 @@ app.factory("UserService", function ($http) {
 
 	var service = {};
 
+	service.Token = Token;
 	service.Create = Create;
 	service.Login = Login;
 	service.Account = Account;
@@ -39,6 +40,15 @@ app.factory("UserService", function ($http) {
 	service.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
 
 	return service;
+
+	function Token(token) {
+		return $http.get(apiUrl + '/token', {
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				"x-access-token": token
+			}
+		}).then(handleSuccess, handleError);
+	}
 
 	function Create(user) {
 		return $http.post(apiUrl + '/users', user).then(handleSuccess, handleError);

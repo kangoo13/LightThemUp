@@ -2,8 +2,13 @@
 
 /* Controllers */
 
-app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', function ($rootScope, $scope, $location, $cookies) {
+app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', 'UserService',  function ($rootScope, $scope, $location, $cookies, UserService) {
     // Set scope var isLogged depending on token && id existences
+
+/*    UserService.Token($cookies.get('token')).then(function (response) {
+    	console.log(response);
+    });
+*/
     if ($cookies.get('token') && $cookies.get('id'))
     	$scope.isLogged = true;
     else
