@@ -56,7 +56,7 @@ router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
              {
                  if (songs[i].comments[j]._id == req.params.idComment) {
                      goodSong = songs[i];
-                     goodSong.index = req.params.index;
+                     goodSong['index'] = req.params.index;
                      break;
                  }
              }
