@@ -7,7 +7,7 @@
  router.get('/lastComments/:nbComments', function(req, res, next) {
     Comment.find().limit(req.params.nbComments).sort({'createdAt': -1}).populate({ 
        path: 'author',
-       select: "name picture",
+       select: "name",
        model: 'User'
    }).exec(function (err, comments) {
     if (err) return next(err);

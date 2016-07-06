@@ -906,6 +906,16 @@ textarea {
 	cursor: pointer;
 }
 
+.recentCommentsDate {
+	text-align: right;
+	display: block;
+	font-size: 0.8em;
+}
+
+.recentComments p {
+	margin-bottom: 0;
+}
+
 
 /* Custom utilities */
 

@@ -410,16 +410,18 @@ app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'N
 		{
 			if (comments[i].type == "news") {
 				NewsService.GetNewsByComment(comments[i]._id, i).then(function (response) {
-					comments[response.index].url = '/news/'+response.slug;
+					comments[response.index].contentUrl = '/news/'+response.slug;
+					comments[response.index].contentName = response.name;
 				});
 			}
 			else if (comments[i].type == "song") {
 				SongService.GetSongByComment(comments[i]._id, i).then(function (response) {
-					comments[response.index].url = '/news/'+response.slug;
+					comments[response.index].contentUrl = '/songs/'+response.slug;
+					comments[response.index].contentName = response.artist + ' - ' + response.name;
 				});
 			}
 		}
-		$scope.lastComments = comments;
+		$scope.recentComments = comments;
 	});
 }]);
 

@@ -68,6 +68,9 @@
 								</li>
 							</ul>
 						</div>
+						<div class="twelve columns sidebarBlock">
+							<h5><i class="fa fa-music" aria-hidden="true"></i>Dernières sorties</h5>
+						</div>
 						<div ng-controller="CommentsController" class="twelve columns sidebarBlock">
 							<h5><i class="fa fa-commenting"></i>Commentaires récents</h5>
 							<div ng-if="dataLoading">
@@ -77,18 +80,12 @@
 							<!-- Error message for empty comments -->
 							<p ng-hide="dataLoading" ng-if="!lastComments.length">Pas de commentaires récents.</p>
 
-							<div ng-repeat="comment in lastComments" ng-class="!$first ? 'box_one' : 'first-box_one'">
-								<div class="row">
-									<div class="two columns">
-										<img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.name }}" title="{{ comment.author.name }}" />
-									</div>
-									<div class="ten columns">
-										<p><b><a href="{{ comment.url }}">{{ comment.author.name }}</a></b> - le {{ comment.createdAt | date:"short"}}
-											<br>
-											<span>{{ comment.message | limitTo : 200 }} </span>
-										</p>
-									</div>
-								</div>
+							<div ng-repeat="comment in recentComments" class="recentComments"ng-class="!$first ? 'box_one' : 'first-box_one'">
+								<p><b>{{ comment.author.name }}</b> sur <a href="{{ comment.contentUrl }}">{{ comment.contentName }}</a>
+									<br>
+									{{ comment.message | limitTo : 200 }}
+								</p>
+								<span class="recentCommentsDate">{{ comment.createdAt | date:"medium"}}</span>
 							</div>
 						</div>
 						<div class="twelve columns sidebarBlock">
@@ -99,18 +96,6 @@
 								<li>Silverstorm - 2125 points</li>
 							</ol>
 						</div>
-						<div class="twelve columns sidebarBlock">
-							<h5><i class="fa fa-heart"></i>Coup de coeur</h5>
-							<div id="coupdecoeur">
-								<a title="Coup de coeur" href="/songs/IS-YOU">
-									<img style="max-width: 210px;" class="u-full-width" src="/uploads/songs/577a85b579fdb45541f53658/pink.jpg" alt="" title="Coup de coeur" />
-								</a>
-								<p><b>Unkown - IS YOU</b></p>
-								<a title="Acheter" class="button button-primary" href="songs/{{ song.slug }}">Acheter</a>
-								<a title="Ecouter" class="button" href="{{ song.preview }}">Ecouter</a>
-							</div>
-						</div>
-						
 					</div>
 				</div>
 			</div>
