@@ -193,7 +193,6 @@ app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', funct
 		SuccesService.GetAll().then(function (response) {
 			vm.dataLoading = false;
 			var lockedAchievements = [];
-			console.log(response);
 			var found;
 			for(var i = 0; i < response.length; i++) {
 				found = 0;

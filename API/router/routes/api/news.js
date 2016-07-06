@@ -31,7 +31,6 @@ router.post('/', auth({secret: superSecret}), upload.single('picture'), function
             News.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
                     var news = new News();
-                    console.log(news._id);
                     var picturePath = "";
                     var image = req.file;
                     Promise.resolve(image)
