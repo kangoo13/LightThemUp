@@ -222,8 +222,8 @@ router.get('/getNewsFromComment/:idComment/:index', function(req, res, next){
             for (var j = 0; j != news[i].comments.length; j++)
             {
                 if (news[i].comments[j]._id == req.params.idComment) {
-                    goodNews = news[i];
-                    goodNews.set('index',req.params.index);
+                    goodNews = news[i].toObject();
+                    goodNews.index = req.params.index;
                     break;
                 }
             }
