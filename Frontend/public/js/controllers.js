@@ -3,7 +3,6 @@
 /* Controllers */
 
 app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', function ($rootScope, $scope, $location, $cookies) {
-
     // Set scope var isLogged depending on token && id existences
     if ($cookies.get('token') && $cookies.get('id'))
     	$scope.isLogged = true;
