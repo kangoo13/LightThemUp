@@ -110,6 +110,8 @@ app.run(function ($rootScope, $location, $cookies) {
 
 app.config(function (toastrConfig) {
     angular.extend(toastrConfig, {
-        positionClass: 'toast-top-right'
+        positionClass: 'toast-top-right',
+        timeOut: "2500",
+        newestOnTop: true
     });
 });

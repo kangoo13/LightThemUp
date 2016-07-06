@@ -731,7 +731,8 @@ ul.topnav li.icon {
 	margin-top: 0;
 }
 
-.sidebarBlock ul:last-child, .sidebarBlock li:last-child {
+.sidebarBlock ul:last-child, .sidebarBlock li:last-child,
+.sidebarBlock ol:last-child {
 	margin-bottom: 0;
 }
 
@@ -757,12 +758,21 @@ footer {
 	color: #fff;
 }
 
-footer .row {
+footer .container {
 	padding-top: 2.5rem;
+}
+
+footer a {
+	color: white;
+	font-weight: bold;
 }
 
 footer h5 {
 	border-bottom: 0.2rem dotted white;
+}
+
+footer h4 {
+	text-align: center;
 }
 
 footer #copyright {
@@ -845,6 +855,7 @@ a:hover {
 
 #boutiquePanel {
 	text-align: center;
+	margin-bottom: 2.5rem;
 }
 
 #boutiquePanel img {
@@ -873,11 +884,27 @@ textarea {
 	max-height: 100%;
 }
 
+/* Home */ 
+
+.logo {
+	display: block;
+	margin: 0 auto 2.5rem auto;
+}
+
 
 /* Custom utilities */
 
 .u-text-right {
 	text-align: right;
+}
+
+.u-pull-center {
+	display: block;
+	margin: 0 auto;
+}
+
+.u-margin-bottom {
+	margin-bottom: 2.5rem;
 }
 
 /* Angular */

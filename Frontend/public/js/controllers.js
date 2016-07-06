@@ -434,6 +434,7 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 		vm.dataLoading = false;
 		$scope.comments = response.comments;
 	});
+	
 	UserService.Account($cookies.get('id')).then(function (response) {
 		$scope.bought = false;
 		$scope.user = response;
