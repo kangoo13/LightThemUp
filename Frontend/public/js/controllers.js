@@ -2,13 +2,25 @@
 
 /* Controllers */
 
-app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', 'UserService',  function ($rootScope, $scope, $location, $cookies, UserService) {
-    // Set scope var isLogged depending on token && id existences
+app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', 'UserService', 'toastr',  function ($rootScope, $scope, $location, $cookies, UserService, toastr) {
 
-/*    UserService.Token($cookies.get('token')).then(function (response) {
-    	console.log(response);
-    });
-*/
+	if ($cookies.get('token')) {
+		UserService.Token($cookies.get('token'))
+		.then(function (response) {
+			if (response.success) {
+			//Nothing here yet
+		}
+		else {
+			// Token isn't valid anymore
+			toastr.error(response.message, "Vous devez vous reconnectez");
+    		 // Remove cookies
+    		 $cookies.remove('token');
+    		 $cookies.remove('id');
+    		}
+    	});
+	}
+
+    // Set scope var isLogged depending on token && id existences
     if ($cookies.get('token') && $cookies.get('id'))
     	$scope.isLogged = true;
     else
@@ -393,26 +405,26 @@ app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'N
 	$scope.dataLoading = true;
 	CommentService.GetLastComments(5).then(function (response) {
 		$scope.dataLoading = false;
-        var comments = response;
-        for (var i = 0; i != comments.length; i++)
-        {
-            if (comments[i].type == "news") {
-                var j = i;
-                NewsService.GetNewsByComment(comments[j]._id).then(function (response) {
-                    var k = j;
-                    comments[k].url = '/news/'+response.slug;
-                    console.log(comments);
-                });
-            }
-            else if (comments[i].type == "song") {
-                var j = i;
-                SongService.GetSongByComment(comments[j]._id).then(function (response) {
-                    var k = j;
-                    comments[k].url = '/news/'+response.slug;
-                    console.log(comments);
-                });
-            }
-        }
+		var comments = response;
+		for (var i = 0; i != comments.length; i++)
+		{
+			if (comments[i].type == "news") {
+				var j = i;
+				NewsService.GetNewsByComment(comments[j]._id).then(function (response) {
+					var k = j;
+					comments[k].url = '/news/'+response.slug;
+					console.log(comments);
+				});
+			}
+			else if (comments[i].type == "song") {
+				var j = i;
+				SongService.GetSongByComment(comments[j]._id).then(function (response) {
+					var k = j;
+					comments[k].url = '/news/'+response.slug;
+					console.log(comments);
+				});
+			}
+		}
 		//$scope.lastComments = comments;
 	});
 
@@ -469,7 +481,7 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 		vm.dataLoading = false;
 		$scope.comments = response.comments;
 	});
-	
+
 	UserService.Account($cookies.get('id')).then(function (response) {
 		$scope.bought = false;
 		$scope.user = response;

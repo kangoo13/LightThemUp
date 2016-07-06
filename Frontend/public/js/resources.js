@@ -41,13 +41,9 @@ app.factory("UserService", function ($http) {
 
 	return service;
 
-	function Token(token) {
-		return $http.get(apiUrl + '/token', {
-			headers: {
-				'Content-Type' : 'application/x-www-form-urlencoded',
-				"x-access-token": token
-			}
-		}).then(handleSuccess, handleError);
+	function Token(tokenId) {
+		var data = {token: tokenId};
+		return $http.post(apiUrl + '/token', data).then(handleSuccess, handleError);
 	}
 
 	function Create(user) {
