@@ -47,7 +47,7 @@ router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
 });
  
 router.get('/getSongFromComment/:idComment', function(req, res, next){
-     Song.find().exec(function (err, songs){
+     Song.find().populate("comments").exec(function (err, songs){
          if (err) return next(err);
          var goodSong = null;
          for (var i = 0; i != songs.length; i++)

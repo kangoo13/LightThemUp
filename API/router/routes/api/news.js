@@ -214,7 +214,7 @@ router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), funct
 
 
 router.get('/getNewsFromComment/:idComment', function(req, res, next){
-    News.find().exec(function (err, news){
+    News.find().populate("comments").exec(function (err, news){
         if (err) return next(err);
         var goodNews = null;
         for (var i = 0; i != news.length; i++)
