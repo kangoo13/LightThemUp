@@ -68,14 +68,24 @@
 								</li>
 							</ul>
 						</div>
-						<div class="twelve columns sidebarBlock">
-							<h5><i class="fa fa-music"></i>Dernières sorties</h5>
-						</div>
-						<div class="twelve columns sidebarBlock">
+						<div ng-controller="CommentsController" class="twelve columns sidebarBlock">
 							<h5><i class="fa fa-commenting"></i>Commentaires récents</h5>
-						</div>
-						<div class="twelve columns sidebarBlock">
-							<h5><i class="fa fa-heart"></i>Coup de coeur</h5>
+							<!-- Error message for empty comments -->
+							<p ng-hide="dataLoading" ng-if="!lastComments.length">Pas de commentaires récents.</p>
+
+							<div ng-repeat="comment in lastComments" ng-class="!$first ? 'box_one' : 'first-box_one'">
+								<div class="row">
+									<div class="two columns">
+										<img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.name }}" title="{{ comment.author.name }}" />
+									</div>
+									<div class="ten columns">
+										<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"short"}} -
+											<br>
+											<span> {{ comment.message | limitTo : 200 }} </span>
+										</p>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="twelve columns sidebarBlock">
 							<h5><i class="fa fa-trophy"></i>Podium</h5>
@@ -85,6 +95,18 @@
 								<li>Silverstorm - 2125 points</li>
 							</ol>
 						</div>
+						<div class="twelve columns sidebarBlock">
+							<h5><i class="fa fa-heart"></i>Coup de coeur</h5>
+							<div id="coupdecoeur">
+								<a title="Coup de coeur" href="/songs/IS-YOU">
+									<img style="max-width: 210px;" class="u-full-width" src="/uploads/songs/577a85b579fdb45541f53658/pink.jpg" alt="" title="Coup de coeur" />
+								</a>
+								<p><b>Unkown - IS YOU</b></p>
+								<a title="Acheter" class="button button-primary" href="songs/{{ song.slug }}">Acheter</a>
+								<a title="Ecouter" class="button" href="{{ song.preview }}">Ecouter</a>
+							</div>
+						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -134,7 +156,7 @@
 					<h5><i class="fa fa-plus"></i>Publicité</h5>
 					<img class="u-full-width" src="/images/pub.jpg" />
 				</div>
-				
+
 			</div>
 			<i id="scrollToTop" class="fa fa-chevron-up" aria-hidden="true"></i>
 			<p id="copyright">Conception et réalisation par Light Them Up - Tous droits réservés. 2015 - {{ currentYear }}</p>

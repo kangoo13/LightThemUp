@@ -13,7 +13,9 @@
 	<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
 		<div class="row">
 			<div class="two columns">
-				<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+				<a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">
+					<img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
+				</a>
 			</div>
 			<div class="ten columns">
 				<p><b>{{ song.artist }} - {{ song.name }}</b></p>

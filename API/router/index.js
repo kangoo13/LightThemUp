@@ -10,6 +10,7 @@ module.exports = function (app) {
     app.use('/playlists', require('./routes/api/playlists'));
     app.use('/users', require('./routes/api/users'));
     app.use('/contact', require('./routes/api/contact'));
+    app.use('/comments', require('./routes/api/comments'));
 };
 
 

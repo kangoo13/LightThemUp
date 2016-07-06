@@ -835,15 +835,28 @@ a:hover {
 	width: 120px;
 }
 
-/* Box One */
+/* Index */ 
 
-.box_one, .first-box_one {
+#coupdecoeur {
+	text-align: center;
+}
+
+/* Boxes */
+
+.box_one, .first-box_one, .first-box_two, .box_two {
 	margin-top: 2.5rem;
-	background-color: #f1f1f1;
 	padding: 1.5rem;
 }
 
-.first-box_one {
+.box_one, .first-box_one {
+	background-color: #f1f1f1;
+}
+
+.box_two, .first-box_two {
+	background-color: #607D8B;
+}
+
+.first-box_one, .first-box_two {
 	margin-top: 0;
 }
 

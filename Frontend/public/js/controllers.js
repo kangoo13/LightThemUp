@@ -383,6 +383,17 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 
 }]);
 
+app.controller('CommentsController', ['$scope', 'CommentService', function ($scope, CommentService) {
+
+	var vm = this;
+	$scope.dataLoading = true;
+	CommentService.GetLastComments(2).then(function (response) {
+		$scope.dataLoading = false;
+		$scope.lastComments = response;
+	});
+
+}]);
+
 app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
 
 	var vm = this;

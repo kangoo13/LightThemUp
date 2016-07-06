@@ -12,8 +12,8 @@
 				<h5>Meilleures ventes</h5>
 				<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in mostBoughtSongs">
 					<div class="row">
-						<a href="songs/{{ song.slug }}">
-							<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+						<a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">
+							<img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
 						</a>
 						<p><b>{{ song.artist }} - {{ song.name }}</b>
 							<br>
@@ -31,8 +31,8 @@
 				<h5>Derniers ajouts</h5>
 				<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in newSongs">
 					<div class="row">
-						<a href="songs/{{ song.slug }}">
-							<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+						<a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">
+							<img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
 						</a>
 						<p><b>{{ song.artist }} - {{ song.name }}</b>
 							<br>
@@ -50,8 +50,8 @@
 				<h5>Sélection aléatoire</h5>
 				<div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in randomSongs">
 					<div class="row">
-						<a href="songs/{{ song.slug }}">
-							<img class="u-full-width" src="/{{ song.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+						<a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">
+							<img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
 						</a>
 						<p><b>{{ song.artist }} - {{ song.name }}</b>
 							<br>
@@ -67,5 +67,5 @@
 			</div>
 		</div>
 	</div>
-<a href="/boutique/all" title="Toutes les musiques">Voir toutes les musiques</a>
+	<a href="/boutique/all" title="Toutes les musiques">Voir toutes les musiques</a>
 </div>

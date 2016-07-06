@@ -207,6 +207,28 @@ app.factory("NewsService", function ($http) {
 	}
 });
 
+app.factory("CommentService", function ($http) {
+
+	var service = {};
+
+	service.GetLastComments = GetLastComments;
+
+	return service;
+
+	function GetLastComments(nbComments)
+	{
+		return $http.get(apiUrl + '/comments/lastComments/' + nbComments).then(handleSuccess, handleError);
+	}
+
+	function handleSuccess(res) {
+		return res.data;
+	}
+
+	function handleError(res) {
+		return res.data;
+	}
+});
+
 app.factory("SongService", function ($http) {
 
 	var service = {};
@@ -244,7 +266,6 @@ app.factory("SongService", function ($http) {
 	{
 		return $http.get(apiUrl + '/songs/newSongs/' + nbSong).then(handleSuccess, handleError);
 	}
-
 
 	function SendComment(form, slug, token) {
 		var data = $.param(form, true);
