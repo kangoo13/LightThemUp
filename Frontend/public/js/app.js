@@ -78,6 +78,9 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         controller: 'CreatePlaylistController',
         controllerAs: 'vm',
         authorizedAccess: true
+    }).when('/statistiques', {
+        templateUrl: '/statistiques.html',
+        authorizedAccess: false
     }).otherwise({
         redirectTo: '/404',
         templateUrl: '404.html'
