@@ -401,28 +401,38 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 
 app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'NewsService', 'CommentService', function ($scope, UserService, SongService, NewsService, CommentService) {
 
-	var vm = this;
-	$scope.dataLoading = true;
-	CommentService.GetLastComments(5).then(function (response) {
-		$scope.dataLoading = false;
-		var comments = response;
-		for (var i = 0; i != comments.length; i++)
-		{
-			if (comments[i].type == "news") {
-				NewsService.GetNewsByComment(comments[i]._id, i).then(function (response) {
-					comments[response.index].contentUrl = '/news/'+response.slug;
-					comments[response.index].contentName = response.name;
-				});
-			}
-			else if (comments[i].type == "song") {
-				SongService.GetSongByComment(comments[i]._id, i).then(function (response) {
-					comments[response.index].contentUrl = '/songs/'+response.slug;
-					comments[response.index].contentName = response.artist + ' - ' + response.name;
-				});
-			}
-		}
-		$scope.recentComments = comments;
-	});
+    var vm = this;
+    $scope.dataLoading = true;
+    CommentService.GetLastComments(5).then(function (response) {
+        $scope.dataLoading = false;
+        var comments = response;
+        for (var i = 0; i != comments.length; i++)
+        {
+            if (comments[i].type == "news") {
+                NewsService.GetNewsByComment(comments[i]._id, i).then(function (response) {
+                    comments[response.index].contentUrl = '/news/'+response.slug;
+                    comments[response.index].contentName = response.name;
+                });
+            }
+            else if (comments[i].type == "song") {
+                SongService.GetSongByComment(comments[i]._id, i).then(function (response) {
+                    comments[response.index].contentUrl = '/songs/'+response.slug;
+                    comments[response.index].contentName = response.artist + ' - ' + response.name;
+                });
+            }
+        }
+        $scope.recentComments = comments;
+    });
+}]);
+
+app.controller('LastSongsSideBlockController', ['$scope', 'UserService', 'SongService', function ($scope, UserService, SongService) {
+
+    var vm = this;
+    $scope.dataLoading = true;
+    SongService.GetNewSongs(5).then(function (response) {
+        $scope.newSongsSideBlock = response;
+        vm.dataLoading = false;
+    });
 }]);
 
 app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
