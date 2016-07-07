@@ -357,6 +357,20 @@ else
             model: 'User'
         }
     }).exec(function (err, post) {
+        if (post.length == 0) {
+            Song.findOne({'_id': req.params.slug}).populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                    select: "name picture",
+                    model: 'User'
+                }
+            }).exec(function (err, post) {
+
+                if (err) return next(err);
+                res.status(200).json(post);
+            });
+        }
         if (err) return next(err);
         res.status(200).json(post);
     });

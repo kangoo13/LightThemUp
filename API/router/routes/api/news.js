@@ -110,17 +110,32 @@ router.post('/', auth({secret: superSecret}), upload.single('picture'), function
 });
 
 router.get('/:idNews', function(req, res, next) {
-    News.findOne({ 'slug': req.params.idNews }).populate({ 
-       path: 'comments',
-       populate: {
-         path: 'author',
-         select: "name picture",
-         model: 'User'
-     } 
- }).exec(function (err, post) {
-    if (err) return next(err);
-    res.status(200).json(post);
-});
+    News.findOne({ 'slug': req.params.idNews }).populate({
+        path: 'comments',
+        populate: {
+            path: 'author',
+            select: "name picture",
+            model: 'User'
+        }
+    }).exec(function (err, post) {
+        if (post.length == 0)
+        {
+            News.findOne({ '_id': req.params.idNews }).populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                    select: "name picture",
+                    model: 'User'
+                }
+            }).exec(function (err, post) {
+                if (err) return next(err);
+                res.status(200).json(post);
+            });
+        }
+        if (err) return next(err);
+        res.status(200).json(post);
+    });
+
 });
 
 router.put('/:idNews/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
