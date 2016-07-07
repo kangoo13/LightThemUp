@@ -431,7 +431,7 @@ app.controller('LastSongsSideBlockController', ['$scope', 'UserService', 'SongSe
     $scope.dataLoading = true;
     SongService.GetNewSongs(5).then(function (response) {
         $scope.newSongsSideBlock = response;
-        vm.dataLoading = false;
+        $scope.dataLoading = false;
     });
 }]);
 
