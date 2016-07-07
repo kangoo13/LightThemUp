@@ -42,7 +42,7 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         templateUrl: '/song-details.html',
         controller: 'SongDetailController',
         controllerAs: 'vm',
-        authorizedAccess: false
+        authorizedAccess: true
     }).when('/news', {
         templateUrl: '/news.html',
         controller: 'NewsController',
@@ -57,26 +57,29 @@ var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngRe
         templateUrl: '/mes-succes.html',
         controller: 'SuccesController',
         controllerAs: 'vm',
-        authorizedAccess: false
+        authorizedAccess: true
     }).when('/mes-musiques', {
         templateUrl: '/mes-musiques.html',
         controller: 'MySongsController',
         controllerAs: 'vm',
-        authorizedAccess: false
+        authorizedAccess: true
     }).when('/playlists', {
         templateUrl: '/playlist.html',
         controller: 'PlaylistController',
         controllerAs: 'vm',
-        authorizedAccess: false
+        authorizedAccess: true
     }).when('/playlists/:slug/ajout', {
         templateUrl: '/playlist-ajout-musique.html',
         controller: 'AddSongPlaylistController',
         controllerAs: 'vm',
-        authorizedAccess: false
+        authorizedAccess: true
     }).when('/playlists/create', {
         templateUrl: '/create-playlist.html',
         controller: 'CreatePlaylistController',
         controllerAs: 'vm',
+        authorizedAccess: true
+    }).when('/statistiques', {
+        templateUrl: '/statistiques.html',
         authorizedAccess: false
     }).otherwise({
         redirectTo: '/404',
