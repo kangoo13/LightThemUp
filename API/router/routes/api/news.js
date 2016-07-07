@@ -127,13 +127,15 @@ router.get('/:idNews', function(req, res, next) {
                     select: "name picture",
                     model: 'User'
                 }
-            }).exec(function (err, post) {
+            }).exec(function (err, postNews) {
                 if (err) return next(err);
-                res.status(200).json(post);
+                res.status(200).json(postNews);
             });
         }
-        if (err) return next(err);
-        res.status(200).json(post);
+        else {
+            if (err) return next(err);
+            res.status(200).json(post);
+        }
     });
 
 });
