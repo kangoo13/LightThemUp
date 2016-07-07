@@ -40,21 +40,29 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
     	.label('User')
     	]);
 
-    news.showView().fields([
+    news.creationView().fields([
     	nga.field('name'),
     	nga.field('description', 'text'),
-    	nga.field('author', 'reference')
-    	.targetEntity(user)
-    	.targetField(nga.field('name'))
-    	.label('User'),
+    	nga.field('picture', 'file').uploadInformation({ 'url': 'http://95.85.2.100:3000/news/', 'apifilename': 'picture' })
     	]);
+	// use the same fields for the editionView as for the creationView
+	news.editionView().fields(user.creationView().fields());
 
-    admin.addEntity(news);
+	news.showView().fields([
+		nga.field('name'),
+		nga.field('description', 'text'),
+		nga.field('author', 'reference')
+		.targetEntity(user)
+		.targetField(nga.field('name'))
+		.label('User'),
+		]);
 
-    admin.menu(nga.menu()
-    	.addChild(nga.menu(user).icon('<span class="glyphicon glyphicon-user"></span>'))
-    	.addChild(nga.menu(news).icon('<span class="glyphicon glyphicon-pencil"></span>'))
-    	);
+	admin.addEntity(news);
+
+	admin.menu(nga.menu()
+		.addChild(nga.menu(user).icon('<span class="glyphicon glyphicon-user"></span>'))
+		.addChild(nga.menu(news).icon('<span class="glyphicon glyphicon-pencil"></span>'))
+		);
 
     // attach the admin application to the DOM and execute it
     nga.configure(admin);
