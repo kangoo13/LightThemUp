@@ -81,15 +81,17 @@ router.delete('/songs/:idSong', auth({secret: superSecret}), function(req, res, 
                 });
             }
             Song.findOne({_id: req.body.idSong}, function (err, song) {
-                song.bought -= 1;
-                song.save(function (err){
-                    if (err) {
-                        return res.status(503).json({
-                            success: false,
-                            message: err.toString()
-                        });
-                    }
-                });
+                if (song) {
+                    song.bought -= 1;
+                    song.save(function (err){
+                        if (err) {
+                            return res.status(503).json({
+                                success: false,
+                                message: err.toString()
+                            });
+                        }
+                    });
+                }
             });
             res.status(200).json({
                 success: true,
@@ -198,6 +200,7 @@ router.put('/:idUser', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin || req.decoded.id == req.params.idUser) {
         User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
             if (err) return next(err);
+            console.log(post);
             res.status(200).json({
                 success: true,
                 message: 'User updated !'

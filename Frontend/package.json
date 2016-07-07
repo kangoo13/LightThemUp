@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "angular-cookies": "^1.5.7",
     "body-parser": "^1.0.2",
     "ejs": "^2.4.1",
     "express": "~4.1.1",

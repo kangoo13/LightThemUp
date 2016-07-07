@@ -45,34 +45,34 @@ router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
         res.status(200).json(songs);
     });
 });
- 
+
 router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
-     Song.find().populate("comments").exec(function (err, songs){
-         if (err) return next(err);
-         var goodSong = null;
-         for (var i = 0; i != songs.length; i++)
-         {
-             for (var j = 0; j != songs[i].comments.length; j++)
-             {
-                 if (songs[i].comments[j]._id == req.params.idComment) {
-                     goodSong = songs[i].toObject();
-                     goodSong.index = req.params.index;
-                     break;
-                 }
-             }
-             if (goodSong != null)
-                 break;
-         }
-         if (goodSong)
-             return res.status(200).json(goodSong);
-         else
-             return res.status(503).json({
-                 success: false,
-                 message: "La musique n'a pas été trouvée"
-             });
-     })
+   Song.find().populate("comments").exec(function (err, songs){
+       if (err) return next(err);
+       var goodSong = null;
+       for (var i = 0; i != songs.length; i++)
+       {
+           for (var j = 0; j != songs[i].comments.length; j++)
+           {
+               if (songs[i].comments[j]._id == req.params.idComment) {
+                   goodSong = songs[i].toObject();
+                   goodSong.index = req.params.index;
+                   break;
+               }
+           }
+           if (goodSong != null)
+               break;
+       }
+       if (goodSong)
+           return res.status(200).json(goodSong);
+       else
+           return res.status(503).json({
+               success: false,
+               message: "La musique n'a pas été trouvée"
+           });
+   })
 }); 
- 
+
 router.get('/randomSongs/:nbSong', function(req, res, next) {
     Song.find().exec(function (err, songs) {
         var maxRandom = songs.length - 1;
@@ -357,7 +357,7 @@ else
             model: 'User'
         }
     }).exec(function (err, post) {
-        if (!post || !post.length) {
+        if (!post) {
             Song.findOne({'_id': req.params.slug}).populate({
                 path: 'comments',
                 populate: {
@@ -366,13 +366,12 @@ else
                     model: 'User'
                 }
             }).exec(function (err, post) {
-
                 if (err) return next(err);
-                res.status(200).json(post);
+                return res.status(200).json(post);
             });
         }
         if (err) return next(err);
-        res.status(200).json(post);
+        return res.status(200).json(post);
     });
 });
 

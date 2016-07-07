@@ -118,7 +118,7 @@ router.get('/:idNews', function(req, res, next) {
             model: 'User'
         }
     }).exec(function (err, post) {
-        if (!post || !post.length)
+        if (!post)
         {
             News.findOne({ '_id': req.params.idNews }).populate({
                 path: 'comments',
@@ -141,7 +141,7 @@ router.get('/:idNews', function(req, res, next) {
 });
 
 router.put('/:idNews/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
-   if (req.params.idComment && req.body.message) {
+ if (req.params.idComment && req.body.message) {
     News.findOne({ 'slug': req.params.idNews }).exec(function (err, news) {
         Comment.findById(req.params.idComment, function (err, comment) {
             if (comment == null) {
@@ -274,9 +274,9 @@ router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res,
                     });
                 }
                 else {
-                 var objectid = new mongoose.mongo.ObjectID(comment._id);
-                 post.comments.push(objectid);
-                 post.save(function (err) {
+                   var objectid = new mongoose.mongo.ObjectID(comment._id);
+                   post.comments.push(objectid);
+                   post.save(function (err) {
                     if (err) {
                         return res.status(503).json({
                             success: false,
@@ -288,8 +288,8 @@ router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res,
                         message: 'Comment added.'
                     });
                 });
-             }
-         });
+               }
+           });
         }
         else
             return res.status(400).json({

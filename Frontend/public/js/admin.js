@@ -1,5 +1,5 @@
 // declare a new module called 'myApp', and make it require the `ng-admin` module as a dependency
-var myApp = angular.module('LightThemUpAdmin', ['ng-admin', 'restangular']);
+var myApp = angular.module('LightThemUpAdmin', ['ng-admin', 'ngCookies', 'restangular']);
 // declare a function to run when the module bootstraps (during the 'config' phase)
 myApp.config(['NgAdminConfigurationProvider', function (nga) {
     // create an admin application
@@ -10,17 +10,29 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
     var user = nga.entity('users').identifier(nga.field("_id"));
     // set the fields of the user entity list view
     user.listView().fields([
-    	nga.field('name'),
+    	nga.field('name').isDetailLink(true),
     	nga.field('emailLocal')
     	]);
+    user.creationView().fields([
+    	nga.field('name'),
+    	nga.field('password', 'password'),
+    	nga.field('email', 'email'),
+    	nga.field('description', 'text'),
+    	nga.field('address'),
+    	nga.field('city'),
+    	nga.field('country'),
+    	nga.field('picture', 'file').uploadInformation({ 'url': 'http://95.85.2.100:3000/users/', 'apifilename': 'picture' })
+    	]);
+	// use the same fields for the editionView as for the creationView
+	user.editionView().fields(user.creationView().fields());
     // add the user entity to the admin application
     admin.addEntity(user);
 
-    var news = nga.entity('news').identifier(nga.field("slug"));
+    var news = nga.entity('news').identifier(nga.field("_id"));
     news.listView().fields([
-    	nga.field('_id'),
+    	nga.field('_id').isDetailLink(true),
     	nga.field('name'),
-    	nga.field('slug').isDetailLink(true),
+    	nga.field('slug'),
     	nga.field('description'),
     	nga.field('author', 'reference')
     	.targetEntity(user)
@@ -34,27 +46,33 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
     	nga.field('author', 'reference')
     	.targetEntity(user)
     	.targetField(nga.field('name'))
-    	.label('User')
-    	.sortField('id')
-    	.sortDir('DESC'),
-    	/*nga.field('comments', 'referenced_list')
-    	.targetEntity(nga.entity('comments'))
-    	.targetReferenceField('postId')
-    	.targetFields([
-    		nga.field('email'),
-    		nga.field('name')
-    		])
-    	.sortField('id')
-    	.sortDir('DESC'),*/
+    	.label('User'),
     	]);
 
     admin.addEntity(news);
+
+    admin.menu(nga.menu()
+    	.addChild(nga.menu(user).icon('<span class="glyphicon glyphicon-user"></span>'))
+    	.addChild(nga.menu(news).icon('<span class="glyphicon glyphicon-pencil"></span>'))
+    	);
 
     // attach the admin application to the DOM and execute it
     nga.configure(admin);
 }]);
 
-myApp.config(['RestangularProvider', function (RestangularProvider) {
+
+myApp.config(['RestangularProvider', function(RestangularProvider) {
+	var $cookies;
+	angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
+		$cookies = _$cookies_;
+	}]);
+	var token = $cookies.get('token');
+	RestangularProvider.setDefaultHeaders({
+		"x-access-token": token
+	});
+}]);
+
+/*myApp.config(['RestangularProvider', function (RestangularProvider) {
 	RestangularProvider.addFullRequestInterceptor(function(element, operation, what, url, headers, params) {
 		if (operation == "getList") {
             // custom pagination params
@@ -81,4 +99,4 @@ myApp.config(['RestangularProvider', function (RestangularProvider) {
         }
         return { params: params };
     });
-}]);
+}]);*/
