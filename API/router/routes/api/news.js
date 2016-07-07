@@ -118,7 +118,7 @@ router.get('/:idNews', function(req, res, next) {
             model: 'User'
         }
     }).exec(function (err, post) {
-        if (post.length == 0)
+        if (!post.length)
         {
             News.findOne({ '_id': req.params.idNews }).populate({
                 path: 'comments',
