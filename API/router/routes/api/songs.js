@@ -357,7 +357,7 @@ else
             model: 'User'
         }
     }).exec(function (err, post) {
-        if (!post.length) {
+        if (!post || !post.length) {
             Song.findOne({'_id': req.params.slug}).populate({
                 path: 'comments',
                 populate: {
