@@ -919,6 +919,10 @@ textarea {
 
 /* Custom utilities */
 
+.u-set-relative {
+	position: relative;
+}
+
 .u-text-right {
 	text-align: right;
 }
@@ -930,6 +934,37 @@ textarea {
 
 .u-margin-bottom {
 	margin-bottom: 2.5rem;
+}
+
+/* Buttons */
+
+button:disabled {
+	background-color : #f03333;
+	border-color: #f03333;
+	cursor: not-allowed;
+}
+
+button:disabled:hover {
+	background-color : #db1e1e;
+	border-color: #db1e1e;
+}
+
+/* Forms */
+
+.is-valid {
+	position: absolute;
+	right: 0;
+	top: 0.7rem;
+	color: #51a351;
+	font-size: 1.2em;
+}
+
+.is-invalid {
+	position: absolute;
+	right: 0;
+	top: 0.7rem;
+	color: #db1e1e;
+	font-size: 1.2em;
 }
 
 /* Angular */

@@ -162,7 +162,7 @@ app.factory("NewsService", function ($http) {
 	service.SendComment = SendComment;
 	service.RemoveComment = RemoveComment;
 	service.EditComment = EditComment;
-    service.GetNewsByComment = GetNewsByComment;
+	service.GetNewsByComment = GetNewsByComment;
 
 	return service;
 
@@ -174,9 +174,9 @@ app.factory("NewsService", function ($http) {
 		return $http.get(apiUrl + '/news/' + slug).then(handleSuccess, handleError);
 	}
 
-    function GetNewsByComment(idComment, index) {
-        return $http.get(apiUrl + '/news/getNewsFromComment/'+idComment+'/'+ index).then(handleSuccess, handleError);
-    }
+	function GetNewsByComment(idComment, index) {
+		return $http.get(apiUrl + '/news/getNewsFromComment/'+idComment+'/'+ index).then(handleSuccess, handleError);
+	}
 
 	function SendComment(form, slug, token) {
 		var data = $.param(form, true);
@@ -252,7 +252,7 @@ app.factory("SongService", function ($http) {
 	service.SendComment = SendComment;
 	service.RemoveComment = RemoveComment;
 	service.EditComment = EditComment;
-    service.GetSongByComment = GetSongByComment;
+	service.GetSongByComment = GetSongByComment;
 
 	return service;
 
@@ -263,10 +263,10 @@ app.factory("SongService", function ($http) {
 	function GetOneSong(slug) {
 		return $http.get(apiUrl + '/songs/' + slug).then(handleSuccess, handleError);
 	}
-    
-    function GetSongByComment(idComment, index) {
-        return $http.get(apiUrl + '/songs/getSongFromComment/'+idComment+'/'+index).then(handleSuccess, handleError);
-    }
+
+	function GetSongByComment(idComment, index) {
+		return $http.get(apiUrl + '/songs/getSongFromComment/'+idComment+'/'+index).then(handleSuccess, handleError);
+	}
 
 	function GetMostBoughtSongs(nbSong)
 	{
@@ -446,23 +446,31 @@ app.directive('back', ['$window', function($window) {
 	};
 }]);
 
-var compareTo = function() {
-    return {
-        require: "ngModel",
-        scope: {
-            otherModelValue: "=compareTo"
-        },
-        link: function(scope, element, attributes, ngModel) {
-             
-            ngModel.$validators.compareTo = function(modelValue) {
-                return modelValue == scope.otherModelValue;
-            };
- 
-            scope.$watch("otherModelValue", function() {
-                ngModel.$validate();
-            });
-        }
+app.directive('equals', function() {
+	return {
+    restrict: 'A', // only activate on element attribute
+    require: '?ngModel', // get a hold of NgModelController
+    link: function(scope, elem, attrs, ngModel) {
+      if(!ngModel) return; // do nothing if no ng-model
+
+      // watch own value and re-validate on change
+      scope.$watch(attrs.ngModel, function() {
+      	validate();
+      });
+
+      // observe the other value and re-validate on change
+      attrs.$observe('equals', function (val) {
+      	validate();
+      });
+
+      var validate = function() {
+        // values
+        var val1 = ngModel.$viewValue;
+        var val2 = attrs.equals;
+
+        // set validity
+        ngModel.$setValidity('equals', ! val1 || ! val2 || val1 === val2);
     };
-};
- 
-app.directive("compareTo", compareTo);
+}
+}
+});
