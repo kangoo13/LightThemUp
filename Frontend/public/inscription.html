@@ -10,7 +10,8 @@
             <span title="Mots de passe ne correspondent pas" class="is-invalid" ng-if="createUser.password.$invalid || createUser.passwordConfirmation.$invalid"><i class="fa fa-minus-square" aria-hidden="true"></i></span>
         </div>
         <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
-        placeholder="Mot de passe" equals="{{vm.user.passwordConfirmation}}" required/>
+        placeholder="Mot de passe" equals="{{vm.user.passwordConfirmation}}" valid-password required/>
+        <span ng-show="createUser.password.$error.validPassword">Doesn't look like an integer</span>
         <label for="password">Confirmation du mot de passe *</label>
         <div class="u-set-relative">
             <span title="Mots de passe identiques" class="is-valid" ng-if="createUser.password.$valid && createUser.passwordConfirmation.$valid"><i class="fa fa-check-square" aria-hidden="true"></i></span>
