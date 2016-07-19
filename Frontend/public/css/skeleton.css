@@ -919,6 +919,12 @@ textarea {
 
 /* Custom utilities */
 
+.u-text-error {
+	color: #db1e1e;
+	margin-bottom: 1.5rem;
+	display: block;
+}
+
 .u-set-relative {
 	position: relative;
 }
