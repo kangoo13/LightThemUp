@@ -468,7 +468,7 @@ app.directive('validPassword', function () {
     return {
         require: "ngModel",
         link: function (scope, elm, attrs, ctrl) {
-            var regex = !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/;
+            var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/;
             var validator = function (value) {
                 ctrl.$setValidity('validPassword', regex.test(value));
                 return value;
