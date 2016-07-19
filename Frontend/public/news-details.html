@@ -39,7 +39,7 @@
 				<img class="u-full-width" src="/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.name }}" title="{{ comment.author.name }}" />
 			</div>
 			<div class="ten columns">
-				<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}} -
+				<p><b>{{ comment.author.name }}</b> - le {{ comment.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}
 					<span class="comments-buttons" title="Modifier" ng-click="editing = true" ng-show="user.name == comment.author.name"><i class="fa fa-pencil" aria-hidden="true"></i></span>
 					<span class="comments-buttons" title="Supprimer" ng-confirm-click="Confirmez-vous la suppression de votre commentaire ?" confirmed-click="RemoveComment(comment._id)" ng-if="user.name == comment.author.name"><i class="fa fa-times" aria-hidden="true"></i></span>
 					<br>

@@ -1,6 +1,3 @@
-/**
- * Created by Kangoo13 on 18/10/2015.
- */
  var mongoose    = require('mongoose');
  var bcrypt      = require('bcrypt-nodejs');
  var Schema      = mongoose.Schema;
@@ -10,7 +7,7 @@
     emailLocal        : { type: String },
     passwordLocal     : { type: String , select: false},
     name : { type: String },
-    picture : { type: String },
+    picture : { type: String, default: "uploads/avatar/default-avatar.png" },
     address : { type: String },
     description : { type: String },
     city : { type: String },

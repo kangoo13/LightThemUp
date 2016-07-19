@@ -1,6 +1,9 @@
 <div class="content">
     <h3>Inscription</h3>
     <form name="createUser" ng-submit="vm.CreateUser()" role="form">
+        <label for="name">Nom *</label>
+        <input ng-model="vm.user.name" class="u-full-width" type="text" name="name" placeholder="John Smith"
+               required/>
         <label for="email">Email *</label>
         <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com"
                required/>
@@ -17,7 +20,7 @@
         </div>
         <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
                placeholder="Mot de passe" equals="{{vm.user.passwordConfirmation}}" valid-password required/>
-        <label for="password">Confirmation du mot de passe *</label>
+        <label for="passwordConfirmation">Confirmation du mot de passe *</label>
         <div class="u-set-relative">
             <span title="Les mots de passe sont identiques." class="is-valid"
                   ng-if="createUser.password.$valid && createUser.passwordConfirmation.$valid"><i
