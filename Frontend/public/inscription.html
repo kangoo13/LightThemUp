@@ -5,9 +5,9 @@
         <input ng-model="vm.user.email" class="u-full-width" type="email" name="email" placeholder="example@example.com"
         required />
         <label for="password">Mot de passe *</label>
-        <div class="u-set-relative">
+        <div class="tooltip u-set-relative">
             <span title="Mots de passe identiques" class="is-valid tooltiptext" ng-if="createUser.password.$valid && createUser.passwordConfirmation.$valid"><i class="fa fa-check-square" aria-hidden="true"></i></span>
-            <span title="{{ createUser.password.$error.validPassword ? 'Mot de passe non conforme' : 'Mots de passe ne correspondent pas'}}" class="is-invalid" ng-if="createUser.password.$invalid || createUser.passwordConfirmation.$invalid || createUser.password.$error.validPassword"><i class="fa fa-minus-square" aria-hidden="true"></i></span>
+            <span title="{{ createUser.password.$error.validPassword ? 'Mot de passe non conforme' : 'Mots de passe ne correspondent pas'}}" class="is-invalid tooltiptext" ng-if="createUser.password.$invalid || createUser.passwordConfirmation.$invalid || createUser.password.$error.validPassword"><i class="fa fa-minus-square" aria-hidden="true"></i></span>
         </div>
         <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
         placeholder="Mot de passe" equals="{{vm.user.passwordConfirmation}}" valid-password required/>
