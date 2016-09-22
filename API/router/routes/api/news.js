@@ -26,67 +26,86 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', auth({secret: superSecret}), upload.single('picture'), function(req, res, next) {
-    if (req.body.name && req.body.description && req.file) {
+    if (req.body.name && req.body.description) {
         if (req.decoded.admin) {
             News.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
                     var news = new News();
                     var picturePath = "";
-                    var image = req.file;
-                    Promise.resolve(image)
-                    .then(function(image) {
-                        if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
-                            throw "Incorrect MIME type";
-                        }
-                        return image;
-                    })
-                    .then(function(image) {
-                        if (image.size > uploadConfig.maxFileSize) {
-                            throw "File is too large";
-                        }
-                        return image;
-                    })
-                    .then(function(image) {
+                    if (req.file) {
+                        var image = req.file;
+                        Promise.resolve(image)
+                        .then(function(image) {
+                            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+                                throw "Incorrect MIME type";
+                            }
+                            return image;
+                        })
+                        .then(function(image) {
+                            if (image.size > uploadConfig.maxFileSize) {
+                                throw "File is too large";
+                            }
+                            return image;
+                        })
+                        .then(function(image) {
 
-                        if (!fs.existsSync(process.cwd()+"/public/uploads/news/"+news._id+"/")){
-                            fs.mkdirSync(process.cwd()+"/public/uploads/news/"+news._id+"/");
-                        }
-                        var tempPath = image.path;
-                        var realPath = process.cwd()+"/public/uploads/news/"+news._id+"/";
-                        picturePath = "uploads/news/"+news._id+"/"+image.originalname;
-                        return fs.rename(tempPath, realPath+image.originalname);
-                    })
-                    .then(function(err) {
-                        if (err)
-                            throw err;
-                        else
-                        {
-                            news.name = req.body.name;
-                            news.description = req.body.description;
-                            news.picture = picturePath;
-                            news.author = req.decoded.id;
-                            news.slug = slug(req.body.name);
-                            news.save(function (err) {
-                                if (err) {
-                                    return res.status(503).json({
-                                        success: false,
-                                        message: err
-                                    });
-                                }
+                            if (!fs.existsSync(process.cwd()+"/public/uploads/news/"+news._id+"/")){
+                                fs.mkdirSync(process.cwd()+"/public/uploads/news/"+news._id+"/");
+                            }
+                            var tempPath = image.path;
+                            var realPath = process.cwd()+"/public/uploads/news/"+news._id+"/";
+                            picturePath = "uploads/news/"+news._id+"/"+image.originalname;
+                            return fs.rename(tempPath, realPath+image.originalname);
+                        })
+                        .then(function(err) {
+                            if (err)
+                                throw err;
+                            else
+                            {
+                                news.name = req.body.name;
+                                news.description = req.body.description;
+                                news.picture = picturePath;
+                                news.author = req.decoded.id;
+                                news.slug = slug(req.body.name);
+                                news.save(function (err) {
+                                    if (err) {
+                                        return res.status(503).json({
+                                            success: false,
+                                            message: err
+                                        });
+                                    }
 
+                                });
+                            }
+                        })
+                        .then(function() {
+                            return res.status(200).json({
+                                success: true,
+                                message: 'News created !'
                             });
-                        }
-                    })
-                    .then(function() {
-                        return res.status(200).json({
-                            success: true,
-                            message: 'News created !'
+                        })
+                        .catch(function(err) {
+                            res.status(500).send({success: false, message: err.toString()});
                         });
-                    })
-                    .catch(function(err) {
-                        res.status(500).send({success: false, message: err.toString()});
-                    });
-
+                    }
+                    else {
+                        news.name = req.body.name;
+                        news.description = req.body.description;
+                        news.author = req.decoded.id;
+                        news.slug = slug(req.body.name);
+                        news.save(function (err) {
+                            if (err) {
+                                return res.status(503).json({
+                                    success: false,
+                                    message: err
+                                });
+                            }
+                            return res.status(200).json({
+                                success: true,
+                                message: 'News created !'
+                            });
+                        });
+                    }
                 } else {
                     return res.status(409).json({
                         success: false,
@@ -109,7 +128,7 @@ router.post('/', auth({secret: superSecret}), upload.single('picture'), function
         });
 });
 
-router.get('/:idNews', function(req, res, next) {
+ router.get('/:idNews', function(req, res, next) {
     News.findOne({ 'slug': req.params.idNews }).populate({
         path: 'comments',
         populate: {
@@ -140,8 +159,8 @@ router.get('/:idNews', function(req, res, next) {
 
 });
 
-router.put('/:idNews/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
- if (req.params.idComment && req.body.message) {
+ router.put('/:idNews/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+   if (req.params.idComment && req.body.message) {
     News.findOne({ 'slug': req.params.idNews }).exec(function (err, news) {
         Comment.findById(req.params.idComment, function (err, comment) {
             if (comment == null) {
@@ -183,7 +202,7 @@ else {
 }
 });
 
-router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+ router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
     if (req.params.idComment) {
       News.findOne({ 'slug': req.params.idNews }).exec(function (err, news) {
         Comment.findById(req.params.idComment, function (err, comment) {
@@ -229,7 +248,7 @@ router.delete('/:idNews/comments/:idComment', auth({secret: superSecret}), funct
 });
 
 
-router.get('/getNewsFromComment/:idComment/:index', function(req, res, next){
+ router.get('/getNewsFromComment/:idComment/:index', function(req, res, next){
     News.find().populate("comments").exec(function (err, news){
         if (err) return next(err);
         var goodNews = null;
@@ -256,7 +275,7 @@ router.get('/getNewsFromComment/:idComment/:index', function(req, res, next){
     })
 });
 
-router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
+ router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res, next) {
     News.findOne({ 'slug': req.params.idNews }).exec(function (err, post) {
         if (err) return next(err);
         if (req.decoded.id && req.body.message) {
@@ -274,9 +293,9 @@ router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res,
                     });
                 }
                 else {
-                   var objectid = new mongoose.mongo.ObjectID(comment._id);
-                   post.comments.push(objectid);
-                   post.save(function (err) {
+                 var objectid = new mongoose.mongo.ObjectID(comment._id);
+                 post.comments.push(objectid);
+                 post.save(function (err) {
                     if (err) {
                         return res.status(503).json({
                             success: false,
@@ -288,8 +307,8 @@ router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res,
                         message: 'Comment added.'
                     });
                 });
-               }
-           });
+             }
+         });
         }
         else
             return res.status(400).json({
@@ -300,7 +319,7 @@ router.post('/:idNews/comments', auth({secret: superSecret}), function(req, res,
 });
 
 
-router.put('/:idNews', auth({secret: superSecret}), function(req, res, next) {
+ router.put('/:idNews', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
         News.findByIdAndUpdate(req.params.idNews, req.body, function (err, post) {
             if (err) return next(err);
@@ -318,7 +337,7 @@ router.put('/:idNews', auth({secret: superSecret}), function(req, res, next) {
     }
 });
 
-router.delete('/:idNews', auth({secret: superSecret}), function(req, res, next) {
+ router.delete('/:idNews', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
         News.findByIdAndRemove(req.params.idNews, req.body, function (err, post) {
             if (err) return next(err);
@@ -336,4 +355,4 @@ router.delete('/:idNews', auth({secret: superSecret}), function(req, res, next) 
     }
 });
 
-module.exports = router;
+ module.exports = router;
