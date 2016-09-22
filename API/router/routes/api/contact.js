@@ -50,4 +50,20 @@
   });
 });
 
+ router.get('/', function(req, res, next) {
+  if (req.decoded.admin) {
+    Contact.find().sort("-createdAt").exec(function (err, contact) {
+      if (err)
+       next(err);
+     res.status(200).json(contact);
+   });  
+  }
+  else {
+    res.status(401).send({
+      success: false,
+      message: 'Unauthorized.'
+    });
+  }
+});
+
  module.exports = router;
