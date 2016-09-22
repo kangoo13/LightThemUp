@@ -4,7 +4,7 @@
  var NewsSchema = new mongoose.Schema({
  	name: String,
  	description: String,
- 	picture: String,
+ 	picture: { type: String, default: "uploads/news/default-news.jpg" },
  	author: String,
  	comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
  	slug: String
