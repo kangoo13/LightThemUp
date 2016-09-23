@@ -205,12 +205,24 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
       contact.listView().fields([
         nga.field('name').isDetailLink(true),
         nga.field('email'),
-        nga.field('remoteIp').isDetailLink(true),
+        nga.field('remoteIp'),
         nga.field('createdAt', 'datetime')
         .label("Created at"),
         nga.field('updatedAt', 'datetime')
         .label("Updated at")
         ]);
+
+      contact.editionView()
+      .title('Edit achievement: {{ entry.values.name }}')
+      .fields([
+        nga.field('name'),
+        nga.field('email'),
+        nga.field('message', 'text'),
+        nga.field('remoteIp')
+        ]);
+
+      contact.deletionView()
+      .title('Delete contact: {{ entry.values.name }}')
 
 
       admin.addEntity(user);

@@ -67,4 +67,19 @@
   }
 });
 
+ router.get('/:idContact', auth({secret: superSecret}), function(req, res, next) {
+   if (req.decoded.admin) {
+    Contact.findById(req.params.idContact).exec(function (err, post) {
+      if (err) return next(err);
+      res.status(200).json(post);
+    });
+  }
+  else {
+   res.status(401).send({
+    success: false,
+    message: 'Unauthorized.'
+  });
+ }
+});
+
  module.exports = router;
