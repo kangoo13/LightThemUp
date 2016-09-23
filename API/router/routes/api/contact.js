@@ -1,6 +1,7 @@
  var express     = require('express');
- var superSecret = require('../../../config.js').secret;
  var router      = express.Router();
+ var superSecret = require('../../../config.js').secret;
+ var auth        = require('authenticate');
  var Contact     = require('../../../models/Contact.js');
  var request     = require('request');
 
