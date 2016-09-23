@@ -64,72 +64,90 @@ router.get('/', function(req, res, next) {
 
 
 router.post('/',  auth({secret: superSecret}), upload.single('picture'), function(req, res, next) {
-    if (req.body.name && req.body.description && req.file) {
+    if (req.body.name && req.body.description) {
         if (req.decoded.admin) {
             Achievement.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
                     var picturePath = "";
-                    var image = req.file;
-                    var achievement = new Achievement();
-                    Promise.resolve(image)
-                        .then(function(image) {
-                            if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
-                                throw "Incorrect MIME type";
-                            }
-                            return image;
-                        })
-                        .then(function(image) {
-                            if (image.size > uploadConfig.maxFileSize) {
-                                throw "File is too large";
-                            }
-                            return image;
-                        })
-                        .then(function(image) {
+                    if (req.file) {
+                      var image = req.file;
+                      var achievement = new Achievement();
+                      Promise.resolve(image)
+                      .then(function(image) {
+                        if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+                            throw "Incorrect MIME type";
+                        }
+                        return image;
+                    })
+                      .then(function(image) {
+                        if (image.size > uploadConfig.maxFileSize) {
+                            throw "File is too large";
+                        }
+                        return image;
+                    })
+                      .then(function(image) {
 
-                            if (!fs.existsSync(process.cwd()+"/public/uploads/achievements/"+achievement._id+"/")){
-                                fs.mkdirSync(process.cwd()+"/public/uploads/achievements/"+achievement._id+"/");
-                            }
-                            var tempPath = image.path;
-                            var realPath = process.cwd()+"/public/uploads/achievements/"+achievement._id+"/";
-                            picturePath = "uploads/achievements/"+achievement._id+"/"+image.originalname;
-                            return fs.rename(tempPath, realPath+image.originalname);
-                        })
-                        .then(function(err) {
-                            if (err)
-                                throw err;
-                            else
-                            {
-                                achievement.name = req.body.name;
-                                achievement.description = req.body.description;
-                                achievement.picture = picturePath;
-                                achievement.save(function (err) {
-                                    if (err) {
-                                        return res.status(503).json({
-                                            success: false,
-                                            message: err.errors
-                                        });
-                                    }
+                        if (!fs.existsSync(process.cwd()+"/public/uploads/achievements/"+achievement._id+"/")){
+                            fs.mkdirSync(process.cwd()+"/public/uploads/achievements/"+achievement._id+"/");
+                        }
+                        var tempPath = image.path;
+                        var realPath = process.cwd()+"/public/uploads/achievements/"+achievement._id+"/";
+                        picturePath = "uploads/achievements/"+achievement._id+"/"+image.originalname;
+                        return fs.rename(tempPath, realPath+image.originalname);
+                    })
+                      .then(function(err) {
+                        if (err)
+                            throw err;
+                        else
+                        {
+                            achievement.name = req.body.name;
+                            achievement.description = req.body.description;
+                            achievement.picture = picturePath;
+                            achievement.save(function (err) {
+                                if (err) {
+                                    return res.status(503).json({
+                                        success: false,
+                                        message: err.errors
+                                    });
+                                }
 
-                                });
-                            }
-                        })
-                        .then(function() {
-                            return res.status(200).json({
-                                success: true,
-                                message: 'Achievement created !'
                             });
-                        })
-                        .catch(function(err) {
-                            res.status(500).send({success: false, message: err.toString()});
+                        }
+                    })
+                      .then(function() {
+                        return res.status(200).json({
+                            success: true,
+                            message: 'Achievement created !'
                         });
-                    
-                } else {
-                    return res.status(409).json({
-                        success: false,
-                        message: 'Achievement already exists'
+                    })
+                      .catch(function(err) {
+                        res.status(500).send({success: false, message: err.toString()});
                     });
-                }
-            });
+                  }
+                  else {
+                    achievement.name = req.body.name;
+                    achievement.description = req.body.description;
+                    achievement.picture = picturePath;
+                    achievement.save(function (err) {
+                        if (err) {
+                            return res.status(503).json({
+                                success: false,
+                                message: err.errors
+                            });
+                        }
+                        return res.status(200).json({
+                            success: true,
+                            message: 'Achievement created !'
+                        });
+                    });
+                }                    
+            } else {
+                return res.status(409).json({
+                    success: false,
+                    message: 'Achievement already exists'
+                });
+            }
+        });
         }
         else {
             return res.status(401).send({
@@ -145,14 +163,14 @@ router.post('/',  auth({secret: superSecret}), upload.single('picture'), functio
         });
 });
 
-router.get('/:idAchievement', function(req, res, next) {
+ router.get('/:idAchievement', function(req, res, next) {
     Achievement.findById(req.params.idAchievement, function (err, post) {
         if (err) return next(err);
         res.status(200).json(post);
     });
 });
 
-router.put('/:idAchievement', auth({secret: superSecret}), function(req, res, next) {
+ router.put('/:idAchievement', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
         Achievement.findByIdAndUpdate(req.params.idAchievement, req.body, function (err, post) {
             if (err) return next(err);
@@ -170,7 +188,7 @@ router.put('/:idAchievement', auth({secret: superSecret}), function(req, res, ne
     }
 });
 
-router.delete('/:idAchievement', auth({secret: superSecret}), function(req, res, next) {
+ router.delete('/:idAchievement', auth({secret: superSecret}), function(req, res, next) {
     if (req.decoded.admin) {
         Achievement.findByIdAndRemove(req.params.idAchievement, req.body, function (err, post) {
             if (err) return next(err);
@@ -188,4 +206,4 @@ router.delete('/:idAchievement', auth({secret: superSecret}), function(req, res,
     }
 });
 
-module.exports = router;
+ module.exports = router;
