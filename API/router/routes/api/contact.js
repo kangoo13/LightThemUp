@@ -50,8 +50,7 @@
   });
 });
 
- router.get('/', function(req, res, next) {
-  return (res.json("HEY COPAIN"));
+ router.get('/', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin) {
     Contact.find().sort("-createdAt").exec(function (err, contact) {
       if (err)
