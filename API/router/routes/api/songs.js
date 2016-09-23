@@ -47,30 +47,30 @@ router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
 });
 
 router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
-   Song.find().populate("comments").exec(function (err, songs){
-       if (err) return next(err);
-       var goodSong = null;
-       for (var i = 0; i != songs.length; i++)
-       {
-           for (var j = 0; j != songs[i].comments.length; j++)
-           {
-               if (songs[i].comments[j]._id == req.params.idComment) {
-                   goodSong = songs[i].toObject();
-                   goodSong.index = req.params.index;
-                   break;
-               }
-           }
-           if (goodSong != null)
-               break;
-       }
-       if (goodSong)
-           return res.status(200).json(goodSong);
-       else
-           return res.status(503).json({
-               success: false,
-               message: "La musique n'a pas été trouvée"
-           });
-   })
+ Song.find().populate("comments").exec(function (err, songs){
+     if (err) return next(err);
+     var goodSong = null;
+     for (var i = 0; i != songs.length; i++)
+     {
+         for (var j = 0; j != songs[i].comments.length; j++)
+         {
+             if (songs[i].comments[j]._id == req.params.idComment) {
+                 goodSong = songs[i].toObject();
+                 goodSong.index = req.params.index;
+                 break;
+             }
+         }
+         if (goodSong != null)
+             break;
+     }
+     if (goodSong)
+         return res.status(200).json(goodSong);
+     else
+         return res.status(503).json({
+             success: false,
+             message: "La musique n'a pas été trouvée"
+         });
+ })
 }); 
 
 router.get('/randomSongs/:nbSong', function(req, res, next) {
@@ -348,7 +348,7 @@ else
     });
 });
 
-router.get('/:slug', function(req, res, next) {
+ router.get('/:slug', function(req, res, next) {
     Song.findOne({'slug': req.params.slug}).populate({
         path: 'comments',
         populate: {
@@ -365,14 +365,16 @@ router.get('/:slug', function(req, res, next) {
                     select: "name picture",
                     model: 'User'
                 }
-            }).exec(function (err, post) {
+            }).exec(function (err, slug) {
                 if (err) return next(err);
-                return res.status(200).json(post);
+                return res.status(200).json(slug);
             });
         }
-        if (err) return next(err);
-        return res.status(200).json(post);
-    });
+        else {
+           if (err) return next(err);
+           return res.status(200).json(post);
+       }
+   });
 });
 
 
