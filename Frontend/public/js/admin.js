@@ -39,6 +39,7 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
       var news = nga.entity('news').identifier(nga.field("_id"));
       var achievements = nga.entity('achievements').identifier(nga.field("_id"));
       var contact = nga.entity('contact').identifier(nga.field("_id"));
+      var songs = nga.entity('songs').identifier(nga.field("_id"));
 
       user.listView().fields([
        nga.field('name').isDetailLink(true),
@@ -208,8 +209,6 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
         nga.field('remoteIp'),
         nga.field('createdAt', 'datetime')
         .label("Created at"),
-        nga.field('updatedAt', 'datetime')
-        .label("Updated at")
         ]);
 
       contact.showView()
@@ -222,18 +221,59 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
         ]);
 
       contact.deletionView()
-      .title('Delete contact form by {{ entry.values.name }}')
+      .title('Delete contact form by {{ entry.values.name }}');
 
+      songs.listView().fields([
+        nga.field('name').isDetailLink(true),
+        nga.field('artist'),
+        nga.field('slug'),
+        nga.field('price'),
+        nga.field('createdAt', 'datetime')
+        .label("Created at"),
+        nga.field('updatedAt', 'datetime')
+        .label("Updated at")
+        ]);
+
+      songs.editionView()
+      .title('Edit song : {{ entry.values.name }}')
+      .fields([
+        nga.field('name')
+        .validation({required: true}),
+        nga.field('artist')
+        .validation({required: true}),
+        nga.field('slug'),
+        nga.field('price', 'number')
+        .validation({required: true}),
+        nga.field('difficulty', 'number')
+        .validation({required: true}),
+        nga.field('bought', 'number'),
+        nga.field('picture', 'file'),
+        nga.field('preview', 'file'),
+        nga.field('file', 'file'),
+        nga.field('comments', 'embedded_list') // Define a 1-N relationship with the (embedded) comment entity
+        .targetFields([ // which comment fields to display in the datagrid / form
+          nga.field('author', 'reference')
+          .targetEntity(user)
+          .targetField(nga.field('name'))
+          .label('User'),
+          nga.field('message', 'text')
+          ])
+        ]);
+
+      songs.deletionView()
+      .title('Delete news: {{ entry.values.name }}');
 
       admin.addEntity(user);
       admin.addEntity(news);
       admin.addEntity(achievements);
       admin.addEntity(contact);
+      admin.addEntity(songs);
 
       admin.menu(nga.menu()
         .addChild(nga.menu(user).icon('<span class="glyphicon glyphicon-user"></span>'))
         .addChild(nga.menu(news).icon('<span class="glyphicon glyphicon-pencil"></span>'))
         .addChild(nga.menu(achievements).icon('<span class="glyphicon glyphicon-star"></span>'))
+        .addChild(nga.menu(songs).icon('<span class="glyphicon glyphicon-music"></span>'))
         .addChild(nga.menu(contact).icon('<span class="glyphicon glyphicon-envelope"></span>'))
         );
 

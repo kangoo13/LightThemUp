@@ -348,7 +348,7 @@ else
     });
 });
 
- router.get('/:slug', function(req, res, next) {
+router.get('/:slug', function(req, res, next) {
     Song.findOne({'slug': req.params.slug}).populate({
         path: 'comments',
         populate: {
