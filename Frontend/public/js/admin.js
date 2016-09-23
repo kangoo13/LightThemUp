@@ -6,27 +6,27 @@ var apiUrl = "http://95.85.2.100:3000/";
 var frontendUrl = "http://127.0.0.1/";
 
 myApp.config(['RestangularProvider', function(RestangularProvider) {
-    var $cookies;
-    angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
-        $cookies = _$cookies_;
-    }]);
-    var token = $cookies.get('token');
-    if (!token) {
-        window.location.href = frontendUrl + 'connexion';
-        return false;
-    }
-    RestangularProvider.setDefaultHeaders({
-        "x-access-token": token
-    });
+  var $cookies;
+  angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
+    $cookies = _$cookies_;
+  }]);
+  var token = $cookies.get('token');
+  if (!token) {
+    window.location.href = frontendUrl + 'connexion';
+    return false;
+  }
+  RestangularProvider.setDefaultHeaders({
+    "x-access-token": token
+  });
 }]);
 
 myApp.run(['Restangular', '$location', function(Restangular, $location){
-    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
-        if (response.status === 403 || response.status === 401){
-            window.location.href = frontendUrl + 'connexion';
-            return false;
-        }
-    });
+  Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+    if (response.status === 403 || response.status === 401){
+      window.location.href = frontendUrl + 'connexion';
+      return false;
+    }
+  });
 }]);
 
 // declare a function to run when the module bootstraps (during the 'config' phase)
@@ -38,46 +38,47 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
       var user = nga.entity('users').identifier(nga.field("_id"));
       var news = nga.entity('news').identifier(nga.field("_id"));
       var achievements = nga.entity('achievements').identifier(nga.field("_id"));
+      var contact = nga.entity('contact').identifier(nga.field("_id"));
 
       user.listView().fields([
-         nga.field('name').isDetailLink(true),
-         nga.field('emailLocal').label("Email"),
-         nga.field('createdAt', 'datetime')
-         .label("Created at"),
-         nga.field('updatedAt', 'datetime')
-         .label("Updated at")
-         ]);
+       nga.field('name').isDetailLink(true),
+       nga.field('emailLocal').label("Email"),
+       nga.field('createdAt', 'datetime')
+       .label("Created at"),
+       nga.field('updatedAt', 'datetime')
+       .label("Updated at")
+       ]);
 
       user.creationView().fields([
-         nga.field('name').validation({required: true}),
-         nga.field('email', 'email')
-         .validation({required: true})
-         .label("Email"),
-         nga.field('password', 'password').validation({required: true}),
-         nga.field('description', 'text'),
-         nga.field('address'),
-         nga.field('city'),
-         nga.field('country'),
-         nga.field('picture', 'file')
-         ]);
+       nga.field('name').validation({required: true}),
+       nga.field('email', 'email')
+       .validation({required: true})
+       .label("Email"),
+       nga.field('password', 'password').validation({required: true}),
+       nga.field('description', 'text'),
+       nga.field('address'),
+       nga.field('city'),
+       nga.field('country'),
+       nga.field('picture', 'file')
+       ]);
 
       user.creationView().onSubmitError(['error', 'form', 'progression', 'notification', function(error, form, progression, notification) {
     // stop the progress bar
     if (error.data.success == false) {
-        form.name.$dirty = false;
-        form.email.$dirty = false;
-        form.password.$dirty = false;
-        form.description.$dirty = false;
-        form.address.$dirty = false;
-        form.city.$dirty = false;
-        form.country.$dirty = false;
+      form.name.$dirty = false;
+      form.email.$dirty = false;
+      form.password.$dirty = false;
+      form.description.$dirty = false;
+      form.address.$dirty = false;
+      form.city.$dirty = false;
+      form.country.$dirty = false;
     }
     progression.done();
     // add a notification
     notification.log(error.data.message);
     // cancel the default action (default error messages)
     return false;
-}]);
+  }]);
 
       user.deletionView()
       .title('Delete user: {{ entry.values.name }}');
@@ -122,15 +123,15 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
       news.creationView().onSubmitError(['error', 'form', 'progression', 'notification', function(error, form, progression, notification) {
     // stop the progress bar
     if (error.data.success == false) {
-        form.name.$dirty = false;
-        form.description.$dirty = false;
+      form.name.$dirty = false;
+      form.description.$dirty = false;
     }
     progression.done();
     // add a notification
     notification.log(error.data.message);
     // cancel the default action (default error messages)
     return false;
-}]);
+  }]);
 
       news.editionView()
       .title('Edit news: {{ entry.values.name }}')
@@ -177,15 +178,15 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
       achievements.creationView().onSubmitError(['error', 'form', 'progression', 'notification', function(error, form, progression, notification) {
     // stop the progress bar
     if (error.data.success == false) {
-        form.name.$dirty = false;
-        form.description.$dirty = false;
+      form.name.$dirty = false;
+      form.description.$dirty = false;
     }
     progression.done();
     // add a notification
     notification.log(error.data.message);
     // cancel the default action (default error messages)
     return false;
-}]);
+  }]);
 
       achievements.editionView()
       .title('Edit achievement: {{ entry.values.name }}')
@@ -200,18 +201,31 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
       achievements.deletionView()
       .title('Delete achievement: {{ entry.values.name }}');
 
+
+      contact.listView().fields([
+        nga.field('name').isDetailLink(true),
+        nga.field('email'),
+        nga.field('remoteIp').isDetailLink(true),
+        nga.field('createdAt', 'datetime')
+        .label("Created at"),
+        nga.field('updatedAt', 'datetime')
+        .label("Updated at")
+        ]);
+
+
       admin.addEntity(user);
       admin.addEntity(news);
       admin.addEntity(achievements);
-      
-      
+      admin.addEntity(contact);
+
       admin.menu(nga.menu()
-          .addChild(nga.menu(user).icon('<span class="glyphicon glyphicon-user"></span>'))
-          .addChild(nga.menu(news).icon('<span class="glyphicon glyphicon-pencil"></span>'))
-          .addChild(nga.menu(achievements).icon('<span class="glyphicon glyphicon-star"></span>'))
-          );
+        .addChild(nga.menu(user).icon('<span class="glyphicon glyphicon-user"></span>'))
+        .addChild(nga.menu(news).icon('<span class="glyphicon glyphicon-pencil"></span>'))
+        .addChild(nga.menu(achievements).icon('<span class="glyphicon glyphicon-star"></span>'))
+        .addChild(nga.menu(contact).icon('<span class="glyphicon glyphicon-envelope"></span>'))
+        );
 
     // attach the admin application to the DOM and execute it
     nga.configure(admin);
-}]);
+  }]);
 
