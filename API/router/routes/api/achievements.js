@@ -69,9 +69,9 @@ router.post('/',  auth({secret: superSecret}), upload.single('picture'), functio
             Achievement.find({name: req.body.name}, function (err, docs) {
                 if (!docs.length) {
                     var picturePath = "";
+                    var achievement = new Achievement();
                     if (req.file) {
                       var image = req.file;
-                      var achievement = new Achievement();
                       Promise.resolve(image)
                       .then(function(image) {
                         if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
@@ -127,7 +127,6 @@ router.post('/',  auth({secret: superSecret}), upload.single('picture'), functio
                   else {
                     achievement.name = req.body.name;
                     achievement.description = req.body.description;
-                    achievement.picture = picturePath;
                     achievement.save(function (err) {
                         if (err) {
                             return res.status(503).json({
