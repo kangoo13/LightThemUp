@@ -212,8 +212,8 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
         .label("Updated at")
         ]);
 
-      contact.editionView()
-      .title('Edit achievement: {{ entry.values.name }}')
+      contact.showView()
+      .title('Contact by : {{ entry.values.name }}')
       .fields([
         nga.field('name'),
         nga.field('email'),
@@ -222,7 +222,7 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
         ]);
 
       contact.deletionView()
-      .title('Delete contact: {{ entry.values.name }}')
+      .title('Delete contact form by {{ entry.values.name }}')
 
 
       admin.addEntity(user);

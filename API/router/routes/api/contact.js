@@ -82,4 +82,22 @@
  }
 });
 
+ router.delete('/:idContact', auth({secret: superSecret}), function(req, res, next) {
+  if (req.decoded.admin) {
+    Contact.findByIdAndRemove(req.params.idContact, req.body, function (err, post) {
+      if (err) return next(err);
+      return res.status(200).send({
+        success: true,
+        message: 'The contact form has been deleted.'
+      });
+    });
+  }
+  else {
+    return res.status(401).send({
+      success: false,
+      message: 'Unauthorized.'
+    });
+  }
+});
+
  module.exports = router;
