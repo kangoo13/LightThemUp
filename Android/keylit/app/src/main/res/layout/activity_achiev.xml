@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="ACHIEV"
+            android:text="ACHIEVEMENTS"
             android:textSize="20dp"
             android:textColor="#3c7c8b"
             android:textAppearance="?android:attr/textAppearanceMedium" />

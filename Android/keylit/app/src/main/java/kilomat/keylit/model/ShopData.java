@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.model;
 
 import java.util.ArrayList;
 
@@ -11,25 +11,13 @@ public class ShopData {
     private int year, download;
     private double rating;
     private String title, thumbnailUrl, artist;
-    private ArrayList<String> genre;
+    private String genre, idSong;
 
-    /**
-     * Default Constructor
-     */
     public ShopData() {
     }
 
-    /**
-     * Constructor with parameters
-     *
-     * @param name         ShopData Title
-     * @param thumbnailUrl Thumbnail URL
-     * @param year         Year Released
-     * @param rating       ShopData Rating
-     * @param genre        ShopData genre(s)
-     */
     public ShopData(String name, String thumbnailUrl, int year, double rating,
-                    ArrayList<String> genre, String artist, int download) {
+                    String genre, String artist, int download, String idSong) {
         this.title = name;
         this.thumbnailUrl = thumbnailUrl;
         this.year = year;
@@ -37,6 +25,7 @@ public class ShopData {
         this.genre = genre;
         this.artist = artist;
         this.download = download;
+        this.idSong = idSong;
     }
 
     public String getTitle() {
@@ -89,11 +78,19 @@ public class ShopData {
         this.rating = rating;
     }
 
-    public ArrayList<String> getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(ArrayList<String> genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getIdSong() {
+        return idSong;
+    }
+
+    public void setIdSong(String idSong) {
+        this.idSong = idSong;
     }
 }

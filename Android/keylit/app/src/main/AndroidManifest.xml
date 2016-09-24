@@ -11,13 +11,13 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application
-        android:name=".AppController"
+        android:name=".controller.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,14 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".SignupActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".AchievActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".PlaylistActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ScanActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ShopActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".AchievActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".SynActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".activity.HomeActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.SignupActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.AchievActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.PlaylistActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.ScanActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.ShopActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".activity.SynActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".activity.TestActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,38 +12,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import kilomat.keylit.R;
 
 public class ScanActivity extends Activity {
     ImageView viewImage;
@@ -93,7 +78,6 @@ public class ScanActivity extends Activity {
 
     private void sendImage() {
         mProgressDialog = new ProgressDialog(this);
-        // Showing progress dialog before making http request
         mProgressDialog.setMessage("Loading...");
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
@@ -154,12 +138,18 @@ public class ScanActivity extends Activity {
                 try {
                     Bitmap bitmap;
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
+                    bitmapOptions.inSampleSize = 2;
+                    /*bitmapOptions.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(new FileInputStream(f),null,bitmapOptions);*/
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
 
                     viewImage.setImageBitmap(bitmap);
-
+                    /////
+                    send.setVisibility(View.VISIBLE);
+                    b.setVisibility(View.VISIBLE);
+                    viewImage.setVisibility(View.VISIBLE);
+                    /////
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -186,13 +176,17 @@ public class ScanActivity extends Activity {
 
                 Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
-                Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.w("path of image from gallery......******************.........", picturePath+"");
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 2;
+                Bitmap thumbnail = BitmapFactory.decodeFile(picturePath,options);
+
+                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 viewImage.setImageBitmap(thumbnail);
                 send.setVisibility(View.VISIBLE);
                 b.setVisibility(View.VISIBLE);

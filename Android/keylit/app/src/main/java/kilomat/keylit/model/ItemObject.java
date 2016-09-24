@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.model;
 
 /**
  * Created by BAHA on 03/04/2016.

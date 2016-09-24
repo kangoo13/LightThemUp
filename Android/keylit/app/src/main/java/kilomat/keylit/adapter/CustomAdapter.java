@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.adapter;
 
 /**
  * Created by BAHA on 03/04/2016.
@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+
+import kilomat.keylit.model.ItemObject;
+import kilomat.keylit.R;
 
 public class CustomAdapter extends BaseAdapter {
 
@@ -46,7 +49,7 @@ public class CustomAdapter extends BaseAdapter {
         ViewHolder listViewHolder;
         if(convertView == null){
             listViewHolder = new ViewHolder();
-            convertView = layoutinflater.inflate(R.layout.listview_with_text_image, parent, false);
+            convertView = layoutinflater.inflate(R.layout.listview_with_text_image, parent, false); //listview_with_text_image
             listViewHolder.textInListView = (TextView)convertView.findViewById(R.id.textView);
             listViewHolder.imageInListView = (ImageView)convertView.findViewById(R.id.imageView);
             convertView.setTag(listViewHolder);

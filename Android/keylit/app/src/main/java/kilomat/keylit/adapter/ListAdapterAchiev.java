@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,19 +14,15 @@ import com.bumptech.glide.Glide;
 import java.util.LinkedList;
 import java.util.List;
 
+import kilomat.keylit.model.AchievData;
+import kilomat.keylit.R;
+
 public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.AchievDataViewHolder> {
 
     private List<AchievData> mAchievDataList;
     protected LinkedList<Integer> drawableLinkedList;
     private Context mContext;
 
-    /**
-     * Default Constructor
-     *
-     * @param context      Application context
-     * @param followerList Follower List objects
-     * @param drawableLinkedList      Drawable item .
-     */
     public ListAdapterAchiev(Context context, List<AchievData> followerList, LinkedList<Integer> drawableLinkedList) {
         this.mContext = context;
         this.mAchievDataList = followerList;
@@ -44,17 +40,7 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
         holder.progress.setProgress((int) data.getProgress());
         holder.current_progress.setText((int) data.getProgress() + "/100");
         //holder.state_success.setText(data.getState_success());
-        //Use Glide to load the Image
-        Glide.with(mContext).load(data.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
-
-
-        /**
-         * Set OnClickListener on the Button.
-         * We pass in 3 parameters:
-         * @param position :Position of the object on the List
-         * @param mAchievDataList ShopData Object
-         * @param actionDrawableId Drawable ID
-         */
+        Glide.with(mContext).load("http://95.85.2.100/" + data.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.controller;
 
 /**
  * Created by BAHA on 04/04/2016.

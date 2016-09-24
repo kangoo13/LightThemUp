@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.activity;
 
 /**
  * Created by BAHA on 09/04/2016.
@@ -33,6 +33,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import kilomat.keylit.R;
 
 public class SynActivity extends Activity {
     Button b1,b2,b3,b4;
@@ -83,46 +85,65 @@ public class SynActivity extends Activity {
     }
 
     public void on(View v){
-        if (!BA.isEnabled()) {
-            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(turnOn, 0);
-            Toast.makeText(getApplicationContext(),"Turned on",Toast.LENGTH_LONG).show();
+        if (BA != null) {
+            if (!BA.isEnabled()) {
+                Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(turnOn, 0);
+                Toast.makeText(getApplicationContext(), "Turned on", Toast.LENGTH_LONG).show();
+            }
         }
         else
         {
-            Toast.makeText(getApplicationContext(),"Already on", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Already on or unavailable", Toast.LENGTH_LONG).show();
         }
     }
 
     public void off(View v){
-        BA.disable();
-        Toast.makeText(getApplicationContext(),"Turned off" ,Toast.LENGTH_LONG).show();
+        if (BA != null)
+        {
+            BA.disable();
+            Toast.makeText(getApplicationContext(), "Turned off", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Turned off unavailable", Toast.LENGTH_LONG).show();
+        }
     }
 
     public  void visible(View v){
         Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        startActivityForResult(getVisible, 0);
+        if (getVisible != null) {
+            startActivityForResult(getVisible, 0);
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Get visible is unavailable",Toast.LENGTH_LONG).show();
+        }
     }
 
     public void list(View v){
-        pairedDevices = BA.getBondedDevices();
-        ArrayList list = new ArrayList();
+
+        if (BA != null) {
+            pairedDevices = BA.getBondedDevices();
+            ArrayList list = new ArrayList();
 
 
-        for(BluetoothDevice bt : pairedDevices)
-            list.add(bt.getName());
-        Toast.makeText(getApplicationContext(),"Showing Paired Devices",Toast.LENGTH_SHORT).show();
+            for (BluetoothDevice bt : pairedDevices)
+                list.add(bt.getName());
+            Toast.makeText(getApplicationContext(), "Showing Paired Devices", Toast.LENGTH_SHORT).show();
 
-        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, list);
-        lv.setAdapter(adapter);
+            final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+            lv.setAdapter(adapter);
 
-        if(mBtAdapter.isDiscovering())
-        {
-            mBtAdapter.cancelDiscovery();
-            onDestroy();
+            if (mBtAdapter.isDiscovering()) {
+                mBtAdapter.cancelDiscovery();
+                onDestroy();
+            }
+
+            mBtAdapter.startDiscovery();
         }
-
-        mBtAdapter.startDiscovery();
+        else
+            Toast.makeText(getApplicationContext(), "Showing Paired Devices is unavailable", Toast.LENGTH_SHORT).show();
 
     }
 

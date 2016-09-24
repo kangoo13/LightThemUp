@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.model;
 
 /**
  * Created by BAHA on 04/04/2016.
@@ -9,19 +9,9 @@ public class AchievData {
     private double current_score, progress;
     private String title, thumbnailUrl, details, state_success;
 
-    /**
-     * Default Constructor
-     */
-
     public AchievData() {
     }
 
-    /**
-     * Constructor with parameters
-     *
-     * @param name         ShopData Title
-     * @param thumbnailUrl Thumbnail URL
-     */
     public AchievData(String name, String thumbnailUrl, String mdetails,
                       String mstate_success,  double current_score, double progress) {
         this.title = name;

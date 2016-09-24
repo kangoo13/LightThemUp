@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kilomat.keylit.R;
 
 public class PlaylistActivity extends AppCompatActivity {
     @Override

@@ -1,7 +1,9 @@
-package kilomat.keylit;
+package kilomat.keylit.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -31,11 +33,15 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kilomat.keylit.R;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private String Xresponse;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Token = "TokenKey";
+    public static SharedPreferences sharedPreferences;
 
     @InjectView(R.id.input_email) EditText _emailText;
     @InjectView(R.id.input_password) EditText _passwordText;
@@ -49,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         ButterKnife.inject(this);
-
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -95,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // TODO: Implement your own authentication logic here.
 
-        String address = "https://apiforlightthemup.herokuapp.com/users/authenticate";
+        String address = "http://95.85.2.100:3000/users/authenticate";
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -118,8 +124,14 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject jsonObj = new JSONObject(resp);
                 String successStatus = jsonObj.getString("success");
                 Xresponse = jsonObj.getString("message");
-                if (successStatus.equals("true"))
+                if (successStatus.equals("true")) {
                     loginStatus = true;
+
+                    String MyToken = jsonObj.getString("token");
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(Token, MyToken);
+                    editor.commit();
+                }
                 else
                     loginStatus = false;
             } catch (JSONException e) {

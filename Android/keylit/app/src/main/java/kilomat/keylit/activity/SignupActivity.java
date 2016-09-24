@@ -1,4 +1,4 @@
-    package kilomat.keylit;
+    package kilomat.keylit.activity;
 
     /**
      * Created by BAHA on 20/03/2016.
@@ -36,17 +36,20 @@
 
     import butterknife.ButterKnife;
     import butterknife.InjectView;
+    import kilomat.keylit.R;
 
     public class SignupActivity extends AppCompatActivity {
         private static final String TAG = "SignupActivity";
         private ProgressBar pb;
         private AsyncTask<String, String, String> asyncTask;
-        private String Xresponse;
+        public String Xresponse;
 
+        @InjectView(R.id.input_name) EditText _nameText;
         @InjectView(R.id.input_email) EditText _emailText;
         @InjectView(R.id.input_password) EditText _passwordText;
         @InjectView(R.id.btn_signup) Button _signupButton;
         @InjectView(R.id.link_login) TextView _loginLink;
+        @InjectView(R.id.input_confirmpassword) EditText _confirmpasswordText;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@
             _loginLink.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Finish the registration screen and return to the Login activity
+
                     finish();
                 }
             });
@@ -92,16 +95,18 @@
             progressDialog.setMessage("Creating Account...");
             progressDialog.show();
 
+            final String name = _nameText.getText().toString();
             final String email = _emailText.getText().toString();
             final String password = _passwordText.getText().toString();
 
             // TODO: Implement your own signup logic here.
 
             // Validation Completed
-            String address = "https://apiforlightthemup.herokuapp.com/users";
+            String address = "http://95.85.2.100:3000/users";
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(address);
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            pairs.add(new BasicNameValuePair("name", name));
             pairs.add(new BasicNameValuePair("email", email));
             pairs.add(new BasicNameValuePair("password", password));
             try {
@@ -135,8 +140,7 @@
             new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
-                            // On complete call either onSignupSuccess or onSignupFailed
-                            // depending on success
+
                             if (finalLoginStatus)
                                 onSignupSuccess();
                             else
@@ -162,11 +166,35 @@
             _signupButton.setEnabled(true);
         }
 
-        public boolean validate() {
-            boolean valid = true;
+        public boolean checkPassWordAndConfirmPassword(String password,String confirmPassword)
+        {
+            boolean pstatus = false;
+            if (confirmPassword != null && password != null)
+            {
+                if (password.equals(confirmPassword))
+                {
+                    pstatus = true;
+                }
+            }
+            return pstatus;
+        }
 
+        public boolean validate() {
+
+            boolean valid = true;
+            boolean checkpass = false;
+            String name = _nameText.getText().toString();
             String email = _emailText.getText().toString();
             String password = _passwordText.getText().toString();
+            String confirmpassword = _confirmpasswordText.getText().toString();
+
+            if (name.isEmpty() || password.length() < 4 || password.length() > 20)
+            {
+                _nameText.setError("please enter your nickname");
+                valid = false;
+            } else {
+                _nameText.setError(null);
+            }
 
             if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 _emailText.setError("enter a valid email address");
@@ -179,6 +207,20 @@
                 _passwordText.setError("between 4 and 10 alphanumeric characters");
                 valid = false;
             } else {
+                _passwordText.setError(null);
+            }
+
+            checkpass = checkPassWordAndConfirmPassword(password,confirmpassword);
+
+            if (!checkpass)
+            {
+                if (confirmpassword.isEmpty())
+                _confirmpasswordText.setError("Confirm Password required");
+                else
+                    _confirmpasswordText.setError("Password doesn't match.");
+                valid = false;
+            }
+            else {
                 _passwordText.setError(null);
             }
 

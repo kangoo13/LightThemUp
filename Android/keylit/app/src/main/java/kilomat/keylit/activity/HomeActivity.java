@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.activity;
 
 /**
  * Created by BAHA on 20/03/2016.
@@ -20,6 +20,7 @@ import android.widget.Switch;
 import java.io.IOException;
 
 import butterknife.InjectView;
+import kilomat.keylit.R;
 
 
 public class HomeActivity extends ActionBarActivity {

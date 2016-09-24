@@ -1,8 +1,16 @@
-package kilomat.keylit;
+package kilomat.keylit.adapter;
 
+import android.app.DownloadManager;
+import android.bluetooth.BluetoothAdapter;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +20,59 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import kilomat.keylit.R;
+import kilomat.keylit.activity.LoginActivity;
+import kilomat.keylit.activity.PlaylistActivity;
+import kilomat.keylit.activity.ShopActivity;
+
+import kilomat.keylit.model.BluetoothShare;
+import kilomat.keylit.model.ShopData;
 
 public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicViewHolder> {
 
@@ -24,14 +81,20 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
     private Context mContext;
     private Boolean MidiPlayer = false;
     MediaPlayer mediaPlayer;
+    public  String downloadFileUrl = "";
+    public String midiFile;
+    private String Xresponse;
+    private final static int REQUEST_ENABLE_BT = 1;
+    ////////////
+    // duration that the device is discoverable
+    private static final int DISCOVER_DURATION = 300;
 
-    /**
-     * Default Constructor
-     *
-     * @param context      Application context
-     * @param followerList Follower List objects
-     * @param drawableLinkedList      Drawable item .
-     */
+    // our request code (must be greater than zero)
+    private static final int REQUEST_BLU = 1;
+    BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+    ///////////////////
+
+
     public ListAdapterShop(Context context, List<ShopData> followerList, LinkedList<Integer> drawableLinkedList) {
         this.mContext = context;
         this.mMovieList = followerList;
@@ -41,6 +104,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
     @Override
     public void onBindViewHolder(final MusicViewHolder holder, final int position) {
 
+
         ShopData movie = mMovieList.get(position);
         final int actionDrawableId = this.drawableLinkedList.get(position);
         holder.title.setText(movie.getTitle());
@@ -49,36 +113,23 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         float val = (float) movie.getRating();
         holder.ratingbar.setRating(val / 2);
         //Use Glide to load the Image
-        Glide.with(mContext).load(movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+        Glide.with(mContext).load("http://95.85.2.100/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
 
-        // genre
-        String genreStr = "";
-        for (String str : movie.getGenre()) {
-            genreStr += str + ", ";
-        }
-        genreStr = genreStr.length() > 0 ? genreStr.substring(0,
-                genreStr.length() - 2) : genreStr;
-        // holder.genre.setText(genreStr);
-        holder.genre.setText("Download : " + String.valueOf(movie.getDownload()));
+        downloadFileUrl = movie.getGenre();
+        holder.download.setText("Download : " + String.valueOf(movie.getDownload()));
         holder.year.setText(String.valueOf(movie.getYear()) + " €");
-        /**
-         * Set OnClickListener on the Button.
-         * We pass in 3 parameters:
-         * @param position :Position of the object on the List
-         * @param mMusicList ShopData Object
-         * @param actionDrawableId Drawable ID
-         */
+
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMemberClick(position, mMovieList, actionDrawableId);
+                onMemberClick(position, mMovieList, actionDrawableId, holder);
             }
         });
 
         holder.imageViewPlaymusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMidiPlayClick(holder);
+                onMidiPlayClick(holder, position);
             }
         });
 
@@ -105,6 +156,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
 
     @Override
     public MusicViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.item_layout_shop, viewGroup, false);
@@ -121,8 +173,9 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         TextView title;
         RatingBar ratingbar;
         TextView rating;
-        TextView genre;
+        TextView download;
         TextView year;
+
 
         public MusicViewHolder(View itemView) {
             super(itemView);
@@ -131,17 +184,43 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
             title = (TextView) itemView.findViewById(R.id.title);
             ratingbar = (RatingBar) itemView.findViewById(R.id.ratingbar);
             rating = (TextView) itemView.findViewById(R.id.rating);
-            genre = (TextView) itemView.findViewById(R.id.genre);
+            download = (TextView) itemView.findViewById(R.id.genre);
             year = (TextView) itemView.findViewById(R.id.releaseYear);
             imageViewAddMovie = (ImageView) itemView.findViewById(R.id.btnAddMovie);
             imageViewPlaymusic = (ImageView) itemView.findViewById(R.id.btnPlayMidi);
             imageViewStopmusic = (ImageView) itemView.findViewById(R.id.btnStopMidi);
+
         }
     }
 
-    protected void onMidiPlayClick(MusicViewHolder holder)
+
+    public  void test(int position)
     {
-        mediaPlayer = MediaPlayer.create(mContext, R.raw.aria);
+        ShopData myData = mMovieList.get(position);
+        downloadFileUrl = myData.getGenre();
+        Uri uri = Uri.parse("http://95.85.2.100/" + downloadFileUrl);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        String CurrentString = downloadFileUrl;
+        String[] separated = CurrentString.split("/");
+        midiFile = "/keylit/"+separated[3];
+
+        request.setDescription(myData.getTitle())
+                .setTitle("Notification Title");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Keylit/", separated[3]);
+        midiFile = Environment.getExternalStorageDirectory().getPath()+ "/Download" + midiFile;
+        request.setVisibleInDownloadsUi(true);
+
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI
+                | DownloadManager.Request.NETWORK_MOBILE);
+
+        ShopActivity.myDownloadReference = ShopActivity.downloadManager.enqueue(request);
+    }
+
+    protected void onMidiPlayClick(MusicViewHolder holder, int position)
+    {
+        test(position);
+
+        mediaPlayer = MediaPlayer.create(mContext, Uri.parse(midiFile));
         if(!mediaPlayer.isPlaying()){
             mediaPlayer.start();
             holder.imageViewPlaymusic.setVisibility(View.GONE);
@@ -169,24 +248,104 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
 
     }
 
-    /**
-     *
-     * Once the AsyncTask is complete {@see onPostExecute}, we remove the drawable/image on the list
-     * and add the another image mapping it to the position of the object.
-     *
-     *
-     * We Use a Switch case to get the Drawable ID which will determine what action to perform.
-     *
-     * R.drawable.music_add_touch: Add the selected movie to the DB
-     * R.drawable.music_added_touch: Remove the ShopData from the DB
-     * R.drawable.music_error_touch: An error occurred performing your request. Retry.
-     *
-     *
-     * @param position         clicked object position
-     * @param followerList     Object List
-     * @param actionDrawableId Drawable Id
-     */
-    protected void onMemberClick(final int position, final List<ShopData> followerList,int actionDrawableId) {
+    protected void sendbt(final MusicViewHolder holder, int position) throws IOException {
+
+        ShopData myDataSong = mMovieList.get(position);
+        String idMySong = myDataSong.getIdSong();
+
+        // Validation Completed
+        String address = "http://95.85.2.100:3000/songs/";
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(address);
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
+       // String name = sharedPreferences.getString(key, "default value");
+        String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
+        post.setHeader(new BasicHeader("x-access-token", mytoken));
+
+        pairs.add(new BasicNameValuePair("idSong", idMySong));
+        //pairs.add(new BasicNameValuePair("name", "coucou"));
+        post.setEntity(new UrlEncodedFormEntity(pairs));
+
+        HttpResponse response = null;
+        response = client.execute(post);
+
+        //if (response.getStatusLine().getStatusCode() == 200)
+       // {
+            System.out.println("--------------[OK]--------------");
+            HttpEntity entity = response.getEntity();
+            String resp = null;
+            resp = EntityUtils.toString(entity);
+            System.out.println("--------------(" + resp + ")--------------");
+
+       // }
+        //else
+        //{
+        //    Toast.makeText(mContext, "Error Shop : Add music failed", Toast.LENGTH_LONG).show();
+       // }
+
+       /* ContentValues values = new ContentValues();
+        values.put(BluetoothShare.URI, Uri.fromFile(new File(midiFile)).toString());
+        values.put(BluetoothShare.DESTINATION, "10:D5:42:67:A7:1A");
+        values.put(BluetoothShare.DIRECTION, BluetoothShare.DIRECTION_OUTBOUND);
+        Long ts = System.currentTimeMillis();
+        values.put(BluetoothShare.TIMESTAMP, ts);*/
+    }
+
+
+    protected void onMemberClick(final int position, final List<ShopData> followerList,int actionDrawableId, final MusicViewHolder holder) {
+        final ShopData follower = followerList.get(position);
+        switch (actionDrawableId) {
+            case R.drawable.movie_add_touch:
+                //sendbt(holder, position);
+
+                try {
+                    sendbt(holder, position);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+
+            case R.drawable.movie_added_touch:
+                new AsyncTask<String, Void, String>() {
+                    @Override
+                    protected String doInBackground(String... params) {
+                        for (int i = 0; i < 1; i++) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                Thread.interrupted();
+                            }
+                        }
+                        return "Complete";
+                    }
+
+                    @Override
+                    protected void onPostExecute(String result) {
+                        super.onPostExecute(result);
+                        if (result.equals("Complete")) {
+                            drawableLinkedList.remove(position);
+                            drawableLinkedList.add(position, R.drawable.movie_add_touch);
+                            notifyDataSetChanged();
+                        } else {
+                            drawableLinkedList.remove(position);
+                            drawableLinkedList.add(position, R.drawable.movie_error_touch);
+                            Toast.makeText(mContext, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }.execute();
+                break;
+
+        }
+
+
+    }
+
+
+
+   /* protected void onMemberClick(final int position, final List<ShopData> followerList,int actionDrawableId) {
         final ShopData follower = followerList.get(position);
         switch (actionDrawableId) {
             case R.drawable.movie_add_touch:
@@ -281,5 +440,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
                 }.execute();
                 break;
         }
-    }
+
+
+    }*/
 }

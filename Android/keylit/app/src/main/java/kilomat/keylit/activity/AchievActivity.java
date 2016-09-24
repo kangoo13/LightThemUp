@@ -1,4 +1,4 @@
-package kilomat.keylit;
+package kilomat.keylit.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -25,26 +25,29 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import kilomat.keylit.model.AchievData;
+import kilomat.keylit.controller.AppController;
+import kilomat.keylit.model.Constants;
+import kilomat.keylit.adapter.ListAdapterAchiev;
+import kilomat.keylit.R;
 
-public class ShopActivity extends AppCompatActivity {
-    /**
-     * Used for logging purposes.
-     */
-    private static final String TAG = ShopActivity.class.getSimpleName();
+public class AchievActivity extends AppCompatActivity {
+
+    private static final String TAG = AchievActivity.class.getSimpleName();
     private static final int MY_SOCKET_TIMEOUT_MS = 50000;
 
     private ProgressDialog mProgressDialog;
-    private List<ShopData> mMovieList = new ArrayList<>();
+    private List<AchievData> mAchievList = new ArrayList<>();
     private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shop);
+        setContentView(R.layout.activity_achiev);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ShopActivity.this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AchievActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -58,15 +61,10 @@ public class ShopActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * This method fetches data from the provided URL using volley library. We then parse the json,
-     * store all the json data into an ArrayList as ShopData objects.
-     */
-
     private void fetchMovies() {
-        Toast.makeText(ShopActivity.this, "Executing Task", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AchievActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
         // Creating volley request obj
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Constants.URL,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Constants.URL_ACHIEV,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -75,35 +73,27 @@ public class ShopActivity extends AppCompatActivity {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject obj = response.getJSONObject(i);
-                                ShopData movie = new ShopData();
-                                movie.setTitle(obj.getString("title"));
-                                movie.setThumbnailUrl(obj.getString("picture"));
-                                movie.setRating(((Number) obj.get("difficulty")).doubleValue());
-                                movie.setYear(obj.getInt("price"));
+                                AchievData achiev = new AchievData();
+                                achiev.setTitle(obj.getString("name"));
+                                achiev.setDetails(obj.getString("description"));
+                                achiev.setThumbnailUrl(obj.getString("picture"));
+                                achiev.setProgress(((Number) obj.get("__v")).doubleValue());
 
-                                // Genre is json array
-                                JSONArray genreArray = obj.getJSONArray("genre");
-                                ArrayList<String> genre = new ArrayList<>();
-                                for (int j = 0; j < genreArray.length(); j++) {
-                                    genre.add((String) genreArray.get(j));
-                                }
-                                movie.setGenre(genre);
-                                movie.setArtist(obj.getString("artist"));
-                                movie.setDownload(obj.getInt("downloaded"));
+                                // Disabled for the moment
+                                //achiev.setCurrent_score(((Number) obj.get("current_score")).doubleValue());
+                                //achiev.setState_success(obj.getString("state_success"));
 
-                                // adding movie to movies array
-                                mMovieList.add(movie);
+                                mAchievList.add(achiev);
 
-                                if (mMovieList != null) {
-                                    mRecyclerView.setAdapter(new ListAdapterShop(getApplicationContext(), mMovieList,
-                                            new LinkedList<>(Collections.nCopies(mMovieList.size(),
-                                                    R.drawable.movie_add_touch))));
+                                if (mAchievList != null) {
+                                    mRecyclerView.setAdapter(new ListAdapterAchiev(getApplicationContext(), mAchievList,
+                                            new LinkedList<>(Collections.nCopies(mAchievList.size(), R.drawable.movie_add_touch))));
                                 } else {
-                                    Log.e(TAG, "@fetchMovies Error: Adapter is null");
+                                    Log.e(TAG, "@Achiev Error: Adapter is null");
                                 }
 
                             } catch (JSONException jsonException) {
-                                Log.e(TAG, "@fetchMovies JsonException Error: " + jsonException.getMessage());
+                                Log.e(TAG, "@Achiev JsonException Error: " + jsonException.getMessage());
                             }
                         }
 
@@ -112,24 +102,19 @@ public class ShopActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleyLog.e(TAG, "@fetchMovies Error: " + error.getMessage());
-                        Log.e(TAG, "@fetchMovies Error: " + error.getMessage());
+                        Toast.makeText(getApplicationContext(), "You are offline or Cannot have access to server", Toast.LENGTH_LONG).show();
+                        VolleyLog.e(TAG, "@AchievError: " + error.getMessage());
+                        Log.e(TAG, "@Achiev Error: " + error.getMessage());
                         hidePDialog();
 
                     }
                 });
-
-        /**
-         *   Set a retry policy in case of SocketTimeout & ConnectionTimeout.
-         *   Exceptions Volley does retry for you if you have specified the policy.
-         */
 
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonArrayRequest);
     }
 
