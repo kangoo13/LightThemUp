@@ -104,6 +104,7 @@ public class ShopActivity extends AppCompatActivity {
                                 movie.setGenre(obj.getString("file"));
                                 movie.setArtist(obj.getString("artist"));
                                 movie.setDownload(obj.getInt("bought"));
+                                movie.setIdSong(obj.getString("_id"));
 
                                 // adding movie to movies array
                                 mMovieList.add(movie);
@@ -126,7 +127,7 @@ public class ShopActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "You are offline or Cannot have access to server", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "You are offline or Cannot have access to server", Toast.LENGTH_SHORT).show();
                         VolleyLog.e(TAG, "@shop Error: " + error.getMessage());
                         Log.e(TAG, "@shop Error: " + error.getMessage());
                         hidePDialog();

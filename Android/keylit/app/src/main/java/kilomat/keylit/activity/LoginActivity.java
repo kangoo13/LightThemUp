@@ -116,10 +116,8 @@ public class LoginActivity extends AppCompatActivity {
         HttpResponse response = client.execute(post);
         if (response.getStatusLine().getStatusCode() == 200)
         {
-            System.out.println("--------------[OK]--------------");
             HttpEntity entity = response.getEntity();
             String resp = EntityUtils.toString(entity);
-            System.out.println("--------------(" + resp + ")--------------");
             try {
                 JSONObject jsonObj = new JSONObject(resp);
                 String successStatus = jsonObj.getString("success");
@@ -174,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_SHORT).show();
         Intent mainActivity = new Intent(this, HomeActivity.class);
         mainActivity.putExtra("activity","SignIn");
         startActivity(mainActivity);
@@ -182,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_SHORT).show();
         _loginButton.setEnabled(true);
     }
 

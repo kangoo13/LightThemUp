@@ -154,7 +154,7 @@
         public void onSignupSuccess() {
             _signupButton.setEnabled(true);
             setResult(RESULT_OK, null);
-            Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_SHORT).show();
             Intent mainActivity = new Intent(this, HomeActivity.class);
             mainActivity.putExtra("activity", "SignUp");
             startActivity(mainActivity);
@@ -162,7 +162,7 @@
         }
 
         public void onSignupFailed() {
-            Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_SHORT).show();
             _signupButton.setEnabled(true);
         }
 

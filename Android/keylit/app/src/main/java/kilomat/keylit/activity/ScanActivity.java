@@ -90,7 +90,7 @@ public class ScanActivity extends Activity {
 
             }
         }, delayInMillis);
-        Toast.makeText(this, "Success !!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Success !!", Toast.LENGTH_SHORT).show();
     }
 
     private void selectImage() {

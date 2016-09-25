@@ -45,9 +45,6 @@ public class HomeActivity extends ActionBarActivity {
         _logoutButton = (Button) findViewById(R.id.btn_logout);
         _syncSwitch = (Switch) findViewById(R.id.switch_sync);
 
-        /*Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);*/
-
         _achievButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
