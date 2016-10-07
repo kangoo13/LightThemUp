@@ -474,8 +474,7 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 	});
 
 	$scope.launchMidi = function(song) {
-		console.log(song);
-		MIDIjs.play('song');
+		MIDIjs.play(song);
 	};
 
 }]);
