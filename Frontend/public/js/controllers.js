@@ -475,6 +475,8 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 
 	$scope.launchMidi = function(song, id) {
 		MIDIjs.play(song);
+		$('.launch_button').show();
+		$('.stop_button').hide();
 		$('#' + id + "_launch").hide();
 		$('#' + id + "_stop").css("display", "inline-block");
 	};
