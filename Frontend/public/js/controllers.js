@@ -473,11 +473,15 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 		vm.dataLoading = false;
 	});
 
-	$scope.launchMidi = function(song) {
+	$scope.launchMidi = function(song, id) {
 		MIDIjs.play(song);
+		$('#' + id + "_launch").hide();
+		$('#' + id + "_stop").css("display", "inline-block");
 	};
 
-	$scope.stopMidi = function() {
+	$scope.stopMidi = function(id) {
+		$('#' + id + "_stop").hide();
+		$('#' + id + "_launch").show();
 		MIDIjs.stop();
 	};
 
