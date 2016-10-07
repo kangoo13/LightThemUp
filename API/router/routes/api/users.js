@@ -23,7 +23,6 @@ var uploadConfig = {
 router.get('/', function(req, res, next) {
   User.find({}).populate("achievements").exec(function (err, users) {
     if (err) return next(err);
-
     res.status(200).json(users);
   });
 });
@@ -203,25 +202,33 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 
 router.put('/:idUser', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin || req.decoded.id == req.params.idUser) {
-    User.find({emailLocal : req.body.emailLocal}, function (err, docs) {
-      if (!docs.length || req.params.idUser == docs[0]._id) {
-        User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
-          if (err) return next(err);
-          else {
-            res.status(200).json({
-              success: true,
-              message: 'User updated !'
-            });
-          }
-        });
-      }
-      else {
-        return res.status(409).json({
-          success: false,
-          message: 'User already exists'
-        });
-      }
-    });
+    if (req.body.emailLocal) {
+      User.find({emailLocal : req.body.emailLocal}, function (err, docs) {
+        if (!docs.length || req.params.idUser == docs[0]._id) {
+          User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
+            if (err) return next(err);
+            else {
+              res.status(200).json({
+                success: true,
+                message: 'User updated !'
+              });
+            }
+          });
+        }
+        else {
+          return res.status(409).json({
+            success: false,
+            message: 'User already exists'
+          });
+        }
+      });
+    }
+    else {
+      return res.status(400).json({
+        success: false,
+        message: 'Email cannot be empty'
+      });
+    }
   }
   else {
     return res.status(401).send({
