@@ -1,13 +1,13 @@
 <div class="content">
-    <a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
-    <h3>Ajout de musique à la playlist </h3>
-    <div ng-repeat="song in songs">
-        Musique name : {{ song.name }}
-        <div ng-if="song.added == true">
-            <img src="/images/delete.png" ng-click="vm.RemoveSongFromPlaylist(song._id)" />
-        </div>
-        <div ng-if="song.added == false">
-            <img src="/images/add.png" ng-click="vm.AddSongToPlaylist(song._id)" />
-        </div>
+  <a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
+  <h3>Ajout de musique à la playlist </h3>
+  <div ng-repeat="song in songs">
+    Musique name : {{ song.name }}
+    <div ng-if="song.added == true">
+      <a title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la playlist ?" confirmed-click="vm.RemoveSongFromPlaylist(song._id)" href="#">Supprimer</a>
     </div>
+    <div ng-if="song.added == false">
+      <a title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToPlaylist(song._id)">Ajouter</a>
+    </div>
+  </div>
 </div>
