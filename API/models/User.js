@@ -37,31 +37,6 @@ var userSchema = mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre('update', function(next) {
-  var user = this;
-  if (user.isModified('passwordLocal')) {
-    if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/.test(this.passwordLocal)) {
-      var error = new Error("Invalid password")
-      return next(error);
-    }
-  }
-  if (user.isModified('emailLocal')) {
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.emailLocal)) {
-      var error = new Error("Invalid email")
-      return next(error);
-    }
-  }
-
-  if (!user.isModified('passwordLocal')) return next();
-  bcrypt.hash(user.passwordLocal, null, null, function (err, hash) {
-    if (err) return next(err);
-
-    // change the passwordLocal to the hashed version
-    user.passwordLocal = hash;
-    next();
-  });
-});
-
 userSchema.pre('save', function(next) {
   var user = this;
   if (user.isModified('passwordLocal')) {
