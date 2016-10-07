@@ -2,7 +2,6 @@
   <a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
   <h3>Ajout de musiques à la playlist </h3>
   <div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
-    {{ song }}
     <div class="row">
       <div class="two columns">
         <a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">

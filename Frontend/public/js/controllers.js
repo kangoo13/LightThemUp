@@ -8,30 +8,30 @@ app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies
 		UserService.Token($cookies.get('token'))
 		.then(function (response) {
 			if (response.success) {
-			//Nothing here yet
-		}
-		else {
-			// Token isn't valid anymore
-			toastr.error("Vous devez vous reconnecter.");
-    		 // Remove cookies
-    		 $cookies.remove('token');
-    		 $cookies.remove('id');
-    		 $scope.isLogged = false;
-    		}
-    	});
+				//Nothing here yet
+			}
+			else {
+				// Token isn't valid anymore
+				toastr.error("Vous devez vous reconnecter.");
+				// Remove cookies
+				$cookies.remove('token');
+				$cookies.remove('id');
+				$scope.isLogged = false;
+			}
+		});
 	}
 
-    // Set scope var isLogged depending on token && id existences
-    if ($cookies.get('token') && $cookies.get('id'))
-    	$scope.isLogged = true;
-    else
-    	$scope.isLogged = false;
-    $rootScope.$on('userLoggedIn', function () {
-    	$scope.isLogged = true;
-    });
-    $rootScope.$on('userLoggedOut', function () {
-    	$scope.isLogged = false;
-    });
+	// Set scope var isLogged depending on token && id existences
+	if ($cookies.get('token') && $cookies.get('id'))
+	$scope.isLogged = true;
+	else
+	$scope.isLogged = false;
+	$rootScope.$on('userLoggedIn', function () {
+		$scope.isLogged = true;
+	});
+	$rootScope.$on('userLoggedOut', function () {
+		$scope.isLogged = false;
+	});
 }]);
 
 app.controller('FooterController', ['$scope', function ($scope) {
@@ -39,7 +39,7 @@ app.controller('FooterController', ['$scope', function ($scope) {
 }]);
 
 app.controller('HomeController', function ($scope) {
-    // write Ctrl here
+	// write Ctrl here
 });
 
 app.controller('RegisterController', ['UserService', '$location', 'toastr', function (UserService, $location, toastr) {
@@ -72,19 +72,19 @@ app.controller('LoginController', ['$rootScope', 'UserService', '$location', "$c
 		UserService.Login(vm.user)
 		.then(function (response) {
 			if (response.success) {
-                    // Save the token as a cookie
-                    $cookies.put('token', response.token);
-                    $cookies.put('id', response.id);
-                    // Send a broadcast to notify that user is now logged in
-                    $rootScope.$broadcast('userLoggedIn');
-                    /*  toastr.success(response.message, "Success");*/
-                    toastr.success("Vous êtes connecté(e).");
-                    $location.path('/');
-                } else {
-                	toastr.error(response.message, "Impossible de vous connecter.");
-                	vm.dataLoading = false;
-                }
-            });
+				// Save the token as a cookie
+				$cookies.put('token', response.token);
+				$cookies.put('id', response.id);
+				// Send a broadcast to notify that user is now logged in
+				$rootScope.$broadcast('userLoggedIn');
+				/*  toastr.success(response.message, "Success");*/
+				toastr.success("Vous êtes connecté(e).");
+				$location.path('/');
+			} else {
+				toastr.error(response.message, "Impossible de vous connecter.");
+				vm.dataLoading = false;
+			}
+		});
 	}
 }]);
 
@@ -125,34 +125,34 @@ app.controller('DeleteUserController', ['$rootScope', 'UserService', "$cookies",
 	$scope.DeleteUser = function DeleteUser() {
 		UserService.Delete($cookies.get("id"), $cookies.get("token")).then(function (response) {
 			if (response.success) {
-                    // Remove cookies
-                    $cookies.remove('token');
-                    $cookies.remove('id');
-                    // Send a broadcast to notify that user is now logged out
-                    $rootScope.$broadcast('userLoggedOut');
-                    /*  toastr.success(response.message, "Success");*/
-                    toastr.success("Compte supprimé.");
-                    $location.path('/');
-                } else {
-                	toastr.error(response.message, "Impossible de supprimer votre compte.");
-									vm.dataLoading = false;
-                }
-            });
+				// Remove cookies
+				$cookies.remove('token');
+				$cookies.remove('id');
+				// Send a broadcast to notify that user is now logged out
+				$rootScope.$broadcast('userLoggedOut');
+				/*  toastr.success(response.message, "Success");*/
+				toastr.success("Compte supprimé.");
+				$location.path('/');
+			} else {
+				toastr.error(response.message, "Impossible de supprimer votre compte.");
+				vm.dataLoading = false;
+			}
+		});
 	};
 }]);
 
 app.controller('LogoutController', ['$rootScope', '$location', '$cookies', 'toastr', '$scope', function ($rootScope, $location, $cookies, toastr, $scope) {
 	$scope.LogoutUser = function LogoutUser() {
-        // Get cookie
-        var token = $cookies.get('token');
-        // Remove cookies
-        $cookies.remove('token');
-        $cookies.remove('id');
-        // Send a broadcast to notify that user is now logged out
-        $rootScope.$broadcast('userLoggedOut');
-        toastr.success("Vous êtes déconnecté(e).");
-        $location.path('/');
-    };
+		// Get cookie
+		var token = $cookies.get('token');
+		// Remove cookies
+		$cookies.remove('token');
+		$cookies.remove('id');
+		// Send a broadcast to notify that user is now logged out
+		$rootScope.$broadcast('userLoggedOut');
+		toastr.success("Vous êtes déconnecté(e).");
+		$location.path('/');
+	};
 }]);
 
 app.controller('ContactController', ['$scope', 'ContactService', 'toastr', '$location', function ($scope, ContactService, toastr, $location) {
@@ -202,7 +202,7 @@ app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', funct
 					}
 				}
 				if (found == 0)
-					lockedAchievements.push(response[i]);
+				lockedAchievements.push(response[i]);
 				found = 0;
 			}
 			$scope.unlockedAchievements = responseUser.achievements;
@@ -220,12 +220,12 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
 	vm.dataLoading = true;
 	NewsService.GetOneNews($routeParams.slug).then(function (response) {
 		vm.dataLoading = false;
-        // If no news, redirect user to 404 error
-        if (response == null)
-        	$location.path("/404");
-        $scope.newsDetails = response;
-        $scope.comments = response.comments;
-    });
+		// If no news, redirect user to 404 error
+		if (response == null)
+		$location.path("/404");
+		$scope.newsDetails = response;
+		$scope.comments = response.comments;
+	});
 
 	UserService.Account($cookies.get('id')).then(function (responseUsers) {
 		if (responseUsers) {
@@ -240,16 +240,16 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
 		.then(function (response) {
 			if (response.success) {
 				toastr.success(response.message);
-                // Refresh comments and remove form's message
-                NewsService.GetOneNews($routeParams.slug).then(function (response) {
-                	$scope.comments = response.comments;
-                	$scope.dataSend.message = "";
-                	$scope.sendComment.$setPristine();
-                });
-            } else {
-            	toastr.error(response.message);
-            }
-        });
+				// Refresh comments and remove form's message
+				NewsService.GetOneNews($routeParams.slug).then(function (response) {
+					$scope.comments = response.comments;
+					$scope.dataSend.message = "";
+					$scope.sendComment.$setPristine();
+				});
+			} else {
+				toastr.error(response.message);
+			}
+		});
 	}
 
 	$scope.EditComment = function(data, idComment) {
@@ -257,14 +257,14 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
 		.then(function (response) {
 			if (response.success) {
 				toastr.success(response.message);
-                // Refresh comments and remove form's message
-                NewsService.GetOneNews($routeParams.slug).then(function (response) {
-                	$scope.comments = response.comments;
-                });
-            } else {
-            	toastr.error(response.message);
-            }
-        });
+				// Refresh comments and remove form's message
+				NewsService.GetOneNews($routeParams.slug).then(function (response) {
+					$scope.comments = response.comments;
+				});
+			} else {
+				toastr.error(response.message);
+			}
+		});
 	}
 
 	$scope.resetEditComment = function(comment) {
@@ -277,14 +277,14 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
 		.then(function (response) {
 			if (response.success) {
 				toastr.success(response.message);
-                // Refresh comments and remove form's message
-                NewsService.GetOneNews($routeParams.slug).then(function (response) {
-                	$scope.comments = response.comments;
-                });
-            } else {
-            	toastr.error(response.message);
-            }
-        });
+				// Refresh comments and remove form's message
+				NewsService.GetOneNews($routeParams.slug).then(function (response) {
+					$scope.comments = response.comments;
+				});
+			} else {
+				toastr.error(response.message);
+			}
+		});
 	}
 
 }]);
@@ -330,10 +330,8 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
 				response.songs[i].added = false;
 				for (var j = 0; j < playlistUser.songs.length; j++)
 				{
-					console.log(playlistUser.songs[j].name);
-					console.log(response.songs[i].name);
-					if (playlistUser.songs[j].name = response.songs[i].name)
-						response.songs[i].added = true;
+					if (playlistUser.songs[j].name == response.songs[i].name)
+					response.songs[i].added = true;
 				}
 			}
 			$scope.songs = response.songs;
@@ -402,38 +400,38 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 
 app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'NewsService', 'CommentService', function ($scope, UserService, SongService, NewsService, CommentService) {
 
-    var vm = this;
-    $scope.dataLoading = true;
-    CommentService.GetLastComments(5).then(function (response) {
-        $scope.dataLoading = false;
-        var comments = response;
-        for (var i = 0; i != comments.length; i++)
-        {
-            if (comments[i].type == "news") {
-                NewsService.GetNewsByComment(comments[i]._id, i).then(function (response) {
-                    comments[response.index].contentUrl = '/news/'+response.slug;
-                    comments[response.index].contentName = response.name;
-                });
-            }
-            else if (comments[i].type == "song") {
-                SongService.GetSongByComment(comments[i]._id, i).then(function (response) {
-                    comments[response.index].contentUrl = '/songs/'+response.slug;
-                    comments[response.index].contentName = response.artist + ' - ' + response.name;
-                });
-            }
-        }
-        $scope.recentComments = comments;
-    });
+	var vm = this;
+	$scope.dataLoading = true;
+	CommentService.GetLastComments(5).then(function (response) {
+		$scope.dataLoading = false;
+		var comments = response;
+		for (var i = 0; i != comments.length; i++)
+		{
+			if (comments[i].type == "news") {
+				NewsService.GetNewsByComment(comments[i]._id, i).then(function (response) {
+					comments[response.index].contentUrl = '/news/'+response.slug;
+					comments[response.index].contentName = response.name;
+				});
+			}
+			else if (comments[i].type == "song") {
+				SongService.GetSongByComment(comments[i]._id, i).then(function (response) {
+					comments[response.index].contentUrl = '/songs/'+response.slug;
+					comments[response.index].contentName = response.artist + ' - ' + response.name;
+				});
+			}
+		}
+		$scope.recentComments = comments;
+	});
 }]);
 
 app.controller('LastSongsSideBlockController', ['$scope', 'UserService', 'SongService', function ($scope, UserService, SongService) {
 
-    var vm = this;
-    $scope.dataLoading = true;
-    SongService.GetNewSongs(5).then(function (response) {
-        $scope.newSongsSideBlock = response;
-        $scope.dataLoading = false;
-    });
+	var vm = this;
+	$scope.dataLoading = true;
+	SongService.GetNewSongs(5).then(function (response) {
+		$scope.newSongsSideBlock = response;
+		$scope.dataLoading = false;
+	});
 }]);
 
 app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
@@ -494,7 +492,7 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 
 		for(var i = 0; i < response.songs.length; i++) {
 			if (response.songs[i].slug == $routeParams.slug)
-				$scope.bought = true;
+			$scope.bought = true;
 		}
 	});
 	vm.RemoveSongFromUser = RemoveSongFromUser;
@@ -530,16 +528,16 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 		.then(function (response) {
 			if (response.success) {
 				toastr.success(response.message);
-                // Refresh comments and remove form's message
-                SongService.GetOneSong($routeParams.slug).then(function (response) {
-                	$scope.comments = response.comments;
-                	$scope.dataSend.message = "";
-                	$scope.sendComment.$setPristine();
-                });
-            } else {
-            	toastr.error(response.message);
-            }
-        });
+				// Refresh comments and remove form's message
+				SongService.GetOneSong($routeParams.slug).then(function (response) {
+					$scope.comments = response.comments;
+					$scope.dataSend.message = "";
+					$scope.sendComment.$setPristine();
+				});
+			} else {
+				toastr.error(response.message);
+			}
+		});
 	}
 
 	$scope.EditComment = function(data, idComment) {
@@ -547,14 +545,14 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 		.then(function (response) {
 			if (response.success) {
 				toastr.success(response.message);
-                // Refresh comments and remove form's message
-                SongService.GetOneSong($routeParams.slug).then(function (response) {
-                	$scope.comments = response.comments;
-                });
-            } else {
-            	toastr.error(response.message);
-            }
-        });
+				// Refresh comments and remove form's message
+				SongService.GetOneSong($routeParams.slug).then(function (response) {
+					$scope.comments = response.comments;
+				});
+			} else {
+				toastr.error(response.message);
+			}
+		});
 	}
 
 	$scope.resetEditComment = function(comment) {
@@ -567,13 +565,13 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 		.then(function (response) {
 			if (response.success) {
 				toastr.success(response.message);
-                // Refresh comments and remove form's message
-                SongService.GetOneSong($routeParams.slug).then(function (response) {
-                	$scope.comments = response.comments;
-                });
-            } else {
-            	toastr.error(response.message);
-            }
-        });
+				// Refresh comments and remove form's message
+				SongService.GetOneSong($routeParams.slug).then(function (response) {
+					$scope.comments = response.comments;
+				});
+			} else {
+				toastr.error(response.message);
+			}
+		});
 	}
 }]);
