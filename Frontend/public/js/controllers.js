@@ -377,23 +377,23 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
 		})
 	}
 
-		$scope.launchMidi = function(song, id) {
-			MIDIjs.play(song);
-			$('.launch_button').show();
-			$('.stop_button').hide();
-			$('#' + id + "_launch").hide();
-			$('#' + id + "_stop").css("display", "inline-block");
-		};
+	$scope.launchMidi = function(song, id) {
+		MIDIjs.play(song);
+		$('.launch_button').show();
+		$('.stop_button').hide();
+		$('#' + id + "_launch").hide();
+		$('#' + id + "_stop").css("display", "inline-block");
+	};
 
-		$scope.stopMidi = function(id) {
-			$('#' + id + "_stop").hide();
-			$('#' + id + "_launch").show();
-			MIDIjs.stop();
-		};
+	$scope.stopMidi = function(id) {
+		$('#' + id + "_stop").hide();
+		$('#' + id + "_launch").show();
+		MIDIjs.stop();
+	};
 
-		$scope.$on('$locationChangeStart', function( event ) {
-			MIDIjs.stop();
-		});
+	$scope.$on('$locationChangeStart', function( event ) {
+		MIDIjs.stop();
+	});
 }]);
 
 app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
@@ -610,4 +610,22 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 			}
 		});
 	}
+
+	$scope.launchMidi = function(song, id) {
+		MIDIjs.play(song);
+		$('.launch_button').show();
+		$('.stop_button').hide();
+		$('#' + id + "_launch").hide();
+		$('#' + id + "_stop").css("display", "inline-block");
+	};
+
+	$scope.stopMidi = function(id) {
+		$('#' + id + "_stop").hide();
+		$('#' + id + "_launch").show();
+		MIDIjs.stop();
+	};
+
+	$scope.$on('$locationChangeStart', function( event ) {
+		MIDIjs.stop();
+	});
 }]);

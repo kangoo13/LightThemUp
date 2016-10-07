@@ -19,12 +19,10 @@
 				Difficulté: {{ song.difficulty }}
 				<br>
 			</p>
-			<div ng-if="bought == true">
-				<a title="Supprimer" class="button" ng-click="vm.RemoveSongFromUser()" href="#">Supprimer</a>
-			</div>
-			<div ng-if="bought == false">
-				<a title="Ajouter" class="button button-primary" ng-click="vm.AddSongToUser()" href="#">Ajouter</a>
-			</div>
+			<a ng-if="bought == true" title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique ?" confirmed-click="vm.RemoveSongFromUser()" href="#">Supprimer</a>
+			<a ng-if="bought == false" title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToUser()">Ajouter</a>
+			<a id="{{ song._id }}_launch" href="#" class="button launch_button" ng-click="launchMidi(song.file, song._id)">Ecouter</a>
+			<a id="{{ song._id }}_stop" href="#" class="button stop_button" ng-click="stopMidi(song._id)">Arrêter</a>
 		</div>
 	</div>
 </div>
@@ -32,7 +30,7 @@
 
 <div ng-hide="vm.dataLoading" class="content">
 	<h3>Commentaires</h3>
-	
+
 	<div class="row">
 		<div class="two columns">
 			<img class="u-full-width" src="/{{ user.picture }}" alt="Avatar de {{ user.name }}" title="{{user.name}}" />
