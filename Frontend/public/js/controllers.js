@@ -473,6 +473,10 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 		vm.dataLoading = false;
 	});
 
+	$scope.launchMidi = function(song) {
+		MIDIjs.play('song');
+	};
+
 }]);
 
 app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, SongService, UserService, $location, toastr) {
