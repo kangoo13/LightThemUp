@@ -1,4 +1,5 @@
-"use strict";
+'use strict';
+
 
 // declare a new module called 'myApp', and make it require the `ng-admin` module as a dependency
 var myApp = angular.module('LightThemUpAdmin', ['ng-admin', 'ngCookies', 'restangular']);
@@ -85,7 +86,7 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
       .title('Delete user: {{ entry.values.name }}');
 
       user.editionView()
-      .title('Edit user: {{ entry.values.name }}') 
+      .title('Edit user: {{ entry.values.name }}')
       .fields([
         nga.field('name').validation({required: true}),
         nga.field('emailLocal', 'email')
@@ -280,4 +281,3 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
     // attach the admin application to the DOM and execute it
     nga.configure(admin);
   }]);
-

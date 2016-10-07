@@ -1,24 +1,25 @@
 /**
- * Module dependencies
- */
+* Module dependencies
+*/
 
 var express = require('express'),
-    bodyParser = require('body-parser'),
-    methodOverride = require('method-override'),
-    morgan = require('morgan'),
-    routes = require('./routes'),
-    http = require('http'),
-    path = require('path');
+bodyParser = require('body-parser'),
+methodOverride = require('method-override'),
+morgan = require('morgan'),
+routes = require('./routes'),
+http = require('http'),
+path = require('path');
 
 var app = module.exports = express();
 
-
 /**
- * Configuration
- */
+* Configuration
+*/
+
+var port = 80;
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || port);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(morgan('dev'));
@@ -34,33 +35,21 @@ app.use('/uploads', express.static(__dirname + '/../API/public/uploads/'));
 
 var env = process.env.NODE_ENV || 'development';
 app.use(function (err, req, res, next) {
-    return res.status(500).send({
-        success: false,
-        message: err.toString(),
-    });
+  return res.status(500).send({
+    success: false,
+    message: err.toString(),
+  });
 });
 
 // production only
 if (env === 'production') {
-    // TODO
+  // TODO
 }
-
-
-/**
- * Routes
- */
-
 
 require('./routes')(app);
 
-
-/**
- * Start Server
- */
-
-var port = 80;
-app.listen(port);
-
-console.log("App listen to " + port);
+app.listen(port, function (err) {
+  console.log("App listen to " + port);
+});
 
 module.export = app;

@@ -1,0 +1,86 @@
+'use strict';
+
+app.config(function ($routeProvider, $locationProvider) {
+  $routeProvider.when('/', {
+    templateUrl: '/home.html',
+    controller: 'HomeController',
+    authorizedAccess: false
+  }).when('/inscription', {
+    templateUrl: '/inscription.html',
+    controller: 'RegisterController',
+    controllerAs: 'vm',
+    authorizedAccess: false
+  }).when('/connexion', {
+    templateUrl: '/connexion.html',
+    controller: 'LoginController',
+    controllerAs: 'vm',
+    authorizedAccess: false
+  }).when('/compte', {
+    templateUrl: '/compte.html',
+    controller: 'AccountController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/equipe', {
+    templateUrl: '/equipe.html',
+    authorizedAccess: false
+  }).when('/contact', {
+    templateUrl: '/contact.html',
+    controller: 'ContactController',
+    controllerAs: 'vm',
+    authorizedAccess: false
+  }).when('/boutique', {
+    templateUrl: '/boutique.html',
+    controller: 'ShopController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/boutique/all', {
+    templateUrl: '/boutique-all-songs.html',
+    controller: 'ShopAllSongsController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/songs/:slug', {
+    templateUrl: '/song-details.html',
+    controller: 'SongDetailController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/news', {
+    templateUrl: '/news.html',
+    controller: 'NewsController',
+    controllerAs: 'vm',
+    authorizedAccess: false
+  }).when('/news/:slug', {
+    templateUrl: '/news-details.html',
+    controller: 'NewsDetailsController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/succes', {
+    templateUrl: '/mes-succes.html',
+    controller: 'SuccesController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/mes-musiques', {
+    templateUrl: '/mes-musiques.html',
+    controller: 'MySongsController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/playlists', {
+    templateUrl: '/playlist.html',
+    controller: 'PlaylistController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/playlists/:slug/ajout', {
+    templateUrl: '/playlist-ajout-musique.html',
+    controller: 'AddSongPlaylistController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).when('/playlists/create', {
+    templateUrl: '/create-playlist.html',
+    controller: 'CreatePlaylistController',
+    controllerAs: 'vm',
+    authorizedAccess: true
+  }).otherwise({
+    redirectTo: '/404',
+    templateUrl: '404.html'
+  });
+  $locationProvider.html5Mode(true);
+});

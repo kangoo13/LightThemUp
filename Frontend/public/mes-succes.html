@@ -1,46 +1,46 @@
 <!-- Data loading -->
 <div class="content" ng-if="vm.dataLoading">
-    <img class="dataLoading"
-    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+  <img class="dataLoading"
+  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
 </div>
 
 <div ng-hide="vm.dataLoading" class="content">
-    <h3>Mes succès</h3>
+  <h3>Mes succès</h3>
 
-    <h5>Succès débloqués :</h5>
+  <h5>Succès débloqués :</h5>
 
-    <!-- Error message for unlocked achievements -->
-    <p ng-hide="vm.dataLoading" ng-if="!unlockedAchievements.length">Pas de succès débloqués.</p>
+  <!-- Error message for unlocked achievements -->
+  <p ng-hide="vm.dataLoading" ng-if="!unlockedAchievements.length">Pas de succès débloqués.</p>
 
-    <div ng-repeat="achievementsUnlocked in unlockedAchievements" ng-class="!$first ? 'box_one' : 'first-box_one'">
-        <div class="row">
-            <div class="two columns">
-                <img class="u-full-width" src="/{{ achievementsUnlocked.picture }}" alt="Image du succès {{ achievementsUnlocked.name }}" title="{{ achievementsUnlocked.name  }}" />
-            </div>
-            <div class="ten columns">
-                <p><b>{{ achievementsUnlocked.name }}</b>
-                    <br>
-                    {{ achievementsUnlocked.description }}
-                </p>
-            </div>
-        </div>
+  <div ng-repeat="achievementsUnlocked in unlockedAchievements" ng-class="!$first ? 'box_one' : 'first-box_one'">
+    <div class="row">
+      <div class="two columns">
+        <img class="u-full-width" src="/{{ achievementsUnlocked.picture }}" alt="Image du succès {{ achievementsUnlocked.name }}" title="{{ achievementsUnlocked.name  }}" />
+      </div>
+      <div class="ten columns">
+        <p><b>{{ achievementsUnlocked.name }}</b>
+          <br>
+          {{ achievementsUnlocked.description }}
+        </p>
+      </div>
     </div>
-    <h5>Succès bloqués :</h5>
+  </div>
+  <h5>Succès bloqués :</h5>
 
-    <!-- Error message for locked achievements -->
-    <p ng-hide="vm.dataLoading" ng-if="!lockedAchievements.length">Pas de succès bloqués.</p>
-
-    <div ng-repeat="achievementsLocked in lockedAchievements" ng-class="!$first ? 'box_one' : 'first-box_one'">
-        <div class="row">
-            <div class="two columns">
-                <img class="u-full-width" src="/{{ achievementsLocked.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
-            </div>
-            <div class="ten columns">
-                <p><b>{{ achievementsLocked.name }}</b>
-                    <br>
-                    {{ achievementsLocked.description }}
-                </p>
-            </div>
-        </div>
+  <!-- Error message for locked achievements -->
+  <p ng-hide="vm.dataLoading" ng-if="!lockedAchievements.length">Pas de succès bloqués.</p>
+  
+  <div ng-repeat="achievementsLocked in lockedAchievements" ng-class="!$first ? 'box_one' : 'first-box_one'">
+    <div class="row">
+      <div class="two columns">
+        <img class="u-full-width" src="/{{ achievementsLocked.picture }}" alt="Image du succès {{ achievementsLocked.name }}" title="{{ achievementsLocked.name  }}" />
+      </div>
+      <div class="ten columns">
+        <p><b>{{ achievementsLocked.name }}</b>
+          <br>
+          {{ achievementsLocked.description }}
+        </p>
+      </div>
     </div>
+  </div>
 </div>

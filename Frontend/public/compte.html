@@ -1,45 +1,45 @@
 <div class="content">
-    <h3>Mon compte</h3>
-    <img ng-if="vm.dataLoading" class="dataLoading"
-         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-    <div ng-hide="vm.dataLoading">
+  <h3>Mon compte</h3>
+  <img ng-if="vm.dataLoading" class="dataLoading"
+  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+  <div ng-hide="vm.dataLoading">
 
-        <form name="updateUser" ng-submit="vm.UpdateUser()" role="form" autocomplete="on">
-            <img class="avatar" src="/{{ vm.user.picture }}" title="Mon avatar" alt="Avatar"/>
-            <label for="email">Email</label>
-            <input ng-model="vm.user.emailLocal" class="u-full-width" type="email" name="email"
-                   ng-value="vm.user.emailLocal"/>
-            <label for="password">Mot de passe</label>
-            <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
-                   placeholder="Saisir ici votre nouveau mot de passe" valid-password/>
-            <span class="u-text-error" ng-if="updateUser.password.$error.validPassword">
-            Le mot de passe doit être compris entre 4 et 12 caractères incluant au moins une majuscule et un chiffre.</span>
-            <label for="name">Nom</label>
-            <input ng-model="vm.user.name" class="u-full-width" type="text" name="name"
-                   ng-value="vm.user.name"/>
-            <label for="description">Description</label>
-            <textarea ng-model="vm.user.description" class="u-full-width" type="text" name="description"></textarea>
-            <label for="address">Adresse</label>
-            <input ng-model="vm.user.address" class="u-full-width" type="text" name="address"
-                   ng-value="vm.user.address"/>
-            <label for="city">Ville</label>
-            <input ng-model="vm.user.city" class="u-full-width" type="text" name="city"
-                   ng-value="vm.user.city"/>
-            <label for="country">Pays</label>
-            <input ng-model="vm.user.country" class="u-full-width" type="text" name="country"
-                   ng-value="vm.user.country"/>
-            <label for="createdAt">Crée le</label>
-            <input disabled class="u-full-width" type="text" name="created_at"
-                   ng-value='vm.user.createdAt | date:"EEEE dd MMMM yyyy à HH:mm"'/>
-            <label for="updatedAt">Modifié le</label>
-            <input disabled class="u-full-width" type="text" name="updated_at"
-                   ng-value='vm.user.updatedAt | date:"EEEE dd MMMM yyyy à HH:mm"'/>
-            <div class="form-actions">
-                <button type="submit" class="button-primary">Modifier</button>
-                <a ng-controller="DeleteUserController" class="button" title="Supprimer mon compte"
-                   ng-confirm-click="Confirmez-vous la suppression de votre compte ?" confirmed-click="DeleteUser()">Supprimer
-                    mon compte</a>
-            </div>
-        </form>
+    <form name="updateUser" ng-submit="vm.UpdateUser()" role="form" autocomplete="on">
+      <img class="avatar" src="/{{ vm.user.picture }}" title="Mon avatar" alt="Avatar"/>
+      <label for="email">Email</label>
+      <input ng-model="vm.user.emailLocal" class="u-full-width" type="email" name="email"
+      ng-value="vm.user.emailLocal"/>
+      <label for="password">Mot de passe</label>
+      <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
+      placeholder="Saisir ici votre nouveau mot de passe" valid-password/>
+      <span class="u-text-error" ng-if="updateUser.password.$error.validPassword">
+        Le mot de passe doit être compris entre 4 et 12 caractères incluant au moins une majuscule et un chiffre.</span>
+        <label for="name">Nom</label>
+        <input ng-model="vm.user.name" class="u-full-width" type="text" name="name"
+        ng-value="vm.user.name"/>
+        <label for="description">Description</label>
+        <textarea ng-model="vm.user.description" class="u-full-width" type="text" name="description"></textarea>
+        <label for="address">Adresse</label>
+        <input ng-model="vm.user.address" class="u-full-width" type="text" name="address"
+        ng-value="vm.user.address"/>
+        <label for="city">Ville</label>
+        <input ng-model="vm.user.city" class="u-full-width" type="text" name="city"
+        ng-value="vm.user.city"/>
+        <label for="country">Pays</label>
+        <input ng-model="vm.user.country" class="u-full-width" type="text" name="country"
+        ng-value="vm.user.country"/>
+        <label for="createdAt">Crée le</label>
+        <input disabled class="u-full-width" type="text" name="created_at"
+        ng-value='vm.user.createdAt | date:"EEEE dd MMMM yyyy à HH:mm"'/>
+        <label for="updatedAt">Modifié le</label>
+        <input disabled class="u-full-width" type="text" name="updated_at"
+        ng-value='vm.user.updatedAt | date:"EEEE dd MMMM yyyy à HH:mm"'/>
+        <div class="form-actions">
+          <button type="submit" class="button-primary">Modifier</button>
+          <a ng-controller="DeleteUserController" class="button" title="Supprimer mon compte"
+          ng-confirm-click="Confirmez-vous la suppression de votre compte ?" confirmed-click="DeleteUser()">Supprimer
+          mon compte</a>
+        </div>
+      </form>
     </div>
-</div>
+  </div>
