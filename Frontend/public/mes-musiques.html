@@ -22,7 +22,8 @@
 				{{ song }}
 				<a title="Acheter" class="button button-primary" href="/songs/{{ song.slug }}">En savoir plus</a>
 				<a title="Ecouter" class="button" href="{{ song.preview }}">Ecouter</a>
-				<a href="#" onClick="MIDIjs.play('/uploads/songs/57f79422fc68a5ed09bff59b/for_elise_by_beethoven.mid');">Play hinematov.mid</a>
+				<a href="#" ng-click="MIDIjs.play({{ song.file }});">Play hinematov.mid</a>
+				<a href="#" onClick="MIDIjs.stop();">Stop MIDI Playback</a>
 			</div>
 		</div>
 	</div>
