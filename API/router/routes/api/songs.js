@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/newSongs/:nbSong', function(req, res, next) {
-  Song.find().limit(req.params.nbSong).sort({'createdAt': -1}).exec(function (err, songs) {
+  Song.find().limit(parseInt(req.params.nbSong, 10)).sort({'createdAt': -1}).exec(function (err, songs) {
     if (err) return next(err);
     res.status(200).json(songs);
   });
@@ -40,7 +40,7 @@ router.get('/newSongs/:nbSong', function(req, res, next) {
 
 
 router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
-  Song.find().limit(req.params.nbSong).sort({'bought': -1}).exec(function (err, songs) {
+  Song.find().limit(parseInt(req.params.nbSong, 10)).sort({'bought': -1}).exec(function (err, songs) {
     if (err) return next(err);
     res.status(200).json(songs);
   });
