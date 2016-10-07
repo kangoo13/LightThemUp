@@ -376,6 +376,24 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
 			vm.dataLoading = false;
 		})
 	}
+
+		$scope.launchMidi = function(song, id) {
+			MIDIjs.play(song);
+			$('.launch_button').show();
+			$('.stop_button').hide();
+			$('#' + id + "_launch").hide();
+			$('#' + id + "_stop").css("display", "inline-block");
+		};
+
+		$scope.stopMidi = function(id) {
+			$('#' + id + "_stop").hide();
+			$('#' + id + "_launch").show();
+			MIDIjs.stop();
+		};
+
+		$scope.$on('$locationChangeStart', function( event ) {
+			MIDIjs.stop();
+		});
 }]);
 
 app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistService', '$location', 'toastr', function ($scope, $cookies, PlaylistService, $location, toastr) {
