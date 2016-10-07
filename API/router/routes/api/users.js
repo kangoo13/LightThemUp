@@ -11,7 +11,7 @@ var fs          = require('fs');
 var path        = require('path');
 var multer      = require('multer');
 var Promise     = require('bluebird');
-var mongoose        = require('mongoose');
+var mongoose    = require('mongoose');
 var util        = require("util");
 var Achievement = require("../../../models/Achievement.js");
 var upload      = multer({ dest: './public/uploads/tmp/'});
@@ -206,94 +206,97 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 
 router.put('/:idUser', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin || req.decoded.id == req.params.idUser) {
-    User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
-      if (err) return next(err);
-      console.log(post);
-      res.status(200).json({
-        success: true,
-        message: 'User updated !'
-      });
-    });
-  }
-  else {
-    return res.status(401).send({
-      success: false,
-      message: 'Unauthorized.'
-    });
-  }
-});
-
-router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) {
-  if (req.decoded.admin || req.decoded.id == req.params.idUser) {
-    User.findByIdAndRemove(req.params.idUser, req.body, function (err, post) {
-      if (err) return next(err);
-      return res.status(200).send({
-        success: true,
-        message: 'The user has been deleted.'
-      });
-    });
-  }
-  else {
-    return res.status(401).send({
-      success: false,
-      message: 'Unauthorized.'
-    });
-  }
-});
-
-router.get('/:idUser', function(req, res, next) {
-  User.findById(req.params.idUser).populate("achievements").populate("songs").exec(function (err, post) {
-    if (err) return next(err);
-    res.status(200).json(post);
-  });
-});
-
-router.post('/authenticate', function(req, res) {
-  if (req.body.email && req.body.password) {
-    User.findOne({
-      'emailLocal': req.body.email
-    }).select('emailLocal +passwordLocal +admin').exec(function (err, user) {
-      if (err) throw err;
-
-      if (!user) {
-        res.status(404).json({
-          success: false,
-          message: 'Authentication failed. User not found.'
+    User.findByIdAndUpdate(req.params.idUser, req.body,  {
+      $addToSet: {emailLocal: req.body.email}, function (err, post) {
+        if (err) {
+          console.log(err);
+          return next(err);
+        }
+        res.status(200).json({
+          success: true,
+          message: 'User updated !'
         });
-      } else if (user) {
-        var validPassword = user.comparePassword(req.body.password);
-        if (!validPassword) {
-          res.status(401).json({
+      });
+    }
+    else {
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized.'
+      });
+    }
+  });
+
+  router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) {
+    if (req.decoded.admin || req.decoded.id == req.params.idUser) {
+      User.findByIdAndRemove(req.params.idUser, req.body, function (err, post) {
+        if (err) return next(err);
+        return res.status(200).send({
+          success: true,
+          message: 'The user has been deleted.'
+        });
+      });
+    }
+    else {
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized.'
+      });
+    }
+  });
+
+  router.get('/:idUser', function(req, res, next) {
+    User.findById(req.params.idUser).populate("achievements").populate("songs").exec(function (err, post) {
+      if (err) return next(err);
+      res.status(200).json(post);
+    });
+  });
+
+  router.post('/authenticate', function(req, res) {
+    if (req.body.email && req.body.password) {
+      User.findOne({
+        'emailLocal': req.body.email
+      }).select('emailLocal +passwordLocal +admin').exec(function (err, user) {
+        if (err) throw err;
+
+        if (!user) {
+          res.status(404).json({
             success: false,
-            message: 'Authentication failed. Wrong password.'
+            message: 'Authentication failed. User not found.'
           });
-        } else {
+        } else if (user) {
+          var validPassword = user.comparePassword(req.body.password);
+          if (!validPassword) {
+            res.status(401).json({
+              success: false,
+              message: 'Authentication failed. Wrong password.'
+            });
+          } else {
 
-          var token = jwt.sign({
-            'emailLocal': user.emailLocal,
-            'id': user.id,
-            'admin': user.admin,
-          }, superSecret, {
-            expiresInMinutes: 1440 // expires in 24 hours
-          });
+            var token = jwt.sign({
+              'emailLocal': user.emailLocal,
+              'id': user.id,
+              'admin': user.admin,
+            }, superSecret, {
+              expiresInMinutes: 1440 // expires in 24 hours
+            });
 
-          res.status(200).json({
-            success: true,
-            message: 'Enjoy your token!',
-            token: token,
-            id: user.id
-          });
+            res.status(200).json({
+              success: true,
+              message: 'Enjoy your token!',
+              token: token,
+              id: user.id
+            });
+          }
+
         }
 
-      }
-
+      });
+    }
+    else
+    return res.json({
+      success: false,
+      message: 'Wrong arguments'
     });
-  }
-  else
-  return res.json({
-    success: false,
-    message: 'Wrong arguments'
   });
-});
 
-module.exports = router;
+  module.exports = router;
