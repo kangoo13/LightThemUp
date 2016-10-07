@@ -78,7 +78,6 @@
               <p ng-hide="dataLoading" ng-if="!newSongsSideBlock.length">Pas de musiques récentes.</p>
 
               <div ng-repeat="song in newSongsSideBlock" class="recentComments" ng-class="!$first ? 'box_one' : 'first-box_one'">
-                {{ song }}
                 <p><b><a href="/songs/{{ song.slug }}">{{ song.name }}</a></b> par {{ song.artist }}
                 </p>
                 <span class="recentCommentsDate">{{ song.createdAt | date:"mediumDate"}}</span>
