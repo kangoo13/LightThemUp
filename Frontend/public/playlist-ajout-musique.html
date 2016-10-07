@@ -10,14 +10,10 @@
       </div>
       <div class="ten columns">
         <p><b>{{ song.artist }}</b> par <b>{{ song.name }}</b></p>
-        <div ng-if="song.added == true">
-          <a title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique de votre playlist ?" confirmed-click="vm.RemoveSongFromPlaylist(song._id)" href="#">Supprimer</a>
-        </div>
-        <div ng-if="song.added == false">
-          <a title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToPlaylist(song._id)">Ajouter</a>
-        </div>
+        <a ng-if="song.added == true" title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique de votre playlist ?" confirmed-click="vm.RemoveSongFromPlaylist(song._id)" href="#">Supprimer</a>
+        <a ng-if="song.added == false" title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToPlaylist(song._id)">Ajouter</a>
         <a id="{{ song._id }}_launch" href="#" class="button launch_button" ng-click="launchMidi(song.file, song._id)">Ecouter</a>
-				<a id="{{ song._id }}_stop" href="#" class="button stop_button" ng-click="stopMidi(song._id)">Arrêter</a>
+        <a id="{{ song._id }}_stop" href="#" class="button stop_button" ng-click="stopMidi(song._id)">Arrêter</a>
       </div>
     </div>
   </div>
