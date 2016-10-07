@@ -1,179 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-    <![endif]-->
-    <meta charset="utf-8">
-    <title>Light Them Up - Apprenez vos musiques préférées sur le bout des doigts</title>
-    <meta name="description" content="Light Them Up est un projet qui consiste à apprendre aux utilisateurs à jouer
-    du piano sur n’importe quel type de piano que ce soit acoustique ou bien
-    électronique.">
-    <meta name="author" content="L'équipe Light Them Up">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="images/favicon.png">
+  <!--[if lt IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+  <meta charset="utf-8">
+  <title>Light Them Up - Apprenez vos musiques préférées sur le bout des doigts</title>
+  <meta name="description" content="Light Them Up est un projet qui consiste à apprendre aux utilisateurs à jouer
+  du piano sur n’importe quel type de piano que ce soit acoustique ou bien
+  électronique.">
+  <meta name="author" content="L'équipe Light Them Up">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
-    <base href="/">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
+  <base href="/">
 </head>
 <body ng-app="LightThemUp">
 
-	<header>
-		<div class="container">
-			<div class="row">
-				<nav class="twelve columns">
-					<ul class="topnav">
-						<li><a href="/" title="Accueil">Light Them Up</a></li>
-						<li><a href="/" title="Accueil">Accueil</a></li>
-						<li><a href="/news" title="Actualités">Actualités</a></li>
-						<li><a href="/boutique" title="Boutique">Boutique</a></li>
-						<li><a href="/equipe" title="L'équipe">L'équipe</a></li>
-						<li><a href="/contact" title="Contact">Contact</a></li>
-						<li class="icon">
-							<span onclick="displayNav()">&#9776;</span>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		</div>
-	</header>
+  <header>
+    <div class="container">
+      <div class="row">
+        <nav class="twelve columns">
+          <ul class="topnav">
+            <li><a href="/" title="Accueil">Light Them Up</a></li>
+            <li><a href="/" title="Accueil">Accueil</a></li>
+            <li><a href="/news" title="Actualités">Actualités</a></li>
+            <li><a href="/boutique" title="Boutique">Boutique</a></li>
+            <li><a href="/equipe" title="L'équipe">L'équipe</a></li>
+            <li><a href="/contact" title="Contact">Contact</a></li>
+            <li class="icon">
+              <span onclick="displayNav()">&#9776;</span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
 
-	<div id="main-view" ng-controller="MainController">
-		<div class="container">
-			<div class="row">
-				<div class="two-thirds column">
-					<div ng-view autoscroll="true">
-						<div style="display: block; width: 100%; height: 200px;"></div>
-					</div>
-				</div>
-				<div class="one-third column" id="sidebar">
-					<div class="row">
-						<div class="twelve columns sidebarBlock">
-							<h5><i class="fa fa-user"></i>Espace membre</h5>
-							<ul ng-cloak>
-								<li ng-hide="isLogged"><a href="/inscription" title="Inscription">Inscription</a></li>
-								<li ng-hide="isLogged"><a href="/connexion" title="Connexion">Connexion</a></li>
-								<!-- Member area -->
-								<li ng-show="isLogged"><a href="/compte" title="Inscription">Mon compte</a></li>
-								<li ng-show="isLogged"><a href="/mes-musiques" title="Musiques">Mes musiques</a></li>
-								<li ng-show="isLogged"><a href="/playlists" title="Playlists">Mes playlists</a></li>
-								<li ng-show="isLogged"><a href="/succes" title="Succès">Mes succès</a></li>
-								<!--End of member area-->
-								<li ng-show="isLogged" ng-controller="LogoutController">
-									<a ng-href="#" ng-click="LogoutUser()" title="Déconnexion">Déconnexion</a>
-								</li>
-							</ul>
-						</div>
-						<div ng-controller="LastSongsSideBlockController" class="twelve columns sidebarBlock">
-							<h5><i class="fa fa-music" aria-hidden="true"></i>Dernières sorties</h5>
-                            <div ng-if="dataLoading">
-                                <img class="dataLoading"
-                                     src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-                            </div>
-                            <!-- Error message for empty comments -->
-                            <p ng-hide="dataLoading" ng-if="!newSongsSideBlock.length">Pas de musiques récentes.</p>
+  <div id="main-view" ng-controller="MainController">
+    <div class="container">
+      <div class="row">
+        <div class="two-thirds column">
+          <div ng-view autoscroll="true">
+            <div style="display: block; width: 100%; height: 200px;"></div>
+          </div>
+        </div>
+        <div class="one-third column" id="sidebar">
+          <div class="row">
+            <div class="twelve columns sidebarBlock">
+              <h5><i class="fa fa-user"></i>Espace membre</h5>
+              <ul ng-cloak>
+                <li ng-hide="isLogged"><a href="/inscription" title="Inscription">Inscription</a></li>
+                <li ng-hide="isLogged"><a href="/connexion" title="Connexion">Connexion</a></li>
+                <!-- Member area -->
+                <li ng-show="isLogged"><a href="/compte" title="Inscription">Mon compte</a></li>
+                <li ng-show="isLogged"><a href="/mes-musiques" title="Musiques">Mes musiques</a></li>
+                <li ng-show="isLogged"><a href="/playlists" title="Playlists">Mes playlists</a></li>
+                <li ng-show="isLogged"><a href="/succes" title="Succès">Mes succès</a></li>
+                <!--End of member area-->
+                <li ng-show="isLogged" ng-controller="LogoutController">
+                  <a ng-href="#" ng-click="LogoutUser()" title="Déconnexion">Déconnexion</a>
+                </li>
+              </ul>
+            </div>
 
-                            <div ng-repeat="song in newSongsSideBlock" class="recentComments" ng-class="!$first ? 'box_one' : 'first-box_one'">
-                                <p><b><a href="/songs/{{ song.slug }}">{{ song.name }}</a></b> par {{ song.artist }}
-                                </p>
-                                <span class="recentCommentsDate">{{ song.createdAt | date:"mediumDate"}}</span>
-                            </div>
-						</div>
-						<div ng-controller="CommentsController" class="twelve columns sidebarBlock">
-							<h5><i class="fa fa-commenting"></i>Commentaires récents</h5>
-							<div ng-if="dataLoading">
-								<img class="dataLoading"
-								src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-							</div>
-							<!-- Error message for empty comments -->
-							<p ng-hide="dataLoading" ng-if="!recentComments.length">Pas de commentaires récents.</p>
+            <div ng-controller="LastSongsSideBlockController" class="twelve columns sidebarBlock">
+              <h5><i class="fa fa-music" aria-hidden="true"></i>Dernières sorties</h5>
+              <div ng-if="dataLoading">
+                <img class="dataLoading"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+              </div>
+              <!-- Error message for empty comments -->
+              <p ng-hide="dataLoading" ng-if="!newSongsSideBlock.length">Pas de musiques récentes.</p>
 
-							<div ng-repeat="comment in recentComments" class="recentComments"ng-class="!$first ? 'box_one' : 'first-box_one'">
-								<p><b>{{ comment.author.name }}</b> sur <a href="{{ comment.contentUrl }}">{{ comment.contentName }}</a>
-									<br>
-									{{ comment.message | limitTo : 200 }}
-								</p>
-								<span class="recentCommentsDate">{{ comment.createdAt | date:"MM/dd/yyyy 'at' h:mma"}}</span>
-							</div>
-						</div>
-						<div class="twelve columns sidebarBlock">
-							<h5><i class="fa fa-trophy"></i>Podium</h5>
-							<ol>
-								<li>Faucheur - 12000 points</li>
-								<li>Widow - 8000 points</li>
-								<li>Silverstorm - 2125 points</li>
-							</ol>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+              <div ng-repeat="song in newSongsSideBlock" class="recentComments" ng-class="!$first ? 'box_one' : 'first-box_one'">
+                {{ song }}
+                <p><b><a href="/songs/{{ song.slug }}">{{ song.name }}</a></b> par {{ song.artist }}
+                </p>
+                <span class="recentCommentsDate">{{ song.createdAt | date:"mediumDate"}}</span>
+              </div>
+            </div>
+
+            <div ng-controller="CommentsController" class="twelve columns sidebarBlock">
+              <h5><i class="fa fa-commenting"></i>Commentaires récents</h5>
+              <div ng-if="dataLoading">
+                <img class="dataLoading"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+              </div>
+              <!-- Error message for empty comments -->
+              <p ng-hide="dataLoading" ng-if="!recentComments.length">Pas de commentaires récents.</p>
+
+              <div ng-repeat="comment in recentComments" class="recentComments" ng-class="!$first ? 'box_one' : 'first-box_one'">
+                <p><b>{{ comment.author.name }}</b> sur <a href="{{ comment.contentUrl }}">{{ comment.contentName }}</a>
+                  <br>
+                  {{ comment.message | limitTo : 200 }}
+                </p>
+                <span class="recentCommentsDate">{{ comment.createdAt | date:"MM/dd/yyyy 'at' h:mma"}}</span>
+              </div>
+            </div>
+
+            <div class="twelve columns sidebarBlock">
+              <h5><i class="fa fa-trophy"></i>Podium</h5>
+              <ol>
+                <li>Faucheur - 12000 points</li>
+                <li>Widow - 8000 points</li>
+                <li>Silverstorm - 2125 points</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer ng-controller="FooterController">
-	<div class="container">
-		<div class="row">
-			<div class="three columns">
-				<h5><i class="fa fa-group"></i>L'équipe</h5>
-				<p>L'équipe est composée de sept membres tous issus de l'école Epitech. <br/> Venant des quatre coins de
-					la France, nous unissons nos
-					connaissances pour réaliser un projet innovant et qui nous l'espérons vous plaira.</p>
-				</div>
-				<div class="three columns">
-					<h5><i class="fa fa-question-circle"></i>Contact</h5>
-					<p>Vous avez une question, une recommandation ou vous souhaitez tout simplement vous entretenir avec nous ? Vous pouvez nous contacter par le biais de notre page de contact en <a href="/contact" title="Nous contacter">cliquant ici.</a> </p>
-				</div>
-				<div class="three columns">
-					<h5><i class="fa fa-hashtag"></i>Réseaux sociaux</h5>
-					<div class="row">
-						<div class="one-third column">
-							<h4><a href="#" title="Facebook"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></h4>
-						</div>
-						<div class="one-third column">
-							<h4><a href="#" title="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></h4>
-						</div>
-						<div class="one-third column">
-							<h4><a href="#" title="Google Plus"><i class="fa fa-google-plus-official" aria-hidden="true"></i></a></h4>
-						</div>
-					</div>
-					<div class="row">
-						<div class="one-third column">
-							<h4><a href="#" title="Youtube"><i class="fa fa-youtube" aria-hidden="true"></i></a></h4>
-						</div>
-						<div class="one-third column">
-							<h4><a href="#" title="Flickr"><i class="fa fa-flickr" aria-hidden="true"></i></a></h4>
-						</div>
-						<div class="one-third column">
-							<h4><a href="#" title="Snapchat"><i class="fa fa-snapchat-ghost" aria-hidden="true"></i></a></h4>
-						</div>
-					</div>
-				</div>
-				<div class="three columns">
-					<h5><i class="fa fa-plus"></i>Publicité</h5>
-					<a href="#" title="Publicité"><img alt="Publicité" title="Spotify - Partenaire" class="u-full-width" src="/images/pub.jpg" /></a>
-				</div>
+  <div class="container">
+    <div class="row">
+      <div class="three columns">
+        <h5><i class="fa fa-group"></i>L'équipe</h5>
+        <p>L'équipe est composée de sept membres tous issus de l'école Epitech. <br/> Venant des quatre coins de
+          la France, nous unissons nos
+          connaissances pour réaliser un projet innovant et qui nous l'espérons vous plaira.</p>
+        </div>
+        <div class="three columns">
+          <h5><i class="fa fa-question-circle"></i>Contact</h5>
+          <p>Vous avez une question, une recommandation ou vous souhaitez tout simplement vous entretenir avec nous ? Vous pouvez nous contacter par le biais de notre page de contact en <a href="/contact" title="Nous contacter">cliquant ici.</a> </p>
+        </div>
+        <div class="three columns">
+          <h5><i class="fa fa-hashtag"></i>Réseaux sociaux</h5>
+          <div class="row">
+            <div class="one-third column">
+              <h4><a href="#" title="Facebook"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></h4>
+            </div>
+            <div class="one-third column">
+              <h4><a href="#" title="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></h4>
+            </div>
+            <div class="one-third column">
+              <h4><a href="#" title="Google Plus"><i class="fa fa-google-plus-official" aria-hidden="true"></i></a></h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="one-third column">
+              <h4><a href="#" title="Youtube"><i class="fa fa-youtube" aria-hidden="true"></i></a></h4>
+            </div>
+            <div class="one-third column">
+              <h4><a href="#" title="Flickr"><i class="fa fa-flickr" aria-hidden="true"></i></a></h4>
+            </div>
+            <div class="one-third column">
+              <h4><a href="#" title="Snapchat"><i class="fa fa-snapchat-ghost" aria-hidden="true"></i></a></h4>
+            </div>
+          </div>
+        </div>
+        <div class="three columns">
+          <h5><i class="fa fa-plus"></i>Publicité</h5>
+          <a href="#" title="Publicité"><img alt="Publicité" title="Spotify - Partenaire" class="u-full-width" src="/images/pub.jpg" /></a>
+        </div>
 
-			</div>
-			<i id="scrollToTop" class="fa fa-chevron-up" aria-hidden="true"></i>
-			<p id="copyright">Conception et réalisation par Light Them Up - Tous droits réservés. 2015 - {{ currentYear }}</p>
-		</div>
-	</footer>
+      </div>
+      <i id="scrollToTop" class="fa fa-chevron-up" aria-hidden="true"></i>
+      <p id="copyright">Conception et réalisation par Light Them Up - Tous droits réservés. 2015 - {{ currentYear }}</p>
+    </div>
+  </footer>
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>
-	<script src="https://use.fontawesome.com/52af308fee.js"></script>
-	<script src="/js/app.js"></script>
-	<script src="/js/resources.js"></script>
-	<script src="/js/controllers.js"></script>
-	<script src="//npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
-	<script src="/cookies/angular-cookies.js"></script>
-	<script src="/language/angular-locale_fr-fr.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>
+  <script src="https://use.fontawesome.com/52af308fee.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/resources.js"></script>
+  <script src="/js/controllers.js"></script>
+  <script src="//npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+  <script src="/cookies/angular-cookies.js"></script>
+  <script src="/language/angular-locale_fr-fr.js"></script>
 </body>
 </html>

@@ -32,7 +32,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/newSongs/:nbSong', function(req, res, next) {
-    Song.find().limit(req.params.nbSong).sort({'createdAt': -1}).exec(function (err, songs) {
+
+    Song.find().limit(parseInt(req.params.nbSong, 10)).sort({'createdAt': -1}).exec(function (err, songs) {
         if (err) return next(err);
         res.status(200).json(songs);
     });
@@ -71,7 +72,7 @@ router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
              message: "La musique n'a pas été trouvée"
          });
  })
-}); 
+});
 
 router.get('/randomSongs/:nbSong', function(req, res, next) {
     Song.find().exec(function (err, songs) {

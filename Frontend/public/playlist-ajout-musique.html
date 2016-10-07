@@ -1,13 +1,22 @@
 <div class="content">
   <a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
-  <h3>Ajout de musique à la playlist </h3>
-  <div ng-repeat="song in songs">
-    Musique name : {{ song.name }}
-    <div ng-if="song.added == true">
-      <a title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la playlist ?" confirmed-click="vm.RemoveSongFromPlaylist(song._id)" href="#">Supprimer</a>
-    </div>
-    <div ng-if="song.added == false">
-      <a title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToPlaylist(song._id)">Ajouter</a>
+  <h3>Ajout de musiques à la playlist </h3>
+  <div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
+    <div class="row">
+      <div class="two columns">
+        <a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">
+          <img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
+        </a>
+      </div>
+      <div class="ten columns">
+        <p><b>{{ song.artist }}</b> par <b>{{ song.name }}</b></p>
+        <div ng-if="song.added == true">
+          <a title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique de votre playlist ?" confirmed-click="vm.RemoveSongFromPlaylist(song._id)" href="#">Supprimer</a>
+        </div>
+        <div ng-if="song.added == false">
+          <a title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToPlaylist(song._id)">Ajouter</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

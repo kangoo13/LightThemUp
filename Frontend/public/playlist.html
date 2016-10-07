@@ -1,23 +1,24 @@
 <div class="content">
-    <h3>Mes playlists</h3>
+  <h3>Mes playlists</h3>
 
-    <!-- Data loading -->
-    <img ng-if="vm.dataLoading" class="dataLoading"
-    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+  <!-- Data loading -->
+  <img ng-if="vm.dataLoading" class="dataLoading"
+  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
 
-    <!-- Error message for empty playlists -->
-    <p ng-hide="vm.dataLoading" ng-if="!playlists.length">Vous n'avez pas de playlists pour le moment.</p>
+  <!-- Error message for empty playlists -->
+  <p ng-hide="vm.dataLoading" ng-if="!playlists.length">Vous n'avez pas de playlists pour le moment.</p>
 
-    <div ng-repeat="playlist in playlists">
-        <h5 ng-click="showDetails = ! showDetails">{{ playlist.name }} - {{ playlist.songs.length }} musique(s)</h5>
-        <div ng-show="showDetails">
-            <ol>
-                <li ng-repeat="song in playlist.songs">{{ song.name }}</li>
-            </ol>
-            <a title="Éditer" class="button button-primary" href="/playlists/{{ playlist.slug }}/ajout">Éditer</a>
-            <a title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la playlist ?" confirmed-click="RemovePlaylist(playlist._id)" href="#">Supprimer</a>
-        </div>
+  <div ng-repeat="playlist in playlists">
+    <h5 ng-click="showDetails = ! showDetails">{{ playlist.name }} - {{ playlist.songs.length }} musique(s)</h5>
+    <div ng-show="showDetails">
+      <ol>
+        <li ng-repeat="song in playlist.songs">
+          <b>{{ song.artist }}</b> par <b>{{ song.name }}</b>
+        </li>
+      </ol>
+      <a title="Éditer" class="button button-primary" href="/playlists/{{ playlist.slug }}/ajout">Éditer</a>
+      <a title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la playlist ?" confirmed-click="RemovePlaylist(playlist._id)" href="#">Supprimer</a>
     </div>
-    <a title="Créer une playlist" class="button button-primary" href="playlists/create">Ajouter une playlist</a>
-
+  </div>
+  <a title="Créer une playlist" class="button button-primary" href="playlists/create">Ajouter une playlist</a>
 </div>
