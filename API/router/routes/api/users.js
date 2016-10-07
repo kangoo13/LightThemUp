@@ -1,6 +1,3 @@
-/**
-* Created by Kangoo13 on 18/10/2015.
-*/
 var express     = require('express');
 var Song        = require('../../../models/Song.js');
 var User        = require('../../../models/User.js');
@@ -206,98 +203,108 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 
 router.put('/:idUser', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin || req.decoded.id == req.params.idUser) {
-    console.log(req.body.email);
-    console.log(req.body);
-    User.findByIdAndUpdate(req.params.idUser, req.body,  { $addToSet: {emailLocal: req.body.email} }, function (err, post) {
-        if (err) {
-          console.log(err);
-          return next(err);
-        }
-        res.status(200).json({
-          success: true,
-          message: 'User updated !'
-        });
-      });
-    }
-    else {
-      return res.status(401).send({
-        success: false,
-        message: 'Unauthorized.'
-      });
-    }
-  });
-
-  router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) {
-    if (req.decoded.admin || req.decoded.id == req.params.idUser) {
-      User.findByIdAndRemove(req.params.idUser, req.body, function (err, post) {
-        if (err) return next(err);
-        return res.status(200).send({
-          success: true,
-          message: 'The user has been deleted.'
-        });
-      });
-    }
-    else {
-      return res.status(401).send({
-        success: false,
-        message: 'Unauthorized.'
-      });
-    }
-  });
-
-  router.get('/:idUser', function(req, res, next) {
-    User.findById(req.params.idUser).populate("achievements").populate("songs").exec(function (err, post) {
-      if (err) return next(err);
-      res.status(200).json(post);
-    });
-  });
-
-  router.post('/authenticate', function(req, res) {
-    if (req.body.email && req.body.password) {
-      User.findOne({
-        'emailLocal': req.body.email
-      }).select('emailLocal +passwordLocal +admin').exec(function (err, user) {
-        if (err) throw err;
-
-        if (!user) {
-          res.status(404).json({
-            success: false,
-            message: 'Authentication failed. User not found.'
-          });
-        } else if (user) {
-          var validPassword = user.comparePassword(req.body.password);
-          if (!validPassword) {
-            res.status(401).json({
-              success: false,
-              message: 'Authentication failed. Wrong password.'
-            });
-          } else {
-
-            var token = jwt.sign({
-              'emailLocal': user.emailLocal,
-              'id': user.id,
-              'admin': user.admin,
-            }, superSecret, {
-              expiresInMinutes: 1440 // expires in 24 hours
-            });
-
+    User.find({emailLocal : req.body.emailLocal}, function (err, docs) {
+      if (!docs.length){
+        User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
+          if (err) {
+            console.log(err);
+            return next(err);
+          }
+          else {
             res.status(200).json({
               success: true,
-              message: 'Enjoy your token!',
-              token: token,
-              id: user.id
+              message: 'User updated !'
             });
           }
+        });
+      }
+      else {
+        return res.status(409).json({
+          success: false,
+          message: 'User already exists'
+        });
+      }
+    });
+  }
+  else {
+    return res.status(401).send({
+      success: false,
+      message: 'Unauthorized.'
+    });
+  }
+});
 
+router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) {
+  if (req.decoded.admin || req.decoded.id == req.params.idUser) {
+    User.findByIdAndRemove(req.params.idUser, req.body, function (err, post) {
+      if (err) return next(err);
+      return res.status(200).send({
+        success: true,
+        message: 'The user has been deleted.'
+      });
+    });
+  }
+  else {
+    return res.status(401).send({
+      success: false,
+      message: 'Unauthorized.'
+    });
+  }
+});
+
+router.get('/:idUser', function(req, res, next) {
+  User.findById(req.params.idUser).populate("achievements").populate("songs").exec(function (err, post) {
+    if (err) return next(err);
+    res.status(200).json(post);
+  });
+});
+
+router.post('/authenticate', function(req, res) {
+  if (req.body.email && req.body.password) {
+    User.findOne({
+      'emailLocal': req.body.email
+    }).select('emailLocal +passwordLocal +admin').exec(function (err, user) {
+      if (err) throw err;
+
+      if (!user) {
+        res.status(404).json({
+          success: false,
+          message: 'Authentication failed. User not found.'
+        });
+      } else if (user) {
+        var validPassword = user.comparePassword(req.body.password);
+        if (!validPassword) {
+          res.status(401).json({
+            success: false,
+            message: 'Authentication failed. Wrong password.'
+          });
+        } else {
+
+          var token = jwt.sign({
+            'emailLocal': user.emailLocal,
+            'id': user.id,
+            'admin': user.admin,
+          }, superSecret, {
+            expiresInMinutes: 1440 // expires in 24 hours
+          });
+
+          res.status(200).json({
+            success: true,
+            message: 'Enjoy your token!',
+            token: token,
+            id: user.id
+          });
         }
 
-      });
-    }
-    else
-    return res.json({
-      success: false,
-      message: 'Wrong arguments'
-    });
-  });
+      }
 
-  module.exports = router;
+    });
+  }
+  else
+  return res.json({
+    success: false,
+    message: 'Wrong arguments'
+  });
+});
+
+module.exports = router;

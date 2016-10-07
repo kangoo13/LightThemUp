@@ -115,7 +115,7 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
 				toastr.success("Modification réussie.");
 				$location.path("/compte");
 			} else {
-				$location.path('/');
+				$location.path('/compte');
 				toastr.error("Modification impossible.");
 			}
 		});
@@ -336,7 +336,7 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
 				}
 			}
 			$scope.songs = response.songs;
-			vm.dataLoading = false; 
+			vm.dataLoading = false;
 		});
 	});
 	function AddSongToPlaylist(idSong)
