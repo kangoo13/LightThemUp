@@ -115,8 +115,8 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
 				toastr.success("Modification réussie.");
 				$location.path("/compte");
 			} else {
-				$location.path('/compte');
-				toastr.error("Modification impossible.");
+				vm.dataLoading = false;
+				toastr.error("Modification impossible", response.message);
 			}
 		});
 	}
@@ -136,7 +136,7 @@ app.controller('DeleteUserController', ['$rootScope', 'UserService', "$cookies",
                     $location.path('/');
                 } else {
                 	toastr.error(response.message, "Impossible de supprimer votre compte.");
-                	vm.dataLoading = false;
+									vm.dataLoading = false;
                 }
             });
 	};
