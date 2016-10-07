@@ -488,7 +488,6 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 	};
 
 	$scope.$on('$locationChangeStart', function( event ) {
-		console.log(MIDIjs.get_audio_status());
 		MIDIjs.stop();
 	});
 
