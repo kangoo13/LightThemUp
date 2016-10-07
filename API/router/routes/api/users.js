@@ -37,7 +37,7 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
             Song.findOne({_id: req.body.idSong}, function (err, song) {
                 var objectid = new mongoose.mongo.ObjectID(req.body.idSong);
                 console.log(objectid);
-                if (users.songs.indexOf(objectid) == objectid) {
+                if (user.songs.indexOf(objectid) == objectid) {
                   console.log("EXISTE DEJA ")
                 }
                 else {
