@@ -477,6 +477,10 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 		MIDIjs.play(song);
 	};
 
+	$scope.stopMidi = function() {
+		MIDIjs.stop();
+	};
+
 }]);
 
 app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, SongService, UserService, $location, toastr) {
