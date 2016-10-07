@@ -19,7 +19,6 @@
 			</div>
 			<div class="ten columns">
 				<p><b>{{ song.artist }} - {{ song.name }}</b></p>
-				{{ song }}
 				<a title="Acheter" class="button button-primary" href="/songs/{{ song.slug }}">En savoir plus</a>
 				<a id="{{ song._id }}_launch" href="#" class="button" ng-click="launchMidi(song.file, song._id)">Ecouter</a>
 				<a id="{{ song._id }}_stop" href="#" class="button listen_button" ng-click="stopMidi(song._id)">Arrêter</a>
