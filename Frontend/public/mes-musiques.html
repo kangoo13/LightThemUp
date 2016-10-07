@@ -22,7 +22,7 @@
 				{{ song }}
 				<a title="Acheter" class="button button-primary" href="/songs/{{ song.slug }}">En savoir plus</a>
 				<a title="Ecouter" class="button" href="{{ song.preview }}">Ecouter</a>
-				<a href="#" ng-click="launchMidi(song.file)">Play hinematov.mid</a>
+				<a href="#" ng-click="launchMidi({{ song.file }})">Play hinematov.mid</a>
 				<a href="#" onClick="MIDIjs.stop();">Stop MIDI Playback</a>
 			</div>
 		</div>
