@@ -204,7 +204,10 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 router.put('/:idUser', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin || req.decoded.id == req.params.idUser) {
     User.find({emailLocal : req.body.emailLocal}, function (err, docs) {
-      if (!docs.length){
+      console.log(emailLocal);
+      console.log(docs);
+      console.log(docs.emailLocal);
+      if (!docs.length || req.body.emailLocal === docs.emailLocal) {
         User.findByIdAndUpdate(req.params.idUser, req.body, function (err, post) {
           if (err) {
             console.log(err);
