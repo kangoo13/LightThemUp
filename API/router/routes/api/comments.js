@@ -5,7 +5,7 @@
  var router      = express.Router();
 
  router.get('/lastComments/:nbComments', function(req, res, next) {
-    Comment.find().limit(req.params.nbComments).sort({'createdAt': -1}).populate({ 
+    Comment.find().limit(parseInt(req.params.nbComments, 10)).sort({'createdAt': -1}).populate({ 
        path: 'author',
        select: "name",
        model: 'User'

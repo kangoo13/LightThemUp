@@ -53,7 +53,6 @@ app.controller('RegisterController', ['UserService', '$location', 'toastr', func
 		UserService.Create(vm.user)
 		.then(function (response) {
 			if (response.success) {
-				/* toastr.success(response.message, "Success");*/
 				toastr.success("Vous êtes inscrit(e).");
 				$location.path('/connexion');
 			} else {
@@ -331,6 +330,8 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
 				response.songs[i].added = false;
 				for (var j = 0; j < playlistUser.songs.length; j++)
 				{
+					console.log(playlistUser.songs[j].name);
+					console.log(response.songs[i].name);
 					if (playlistUser.songs[j].name = response.songs[i].name)
 						response.songs[i].added = true;
 				}
