@@ -9,6 +9,10 @@
   margin-bottom: 1rem;
 }
 
+.starRating {
+  width: 20px;
+}
+
 #playlists {
   margin-bottom: 2rem;
 }

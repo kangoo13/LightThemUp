@@ -650,15 +650,19 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 
 	function difficultyToStars() {
 		var result;
-		var plainStar = "/images/plain-star.png";
-		var emptyStar = "/images/empty-star.png";
+		var plainStar = '<img class="starRating" src="/images/plain-star.png" alt="stars for rating difficulty" />';
+		var emptyStar = '<img class="starRating" src="/images/empty-star.png" alt="stars for rating difficulty" />';
 		switch ($scope.song.difficulty) {
+			case 5:
+			result = plainStar + plainStar + plainStar + plainStar + plainStar;
 			case 4:
-			result = '<img src="' + plainStar +  '" alt="four stars" />' +
-			'<img src="' + plainStar +  '" alt="four stars" />' +
-			'<img src="' + plainStar +  '" alt="four stars" />' +
-			'<img src="' + plainStar +  '" alt="four stars" />' +
-			'<img src="' + emptyStar +  '" alt="four stars" />';
+			result = plainStar + plainStar + plainStar + plainStar + emptyStar;
+			case 3:
+			result = plainStar + plainStar + plainStar + emptyStar +  emptyStar;
+			case 2:
+			result = plainStar + plainStar + emptyStar + emptyStar + emptyStar;
+			case 1:
+			result = plainStar + emptyStar + emptyStar + emptyStar + emptyStar;
 			$scope.song.difficulty = result;
 			break;
 			default:
