@@ -180,7 +180,7 @@ router.delete('/:idPlaylist', auth({secret: superSecret}), function(req, res, ne
         if (err) {
           return res.status(500).send({
             success: false,
-            message: err.errors;
+            message: err.errors
           });
         }
         else {
