@@ -6,13 +6,13 @@
 
 <div ng-hide="vm.dataLoading" class="content">
 	<a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
-	<h3>{{ song.artist }} - {{ song.name }}</h3>
+	<h3>{{ song.name }} par {{ song.artist }}</h3>
 	<div class="row">
 		<div class="two columns">
 			<img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
 		</div>
 		<div class="ten columns">
-			<p><b>{{ song.artist }} - {{ song.name }}</b>
+			<p><b>{{ song.name }} par {{ song.artist }}</b>
 				<br>
 				Prix : {{ song.price }}€ - Achetée : {{ song.bought }}
 				<br>

@@ -1,0 +1,27 @@
+<div class="content">
+  <a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
+  <h3>{{ playlist.name }}</h3>
+  <!-- Data loading -->
+  <img ng-if="vm.dataLoading" class="dataLoading"
+  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+
+  <!-- Error message for empty playlist -->
+  <p ng-hide="!playlist.length">Impossible de récupérer la playlist.</p>
+
+  <div ng-if="!playlist.length" ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
+    <div class="row">
+      <div class="two columns">
+        <a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">
+          <img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
+        </a>
+      </div>
+      <div class="ten columns">
+        <p><b>{{ song.name }}</b> par <b>{{ song.artist }}</b></p>
+        <a ng-if="song.added == true" title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique de votre playlist ?" confirmed-click="vm.RemoveSongFromPlaylist(song._id)" href="#">Supprimer</a>
+        <a ng-if="song.added == false" title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToPlaylist(song._id)">Ajouter</a>
+        <a id="{{ song._id }}_launch" href="#" class="button launch_button" ng-click="launchMidi(song.file, song._id)">Ecouter</a>
+        <a id="{{ song._id }}_stop" href="#" class="button stop_button" ng-click="stopMidi(song._id)">Arrêter</a>
+      </div>
+    </div>
+  </div>
+</div>

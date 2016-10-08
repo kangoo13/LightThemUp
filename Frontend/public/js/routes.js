@@ -68,8 +68,8 @@ app.config(function ($routeProvider, $locationProvider) {
     controller: 'PlaylistController',
     controllerAs: 'vm',
     authorizedAccess: true
-  }).when('/playlists/:slug/ajout', {
-    templateUrl: '/playlist-ajout-musique.html',
+  }).when('/playlists/:slug/show', {
+    templateUrl: '/playlist-details.html',
     controller: 'AddSongPlaylistController',
     controllerAs: 'vm',
     authorizedAccess: true

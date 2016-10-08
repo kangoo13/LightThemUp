@@ -174,21 +174,30 @@ router.put('/:idPlaylist', auth({secret: superSecret}), function(req, res, next)
 });
 
 router.delete('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
-  if (req.decoded.admin || req.decoded.id == req.params.idPlaylist) {
-    Playlist.findByIdAndRemove(req.params.idPlaylist, req.body, function (err, post) {
-      if (err) return next(err);
-      return res.status(200).send({
-        success: true,
-        message: 'The playlist has been deleted.'
+  Playlist.findOne({'_id': req.params.idPlaylist}, function (err, playlist) {
+    if (req.decoded.admin || req.decoded.id == playlist.created_by) {
+      Playlist.findByIdAndRemove(req.params.idPlaylist, req.body, function (err, post) {
+        if (err) {
+          return res.status(500).send({
+            success: false,
+            message: err.errors;
+          });
+        }
+        else {
+          return res.status(200).send({
+            success: true,
+            message: 'The playlist has been deleted.'
+          });
+        }
       });
-    });
-  }
-  else {
-    return res.status(401).send({
-      success: false,
-      message: 'Unauthorized.'
-    });
-  }
+    }
+    else {
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized.'
+      });
+    }
+  });
 });
 
 module.exports = router;

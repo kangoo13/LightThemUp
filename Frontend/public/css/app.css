@@ -3,3 +3,12 @@
 .stop_button {
   display: none;
 }
+
+.title-playlist {
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+#playlists {
+  margin-bottom: 2rem;
+}

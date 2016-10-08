@@ -324,8 +324,11 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
 	var vm = this;
 	vm.AddSongToPlaylist = AddSongToPlaylist;
 	vm.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
+	vm.dataLoading = true;
+
 	UserService.Account($cookies.get('id')).then(function (response) {
 		PlaylistService.GetOneByUser($routeParams.slug, $cookies.get('token')).then(function (playlistUser) {
+			$scope.playlist = playlistUser;
 			for(var i = 0; i < response.songs.length; i++) {
 				response.songs[i].added = false;
 				for (var j = 0; j < playlistUser.songs.length; j++)
