@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngResource', 'ngAnimate']);
+var app = angular.module('LightThemUp', ['ngRoute', 'ngCookies', 'toastr', 'ngResource', 'ngAnimate', 'ngSanitize' ]);
 
 app.run(function ($rootScope, $location, $cookies) {
     $rootScope.$on("$routeChangeStart", function (event, nextRoute, currentRoute) {

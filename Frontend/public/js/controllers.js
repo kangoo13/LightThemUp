@@ -387,6 +387,7 @@ app.controller('PlaylistDetailsController', ['$scope', '$routeParams', '$cookies
 		.then(function (response) {
 			if (response.success) {
 				$scope.playlist.name = vm.playlist.name;
+				$scope.showEdit = false;
 				toastr.success(response.message);
 			} else {
 				toastr.error(response.message);
@@ -535,6 +536,7 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 
 	SongService.GetOneSong($routeParams.slug).then(function (response) {
 		$scope.song = response;
+		difficultyToStars();
 		vm.dataLoading = false;
 		$scope.comments = response.comments;
 	});
@@ -645,4 +647,22 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 	$scope.$on('$locationChangeStart', function( event ) {
 		MIDIjs.stop();
 	});
+
+	function difficultyToStars() {
+		var result;
+		var plainStar = "/public/images/plain-star.png";
+		var emptyStar = "/public/images/empty-star.png";
+		switch ($scope.song.difficulty) {
+			case 4:
+			result = '<img src="' + plainStar +  '" alt="four stars" />' +
+			'<img src="' + plainStar +  '" alt="four stars" />' +
+			'<img src="' + plainStar +  '" alt="four stars" />' +
+			'<img src="' + plainStar +  '" alt="four stars" />' +
+			'<img src="' + emptyStar +  '" alt="four stars" />';
+			$scope.song.difficulty = result;
+			break;
+			default:
+		}
+	}
+
 }]);

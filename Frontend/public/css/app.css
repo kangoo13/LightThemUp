@@ -18,6 +18,15 @@
   margin-bottom: 1.5rem;
 }
 
+.less-margin-bottom {
+  margin-bottom: 0.5rem;
+}
+
+
+.no-margin-bottom {
+  margin-bottom: 0;
+}
+
 .add-left {
   margin-left: 1.5rem;
 }

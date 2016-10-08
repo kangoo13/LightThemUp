@@ -9,7 +9,7 @@
 	<h3>{{ newsDetails.name }}</h3>
 	<img title="{{ newsDetails.name }}" alt="Miniature de {{ newsDetails.name }}" class="u-max-full-width" src="/{{ newsDetails.picture }}">
 	<p>{{ newsDetails.description }}</p>
-	<p class="u-text-right">Publiée le <span class="news-date">{{ newsDetails.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
+	<p class="no-margin-bottom u-text-right">Publiée le <span class="news-date">{{ newsDetails.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
 </div>
 
 <div ng-hide="vm.dataLoading" class="content">
@@ -29,7 +29,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<!-- Error message for empty comments -->
 	<p ng-hide="vm.dataLoading" ng-if="!comments.length">Pas de commentaires pour cette actualité.</p>
 
