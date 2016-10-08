@@ -156,21 +156,38 @@ router.get('/:idPlaylist', auth({secret: superSecret}), function(req, res, next)
 
 
 router.put('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
-  if (req.decoded.admin || req.decoded.id == req.params.idPlaylist && req.body.name) {
-    Playlist.findByIdAndUpdate(req.params.idPlaylist,  { $set: { name: req.body.name}}, function (err, post) {
-      if (err) return next(err);
-      res.status(200).json({
-        success: true,
-        message: 'Playlist updated !'
+  Playlist.findOne({'_id': req.params.idPlaylist}, function (err, playlist) {
+    if (req.decoded.admin || req.decoded.id == playlist.created_by) {
+      if (req.body.name) {
+        Playlist.findByIdAndUpdate(req.params.idPlaylist,  { $set: { name: req.body.name}}, function (err, post) {
+          if (err) {
+            return res.status(500).send({
+              success: false,
+              message: err.errors
+            });
+          }
+          else {
+            return res.status(200).send({
+              success: true,
+              message: 'Playlist updated !'
+            });
+          }
+        });
+      }
+      else {
+        return res.status(400).json({
+          success: false,
+          message: 'Wrong arguments'
+        });
+      }
+    }
+    else {
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized.'
       });
-    });
-  }
-  else {
-    return res.status(401).send({
-      success: false,
-      message: 'Unauthorized.'
-    });
-  }
+    }
+  });
 });
 
 router.delete('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {

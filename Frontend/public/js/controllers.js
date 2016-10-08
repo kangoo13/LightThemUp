@@ -319,11 +319,13 @@ app.controller('PlaylistController', ['$scope', '$cookies', 'PlaylistService', '
 }]);
 
 
-app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies', 'PlaylistService', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams, $cookies, PlaylistService, SongService, UserService, $location, toastr) {
+app.controller('PlaylistDetailsController', ['$scope', '$routeParams', '$cookies', 'PlaylistService', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams, $cookies, PlaylistService, SongService, UserService, $location, toastr) {
 
 	var vm = this;
 	vm.AddSongToPlaylist = AddSongToPlaylist;
 	vm.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
+	vm.editPlaylist = editPlaylist;
+
 	vm.dataLoading = true;
 
 	UserService.Account($cookies.get('id')).then(function (response) {
@@ -378,6 +380,17 @@ app.controller('AddSongPlaylistController', ['$scope', '$routeParams', '$cookies
 			}
 			vm.dataLoading = false;
 		})
+	}
+
+	function editPlaylist (playlistId) {
+		PlaylistService.EditPlaylist(playlistId, vm.playlist, $cookies.get('token'))
+		.then(function (response) {
+			if (response.success) {
+				toastr.success(response.message);
+			} else {
+				toastr.error(response.message);
+			}
+		});
 	}
 
 	$scope.launchMidi = function(song, id) {

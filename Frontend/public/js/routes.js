@@ -70,7 +70,7 @@ app.config(function ($routeProvider, $locationProvider) {
     authorizedAccess: true
   }).when('/playlists/:slug/show', {
     templateUrl: '/playlist-details.html',
-    controller: 'AddSongPlaylistController',
+    controller: 'PlaylistDetailsController',
     controllerAs: 'vm',
     authorizedAccess: true
   }).when('/playlists/create', {

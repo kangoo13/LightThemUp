@@ -12,3 +12,12 @@
 #playlists {
   margin-bottom: 2rem;
 }
+
+.add-bottom {
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.add-left {
+  margin-left: 1.5rem;
+}

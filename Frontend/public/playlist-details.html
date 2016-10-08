@@ -8,20 +8,36 @@
   <!-- Error message for empty playlist -->
   <p ng-hide="!playlist.length">Impossible de récupérer la playlist.</p>
 
-  <div ng-if="!playlist.length" ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
-    <div class="row">
-      <div class="two columns">
-        <a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">
-          <img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
-        </a>
-      </div>
-      <div class="ten columns">
-        <p><b>{{ song.name }}</b> par <b>{{ song.artist }}</b></p>
-        <a ng-if="song.added == true" title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique de votre playlist ?" confirmed-click="vm.RemoveSongFromPlaylist(song._id)" href="#">Supprimer</a>
-        <a ng-if="song.added == false" title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToPlaylist(song._id)">Ajouter</a>
-        <a id="{{ song._id }}_launch" href="#" class="button launch_button" ng-click="launchMidi(song.file, song._id)">Ecouter</a>
-        <a id="{{ song._id }}_stop" href="#" class="button stop_button" ng-click="stopMidi(song._id)">Arrêter</a>
+  <div ng-if="!playlist.length">
+
+    <a class="add-bottom" ng-click="showEdit = ! showEdit" href="#">
+      Changer le nom de la playlist
+      <i ng-show="!showEdit" class="fa fa-chevron-right add-left" aria-hidden="true"></i>
+      <i ng-show="showEdit" class="fa fa-chevron-down add-left" aria-hidden="true"></i>
+    </a>
+    <form ng-show="showEdit" ng-submit="vm.editPlaylist(playlist._id)">
+      <label for="name">Quel est le nouveau nom de la playlist ?</label>
+      <input type="text" ng-model="vm.playlist.name" name="name" placeholder="Anciennement : {{ playlist.name }}" class="u-full-width"/>
+      <button type="submit" class="button-primary">Modifier</button>
+      <a ng-click="showEdit = false" class="button" href="#">Annuler</a>
+    </form>
+
+    <div ng-class="!$first ? 'box_one' : 'first-box_one'" ng-repeat="song in songs">
+      <div class="row">
+        <div class="two columns">
+          <a title="{{ song.artist }} - {{ song.name }}" href="songs/{{ song.slug }}">
+            <img class="u-full-width" src="/{{ song.picture }}" alt="Image de la musique {{ song.artist }} - {{ song.name }}" title="{{ song.artist }} - {{ song.name }}" />
+          </a>
+        </div>
+        <div class="ten columns">
+          <p><b>{{ song.name }}</b> par <b>{{ song.artist }}</b></p>
+          <a ng-if="song.added == true" title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique de votre playlist ?" confirmed-click="vm.RemoveSongFromPlaylist(song._id)" href="#">Supprimer</a>
+          <a ng-if="song.added == false" title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToPlaylist(song._id)">Ajouter</a>
+          <a id="{{ song._id }}_launch" href="#" class="button launch_button" ng-click="launchMidi(song.file, song._id)">Ecouter</a>
+          <a id="{{ song._id }}_stop" href="#" class="button stop_button" ng-click="stopMidi(song._id)">Arrêter</a>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
