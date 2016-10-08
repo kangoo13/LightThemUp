@@ -141,7 +141,7 @@ router.get('/user/:slug', auth({secret: superSecret}), function(req, res, next) 
 
 router.get('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
   Playlist.findById(req.params.idPlaylist).populate("songs").exec(function (err, post) {
-    if (err) {
+    if (err || post == null) {
       res.status(400).json({
         success: true,
         message: 'Playlist doesn\'t exist !'
