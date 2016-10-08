@@ -8,7 +8,7 @@
   <!-- Error message for empty playlist -->
   <p ng-hide="!playlist.length">Impossible de récupérer la playlist.</p>
 
-  <div ng-if="!playlist.length">
+  <div ng-show="!vm.dataLoading">
 
     <a class="add-bottom" ng-click="showEdit = ! showEdit" href="#">
       Changer le nom de la playlist
