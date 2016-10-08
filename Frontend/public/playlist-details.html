@@ -17,7 +17,7 @@
     </a>
     <form ng-show="showEdit" ng-submit="vm.editPlaylist(playlist._id)">
       <label for="name">Quel est le nouveau nom de la playlist ?</label>
-      <input type="text" ng-model="vm.playlist.name" name="name" placeholder="Anciennement : {{ playlist.name }}" class="u-full-width"/>
+      <input type="text" ng-model="vm.playlist.name" name="name" placeholder="Anciennement : {{ playlist.name }}" class="u-full-width" required/>
       <button type="submit" class="button-primary">Modifier</button>
       <a ng-click="showEdit = false" class="button" href="#">Annuler</a>
     </form>

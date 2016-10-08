@@ -386,6 +386,7 @@ app.controller('PlaylistDetailsController', ['$scope', '$routeParams', '$cookies
 		PlaylistService.EditPlaylist(playlistId, vm.playlist, $cookies.get('token'))
 		.then(function (response) {
 			if (response.success) {
+				$scope.playlist.name = vm.playlist.name;
 				toastr.success(response.message);
 			} else {
 				toastr.error(response.message);
