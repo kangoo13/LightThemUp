@@ -1,6 +1,5 @@
-/**
-* Created by Kangoo13 on 17/10/2015.
-*/
+'use strict';
+
 var express         = require('express');
 var mongoose        = require('mongoose');
 var slug            = require('slug');
@@ -91,38 +90,48 @@ res.status(200).json(songs);
 
 router.post('/', auth({secret: superSecret}), function(req, res, next) {
   if (req.body.name ) {
-    Playlist.find({name : req.body.name, 'created_by': req.decoded.id}, function (err, docs) {
-      if (!docs.length){
-        var playlist = new Playlist();
+    if (req.decoded.admin || req.decoded.id ) {
+      Playlist.find({name : req.body.name, 'created_by': req.decoded.id}, function (err, docs) {
+        if (!docs.length){
+          var playlist = new Playlist();
 
-        playlist.name = req.body.name;
-        playlist.created_by = req.decoded.id;
-        playlist.slug = slug(req.body.name);
-        playlist.save(function (err) {
-          if (err) {
-            return res.status(503).json({
-              success: false,
-              message: err.errors
+          playlist.name = req.body.name;
+          playlist.created_by = req.decoded.id;
+          playlist.slug = slug(req.body.name);
+          playlist.save(function (err) {
+            if (err) {
+              return res.status(503).json({
+                success: false,
+                message: err.errors
+              });
+            }
+            res.status(200).json({
+              success: true,
+              message: 'Playlist created !'
             });
-          }
-          res.status(200).json({
-            success: true,
-            message: 'Playlist created !'
           });
-        });
-      }else{
-        return res.status(409).json({
-          success: false,
-          message: 'Playlist already exists'
-        });
-      }
+        }
+        else {
+          return res.status(409).json({
+            success: false,
+            message: 'Playlist already exists'
+          });
+        }
+      });
+    }
+    else {
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized.'
+      });
+    }
+  }
+  else {
+    return res.status(400).json({
+      success: false,
+      message: 'Wrong arguments'
     });
   }
-  else
-  return res.status(400).json({
-    success: false,
-    message: 'Wrong arguments'
-  });
 });
 
 router.get('/user', auth({secret: superSecret}), function(req, res, next) {
