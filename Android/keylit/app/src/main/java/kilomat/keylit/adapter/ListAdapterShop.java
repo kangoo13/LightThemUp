@@ -3,6 +3,7 @@ package kilomat.keylit.adapter;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.net.Uri;
 
 import com.bumptech.glide.Glide;
 
@@ -35,20 +34,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import kilomat.keylit.R;
-import kilomat.keylit.activity.LoginActivity;
-import kilomat.keylit.activity.ShopActivity;
-
+import kilomat.keylit.controller.SessionManager;
+import kilomat.keylit.controller.ToastMessage;
+import kilomat.keylit.fragments.ShopFragment;
 import kilomat.keylit.model.ShopData;
 
 public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicViewHolder> {
 
-    private List<ShopData> mMovieList;
-    protected LinkedList<Integer> drawableLinkedList;
-    private Context mContext;
-    MediaPlayer mediaPlayer;
     public String downloadFileUrl = "";
     public String midiFile;
-    private String Xresponse;
+    protected LinkedList<Integer> drawableLinkedList;
+    MediaPlayer mediaPlayer;
+    private List<ShopData> mMovieList;
+    private Context mContext;
 
     public ListAdapterShop(Context context, List<ShopData> followerList, LinkedList<Integer> drawableLinkedList) {
         this.mContext = context;
@@ -59,14 +57,12 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
     @Override
     public void onBindViewHolder(final MusicViewHolder holder, final int position) {
 
-
         ShopData movie = mMovieList.get(position);
         final int actionDrawableId = this.drawableLinkedList.get(position);
         holder.title.setText(movie.getTitle());
-        //holder.rating.setText("Rating: " + String.valueOf(movie.getRating()));
         holder.rating.setText(movie.getArtist());
         float val = (float) movie.getRating();
-        holder.ratingbar.setRating(val / 2);
+        holder.ratingbar.setRating(val);
         //Use Glide to load the Image
         Glide.with(mContext).load("http://95.85.2.100/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
 
@@ -77,7 +73,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMemberClick(position, mMovieList, actionDrawableId);
+                onMemberClick(position);
             }
         });
 
@@ -119,36 +115,6 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         return new MusicViewHolder(itemView);
     }
 
-
-    public static class MusicViewHolder extends RecyclerView.ViewHolder {
-        ImageView thumbNail;
-        ImageView imageViewAddMovie;
-        ImageView imageViewPlaymusic;
-        ImageView imageViewStopmusic;
-        TextView title;
-        RatingBar ratingbar;
-        TextView rating;
-        TextView download;
-        TextView year;
-
-
-        public MusicViewHolder(View itemView) {
-            super(itemView);
-
-            thumbNail = (ImageView) itemView.findViewById(R.id.thumbnail);
-            title = (TextView) itemView.findViewById(R.id.title);
-            ratingbar = (RatingBar) itemView.findViewById(R.id.ratingbar);
-            rating = (TextView) itemView.findViewById(R.id.rating);
-            download = (TextView) itemView.findViewById(R.id.genre);
-            year = (TextView) itemView.findViewById(R.id.releaseYear);
-            imageViewAddMovie = (ImageView) itemView.findViewById(R.id.btnAddMovie);
-            imageViewPlaymusic = (ImageView) itemView.findViewById(R.id.btnPlayMidi);
-            imageViewStopmusic = (ImageView) itemView.findViewById(R.id.btnStopMidi);
-
-        }
-    }
-
-
     public void test(int position) {
         ShopData myData = mMovieList.get(position);
         downloadFileUrl = myData.getGenre();
@@ -167,7 +133,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI
                 | DownloadManager.Request.NETWORK_MOBILE);
 
-        ShopActivity.myDownloadReference = ShopActivity.downloadManager.enqueue(request);
+        ShopFragment.myDownloadReference = ShopFragment.downloadManager.enqueue(request);
     }
 
     protected void onMidiPlayClick(MusicViewHolder holder, int position) {
@@ -180,9 +146,9 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
             holder.imageViewStopmusic.setVisibility(View.VISIBLE);
             //Set the Image Resource
             holder.imageViewPlaymusic.setImageResource(R.drawable.media_pause);
-            Toast.makeText(mContext,
-                    "MediaPlayer start",
-                    Toast.LENGTH_SHORT).show();
+
+            ToastMessage toastMessage = new ToastMessage();
+            toastMessage.message_success(mContext, "MediaPlayer start");
         }
     }
 
@@ -193,9 +159,9 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
             holder.imageViewStopmusic.setVisibility(View.GONE);
             //Set the Image Resource
             holder.imageViewPlaymusic.setImageResource(R.drawable.media_play);
-            Toast.makeText(mContext,
-                    "MediaPlayer stop",
-                    Toast.LENGTH_SHORT).show();
+
+            ToastMessage toastMessage = new ToastMessage();
+            toastMessage.message_success(mContext, "MediaPlayer stop");
         }
 
     }
@@ -204,38 +170,36 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
 
         ShopData myDataSong = mMovieList.get(position);
         String idMySong = myDataSong.getIdSong();
-        String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
+        SessionManager manager = new SessionManager();
+
+        String mytoken = manager.getPreferences(mContext, "TokenKey");
+        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
         String address = "http://95.85.2.100:3000/users/songs/";
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 
-
         post.setHeader(new BasicHeader("x-access-token", mytoken));
         pairs.add(new BasicNameValuePair("idSong", idMySong));
         post.setEntity(new UrlEncodedFormEntity(pairs));
 
-        HttpResponse response = null;
-        response = client.execute(post);
+        HttpResponse response = client.execute(post);
 
         HttpEntity entity = response.getEntity();
-        String resp = null;
-        resp = EntityUtils.toString(entity);
+        String resp = EntityUtils.toString(entity);
 
         JSONObject jsonObj = new JSONObject(resp);
         String Xresponse = jsonObj.getString("success");
 
-        return  Xresponse;
+        return Xresponse;
     }
 
-    protected void onMemberClick(final int position, final List<ShopData> followerList, int actionDrawableId) {
-        final ShopData follower = followerList.get(position);
+    protected void onMemberClick(final int position) {
         String result = "NULL";
-        String response = "NULL";
 
         try {
-            response = AddMusicToUser(position);
+            String response = AddMusicToUser(position);
             if (response.equals("true")) {
                 result = "Complete";
             }
@@ -245,20 +209,44 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
             e.printStackTrace();
         }
 
+        ToastMessage toastMessage = new ToastMessage();
 
         if (result.equals("Complete")) {
-            Toast.makeText(mContext, follower.getTitle(), Toast.LENGTH_SHORT).show();
-            Toast.makeText(mContext, "Musique ajouté à l'utilisateur !", Toast.LENGTH_SHORT).show();
+            toastMessage.message_success(mContext, "Musique ajouté à l'utilisateur !");
             drawableLinkedList.remove(position);
             drawableLinkedList.add(position, R.drawable.movie_added_touch);
             notifyDataSetChanged();
         } else {
             drawableLinkedList.remove(position);
             drawableLinkedList.add(position, R.drawable.movie_error_touch);
-            Toast.makeText(mContext, mContext.getString(R.string.text_something_went_wrong),
-                    Toast.LENGTH_SHORT).show();
-            Toast.makeText(mContext, "Error Shop : Add music failed", Toast.LENGTH_SHORT).show();
+            toastMessage.message_error(mContext, mContext.getString(R.string.text_something_went_wrong));
+            toastMessage.message_error(mContext, "Error Shop : Add music failed");
         }
+    }
 
+    public static class MusicViewHolder extends RecyclerView.ViewHolder {
+        ImageView thumbNail;
+        ImageView imageViewAddMovie;
+        ImageView imageViewPlaymusic;
+        ImageView imageViewStopmusic;
+        TextView title;
+        RatingBar ratingbar;
+        TextView rating;
+        TextView download;
+        TextView year;
+
+        public MusicViewHolder(View itemView) {
+            super(itemView);
+
+            thumbNail = (ImageView) itemView.findViewById(R.id.thumbnail);
+            title = (TextView) itemView.findViewById(R.id.title);
+            ratingbar = (RatingBar) itemView.findViewById(R.id.ratingbar);
+            rating = (TextView) itemView.findViewById(R.id.rating);
+            download = (TextView) itemView.findViewById(R.id.genre);
+            year = (TextView) itemView.findViewById(R.id.releaseYear);
+            imageViewAddMovie = (ImageView) itemView.findViewById(R.id.btnAddMovie);
+            imageViewPlaymusic = (ImageView) itemView.findViewById(R.id.btnPlayMidi);
+            imageViewStopmusic = (ImageView) itemView.findViewById(R.id.btnStopMidi);
+        }
     }
 }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -34,19 +33,28 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import kilomat.keylit.R;
+import kilomat.keylit.controller.SessionManager;
+import kilomat.keylit.controller.ToastMessage;
 
 public class LoginActivity extends AppCompatActivity {
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String Token = "TokenKey";
+    public static final String IdUser = "IdUser";
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-    private String Xresponse;
-    public static final String MyPREFERENCES = "MyPrefs" ;
-    public static final String Token = "TokenKey";
+    public static String PREF_EMAIL = "email";
+    public static String PREF_PASSWORD = "password";
     public static SharedPreferences sharedPreferences;
-
-    @InjectView(R.id.input_email) EditText _emailText;
-    @InjectView(R.id.input_password) EditText _passwordText;
-    @InjectView(R.id.btn_login) Button _loginButton;
-    @InjectView(R.id.link_signup) TextView _signupLink;
+    @InjectView(R.id.input_email)
+    EditText _emailText;
+    @InjectView(R.id.input_password)
+    EditText _passwordText;
+    @InjectView(R.id.btn_login)
+    Button _loginButton;
+    @InjectView(R.id.link_signup)
+    TextView _signupLink;
+    SessionManager manager;
+    private String Xresponse;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         ButterKnife.inject(this);
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        manager = new SessionManager();
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -79,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     public void login() throws IOException {
         Log.d(TAG, "Login");
 
@@ -89,8 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
@@ -98,8 +107,8 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-
-        // TODO: Implement your own authentication logic here.
+        manager.setPreferences(LoginActivity.this, "status", "1");
+        String status = manager.getPreferences(LoginActivity.this, "status");
 
         String address = "http://95.85.2.100:3000/users/authenticate";
         HttpClient client = new DefaultHttpClient();
@@ -114,8 +123,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         boolean loginStatus = false;
         HttpResponse response = client.execute(post);
-        if (response.getStatusLine().getStatusCode() == 200)
-        {
+        if (response.getStatusLine().getStatusCode() == 200) {
             HttpEntity entity = response.getEntity();
             String resp = EntityUtils.toString(entity);
             try {
@@ -126,11 +134,18 @@ public class LoginActivity extends AppCompatActivity {
                     loginStatus = true;
 
                     String MyToken = jsonObj.getString("token");
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(Token, MyToken);
-                    editor.commit();
-                }
-                else
+                    String MyId = jsonObj.getString("id");
+                    manager.setPreferences(this, Token, MyToken);
+                    manager.setPreferences(this, IdUser, MyId);
+                    manager.setPreferences(this, PREF_EMAIL, email);
+                    manager.setPreferences(this, PREF_PASSWORD, password);
+                    //SharedPreferences.Editor editor = sharedPreferences.edit();
+                    //editor.putString(Token, MyToken);
+                    //editor.putString(IdUser, MyId);
+                    //editor.putString(PREF_EMAIL, email);
+                    //editor.putString(PREF_PASSWORD, password);
+                    //editor.commit();
+                } else
                     loginStatus = false;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -172,15 +187,18 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_SHORT).show();
-        Intent mainActivity = new Intent(this, HomeActivity.class);
-        mainActivity.putExtra("activity","SignIn");
+        ToastMessage toastMessage = new ToastMessage();
+        toastMessage.message_success(getBaseContext(), Xresponse);
+
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        mainActivity.putExtra("activity", "SignIn");
         startActivity(mainActivity);
         finish();
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), Xresponse, Toast.LENGTH_SHORT).show();
+        ToastMessage toastMessage = new ToastMessage();
+        toastMessage.message_error(getBaseContext(), Xresponse);
         _loginButton.setEnabled(true);
     }
 

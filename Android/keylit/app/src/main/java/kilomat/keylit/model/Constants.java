@@ -10,5 +10,7 @@ public class Constants {
      */
 
     public static final String URL = "http://95.85.2.100:3000/songs";
+    public static final String URL_PROFILE = "http://95.85.2.100:3000/users/:idUser";
     public static final String URL_ACHIEV = "http://95.85.2.100:3000/achievements";
+
 }

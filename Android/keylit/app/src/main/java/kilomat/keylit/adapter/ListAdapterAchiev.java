@@ -14,13 +14,13 @@ import com.bumptech.glide.Glide;
 import java.util.LinkedList;
 import java.util.List;
 
-import kilomat.keylit.model.AchievData;
 import kilomat.keylit.R;
+import kilomat.keylit.model.AchievData;
 
 public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.AchievDataViewHolder> {
 
-    private List<AchievData> mAchievDataList;
     protected LinkedList<Integer> drawableLinkedList;
+    private List<AchievData> mAchievDataList;
     private Context mContext;
 
     public ListAdapterAchiev(Context context, List<AchievData> followerList, LinkedList<Integer> drawableLinkedList) {
@@ -34,6 +34,7 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
 
         AchievData data = mAchievDataList.get(position);
         final int actionDrawableId = this.drawableLinkedList.get(position);
+
         holder.title.setText(data.getTitle());
         holder.details.setText(data.getDetails());
         holder.current_score.setText(String.valueOf(data.getCurrent_score()));

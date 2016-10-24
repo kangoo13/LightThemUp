@@ -1,7 +1,5 @@
 package kilomat.keylit.model;
 
-import java.util.ArrayList;
-
 /**
  * Created by BAHA on 04/04/2016.
  */
@@ -60,13 +58,11 @@ public class ShopData {
         this.year = year;
     }
 
-    public int getDownload()
-    {
+    public int getDownload() {
         return download;
     }
 
-    public void setDownload(int nbDownload)
-    {
+    public void setDownload(int nbDownload) {
         this.download = nbDownload;
     }
 

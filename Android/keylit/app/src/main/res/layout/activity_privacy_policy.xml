@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg_register"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Actuellement étudiant de 5ème année en école d’ingénieurs à EPITECH, je suis à la recherche d'une entreprise pouvant m’accueillir en stage de novembre à Mars 2016.
+                          J’ai développé pendant mon cursus une autonomie, une rigueur et le sens des responsabilités grâce à la pédagogie d’EPITECH, basée sur l’auto formation et le développement de projets en groupe ou en binôme.
+                          Mon parcours professionnel a été ponctué de plusieurs expériences me permettant un fort intérêt pour le développement et les nouvelles technologies. J’ai effectué tout le long du cursus le développement de 55 projets et 71 mini-projets dont 9 projets en java, 9 projets en mobile, 11 en web, 20 en Python etc... Je m'occupe actuellement du développement du projet de fin d’études qui consiste à créer un piano innovant pour l’apprentissage.
+                          Je reste à votre disposition pour vous rencontrer, afin d’échanger avec vous sur mes motivations et mon dynamisme.
+                           En vous remerciant de l'attention que vous porterez à ma candidature, je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+</ScrollView>
