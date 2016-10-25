@@ -3,79 +3,81 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_row_selector"
-    android:padding="8dp" >
+    android:padding="8dp">
 
     <!-- Thumbnail Image -->
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:civ_border_width="3dp"
-        app:civ_border_color="#515051"
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/thumbnail"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"/>
+        app:civ_border_color="#009999"
+        app:civ_border_width="3dp" />
 
     <!-- ShopData Title -->
     <TextView
         android:id="@+id/title"
-        android:text="title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
+        android:text="title"
+        android:textColor="@color/white"
         android:textSize="@dimen/title"
         android:textStyle="bold" />
 
     <!-- Rating -->
     <TextView
         android:id="@+id/details"
-        android:text="details"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/rating"
-        android:layout_toRightOf="@+id/thumbnail"
         android:layout_alignLeft="@+id/title"
         android:layout_alignStart="@+id/title"
-        android:layout_below="@+id/title" />
+        android:layout_below="@+id/title"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="details"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/rating" />
 
 
     <ProgressBar
+        android:id="@+id/progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progress"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:textColor="@color/genre"
-        android:max="100"
+        android:layout_below="@+id/details"
         android:layout_marginRight="80dp"
-        android:layout_below="@+id/details"
         android:layout_toLeftOf="@+id/btnAddMovie"
-        android:layout_toStartOf="@+id/btnAddMovie" />
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_toStartOf="@+id/btnAddMovie"
+        android:max="100"
+        android:textColor="@color/genre" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="100/100"
         android:id="@+id/progress_text"
-        android:layout_below="@+id/details"
-        android:layout_alignRight="@+id/progress"
-        android:layout_alignEnd="@+id/progress"
-        android:textSize="@dimen/year"
-        android:layout_alignParentRight="true" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="score"
-        android:id="@+id/current_score"
+        android:layout_alignEnd="@+id/progress"
         android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/progress"
+        android:layout_below="@+id/details"
+        android:text="100/100"
+        android:textColor="@color/white"
+        android:textSize="@dimen/year" />
+
+    <TextView
+        android:id="@+id/current_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/title"
         android:gravity="right"
-        android:textStyle="bold"
+        android:text="score"
+        android:textColor="@color/white"
         android:textSize="15dp"
-        android:layout_alignRight="@+id/title" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

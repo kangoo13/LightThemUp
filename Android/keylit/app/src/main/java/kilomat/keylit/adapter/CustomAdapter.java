@@ -3,6 +3,7 @@ package kilomat.keylit.adapter;
 /**
  * Created by BAHA on 03/04/2016.
  */
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import kilomat.keylit.model.ItemObject;
 import kilomat.keylit.R;
+import kilomat.keylit.model.ItemObject;
 
 public class CustomAdapter extends BaseAdapter {
 
@@ -24,7 +25,7 @@ public class CustomAdapter extends BaseAdapter {
 
     public CustomAdapter(Context context, List<ItemObject> customizedListView) {
         this.context = context;
-        layoutinflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutinflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         listStorage = customizedListView;
     }
 
@@ -47,14 +48,14 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder listViewHolder;
-        if(convertView == null){
+        if (convertView == null) {
             listViewHolder = new ViewHolder();
             convertView = layoutinflater.inflate(R.layout.listview_with_text_image, parent, false); //listview_with_text_image
-            listViewHolder.textInListView = (TextView)convertView.findViewById(R.id.textView);
-            listViewHolder.imageInListView = (ImageView)convertView.findViewById(R.id.imageView);
+            listViewHolder.textInListView = (TextView) convertView.findViewById(R.id.textView);
+            listViewHolder.imageInListView = (ImageView) convertView.findViewById(R.id.imageView);
             convertView.setTag(listViewHolder);
-        }else{
-            listViewHolder = (ViewHolder)convertView.getTag();
+        } else {
+            listViewHolder = (ViewHolder) convertView.getTag();
         }
 
         listViewHolder.textInListView.setText(listStorage.get(position).getContent());
@@ -64,7 +65,7 @@ public class CustomAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class ViewHolder{
+    static class ViewHolder {
         TextView textInListView;
         ImageView imageInListView;
     }

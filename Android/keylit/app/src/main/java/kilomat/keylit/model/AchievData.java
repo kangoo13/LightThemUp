@@ -13,7 +13,7 @@ public class AchievData {
     }
 
     public AchievData(String name, String thumbnailUrl, String mdetails,
-                      String mstate_success,  double current_score, double progress) {
+                      String mstate_success, double current_score, double progress) {
         this.title = name;
         this.thumbnailUrl = thumbnailUrl;
         this.details = mdetails;
