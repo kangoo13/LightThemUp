@@ -9,26 +9,73 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:paddingTop="10dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:src="@drawable/logo" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/imageView2"
+            android:src="@drawable/team"
+            android:layout_height="300dp"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            android:layout_marginBottom="10dp"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Actuellement étudiant de 5ème année en école d’ingénieurs à EPITECH, je suis à la recherche d'une entreprise pouvant m’accueillir en stage de novembre à Mars 2016.
-                          J’ai développé pendant mon cursus une autonomie, une rigueur et le sens des responsabilités grâce à la pédagogie d’EPITECH, basée sur l’auto formation et le développement de projets en groupe ou en binôme.
-                          Mon parcours professionnel a été ponctué de plusieurs expériences me permettant un fort intérêt pour le développement et les nouvelles technologies. J’ai effectué tout le long du cursus le développement de 55 projets et 71 mini-projets dont 9 projets en java, 9 projets en mobile, 11 en web, 20 en Python etc... Je m'occupe actuellement du développement du projet de fin d’études qui consiste à créer un piano innovant pour l’apprentissage.
-                          Je reste à votre disposition pour vous rencontrer, afin d’échanger avec vous sur mes motivations et mon dynamisme.
-                           En vous remerciant de l'attention que vous porterez à ma candidature, je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées"
+            android:text="L'équipe est composée de sept membres tous issus de l'école Epitech :"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- Hassan BAHA, promotion Epitech Nice"
+            android:textColor="#ffffff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- Maxence BOVIER-LAPIERRE, promotion Epitech Lille"
+            android:textColor="#ffffff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- Tanguy DEVOS, promotion Epitech Nice"
+            android:textColor="#ffffff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- Nicolas GRANT, promotion Epitech Toulouse"
+            android:textColor="#ffffff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- Jérémy KBIDI, promotion Epitech Nice"
+            android:textColor="#ffffff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- Vincent LERMANOU, promotion Epitech Toulouse"
+            android:textColor="#ffffff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- Aurélien SCHILTZ, promotion Epitech Nice"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Venant des quatre coins de la France, nous unissons nos connaissances pour réaliser un projet innovant et qui nous l'espérons vous plaira."
             android:textColor="#ffffff" />
     </LinearLayout>
 </ScrollView>

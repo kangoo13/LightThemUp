@@ -78,4 +78,13 @@
     <string name="action_clear_all">Clear All</string>
     <string name="action_mark_all_read">Mark All as Read</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="homefragment_data_1">Oubliez les cours de piano avec un professeur qui vous coûte une fortune à chaque séance.
+        Light Them Up vous fait faire des économies grâce à Keylite, un professeur de piano à domicile accessible 24/7 pour votre plus grand plaisir.</string>
+    <string name="homefragment_data_2">Keylite est une parure qui s’adaptera à tout type de piano et qui vous permettra de façon ludique et dynamique d’apprendre à jouer vos chansons préférées.
+        Tout cela est rendu possible grâce à des LEDs installées sur la parure qui s’allumeront pour indiquer les touches sur lesquelles appuyer.</string>
+    <string name="homefragment_data_3">Profitez également de milliers de partitions disponibles sur le store pour en apprendre toujours plus. Une application mobile est aussi disponible et vous permet de personnaliser vos entraînements autant que vous le souhaitez.
+        Vous pouvez aussi scanner et éditer vos propres partitions pour vous entraîner sur la musique de votre choix.</string>
+    <string name="homefragment_data_4">Grâce à Light Them Up partagez votre passion de la musique avec votre entourage et transformer votre apprentissage en amusement !</string>
+    <string name="homefragment_data_5">"Light Them Up a la particularité de s'adapter à vous. Quel que soit votre piano ou votre rythme d’apprentissage, débutant ou professionnel, il s’adapte parfaitement à vos besoins.</string>
+    <string name="homefragment_data_6">Que vous vouliez jouer des morceaux d’artistes connus ou bien vos propres créations, vous pouvez le faire en achetant des morceaux sur le magasin ou en les créant vous même grâce à notre éditeur. Pour ceux disposant de partition papier, il est aussi possible de les scanner depuis l’application."</string>
 </resources>

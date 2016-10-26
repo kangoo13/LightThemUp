@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     public static String PREF_EMAIL = "email";
     public static String PREF_PASSWORD = "password";
     public static SharedPreferences sharedPreferences;
+    CheckBox ch;
     @InjectView(R.id.input_email)
     EditText _emailText;
     @InjectView(R.id.input_password)
@@ -54,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
     @InjectView(R.id.link_signup)
     TextView _signupLink;
     SessionManager manager;
-    private String Xresponse;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,12 +71,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    login();
+                    login(v);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
+
+        ch=(CheckBox)findViewById(R.id.ch_rememberme);
 
         _signupLink.setOnClickListener(new View.OnClickListener() {
 
@@ -89,11 +92,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void login() throws IOException {
+    public void login(final View v) throws IOException {
         Log.d(TAG, "Login");
 
         if (!validate()) {
-            onLoginFailed();
+            onLoginFailed(v);
             return;
         }
 
@@ -107,8 +110,6 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        manager.setPreferences(LoginActivity.this, "status", "1");
-        String status = manager.getPreferences(LoginActivity.this, "status");
 
         String address = "http://95.85.2.100:3000/users/authenticate";
         HttpClient client = new DefaultHttpClient();
@@ -129,10 +130,13 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObj = new JSONObject(resp);
                 String successStatus = jsonObj.getString("success");
-                Xresponse = jsonObj.getString("message");
                 if (successStatus.equals("true")) {
                     loginStatus = true;
-
+                    if(ch.isChecked())
+                    {
+                            manager.setPreferences(LoginActivity.this, "status", "1");
+                            String status = manager.getPreferences(LoginActivity.this, "status");
+                    }
                     String MyToken = jsonObj.getString("token");
                     String MyId = jsonObj.getString("id");
                     manager.setPreferences(this, Token, MyToken);
@@ -158,9 +162,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
                         if (finalLoginStatus)
-                            onLoginSuccess();
+                            onLoginSuccess(v);
                         else
-                            onLoginFailed();
+                            onLoginFailed(v);
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -185,20 +189,17 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
+    public void onLoginSuccess(View v) {
         _loginButton.setEnabled(true);
-        ToastMessage toastMessage = new ToastMessage();
-        toastMessage.message_success(getBaseContext(), Xresponse);
-
+        ToastMessage.bar_message_success(v, "Authentication", "Success");
         Intent mainActivity = new Intent(this, MainActivity.class);
         mainActivity.putExtra("activity", "SignIn");
         startActivity(mainActivity);
         finish();
     }
 
-    public void onLoginFailed() {
-        ToastMessage toastMessage = new ToastMessage();
-        toastMessage.message_error(getBaseContext(), Xresponse);
+    public void onLoginFailed(View v) {
+        ToastMessage.bar_message_fail(v, "Authentication", "Fail");
         _loginButton.setEnabled(true);
     }
 

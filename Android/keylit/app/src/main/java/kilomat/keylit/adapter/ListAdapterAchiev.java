@@ -33,14 +33,12 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
     public void onBindViewHolder(final AchievDataViewHolder holder, final int position) {
 
         AchievData data = mAchievDataList.get(position);
-        final int actionDrawableId = this.drawableLinkedList.get(position);
 
         holder.title.setText(data.getTitle());
         holder.details.setText(data.getDetails());
         holder.current_score.setText(String.valueOf(data.getCurrent_score()));
         holder.progress.setProgress((int) data.getProgress());
         holder.current_progress.setText((int) data.getProgress() + "/100");
-        //holder.state_success.setText(data.getState_success());
         Glide.with(mContext).load("http://95.85.2.100/" + data.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
     }
 
@@ -69,7 +67,6 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
         ProgressBar progress;
         TextView details;
         TextView current_score;
-        TextView state_success;
         TextView current_progress;
 
         public AchievDataViewHolder(View itemView) {
