@@ -12,7 +12,8 @@ class BTRecvThread(Thread):
 
 	def run(self):
 		while self.is_running:
-			req = btsock.read();
+			req = self.btsock.read()
+			#print "rcv : '", req, "'"
 			if (len(req) > 0):
 				self.btsock.put_message(req)
 			else:
@@ -51,8 +52,8 @@ class BluetoothSock:
 			except:
 				pass
 
-			if not(self.serial.is_open()):
-				break
+			#if not(self.serial.is_open()):
+			#	break
 
 		try:
 			if self.serial.is_open():
@@ -86,7 +87,7 @@ class BluetoothSock:
 
 	def read(self):
 		try:
-			return self.serial.ser.readline()
+			return self.serial.readline().rstrip()
 		except:
 			self.if_except_catch_reco()
 			return ""
