@@ -24,11 +24,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Actuellement étudiant de 5ème année en école d’ingénieurs à EPITECH, je suis à la recherche d'une entreprise pouvant m’accueillir en stage de novembre à Mars 2016.
-                          J’ai développé pendant mon cursus une autonomie, une rigueur et le sens des responsabilités grâce à la pédagogie d’EPITECH, basée sur l’auto formation et le développement de projets en groupe ou en binôme.
-                          Mon parcours professionnel a été ponctué de plusieurs expériences me permettant un fort intérêt pour le développement et les nouvelles technologies. J’ai effectué tout le long du cursus le développement de 55 projets et 71 mini-projets dont 9 projets en java, 9 projets en mobile, 11 en web, 20 en Python etc... Je m'occupe actuellement du développement du projet de fin d’études qui consiste à créer un piano innovant pour l’apprentissage.
-                          Je reste à votre disposition pour vous rencontrer, afin d’échanger avec vous sur mes motivations et mon dynamisme.
-                           En vous remerciant de l'attention que vous porterez à ma candidature, je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées"
+            android:text="Privacy Policy of Lightthemup
+In order to receive information about your Personal Data, the purposes and the parties the Data is shared with, contact the Owner."
             android:textColor="#ffffff" />
     </LinearLayout>
 </ScrollView>
