@@ -4,7 +4,12 @@ Projet EIP pour valider la 5ème année d'EPITECH
 
 ## Installation 
 
-
+Commenter dans /etc/inittab les lignes :
+```shell
+#Spawn a getty on Raspberry Pi serial line
+T0:23:respawn:/sbin/getty -L ttyAMA0 9600 vt100
+```
+(Il y a peut être besoin d'autre manip sur rapsberry 3 que je ne peut pas tester)
 
 ## Code Example
 
