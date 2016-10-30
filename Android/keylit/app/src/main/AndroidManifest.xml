@@ -30,6 +30,9 @@
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.SignupActivity" />
+        <activity android:name=".activity.SynActivity" />
+        <activity android:name=".activity.AboutUsActivity" />
+        <activity android:name=".activity.PrivacyPoliceActivity" />
     </application>
 
 </manifest>

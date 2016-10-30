@@ -69,7 +69,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    signup();
+                    signup(v);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -85,11 +85,11 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    public void signup() throws IOException {
+    public void signup(final View v) throws IOException {
         Log.d(TAG, "Signup");
 
         if (!validate()) {
-            onSignupFailed();
+            onSignupFailed(v);
             return;
         }
 
@@ -123,10 +123,8 @@ public class SignupActivity extends AppCompatActivity {
         boolean loginStatus = false;
         HttpResponse response = client.execute(post);
         if (response.getStatusLine().getStatusCode() == 200) {
-            System.out.println("--------------[OK]--------------");
             HttpEntity entity = response.getEntity();
             String resp = EntityUtils.toString(entity);
-            System.out.println("--------------(" + resp + ")--------------");
             try {
                 JSONObject jsonObj = new JSONObject(resp);
                 String successStatus = jsonObj.getString("success");
@@ -147,20 +145,19 @@ public class SignupActivity extends AppCompatActivity {
                     public void run() {
 
                         if (finalLoginStatus)
-                            onSignupSuccess();
+                            onSignupSuccess(v);
                         else
-                            onSignupFailed();
+                            onSignupFailed(v);
                         progressDialog.dismiss();
                     }
                 }, 3000);
     }
 
 
-    public void onSignupSuccess() {
+    public void onSignupSuccess(View v) {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-        ToastMessage toastMessage = new ToastMessage();
-        toastMessage.message_success(getBaseContext(), Xresponse);
+        ToastMessage.bar_message_success(v, "Registration", "Success");
 
         Intent mainActivity = new Intent(this, LoginActivity.class);
         mainActivity.putExtra("activity", "SignUp");
@@ -168,9 +165,8 @@ public class SignupActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onSignupFailed() {
-        ToastMessage toastMessage = new ToastMessage();
-        toastMessage.message_error(getBaseContext(), Xresponse);
+    public void onSignupFailed(View v) {
+        ToastMessage.bar_message_fail(v, "Registration", "Fail");
         _signupButton.setEnabled(true);
     }
 
