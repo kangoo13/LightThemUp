@@ -3,8 +3,8 @@
 
 // declare a new module called 'myApp', and make it require the `ng-admin` module as a dependency
 var myApp = angular.module('LightThemUpAdmin', ['ng-admin', 'ngCookies', 'restangular']);
-var apiUrl = "http://95.85.2.100:3000/";
-var frontendUrl = "http://lightthemup.fr.nf/";
+var apiUrl = "http://178.33.210.28:3000/";
+var frontendUrl = "http://178.33.210.28/";
 
 myApp.config(['RestangularProvider', function(RestangularProvider) {
   var $cookies;
@@ -97,7 +97,7 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
         nga.field('address'),
         nga.field('city'),
         nga.field('country'),
-        nga.field('picture', 'file').uploadInformation({ 'url': 'http://95.85.2.100:3000/users/', 'apifilename': 'picture' })
+        nga.field('picture', 'file').uploadInformation({ 'url': 'http://178.33.210.28:3000/users/', 'apifilename': 'picture' })
         ]);
 
       news.listView().fields([

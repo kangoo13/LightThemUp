@@ -1,6 +1,6 @@
 'use strict';
 
-var apiUrl = 'http://95.85.2.100:3000';
+var apiUrl = 'http://178.33.210.28:3000';
 
 app.factory("UserService", function ($http) {
 
