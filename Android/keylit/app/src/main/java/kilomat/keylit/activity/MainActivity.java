@@ -52,6 +52,7 @@ import kilomat.keylit.fragments.ProfileFragment;
 import kilomat.keylit.fragments.ScanFragment;
 import kilomat.keylit.fragments.ShopFragment;
 import kilomat.keylit.fragments.SongsFragment;
+import kilomat.keylit.fragments.SyncFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_LOGOUT = "logout";
     private static final String TAG_ABOUT_US = "about";
     private static final String TAG_PRIVACY_POLICY = "privacy";
+    private static final String TAG_SYNC = "sync";
     // index to identify current nav menu item
     public static int navItemIndex = 0;
     public static String CURRENT_TAG = TAG_HOME;
@@ -266,6 +268,9 @@ public class MainActivity extends AppCompatActivity {
                 // achiev fragment
                 AchievFragment achievFragment = new AchievFragment();
                 return achievFragment;
+            case 7:
+                // Sync fragment
+                return new SyncFragment();
             case 9:
                 LogoutFragment logoutFragment = new LogoutFragment();
                 return logoutFragment;
@@ -322,9 +327,12 @@ public class MainActivity extends AppCompatActivity {
                         CURRENT_TAG = TAG_ACHIEV;
                         break;
                     case R.id.nav_sync:
-                        startActivity(new Intent(MainActivity.this, SynActivity.class));
-                        drawer.closeDrawers();
-                        return true;
+                        navItemIndex = 7;
+                        CURRENT_TAG = TAG_SYNC;
+                        break;
+                        //startActivity(new Intent(MainActivity.this, SynActivity.class));
+                        //drawer.closeDrawers();
+                        //return true;
                     case R.id.nav_logout:
                         navItemIndex = 9;
                         CURRENT_TAG = TAG_LOGOUT;
