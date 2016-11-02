@@ -242,10 +242,6 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
 auth({secret: superSecret}), function(req, res, next) {
   // Method if user wants to save his music from his sheet music
-  var exec = require('child_process').exec;
-  exec("C:\\ProgramData\\Oracle\\Java\\javapath\\java.exe -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.jar", function callback(error, stdout, stderr){
-    console.log("HEEEEEEEEEEEEEEEEEEERE          =   " + stdout + stderr + error);
-  });
   if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.body.difficulty && req.files['scan']) {
     if (req.decoded.admin || req.decoded.id ) {
       Song.find({name: req.body.name}, function (err, docs) {
@@ -292,8 +288,8 @@ auth({secret: superSecret}), function(req, res, next) {
             else
             {
               var exec = require('child_process').exec;
-              exec('C:\ProgramData\Oracle\Java\javapath\java.exe -jar ../../../OpenOMR/OpenOMR.java' + scanPath, function callback(error, stdout, stderr){
-                console.log("HEEEEEEEEEEEEEEEEEEERE          =   " + stdout);
+              exec("C:\\ProgramData\\Oracle\\Java\\javapath\\java.exe -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.jar" + s, function callback(error, stdout, stderr){
+                console.log("HEEEEEEEEEEEEEEEEEEERE          =   " + stdout + stderr + error);
               });
               song.name = req.body.name;
               song.artist = req.body.artist;
