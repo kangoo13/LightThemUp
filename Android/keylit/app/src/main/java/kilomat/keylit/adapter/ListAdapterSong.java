@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import kilomat.keylit.R;
+import kilomat.keylit.controller.AppController;
 import kilomat.keylit.controller.SessionManager;
 import kilomat.keylit.controller.ToastMessage;
 import kilomat.keylit.fragments.SongsFragment;
@@ -66,6 +68,7 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Test", "imageViewAddMovie.setOnClickListener");
                 SendFileByBluetoothClick(position);
             }
         });
@@ -73,13 +76,16 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         holder.imageViewPlaymusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMidiPlayClick(holder, position);
+                Log.d("Test", "imageViewPlaymusic.setOnClickListener");
+                AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3]);
+                //onMidiPlayClick(holder, position);
             }
         });
 
         holder.imageViewStopmusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Test", "imageViewStopmusic.setOnClickListener");
                 onMidiStopClick(holder);
             }
         });
@@ -114,13 +120,16 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         Uri uri = Uri.parse("http://95.85.2.100/" + downloadFileUrl);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         String CurrentString = downloadFileUrl;
+        Log.d("TestDownLoad" , "downloadFileUrl:"+downloadFileUrl);
         String[] separated = CurrentString.split("/");
         midiFile = "/keylit/" + separated[3];
+        Log.d("TestDownLoad" , "midiFile:"+midiFile);
 
         request.setDescription(myData.getTitle())
-                .setTitle("Notification Title");
+                .setTitle(myData.getTitle());
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Keylit/", separated[3]);
         midiFile = Environment.getExternalStorageDirectory().getPath() + "/Download" + midiFile;
+        Log.d("TestDownLoad" , "midiFile:"+midiFile);
         request.setVisibleInDownloadsUi(true);
 
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI

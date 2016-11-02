@@ -18,6 +18,11 @@ public class AppController extends Application {
     private static AppController mInstance;
     private RequestQueue mRequestQueue;
 
+    private BluetoothController BtControler = new BluetoothController();
+    public BluetoothController getBtControler() {
+        return BtControler;
+    }
+
     public static synchronized AppController getInstance() {
         return mInstance;
     }
