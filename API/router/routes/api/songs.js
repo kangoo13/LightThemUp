@@ -248,6 +248,7 @@ auth({secret: superSecret}), function(req, res, next) {
         if (!docs.length) {
           var song = new Song();
           var picturePath = "";
+          var realPath = "";
           var filePath = "";
           var previewPath = "";
           var image = req.files;
@@ -276,7 +277,7 @@ auth({secret: superSecret}), function(req, res, next) {
               fs.mkdirSync(process.cwd()+"/public/uploads/songs/"+song._id+"/");
             }
             var tempPath = image['picture'][0].path;
-            var realPath = process.cwd()+"/public/uploads/songs/"+song._id+"/";
+            realPath = process.cwd()+"/public/uploads/songs/"+song._id+"/";
             picturePath = "uploads/songs/"+song._id+"/"+image['picture'][0].originalname;
             var tempScanPath = image['scan'][0].path;
             scanPath = "uploads/songs/"+song._id+"/"+image['scan'][0].originalname;
@@ -288,8 +289,19 @@ auth({secret: superSecret}), function(req, res, next) {
             else
             {
               var exec = require('child_process').exec;
-              exec("C:\\ProgramData\\Oracle\\Java\\javapath\\java.exe -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.jar" + s, function callback(error, stdout, stderr){
-                console.log("HEEEEEEEEEEEEEEEEEEERE          =   " + stdout + stderr + error);
+              exec("java -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.jar " +
+              path.resolve("C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\public\\" + scanPath) +
+              " " + path.resolve(realPath + "song.mid"), function callback(error, stdout, stderr){
+                if (error){
+                  return res.status(503).json({
+                    success: false,
+                    message: error.toString()
+                  });
+                }
+                else  {
+                  song.file = "uploads/songs/"+song._id+"/"+"song.mid";
+                  song.preview = "uploads/songs/"+song._id+"/"+"song.mid";
+                }
               });
               song.name = req.body.name;
               song.artist = req.body.artist;
