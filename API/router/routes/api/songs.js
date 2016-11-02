@@ -243,7 +243,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
 auth({secret: superSecret}), function(req, res, next) {
   // Method if user wants to save his music from his sheet music
   var exec = require('child_process').exec;
-  exec("C:\\ProgramData\\Oracle\\Java\\javapath\\java.exe -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR", function callback(error, stdout, stderr){
+  exec("C:\\ProgramData\\Oracle\\Java\\javapath\\java.exe -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.java", function callback(error, stdout, stderr){
     console.log("HEEEEEEEEEEEEEEEEEEERE          =   " + stdout + stderr + error);
   });
   if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.body.difficulty && req.files['scan']) {
