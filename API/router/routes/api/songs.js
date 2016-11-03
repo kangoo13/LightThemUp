@@ -288,10 +288,13 @@ auth({secret: superSecret}), function(req, res, next) {
             throw err;
             else
             {
+              console.log(path.resolve(realPath + "song.mid"));
+              console.log(  path.resolve("C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\public\\" + scanPath));
               var exec = require('child_process').exec;
               exec("java -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.jar " +
               path.resolve("C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\public\\" + scanPath) +
               " " + path.resolve(realPath + "song.mid"), function callback(error, stdout, stderr){
+                console.log(error + " - " + stdout + " - " + stderr);
                 if (error){
                   return res.status(503).json({
                     success: false,
