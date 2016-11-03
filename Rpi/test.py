@@ -3,7 +3,7 @@ import time
 import os
 import hashlib
 
-lol = BluetoothLib.BluetoothSock("/dev/ttyAMA0")
+lol = BluetoothLib.BluetoothSock("/dev/rfcomm0")
 lol.startRecevThread();
 
 downloadMidi = "./tmp/"
