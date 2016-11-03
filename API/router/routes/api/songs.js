@@ -255,12 +255,12 @@ auth({secret: superSecret}), function(req, res, next) {
           Promise.resolve(image)
           .then(function(image) {
 
-            // if (uploadConfig.acceptedMimeTypes.indexOf(image['picture'][0].mimetype) == -1) {
-            //   throw "Incorrect MIME type for the picture";
-            // }
-            // if (uploadConfig.acceptedMimeTypes.indexOf(image['scan'][0].mimetype) == -1) {
-            //   throw "Incorrect MIME type for the scan";
-            // }
+            if (uploadConfig.acceptedMimeTypes.indexOf(image['picture'][0].mimetype) == -1) {
+              throw "Incorrect MIME type for the picture = " + image['picture'][0].mimetype;
+            }
+            if (uploadConfig.acceptedMimeTypes.indexOf(image['scan'][0].mimetype) == -1) {
+              throw "Incorrect MIME type for the scan = " + image['scan'][0].mimetype;
+            }
             return image;
           })
           .then(function(image) {
