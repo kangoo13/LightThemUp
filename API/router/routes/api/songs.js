@@ -446,7 +446,13 @@ auth({secret: superSecret}), function(req, res, next) {
   else {
     return res.status(400).json({
       success: false,
-      message: 'Wrong arguments'
+      message: 'Wrong arguments',
+      name: req.body.name,
+      artist: req.body.artist,
+      price: req.body.price,
+      picture: req.files['picture'],
+      difficulty: req.body.difficulty,
+      scan: req.files['scan']
     });
   }
 });
