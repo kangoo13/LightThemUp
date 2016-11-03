@@ -1,0 +1,295 @@
+from MCP230xx import MCP23017
+import Adafruit_GPIO as GPIO
+import pygame
+import sys
+import midi
+import time
+from math import *
+import RPi.GPIO as GPIOO
+
+
+
+tCobblerPorts = [4, 5, 6, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
+
+def setupLeds():
+    print "Initialisetion du setup des leds"
+    GPIOO.setmode(GPIOO.BCM)
+    for led in tCobblerPorts:
+        GPIOO.setup(led, GPIOO.OUT)
+    for x in range(0, 16):
+        mcp20.setup(x, GPIO.OUT)
+    for x in range(0, 16):
+        mcp27.setup(x, GPIO.OUT)
+
+def readSong():
+    pattern = midi.read_midifile(sys.argv[2])
+    notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
+    tab = []
+    i=1
+    end = len(pattern)
+    off = 0
+    while i<end:
+        j=0
+        fin = len(pattern[i])
+        while j < fin:
+            if type(pattern[i][j]) == midi.events.NoteOnEvent:
+                num = pattern[i][j].data[0]
+                octave = int(floor(num/12))
+                note = notes[num - octave*12]
+                tab.append([octave,note,pattern[i][j].tick+off])
+            off = 0
+            if type(pattern[i][j]) == midi.events.NoteOffEvent:
+                off = pattern[i][j].tick
+            j = j+1
+        i = i+1
+    return tab
+
+def readSongDoubleNote():
+    pattern = midi.read_midifile(sys.argv[2])
+    notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
+    tab = []
+    i=1
+    end = len(pattern)
+    off = 0
+    while i<end:
+        j=0
+        fin = len(pattern[i])
+        while j < fin:
+            if type(pattern[i][j]) == midi.events.NoteOnEvent:
+                num = pattern[i][j].data[0]
+                octave = int(floor(num/12))
+                #print type(octave)
+                note = notes[num - octave*12]
+                if pattern[i][j].tick+off != 0 or len(tab) == 0:
+                    tab.append([octave,note,pattern[i][j].tick+off])
+                else :
+                    tab[-1].append([octave,note,0])
+            off = 0
+            if type(pattern[i][j]) == midi.events.NoteOffEvent:
+                off = pattern[i][j].tick
+            j = j+1
+        i = i+1
+    return tab
+
+def setAllLedsValue(value):
+    print "Mise des leds sur valeur "+ str(value)
+    for led in tCobblerPorts:
+        GPIOO.output(led, value)
+    for x in range(0, 16):
+        mcp20.output(x, value)
+    for x in range(0, 16):
+        mcp27.output(x, value)
+
+def getNoteNumber(x):
+    return {
+        'C': 0,
+        'C#': 1,
+        'D': 2,
+        'D#': 3,
+        'E': 4,
+        'F': 5,
+        'F#': 6,
+        'G': 7,
+        'G#': 8,
+        'A': 9,
+        'A#': 10,
+        'B': 11
+    }[x]
+
+def initMatrixNotes():
+    print "Initialisation du son des notes a jouer"
+    MatrixNote[3][0] = "./note/16_piano-med-c3.ogg"
+    MatrixNote[3][1] = "./note/16_piano-med-db3.ogg"
+    MatrixNote[3][2] = "./note/16_piano-med-d3.ogg"
+    MatrixNote[3][3] = "./note/16_piano-med-eb3.ogg"
+    MatrixNote[3][4] = "./note/16_piano-med-e3.ogg"
+    MatrixNote[3][5] = "./note/16_piano-med-f3.ogg"
+    MatrixNote[3][6] = "./note/16_piano-med-gb3.ogg"
+    MatrixNote[3][7] = "./note/16_piano-med-g3.ogg"
+    MatrixNote[3][8] = "./note/16_piano-med-ab3.ogg"
+    MatrixNote[3][9] = "./note/16_piano-med-a3.ogg"
+    MatrixNote[3][10] = "./note/16_piano-med-bb3.ogg"
+    MatrixNote[3][11] = "./note/16_piano-med-b3.ogg"
+    MatrixNote[4][0] = "./note/16_piano-med-c4.ogg"
+    MatrixNote[4][1] = "./note/16_piano-med-db4.ogg"
+    MatrixNote[4][2] = "./note/16_piano-med-d4.ogg"
+    MatrixNote[4][3] = "./note/16_piano-med-eb4.ogg"
+    MatrixNote[4][4] = "./note/16_piano-med-e4.ogg"
+    MatrixNote[4][5] = "./note/16_piano-med-f4.ogg"
+    MatrixNote[4][6] = "./note/16_piano-med-gb4.ogg"
+    MatrixNote[4][7] = "./note/16_piano-med-g4.ogg"
+    MatrixNote[4][8] = "./note/16_piano-med-ab4.ogg"
+    MatrixNote[4][9] = "./note/16_piano-med-a4.ogg"
+    MatrixNote[4][10] = "./note/16_piano-med-bb4.ogg"
+    MatrixNote[4][11] = "./note/16_piano-med-b4.ogg"
+    MatrixNote[5][0] = "./note/16_piano-med-c5.ogg"
+    MatrixNote[5][1] = "./note/16_piano-med-db5.ogg"
+    MatrixNote[5][2] = "./note/16_piano-med-d5.ogg"
+    MatrixNote[5][3] = "./note/16_piano-med-eb5.ogg"
+    MatrixNote[5][4] = "./note/16_piano-med-e5.ogg"
+    MatrixNote[5][5] = "./note/16_piano-med-f5.ogg"
+    MatrixNote[5][6] = "./note/16_piano-med-gb5.ogg"
+    MatrixNote[5][7] = "./note/16_piano-med-g5.ogg"
+    MatrixNote[5][8] = "./note/16_piano-med-ab5.ogg"
+    MatrixNote[5][9] = "./note/16_piano-med-a5.ogg"
+    MatrixNote[5][10] = "./note/16_piano-med-bb5.ogg"
+    MatrixNote[5][11] = "./note/16_piano-med-b5.ogg"
+    MatrixNote[6][0] = "./note/c6.ogg"
+    MatrixNote[6][1] = "./note/c#6.ogg"
+    MatrixNote[6][2] = "./note/d6.ogg"
+    MatrixNote[6][3] = "./note/d#6.ogg"
+    MatrixNote[6][4] = "./note/e6.ogg"
+    MatrixNote[6][5] = "./note/f6.ogg"
+    MatrixNote[6][6] = "./note/f#6.ogg"
+    MatrixNote[6][7] = "./note/g6.ogg"
+    MatrixNote[6][8] = "./note/g#6.ogg"
+    MatrixNote[6][9] = "./note/a6.ogg"
+    MatrixNote[6][10] = "./note/a#6.ogg"
+    MatrixNote[6][11] = "./note/b6.ogg"
+
+def initMatrixLedsCorresp():
+    print "Initialisation de la matrice de correspondance des leds"
+    oct = int(sys.argv[1])
+    global Matrix
+    Matrix[oct][0] = "GPIOO 4"
+    Matrix[oct][1] = "GPIOO 5"
+    Matrix[oct][2] = "GPIOO 6"
+    Matrix[oct][3] = "GPIOO 12"
+    Matrix[oct][4] = "GPIOO 13"
+    Matrix[oct][5] = "GPIOO 16"
+    Matrix[oct][6] = "GPIOO 17"
+    Matrix[oct][7] = "GPIOO 18"
+    Matrix[oct][8] = "GPIOO 19"
+    Matrix[oct][9] = "GPIOO 20"
+    Matrix[oct][10] = "GPIOO 21"
+    Matrix[oct][11] = "GPIOO 22"
+    Matrix[oct+1][0] = "GPIOO 23"
+    Matrix[oct+1][1] = "GPIOO 24"
+    Matrix[oct+1][2] = "GPIOO 25"
+    Matrix[oct+1][3] = "GPIOO 26"
+    Matrix[oct+1][4] = "GPIOO 27"
+    Matrix[oct+1][5] = "mcp20 0"
+    Matrix[oct+1][6] = "mcp20 1"
+    Matrix[oct+1][7] = "mcp20 2"
+    Matrix[oct+1][8] = "mcp20 3"
+    Matrix[oct+1][9] = "mcp20 4"
+    Matrix[oct+1][10] = "mcp20 5"
+    Matrix[oct+1][11] = "mcp20 6"
+    Matrix[oct+2][0] = "mcp20 7"
+    Matrix[oct+2][1] = "mcp20 8"
+    Matrix[oct+2][2] = "mcp20 9"
+    Matrix[oct+2][3] = "mcp20 10"
+    Matrix[oct+2][4] = "mcp20 11"
+    Matrix[oct+2][5] = "mcp20 12"
+    Matrix[oct+2][6] = "mcp20 13"
+    Matrix[oct+2][7] = "mcp20 14"
+    Matrix[oct+2][8] = "mcp20 15"
+    Matrix[oct+2][9] = "mcp27 0"
+    Matrix[oct+2][10] = "mcp27 1"
+    Matrix[oct+2][11] = "mcp27 2"
+
+def playIt(splitted, any, oldSplitted):
+    if oldSplitted is not None:
+        if oldSplitted[0] == "GPIOO":
+            GPIOO.output(int(oldSplitted[1]), 0)
+        elif oldSplitted[0] == "mcp20":
+            mcp20.output(int(oldSplitted[1]), 0)
+        elif oldSplitted[0] == "mcp27":
+            mcp27.output(int(oldSplitted[1]), 0)
+        if oldSplitted[2] is not "None":
+            if oldSplitted[2] == "GPIOO":
+                GPIOO.output(int(oldSplitted[3]), 0)
+            elif oldSplitted[2] == "mcp20":
+                mcp20.output(int(oldSplitted[3]), 0)
+            elif oldSplitted[2] == "mcp27":
+                mcp27.output(int(oldSplitted[3]), 0)
+    any.output(int(splitted[1]), 1)
+
+def playSilence(oldSplitted):
+    if oldSplitted[0] == "GPIOO":
+        GPIOO.output(int(oldSplitted[1]), 0)
+    elif oldSplitted[0] == "mcp20":
+        mcp20.output(int(oldSplitted[1]), 0)
+    elif oldSplitted[0] == "mcp27":
+        mcp27.output(int(oldSplitted[1]), 0)
+    if oldSplitted[2] is not "None":
+        if oldSplitted[2] == "GPIOO":
+            GPIOO.output(int(oldSplitted[3]), 0)
+        elif oldSplitted[2] == "mcp20":
+            mcp20.output(int(oldSplitted[3]), 0)
+        elif oldSplitted[2] == "mcp27":
+            mcp27.output(int(oldSplitted[3]), 0)
+
+def playNote(ticks, splitted, splitteda, oldSplitted):
+    time.sleep(ticks / 1000.0)
+    if splitted[0] == "GPIOO":
+        playIt(splitted, GPIOO, oldSplitted)
+    elif splitted[0] == "mcp20":
+        playIt(splitted, mcp20, oldSplitted)
+    elif splitted[0] == "mcp27":
+        playIt(splitted, mcp27, oldSplitted)
+    else:
+        playSilence(oldSplitted)
+    if splitteda[0] == "GPIOO":
+        playIt(splitteda, GPIOO, None)
+    elif splitteda[0] == "mcp20":
+        playIt(splitteda, mcp20, None)
+    elif splitteda[0] == "mcp27":
+        playIt(splitteda, mcp27, None)
+
+
+##################
+
+
+
+
+k, p = 12, 8
+MatrixNote = [["none ok" for x in range(k)] for y in range(p)]
+w, h = 16, 8
+Matrix = [["none ok" for x in range(w)] for y in range(h)]
+
+if len(sys.argv) != 3:
+    print "Usage: python play_music.py <octave_start> <midifile>"
+    sys.exit(0)
+
+mcp20 = MCP23017(busnum = 1, address = 0x20)
+mcp27 = MCP23017(busnum = 1, address = 0x27)
+print "Lancement ! Merci de verifier que toutes les leds marchent afin de continuer"
+setupLeds()
+pygame.init()
+setAllLedsValue(1)
+raw_input("Appuyez sur entree, pour continuer...")
+setAllLedsValue(0)
+initMatrixNotes()
+initMatrixLedsCorresp()
+music = readSongDoubleNote()
+try:
+    pygame.mixer.music.load(sys.argv[2])
+    print "Music file %s loaded!" % sys.argv[2]
+except pygame.error:
+    print "File %s not found! (%s)" % (sys.argv[2], pygame.get_error())
+oldSplitted = ["None", "None", "None", "None"]
+i = 0
+for note in music:
+    splitteda = ["None", "None"]
+    octave = note[0]
+    key = note[1]
+    ticks = note[2]
+    if len(note) > 3:
+        octavia = note[3][0]
+        keya = note[3][1]
+        splitteda = Matrix[octavia][getNoteNumber(keya)].split()
+    splitted = Matrix[octave][getNoteNumber(key)].split()
+    playNote(ticks, splitted, splitteda, oldSplitted)
+    if i == 0:
+        pygame.mixer.music.play()
+        time.sleep(0.3)
+    oldSplitted[0] = splitted[0]
+    oldSplitted[1] = splitted[1]
+    if splitteda[0] is not "None":
+        oldSplitted[2] = splitteda[0]
+        oldSplitted[3] = splitteda[1]
+    else:
+        oldSplitted[2] = "None"
+        oldSplitted[3] = "None"
+    i = i + 1
