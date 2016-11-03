@@ -242,7 +242,7 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
 auth({secret: superSecret}), function(req, res, next) {
   // Method if user wants to save his music from his sheet music
-  if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.body.difficulty && req.files['scan']) {
+  if (req.body.name && req.body.artist && req.files['picture'] && req.body.difficulty && req.files['scan']) {
     if (req.decoded.admin || req.decoded.id ) {
       Song.find({name: req.body.name}, function (err, docs) {
         if (!docs.length) {
@@ -288,28 +288,25 @@ auth({secret: superSecret}), function(req, res, next) {
             throw err;
             else
             {
-              console.log(path.resolve(realPath + "song.mid"));
-              console.log(  path.resolve("C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\public\\" + scanPath));
               var exec = require('child_process').exec;
               exec("java -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.jar " +
               path.resolve("C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\public\\" + scanPath) +
-              " " + path.resolve(realPath + "song.mid"), function callback(error, stdout, stderr){
-                console.log(error + " - " + stdout + " - " + stderr);
+              " " + path.resolve(realPath + req.body.artist + " - " + req.body.name + ".mid"), function callback(error, stdout, stderr){
                 if (error){
                   return res.status(503).json({
                     success: false,
-                    message: error.toString()
+                    message: error
                   });
                 }
                 else  {
-                  song.file = "uploads/songs/"+song._id+"/"+"song.mid";
-                  song.preview = "uploads/songs/"+song._id+"/"+"song.mid";
+                  song.file = "uploads/songs/"+song._id+"/"+req.body.artist + " - " + req.body.name + ".mid";
+                  song.preview = "uploads/songs/"+song._id+"/"+req.body.artist + " - " + req.body.name + ".mid";
                 }
               });
               song.name = req.body.name;
               song.artist = req.body.artist;
               song.picture = picturePath;
-              song.price = req.body.price;
+              song.price = req.body.price || 0;
               song.difficulty = req.body.difficulty;
               song.scan = scanPath;
               song.slug = slug(req.body.name);
