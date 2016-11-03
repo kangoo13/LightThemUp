@@ -61,15 +61,15 @@ router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
         }
       }
       if (goodSong != null)
-      break;
+        break;
     }
     if (goodSong)
-    return res.status(200).json(goodSong);
+      return res.status(200).json(goodSong);
     else
-    return res.status(503).json({
-      success: false,
-      message: "La musique n'a pas été trouvée"
-    });
+      return res.status(503).json({
+        success: false,
+        message: "La musique n'a pas été trouvée"
+      });
   })
 });
 
@@ -77,10 +77,10 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
   Song.find().exec(function (err, songs) {
     var maxRandom = songs.length - 1;
     if (req.params.nbSong-1 > maxRandom)
-    return res.status(503).json({
-      success: false,
-      message: "Il n'y a pas assez de musiques pour cette demande."
-    });
+      return res.status(503).json({
+        success: false,
+        message: "Il n'y a pas assez de musiques pour cette demande."
+      });
     else
     {
       var randomTab = [];
@@ -97,7 +97,7 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
           }
         }
         if (isContained == false)
-        randomTab.push(randTab);
+          randomTab.push(randTab);
       }
       res.status(200).json(randomTab);
 
@@ -231,16 +231,16 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
       });
     }
     else
-    return res.status(400).json({
-      success: false,
-      message: 'Wrong arguments'
-    });
+      return res.status(400).json({
+        success: false,
+        message: 'Wrong arguments'
+      });
   });
 });
 
 
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
-auth({secret: superSecret}), function(req, res, next) {
+  auth({secret: superSecret}), function(req, res, next) {
   // Method if user wants to save his music from his sheet music
   if (req.body.name && req.body.artist && req.files['picture'] && req.body.difficulty && req.files['scan']) {
     if (req.decoded.admin || req.decoded.id ) {
@@ -255,12 +255,12 @@ auth({secret: superSecret}), function(req, res, next) {
           Promise.resolve(image)
           .then(function(image) {
 
-            if (uploadConfig.acceptedMimeTypes.indexOf(image['picture'][0].mimetype) == -1) {
+         /*   if (uploadConfig.acceptedMimeTypes.indexOf(image['picture'][0].mimetype) == -1) {
               throw "Incorrect MIME type for the picture = " + image['picture'][0].mimetype;
             }
             if (uploadConfig.acceptedMimeTypes.indexOf(image['scan'][0].mimetype) == -1) {
               throw "Incorrect MIME type for the scan = " + image['scan'][0].mimetype;
-            }
+            }*/
             return image;
           })
           .then(function(image) {
@@ -285,27 +285,26 @@ auth({secret: superSecret}), function(req, res, next) {
             return fs.rename(tempPath, realPath+image['picture'][0].originalname);
           }).then(function(err) {
             if (err)
-            throw err;
+              throw err;
             else
             {
               var exec = require('child_process').exec;
               exec("java -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.jar " +
-              path.resolve("C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\public\\" + scanPath) +
-              ' "' + path.resolve(realPath + req.body.artist + " - " + req.body.name + ".mid") + '"', function callback(error, stdout, stderr){
-              	console.log(' "' + path.resolve(realPath + req.body.artist + " - " + req.body.name + ".mid") + '"');
-              	console.log(error + stdout + stderr);
-              	console.log("uploads/songs/"+song._id+"/"+req.body.artist + " - " + req.body.name + ".mid");
-                if (error){
-                  return res.status(503).json({
-                    success: false,
-                    message: error
-                  });
-                }
-                else  {
-                  song.file = "uploads/songs/"+song._id+"/"+req.body.artist + " - " + req.body.name + ".mid";
-                  song.preview = "uploads/songs/"+song._id+"/"+req.body.artist + " - " + req.body.name + ".mid";
-                }
-              });
+                path.resolve("C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\public\\" + scanPath) +
+                " " + path.resolve(realPath +"song.mid"), function callback(error, stdout, stderr){
+                  console.log(error);
+                  if (error){
+                    return res.status(503).json({
+                      success: false,
+                      message: error
+                    });
+                  }
+                  else  {
+                    console.log("INSIDE");
+                  }
+                });
+              song.file = "uploads/songs/"+song._id+"/"+"song.mid";
+              song.preview = "uploads/songs/"+song._id+"/"+"song.mid";
               song.name = req.body.name;
               song.artist = req.body.artist;
               song.picture = picturePath;
@@ -333,12 +332,18 @@ auth({secret: superSecret}), function(req, res, next) {
             res.status(500).send({success: false, message: err.toString()});
           });
         }
+        else {
+          return res.status(409).json({
+            success: false,
+            message: 'Song already exists'
+          });
+        }
       });
     }
     else {
-      return res.status(409).json({
+      return res.status(401).send({
         success: false,
-        message: 'Song already exists'
+        message: 'Unauthorized.'
       });
     }
   }
@@ -395,7 +400,7 @@ auth({secret: superSecret}), function(req, res, next) {
             return fs.rename(tempPath, realPath+image['picture'][0].originalname);
           }).then(function(err) {
             if (err)
-            throw err;
+              throw err;
             else
             {
               song.name = req.body.name;
