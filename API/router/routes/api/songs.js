@@ -239,8 +239,110 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
 });
 
 
-router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }]), auth({secret: superSecret}), function(req, res, next) {
-  if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.files['file'] && req.files['preview'] && req.body.difficulty) {
+router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
+auth({secret: superSecret}), function(req, res, next) {
+  // Method if user wants to save his music from his sheet music
+  if (req.body.name && req.body.artist && req.files['picture'] && req.body.difficulty && req.files['scan']) {
+    if (req.decoded.admin || req.decoded.id ) {
+      Song.find({name: req.body.name}, function (err, docs) {
+        if (!docs.length) {
+          var song = new Song();
+          var picturePath = "";
+          var realPath = "";
+          var filePath = "";
+          var previewPath = "";
+          var image = req.files;
+          Promise.resolve(image)
+          .then(function(image) {
+
+            if (uploadConfig.acceptedMimeTypes.indexOf(image['picture'][0].mimetype) == -1) {
+              throw "Incorrect MIME type for the picture = " + image['picture'][0].mimetype;
+            }
+            if (uploadConfig.acceptedMimeTypes.indexOf(image['scan'][0].mimetype) == -1) {
+              throw "Incorrect MIME type for the scan = " + image['scan'][0].mimetype;
+            }
+            return image;
+          })
+          .then(function(image) {
+            if (image['picture'][0].size > uploadConfig.maxFileSize) {
+              throw "File is too large for the picture";
+            }
+            if (image['scan'][0].size > uploadConfig.maxFileSize) {
+              throw "File is too large for the scan";
+            }
+            return image;
+          })
+          .then(function(image) {
+            if (!fs.existsSync(process.cwd()+"/public/uploads/songs/"+song._id+"/")){
+              fs.mkdirSync(process.cwd()+"/public/uploads/songs/"+song._id+"/");
+            }
+            var tempPath = image['picture'][0].path;
+            realPath = process.cwd()+"/public/uploads/songs/"+song._id+"/";
+            picturePath = "uploads/songs/"+song._id+"/"+image['picture'][0].originalname;
+            var tempScanPath = image['scan'][0].path;
+            scanPath = "uploads/songs/"+song._id+"/"+image['scan'][0].originalname;
+            fs.renameSync(tempScanPath, realPath+image['scan'][0].originalname);
+            return fs.rename(tempPath, realPath+image['picture'][0].originalname);
+          }).then(function(err) {
+            if (err)
+            throw err;
+            else
+            {
+              var exec = require('child_process').exec;
+              exec("java -jar C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\OpenOMR\\OpenOMR.jar " +
+              path.resolve("C:\\Users\\Administrator\\Documents\\LightThemUp\\API\\public\\" + scanPath) +
+              ' "' + path.resolve(realPath + req.body.artist + " - " + req.body.name + ".mid") + '"', function callback(error, stdout, stderr){
+              	console.log(' "' + path.resolve(realPath + req.body.artist + " - " + req.body.name + ".mid") + '"');
+              	console.log(error + stdout + stderr);
+              	console.log("uploads/songs/"+song._id+"/"+req.body.artist + " - " + req.body.name + ".mid");
+                if (error){
+                  return res.status(503).json({
+                    success: false,
+                    message: error
+                  });
+                }
+                else  {
+                  song.file = "uploads/songs/"+song._id+"/"+req.body.artist + " - " + req.body.name + ".mid";
+                  song.preview = "uploads/songs/"+song._id+"/"+req.body.artist + " - " + req.body.name + ".mid";
+                }
+              });
+              song.name = req.body.name;
+              song.artist = req.body.artist;
+              song.picture = picturePath;
+              song.price = req.body.price || 0;
+              song.difficulty = req.body.difficulty;
+              song.scan = scanPath;
+              song.slug = slug(req.body.name);
+              song.save(function (err) {
+                if (err) {
+                  return res.status(503).json({
+                    success: false,
+                    message: err.toString()
+                  });
+                }
+              });
+            }
+          })
+          .then(function() {
+            return res.status(200).json({
+              success: true,
+              message: 'Song created !'
+            });
+          })
+          .catch(function(err) {
+            res.status(500).send({success: false, message: err.toString()});
+          });
+        }
+      });
+    }
+    else {
+      return res.status(409).json({
+        success: false,
+        message: 'Song already exists'
+      });
+    }
+  }
+  else if (req.body.name && req.body.artist && req.files['picture'] && req.body.price && req.files['file'] && req.files['preview'] && req.body.difficulty) {
     if (req.decoded.admin) {
       Song.find({name: req.body.name}, function (err, docs) {
         if (!docs.length) {
@@ -341,11 +443,12 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
       });
     }
   }
-  else
-  return res.status(400).json({
-    success: false,
-    message: 'Wrong arguments'
-  });
+  else {
+    return res.status(400).json({
+      success: false,
+      message: 'Wrong arguments'
+    });
+  }
 });
 
 router.get('/:slug', function(req, res, next) {

@@ -1,9 +1,5 @@
-/**
- * Created by Kangoo13 on 15/10/2015.
- */
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
-
 
 var SongSchema = new mongoose.Schema({
     name: String,
@@ -12,6 +8,7 @@ var SongSchema = new mongoose.Schema({
     price: Number,
     file: String,
     preview: String,
+    scan: String,
     slug: String,
     difficulty: { type: Number, default: 0},
     bought:  { type: Number, default: 0},
