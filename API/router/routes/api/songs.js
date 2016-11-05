@@ -64,15 +64,15 @@ router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
         }
       }
       if (goodSong != null)
-      break;
+        break;
     }
     if (goodSong)
-    return res.status(200).json(goodSong);
+      return res.status(200).json(goodSong);
     else
-    return res.status(503).json({
-      success: false,
-      message: "La musique n'a pas été trouvée"
-    });
+      return res.status(503).json({
+        success: false,
+        message: "La musique n'a pas été trouvée"
+      });
   })
 });
 
@@ -80,10 +80,10 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
   Song.find().exec(function (err, songs) {
     var maxRandom = songs.length - 1;
     if (req.params.nbSong-1 > maxRandom)
-    return res.status(503).json({
-      success: false,
-      message: "Il n'y a pas assez de musiques pour cette demande."
-    });
+      return res.status(503).json({
+        success: false,
+        message: "Il n'y a pas assez de musiques pour cette demande."
+      });
     else
     {
       var randomTab = [];
@@ -100,7 +100,7 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
           }
         }
         if (isContained == false)
-        randomTab.push(randTab);
+          randomTab.push(randTab);
       }
       res.status(200).json(randomTab);
 
@@ -234,16 +234,16 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
       });
     }
     else
-    return res.status(400).json({
-      success: false,
-      message: 'Wrong arguments'
-    });
+      return res.status(400).json({
+        success: false,
+        message: 'Wrong arguments'
+      });
   });
 });
 
 
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
-auth({secret: superSecret}), function(req, res, next) {
+  auth({secret: superSecret}), function(req, res, next) {
   // Only Admin or users are allowed here
   if (req.decoded.admin || req.decoded.id ) {
     var method = -1;
@@ -446,20 +446,20 @@ auth({secret: superSecret}), function(req, res, next) {
           if (method == SCAN_PARTITION) {
             // Launch OpenORM (Java) to perform the scan
             exec("java -jar " + path.resolve(apiPath + "/OpenOMR/OpenOMR.jar") + " " +
-            path.resolve(apiPath + "/public/" + scanPath) + " " +
-            path.resolve(realPath +"song.mid"),
-            function callback(error, stdout, stderr){
-              if (error) {
-                return res.status(503).json({
-                  success: false,
-                  message: "Error while trying to convert the sheet music into MIDI song"
-                });
-              }
-              song.file = "uploads/songs/" + song._id + "/" + "song.mid";
-              song.preview = "uploads/songs/" + song._id + "/" + "song.mid";
-              song.name = req.body.name;
-              song.artist = req.body.artist;
-              song.picture = picturePath;
+              path.resolve(apiPath + "/public/" + scanPath) + " " +
+              path.resolve(realPath +"song.mid"),
+              function callback(error, stdout, stderr){
+                if (error) {
+                  return res.status(503).json({
+                    success: false,
+                    message: "Error while trying to convert the sheet music into MIDI song"
+                  });
+                }
+                song.file = "uploads/songs/" + song._id + "/" + "song.mid";
+                song.preview = "uploads/songs/" + song._id + "/" + "song.mid";
+                song.name = req.body.name;
+                song.artist = req.body.artist;
+                song.picture = picturePath;
               // Price is not mandatory, 0 if empty
               song.price = req.body.price || 0;
               song.difficulty = req.body.difficulty;
@@ -479,6 +479,9 @@ auth({secret: superSecret}), function(req, res, next) {
               });
             });
           }
+        })
+        .catch(function(err) {
+          res.status(500).send({success: false, message: err.toString()});
         });
       }
       else {
@@ -493,7 +496,7 @@ auth({secret: superSecret}), function(req, res, next) {
         });
       }
     });
-  }
+}
   // Not allowed quit with unauthorized message
   else {
     return res.status(401).send({
