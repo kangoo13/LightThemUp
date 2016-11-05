@@ -679,6 +679,7 @@ ul.topnav li a {
 ul.topnav li.icon {
   display: none;
   cursor: pointer;
+  font-size: 1.5em;
 }
 
 /* When the screen is less than 845 pixels wide, hide all list items, except for the first one ("Home"). Show the list item that contains the link to open and close the topnav (li.icon) */
