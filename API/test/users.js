@@ -231,11 +231,11 @@ describe('Users', function() {
     var jsonData = JSON.parse(res.text);
     for (var i = 0; i < jsonData.length; i++) {
       var users = jsonData[i];
-      if (users.emailLocal == emailUser)
+      if (users.email == emailUser)
         idUser = users._id;
-      if (users.emailLocal == emailUser2)
+      if (users.email == emailUser2)
         idUser2 = users._id;
-      if (users.emailLocal == emailAdmin)
+      if (users.email == emailAdmin)
         idAdmin = users._id;
     }
     done();

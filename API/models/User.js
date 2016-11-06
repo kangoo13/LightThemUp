@@ -4,8 +4,8 @@ var Schema      = mongoose.Schema;
 
 var userSchema = mongoose.Schema({
   admin: { type: Boolean, default: false, select: false },
-  emailLocal        : { type: String },
-  passwordLocal     : { type: String , select: false},
+  email        : { type: String },
+  password     : { type: String , select: false},
   name : { type: String },
   picture : { type: String, default: "uploads/avatar/default-avatar.png" },
   address : { type: String },
@@ -39,32 +39,32 @@ var userSchema = mongoose.Schema({
 
 userSchema.pre('save', function(next) {
   var user = this;
-  if (user.isModified('passwordLocal')) {
-    if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/.test(this.passwordLocal)) {
+  if (user.isModified('password')) {
+    if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$/.test(this.password)) {
       var error = new Error("Invalid password")
       return next(error);
     }
   }
-  if (user.isModified('emailLocal')) {
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.emailLocal)) {
+  if (user.isModified('email')) {
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
       var error = new Error("Invalid email")
       return next(error);
     }
   }
 
-  if (!user.isModified('passwordLocal')) return next();
-  bcrypt.hash(user.passwordLocal, null, null, function (err, hash) {
+  if (!user.isModified('password')) return next();
+  bcrypt.hash(user.password, null, null, function (err, hash) {
     if (err) return next(err);
 
-    // change the passwordLocal to the hashed version
-    user.passwordLocal = hash;
+    // change the password to the hashed version
+    user.password = hash;
     next();
   });
 });
 
 userSchema.methods.comparePassword = function(password) {
   var user = this;
-  return bcrypt.compareSync(password, user.passwordLocal);
+  return bcrypt.compareSync(password, user.password);
 };
 
 userSchema.methods.isAdmin = function(){

@@ -107,6 +107,7 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
 	vm.UpdateUser = UpdateUser;
 	function UpdateUser() {
 		vm.dataLoading = true;
+		console.log($scope);
 		UserService.Update($cookies.get("id"), vm.user, $cookies.get("token"))
 		.then(function (response) {
 			if (response.success) {

@@ -260,10 +260,6 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
     }
     // Wrong arguments and no methods have been found
     else {
-      // Remove tmp files
-      for (var fieldname in req.files){
-        fs.unlinkSync(req.files[fieldname][0].path);
-      }
       return res.status(400).json({
         success: false,
         message: "Wrong arguments"
@@ -296,32 +292,20 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
         .then(function(files) {
           // Check the correct MIME for images
           if (uploadConfig.acceptedMimeTypes.indexOf(files['picture'][0].mimetype) == -1) {
-            return res.status(400).json({
-              success: false,
-              message: "Incorrect MIME type for picture : " + files['picture'][0].mimetype
-            });
+              throw "Incorrect MIME type for picture : " + files['picture'][0].mimetype;
           }
           if (method == SCAN_PARTITION) {
             if (uploadConfig.acceptedMimeTypes.indexOf(files['scan'][0].mimetype) == -1) {
-              return res.status(400).json({
-                success: false,
-                message: "Incorrect MIME type for scan : " + files['scan'][0].mimetype
-              });
+              throw "Incorrect MIME type for scan : " + files['scan'][0].mimetype;
             }
           }
           if (method == BASIC_UPLOAD) {
             // Check the correct MIME for sounds
             if (uploadMusicConfig.acceptedMimeTypes.indexOf(files['file'][0].mimetype) == -1) {
-              return res.status(400).json({
-                success: false,
-                message: "Incorrect MIME type for file : " + files['file'][0].mimetype
-              });
+                throw "Incorrect MIME type for file : " + files['file'][0].mimetype;
             }
             if (uploadMusicConfig.acceptedMimeTypes.indexOf(files['preview'][0].mimetype) == -1) {
-              return res.status(400).json({
-                success: false,
-                message: "Incorrect MIME type for preview : " + files['preview'][0].mimetype
-              });
+                throw "Incorrect MIME type for preview : " + files['preview'][0].mimetype;
             }
           }
           return files;
@@ -329,32 +313,20 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
         .then(function(files) {
           // Check the maxsize for images
           if (files['picture'][0].size > uploadConfig.maxFileSize) {
-            return res.status(400).json({
-              success: false,
-              message: "File is too large for the picture : " + files['picture'][0].size + " instead of  " + uploadConfig.maxFileSize
-            });
+              throw "File is too large for the picture : " + files['picture'][0].size + " instead of  " + uploadConfig.maxFileSize;
           }
           if (method == SCAN_PARTITION) {
             if (files['scan'][0].size > uploadConfig.maxFileSize) {
-              return res.status(400).json({
-                success: false,
-                message: "File is too large for the scan : " + files['scan'][0].size + " instead of " + uploadConfig.maxFileSize
-              });
+                throw "File is too large for the scan : " + files['scan'][0].size + " instead of " + uploadConfig.maxFileSize;
             }
           }
           if (method == BASIC_UPLOAD) {
             // Check the maxsize for sounds
             if (files['file'][0].size > uploadMusicConfig.maxFileSize) {
-              return res.status(400).json({
-                success: false,
-                message: "File is too large for the song : " + files['file'][0].size + " instead of  " + uploadConfig.maxFileSize
-              });
+                throw "File is too large for the song : " + files['file'][0].size + " instead of  " + uploadConfig.maxFileSize;
             }
             if (files['preview'][0].size > uploadMusicConfig.maxFileSize) {
-              return res.status(400).json({
-                success: false,
-                message: "File is too large for the preview : " + files['preview'][0].size + " instead of  " + uploadConfig.maxFileSize
-              });
+                throw "File is too large for the preview : " + files['preview'][0].size + " instead of  " + uploadConfig.maxFileSize;
             }
           }
           return files;
@@ -384,10 +356,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
           // Moving files to song folder
           fs.rename(tempPath, realPath + files['picture'][0].originalname, function(err){
             if (err) {
-              return res.status(500).json({
-                success: false,
-                message: "Server error about moving tmp picture file"
-              });
+                throw "Server error about moving tmp picture file";
             }
             if (method == SCAN_PARTITION) {
               return fs.rename(tempScanPath, realPath + files['scan'][0].originalname);
@@ -395,10 +364,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
             if (method == BASIC_UPLOAD) {
               fs.rename(tempFilePath, realPath + files['file'][0].originalname, function(err){
                 if (err) {
-                  return res.status(500).json({
-                    success: false,
-                    message: "Server error about moving tmp song file"
-                  });
+                    throw  "Server error about moving tmp song file";
                 }
                 return fs.rename(tempPreviewPath, realPath + files['preview'][0].originalname);
               });
@@ -414,10 +380,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
             if (method ==  BASIC_UPLOAD) {
               errorFrom = "preview";
             }
-            return res.status(500).json({
-              success: false,
-              message: "Server error about moving tmp " + errorFrom + " file"
-            });
+              throw "Server error about moving tmp " + errorFrom + " file";
           }
 
           if (method == BASIC_UPLOAD) {
@@ -431,10 +394,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
             song.slug = slug(req.body.name);
             song.save(function (err) {
               if (err) {
-                return res.status(503).json({
-                  success: false,
-                  message: err.toString()
-                });
+                  throw err;
               }
               return res.status(200).json({
                 success: true,
@@ -450,10 +410,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
               path.resolve(realPath +"song.mid"),
               function callback(error, stdout, stderr){
                 if (error) {
-                  return res.status(503).json({
-                    success: false,
-                    message: "Error while trying to convert the sheet music into MIDI song"
-                  });
+                    throw "Error while trying to convert the sheet music into MIDI song";
                 }
                 song.file = "uploads/songs/" + song._id + "/" + "song.mid";
                 song.preview = "uploads/songs/" + song._id + "/" + "song.mid";
@@ -467,10 +424,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
               song.slug = slug(req.body.name);
               song.save(function (err) {
                 if (err) {
-                  return res.status(503).json({
-                    success: false,
-                    message: err.toString()
-                  });
+                    throw err;
                 }
                 return res.status(200).json({
                   success: true,
@@ -485,10 +439,6 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
         });
       }
       else {
-        // Remove tmp files if song already exists
-        for (var fieldname in req.files){
-          fs.unlinkSync(req.files[fieldname][0].path);
-        }
         // Notify that song already exists
         return res.status(409).json({
           success: false,

@@ -109,11 +109,11 @@ router.delete('/songs/:idSong', auth({secret: superSecret}), function(req, res, 
 
 router.post('/', upload.single('picture'), function(req, res, next) {
 	if (req.body.email && req.body.password){
-		User.find({emailLocal : req.body.email}, function (err, docs) {
+		User.find({email : req.body.email}, function (err, docs) {
 			if (!docs.length){
 				var user = new User();
-				user.emailLocal = req.body.email;
-				user.passwordLocal = req.body.password;
+				user.email = req.body.email;
+				user.password = req.body.password;
 				if (req.body.name)
 					user.name = req.body.name;
 				if (req.body.address)
@@ -203,75 +203,23 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 });
 
 router.put('/:idUser', upload.single('picture'), auth({secret: superSecret}), function(req, res, next) {
+	
 	if (req.decoded.admin || req.decoded.id == req.params.idUser) {
 		if (req.body.email) {
-			User.findOne({emailLocal : req.body.email}, function (err, user) {
-				if (!user.length || req.params.idUser == user[0]._id) {
-					if (req.body.password)
-						user.passwordLocal = req.body.password;
-					if (req.body.name)
-						user.name = req.body.name;
-					if (req.body.address)
-						user.address = req.body.address;
-					if (req.body.description)
-						user.description = req.body.description;
-					if (req.body.city)
-						user.city = req.body.city;
-					if (req.body.country)
-						user.country = req.body.country;
-					if (req.file)
-					{
-						var picturePath = "";
-						var image = req.file;
-						Promise.resolve(image)
-						.then(function(image) {
-							if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
-								throw "Incorrect MIME type for picture : " + image.mimetype;
-							}
-							return image;
-						})
-						.then(function(image) {
-							if (image.size > uploadConfig.maxFileSize) {
-								throw "File is too large for the picture : " + image.size + " instead of  " + uploadConfig.maxFileSize;
-							}
-							return image;
-						})
-						.then(function(image) {
-							if (!fs.existsSync(process.cwd() + "/public/uploads/avatar/" + user._id + "/")){
-								fs.mkdirSync(process.cwd() + "/public/uploads/avatar/" + user._id + "/");
-							}
-							var tempPath = image.path;
-							var realPath = process.cwd() + "/public/uploads/avatar/"+ user._id + "/";
-							picturePath = "uploads/avatar/" + user._id + "/" + image.originalname;
-							return fs.rename(tempPath, realPath + image.originalname);
-						})
-						.then(function(err) {
-							if (err) {
-								throw "Server error about moving tmp picture file";
-							}
-							user.picture = picturePath;
-							user.save(function (err) {
-								if (err) {
-									return res.status(503).json({
-										success: false,
-										message: err.message
-									});
-								}
-								res.status(200).json({
-									success: true,
-									message: 'User updated !'
-								});
+			User.findOne({email : req.body.email}, function (err, result1) {
+				if (!result1) {
+					User.findOne({_id : req.params.idUser}, function (err, result2) {
+						if (!result2) {
+							return res.status(500).json({
+								success: false,
+								message: "User not found"
 							});
-						}).catch(function(err) {
-							res.status(500).send({success: false, message: err.toString()});
-						});
-					}
+						}
+						saveUser(result2);
+					});
 				}
 				else {
-					return res.status(409).json({
-						success: false,
-						message: 'User already exists'
-					});
+					saveUser(result1);
 				}
 			});
 		}
@@ -287,6 +235,88 @@ router.put('/:idUser', upload.single('picture'), auth({secret: superSecret}), fu
 			success: false,
 			message: 'Unauthorized.'
 		});
+	}
+
+	function saveUser(user) {
+		if (user && user._id == req.params.idUser) {
+			user.email = req.body.email;
+			if (req.body.password)
+				user.password = req.body.password;
+			if (req.body.name)
+				user.name = req.body.name;
+			if (req.body.address)
+				user.address = req.body.address;
+			if (req.body.description)
+				user.description = req.body.description;
+			if (req.body.city)
+				user.city = req.body.city;
+			if (req.body.country)
+				user.country = req.body.country;
+			if (req.file)
+			{
+				var picturePath = "";
+				var image = req.file;
+				Promise.resolve(image)
+				.then(function(image) {
+					if (uploadConfig.acceptedMimeTypes.indexOf(image.mimetype) == -1) {
+						throw "Incorrect MIME type for picture : " + image.mimetype;
+					}
+					return image;
+				})
+				.then(function(image) {
+					if (image.size > uploadConfig.maxFileSize) {
+						throw "File is too large for the picture : " + image.size + " instead of  " + uploadConfig.maxFileSize;
+					}
+					return image;
+				})
+				.then(function(image) {
+					if (!fs.existsSync(process.cwd() + "/public/uploads/avatar/" + user._id + "/")){
+						fs.mkdirSync(process.cwd() + "/public/uploads/avatar/" + user._id + "/");
+					}
+					var tempPath = image.path;
+					var realPath = process.cwd() + "/public/uploads/avatar/"+ user._id + "/";
+					picturePath = "uploads/avatar/" + user._id + "/" + image.originalname;
+					return fs.rename(tempPath, realPath + image.originalname);
+				})
+				.then(function(err) {
+					if (err) {
+						throw "Server error about moving tmp picture file";
+					}
+					user.picture = picturePath;
+					user.save(function (err) {
+						if (err) {
+							throw err.message;
+						}
+						res.status(200).json({
+							success: true,
+							message: 'User updated !'
+						});
+					});
+				}).catch(function(err) {
+					res.status(500).send({success: false, message: err.toString()});
+				});
+			}
+			else {
+				user.save(function (err) {
+					if (err) {
+						return res.status(500).json({
+							success: false,
+							message: err.toString()
+						});
+					}
+					res.status(200).json({
+						success: true,
+						message: 'User updated !'
+					});
+				});
+			}
+		}
+		else {
+			return res.status(409).json({
+				success: false,
+				message: 'User already exists'
+			});
+		}
 	}
 });
 
@@ -318,8 +348,8 @@ router.get('/:idUser', function(req, res, next) {
 router.post('/authenticate', function(req, res) {
 	if (req.body.email && req.body.password) {
 		User.findOne({
-			'emailLocal': req.body.email
-		}).select('emailLocal +passwordLocal +admin').exec(function (err, user) {
+			'email': req.body.email
+		}).select('email +password +admin').exec(function (err, user) {
 			if (err) throw err;
 
 			if (!user) {
@@ -337,7 +367,7 @@ router.post('/authenticate', function(req, res) {
 				} else {
 
 					var token = jwt.sign({
-						'emailLocal': user.emailLocal,
+						'email': user.email,
 						'id': user.id,
 						'admin': user.admin,
 					}, superSecret, {
