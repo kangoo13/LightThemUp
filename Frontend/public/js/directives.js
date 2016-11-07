@@ -25,25 +25,6 @@ app.directive('back', ['$window', function ($window) {
   };
 }]);
 
-app.directive("fileread", [function () {
-    return {
-        scope: {
-            fileread: "="
-        },
-        link: function (scope, element, attributes) {
-            element.bind("change", function (changeEvent) {
-                var reader = new FileReader();
-                reader.onload = function (loadEvent) {
-                    scope.$apply(function () {
-                        scope.fileread = loadEvent.target.result;
-                    });
-                }
-                reader.readAsDataURL(changeEvent.target.files[0]);
-            });
-        }
-    }
-}]);
-
 app.directive('equals', function () {
   return {
     restrict: 'A', // only activate on element attribute
@@ -71,6 +52,21 @@ app.directive('equals', function () {
       };
     }
   }
+});
+
+app.directive('file', function () {
+    return {
+        scope: {
+            file: '='
+        },
+        link: function (scope, el, attrs) {
+            el.bind('change', function (event) {
+                var file = event.target.files[0];
+                scope.file = file ? file : undefined;
+                scope.$apply();
+            });
+        }
+    };
 });
 
 app.directive('validPassword', function () {

@@ -7,6 +7,7 @@
     <form name="updateUser" ng-submit="vm.UpdateUser()" role="form" autocomplete="on">
       <img class="avatar" src="{{ vm.user.picture }}" title="Mon avatar" alt="Avatar"/>
       <label for="picture">Avatar</label>
+      <input type="file" file="file" accept="image/*" name="picture" />
       <label for="email">Email</label>
       <input ng-model="vm.user.email" class="u-full-width" type="email" name="email"
       ng-value="vm.user.email"/>

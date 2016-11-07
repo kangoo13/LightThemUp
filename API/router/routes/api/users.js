@@ -203,7 +203,6 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 });
 
 router.put('/:idUser', upload.single('picture'), auth({secret: superSecret}), function(req, res, next) {
-	
 	if (req.decoded.admin || req.decoded.id == req.params.idUser) {
 		if (req.body.email) {
 			User.findOne({email : req.body.email}, function (err, result1) {

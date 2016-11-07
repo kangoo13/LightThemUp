@@ -32,14 +32,22 @@ app.factory("UserService", function ($http) {
     return $http.post(apiUrl + '/users/authenticate', user).then(handleSuccess, handleError);
   }
 
-  function Update(id, user, token) {
-    var data = $.param(user, true);
-    return $http.put(apiUrl + '/users/' + id, data, {
+
+  function Update(id, user, picture, token) {
+    var data = user;
+    data.token = token;
+    if (picture) {
+      data.picture = picture;
+    }
+    var formData = new FormData();
+    angular.forEach(data, function (value, key) {
+      formData.append(key, value);
+    });
+    return $http.put(apiUrl + '/users/' + id, formData, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        "x-access-token": token
-      }
-    }).then(handleSuccess, handleError);
+       'Content-Type': undefined
+     }
+   }).then(handleSuccess, handleError);
   }
 
   function Delete(id, token) {
