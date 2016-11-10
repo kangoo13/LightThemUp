@@ -23,9 +23,9 @@ app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies
 
 	// Set scope var isLogged depending on token && id existences
 	if ($cookies.get('token') && $cookies.get('id'))
-		$scope.isLogged = true;
+	$scope.isLogged = true;
 	else
-		$scope.isLogged = false;
+	$scope.isLogged = false;
 	$rootScope.$on('userLoggedIn', function () {
 		$scope.isLogged = true;
 	});
@@ -107,14 +107,19 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
 
 	vm.UpdateUser = UpdateUser;
 	function UpdateUser() {
+		if (vm.user.password || vm.user.passwordConfirmation) {
+			if (!$scope.updateUser.$valid) {
+				toastr.error("Les mots de passe ne sont pas identiques.");
+				return;
+			}
+		}
 		vm.dataLoading = true;
-				console.log(vm.user);
 		var picture = $scope.file;
+		console.log($scope.updateUser.$valid);
 		UserService.Update($cookies.get("id"), vm.user, picture, $cookies.get("token"))
 		.then(function (response) {
 			if (response.success) {
 				vm.dataLoading = false;
-				console.log(vm.user);
 				getUserInfos();
 				toastr.success("Modification réussie.");
 				$location.path("/compte");
@@ -207,7 +212,7 @@ app.controller('SuccesController', ['$scope', '$cookies', 'SuccesService', funct
 					}
 				}
 				if (found == 0)
-					lockedAchievements.push(response[i]);
+				lockedAchievements.push(response[i]);
 				found = 0;
 			}
 			$scope.unlockedAchievements = responseUser.achievements;
@@ -227,7 +232,7 @@ app.controller('NewsDetailsController', ['$scope', '$routeParams', 'NewsService'
 		vm.dataLoading = false;
 		// If no news, redirect user to 404 error
 		if (response == null)
-			$location.path("/404");
+		$location.path("/404");
 		$scope.newsDetails = response;
 		$scope.comments = response.comments;
 	});
@@ -341,7 +346,7 @@ app.controller('PlaylistDetailsController', ['$scope', '$routeParams', '$cookies
 				for (var j = 0; j < playlistUser.songs.length; j++)
 				{
 					if (playlistUser.songs[j].name == response.songs[i].name)
-						response.songs[i].added = true;
+					response.songs[i].added = true;
 				}
 			}
 			$scope.songs = response.songs;
@@ -552,7 +557,7 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 
 		for(var i = 0; i < response.songs.length; i++) {
 			if (response.songs[i].slug == $routeParams.slug)
-				$scope.bought = true;
+			$scope.bought = true;
 		}
 	});
 	vm.RemoveSongFromUser = RemoveSongFromUser;

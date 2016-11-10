@@ -973,7 +973,7 @@ button:disabled:hover {
 .is-valid {
   position: absolute;
   right: 0;
-  top: 0.7rem;
+  top: 0.5rem;
   color: #51a351;
   font-size: 1.2em;
 }
