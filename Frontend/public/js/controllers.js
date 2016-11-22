@@ -92,25 +92,35 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
 
 	var vm = this;
 	vm.dataLoading = true;
-	UserService.Account($cookies.get("id")).then(function (response) {
-		if (response) {
-			vm.dataLoading = false;
-			vm.user = response;
-			delete vm.user.achievements;
-			delete vm.user.songs;
-		} else {
-			toastr.error("Compte indisponible.");
-			$location.path('/');
-		}
-	});
+	function getUserInfos() {
+		UserService.Account($cookies.get("id")).then(function (response) {
+			if (response) {
+				vm.dataLoading = false;
+				vm.user = response;
+			} else {
+				toastr.error("Compte indisponible.");
+				$location.path('/');
+			}
+		});
+	}
+	getUserInfos();
 
 	vm.UpdateUser = UpdateUser;
 	function UpdateUser() {
+		if (vm.user.password || vm.user.passwordConfirmation) {
+			if (!$scope.updateUser.$valid) {
+				toastr.error("Les mots de passe ne sont pas identiques.");
+				return;
+			}
+		}
 		vm.dataLoading = true;
-		UserService.Update($cookies.get("id"), vm.user, $cookies.get("token"))
+		var picture = $scope.file;
+		console.log($scope.updateUser.$valid);
+		UserService.Update($cookies.get("id"), vm.user, picture, $cookies.get("token"))
 		.then(function (response) {
 			if (response.success) {
 				vm.dataLoading = false;
+				getUserInfos();
 				toastr.success("Modification réussie.");
 				$location.path("/compte");
 			} else {

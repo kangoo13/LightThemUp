@@ -6,12 +6,12 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -29,10 +29,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import kilomat.keylit.R;
+import kilomat.keylit.controller.AppController;
 import kilomat.keylit.controller.SessionManager;
 import kilomat.keylit.controller.ToastMessage;
 import kilomat.keylit.fragments.SongsFragment;
 import kilomat.keylit.model.SongData;
+
+import static kilomat.keylit.controller.ToastMessage.bar_message_warning;
 
 public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicViewHolder> {
 
@@ -59,28 +62,45 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         holder.rating.setText(movie.getArtist());
 
         //Use Glide to load the Image
-        Glide.with(mContext).load("http://95.85.2.100/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+        Glide.with(mContext).load(mContext.getString(R.string.api_url)+
+                movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
 
         downloadFileUrl = movie.getGenre();
 
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
+                DeleteSongClick(v, position);
+=======
+                Log.d("Test", "imageViewAddMovie.setOnClickListener");
                 SendFileByBluetoothClick(position);
+>>>>>>> origin/master
             }
         });
 
         holder.imageViewPlaymusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMidiPlayClick(holder, position);
+<<<<<<< HEAD
+                onMidiPlayClick(v, holder, position);
+=======
+                Log.d("Test", "imageViewPlaymusic.setOnClickListener");
+                AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3]);
+                //onMidiPlayClick(holder, position);
+>>>>>>> origin/master
             }
         });
 
         holder.imageViewStopmusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
+                onMidiStopClick(v, holder);
+=======
+                Log.d("Test", "imageViewStopmusic.setOnClickListener");
                 onMidiStopClick(holder);
+>>>>>>> origin/master
             }
         });
 
@@ -111,16 +131,20 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
     public void DownloadMidiFileFromServer(int position) {
         SongData myData = mMovieList.get(position);
         downloadFileUrl = myData.getGenre();
-        Uri uri = Uri.parse("http://95.85.2.100/" + downloadFileUrl);
+        Uri uri = Uri.parse("http://lightthemup.fr.nf/" + downloadFileUrl);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         String CurrentString = downloadFileUrl;
+        Log.d("TestDownLoad" , "downloadFileUrl:"+downloadFileUrl);
         String[] separated = CurrentString.split("/");
+        separated[3] = separated[3].replaceAll(" ", "_").toLowerCase();
         midiFile = "/keylit/" + separated[3];
+        Log.d("TestDownLoad" , "midiFile:"+midiFile);
 
         request.setDescription(myData.getTitle())
-                .setTitle("Notification Title");
+                .setTitle(myData.getTitle());
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Keylit/", separated[3]);
         midiFile = Environment.getExternalStorageDirectory().getPath() + "/Download" + midiFile;
+        Log.d("TestDownLoad" , "midiFile:"+midiFile);
         request.setVisibleInDownloadsUi(true);
 
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI
@@ -129,34 +153,37 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         SongsFragment.myDownloadReference = SongsFragment.downloadManager.enqueue(request);
     }
 
-    protected void onMidiPlayClick(MusicViewHolder holder, int position) {
+
+    protected void onMidiPlayClick(View v, MusicViewHolder holder, int position) {
         DownloadMidiFileFromServer(position);
 
         mediaPlayer = MediaPlayer.create(mContext, Uri.parse(midiFile));
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-            holder.imageViewPlaymusic.setVisibility(View.GONE);
-            holder.imageViewStopmusic.setVisibility(View.VISIBLE);
-            //Set the Image Resource
-            holder.imageViewPlaymusic.setImageResource(R.drawable.media_pause);
-            ToastMessage toastMessage = new ToastMessage();
-            toastMessage.message_success(mContext,"MediaPlayer start");
+        if (mediaPlayer != null) {
+            if (!mediaPlayer.isPlaying()) {
+                mediaPlayer.start();
+                holder.imageViewPlaymusic.setVisibility(View.GONE);
+                holder.imageViewStopmusic.setVisibility(View.VISIBLE);
+                //Set the Image Resource
+                holder.imageViewPlaymusic.setImageResource(R.drawable.ic_pause_circle_outline_white_24dp);
+                bar_message_warning(v, mContext.getString(R.string.music_play));
+            }
         }
+        else
+            bar_message_warning(v, mContext.getString(R.string.music_fail));
     }
 
-    protected void onMidiStopClick(MusicViewHolder holder) {
+    protected void onMidiStopClick(View v, MusicViewHolder holder) {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             holder.imageViewPlaymusic.setVisibility(View.VISIBLE);
             holder.imageViewStopmusic.setVisibility(View.GONE);
             //Set the Image Resource
-            holder.imageViewPlaymusic.setImageResource(R.drawable.media_play);
-            ToastMessage toastMessage = new ToastMessage();
-            toastMessage.message_success(mContext, "MediaPlayer stop");
+            holder.imageViewPlaymusic.setImageResource(R.drawable.ic_play_circle_outline_white_24dp);
+            bar_message_warning(v, mContext.getString(R.string.music_stop));
         }
     }
 
-    protected void SendFileByBluetoothClick(final int position) {
+    protected void DeleteSongClick(View v, final int position) {
 
         String result = "";
 
@@ -172,16 +199,16 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         }
 
         if (result.equals("Complete")) {
-            Toast.makeText(mContext, "Song Deleted !", Toast.LENGTH_SHORT).show();
+            ToastMessage.bar_message_success(v, mContext.getString(R.string.song_delete),
+                    mContext.getString(R.string.toast_message_success));
             drawableLinkedList.remove(position);
             drawableLinkedList.add(position, R.drawable.movie_error_touch);
             notifyDataSetChanged();
         } else {
             drawableLinkedList.remove(position);
             drawableLinkedList.add(position, R.drawable.movie_error_touch);
-            Toast.makeText(mContext, mContext.getString(R.string.text_something_went_wrong),
-                    Toast.LENGTH_SHORT).show();
-            Toast.makeText(mContext, "Error Shop : Delete song failed", Toast.LENGTH_SHORT).show();
+            ToastMessage.bar_message_success(v, mContext.getString(R.string.song_delete),
+                    mContext.getString(R.string.toast_message_fail));
         }
     }
 
@@ -192,8 +219,7 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         String idMySong = myDataSong.getIdSong();
         SessionManager manager = new SessionManager();
         String mytoken = manager.getPreferences(mContext, "TokenKey");
-        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
-        String address = "http://95.85.2.100:3000/users/songs/" + idMySong;
+        String address = mContext.getString(R.string.api_url_users_songs) + idMySong;
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpDelete del = new HttpDelete(address);

@@ -52,6 +52,7 @@ import kilomat.keylit.fragments.ProfileFragment;
 import kilomat.keylit.fragments.ScanFragment;
 import kilomat.keylit.fragments.ShopFragment;
 import kilomat.keylit.fragments.SongsFragment;
+import kilomat.keylit.fragments.SyncFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_LOGOUT = "logout";
     private static final String TAG_ABOUT_US = "about";
     private static final String TAG_PRIVACY_POLICY = "privacy";
+<<<<<<< HEAD
+
+=======
+    private static final String TAG_SYNC = "sync";
+>>>>>>> origin/master
     // index to identify current nav menu item
     public static int navItemIndex = 0;
     public static String CURRENT_TAG = TAG_HOME;
@@ -129,13 +135,12 @@ public class MainActivity extends AppCompatActivity {
         // Creating volley request obj
         String mytoken = manager.getPreferences(this, "TokenKey");
         String idUser = manager.getPreferences(this, "IdUser");
-        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
-        //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
+
         final HashMap<String, String> params = new HashMap<String, String>();
         params.put("idUser", mytoken);
 
         final JSONObject jsonObject = new JSONObject(params);
-        String URL_PROFILE = "http://95.85.2.100:3000/users/" + idUser;
+        String URL_PROFILE = getString(R.string.api_url_users) + idUser;
 
         Volley.newRequestQueue(this).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,
@@ -144,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 {
                                     try {
-                                        String url = "http://95.85.2.100/" + response.getString("picture");
+                                        String url = getString(R.string.api_url) + response.getString("picture");
                                         Glide.with(getApplicationContext()).load(url)
                                                 .crossFade()
                                                 .thumbnail(0.5f)
@@ -153,17 +158,17 @@ public class MainActivity extends AppCompatActivity {
                                                 .into(imgProfile);
 
                                         txtName.setText(response.getString("name"));
-                                        txtWebsite.setText(response.getString("emailLocal"));
+                                        txtWebsite.setText(response.getString("email"));
 
                                     } catch (JSONException jsonException) {
-                                        Log.e(TAG, "@Pro JsonException Error: " + jsonException.getMessage());
+                                        Log.e(TAG, "@MainActivity JsonException Error: " + jsonException.getMessage());
                                     }
                                 }
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d("Profile Error: " + error.getMessage());
+                        VolleyLog.d("MainActivity Error: " + error.getMessage());
                     }
                 }) {
 
@@ -266,7 +271,13 @@ public class MainActivity extends AppCompatActivity {
                 // achiev fragment
                 AchievFragment achievFragment = new AchievFragment();
                 return achievFragment;
+            case 7:
+<<<<<<< HEAD
+=======
+                // Sync fragment
+                return new SyncFragment();
             case 9:
+>>>>>>> origin/master
                 LogoutFragment logoutFragment = new LogoutFragment();
                 return logoutFragment;
             default:
@@ -321,14 +332,27 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 6;
                         CURRENT_TAG = TAG_ACHIEV;
                         break;
+                    case R.id.nav_logout:
+                        navItemIndex = 7;
+                        CURRENT_TAG = TAG_LOGOUT;
+                        break;
                     case R.id.nav_sync:
+<<<<<<< HEAD
                         startActivity(new Intent(MainActivity.this, SynActivity.class));
                         drawer.closeDrawers();
                         return true;
+=======
+                        navItemIndex = 7;
+                        CURRENT_TAG = TAG_SYNC;
+                        break;
+                        //startActivity(new Intent(MainActivity.this, SynActivity.class));
+                        //drawer.closeDrawers();
+                        //return true;
                     case R.id.nav_logout:
                         navItemIndex = 9;
                         CURRENT_TAG = TAG_LOGOUT;
                         break;
+>>>>>>> origin/master
                     case R.id.nav_about_us:
                         // launch new intent instead of loading fragment
                         startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
@@ -428,7 +452,6 @@ public class MainActivity extends AppCompatActivity {
 
             params = new HashMap<String, String>();
             String mytoken = manager.getPreferences(getApplicationContext(), "TokenKey");
-            //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
             params.put("idUser", mytoken);
             this.params = params;
             this.listener = responseListener;

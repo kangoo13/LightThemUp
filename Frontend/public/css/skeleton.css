@@ -679,6 +679,7 @@ ul.topnav li a {
 ul.topnav li.icon {
   display: none;
   cursor: pointer;
+  font-size: 1.5em;
 }
 
 /* When the screen is less than 845 pixels wide, hide all list items, except for the first one ("Home"). Show the list item that contains the link to open and close the topnav (li.icon) */
@@ -972,7 +973,7 @@ button:disabled:hover {
 .is-valid {
   position: absolute;
   right: 0;
-  top: 0.7rem;
+  top: 0.5rem;
   color: #51a351;
   font-size: 1.2em;
 }

@@ -112,7 +112,7 @@ describe('Playlists', function() {
 			var jsonData = JSON.parse(res.text);
 			for (var i = 0; i < jsonData.length; i++) {
 				var users = jsonData[i];
-				if (users.emailLocal == emailUser)
+				if (users.email == emailUser)
 					idUser = users._id;
 			}
 			done();

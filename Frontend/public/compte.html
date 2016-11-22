@@ -5,15 +5,39 @@
   <div ng-hide="vm.dataLoading">
 
     <form name="updateUser" ng-submit="vm.UpdateUser()" role="form" autocomplete="on">
-      <img class="avatar" src="/{{ vm.user.picture }}" title="Mon avatar" alt="Avatar"/>
+      <img class="avatar" src="{{ vm.user.picture }}" title="Mon avatar" alt="Avatar"/>
+      <label for="picture">Avatar</label>
+      <input type="file" file="file" accept="image/*" name="picture" />
       <label for="email">Email</label>
-      <input ng-model="vm.user.emailLocal" class="u-full-width" type="email" name="email"
-      ng-value="vm.user.emailLocal"/>
-      <label for="password">Mot de passe</label>
+      <input ng-model="vm.user.email" class="u-full-width" type="email" name="email"
+      ng-value="vm.user.email"/>
+      <label for="password">Nouveau mot de passe</label>
+      <div class="u-set-relative">
+        <span title="Mots de passe identiques" class="is-valid"
+        ng-if="updateUser.password.$valid && updateUser.passwordConfirmation.$valid"><i
+        class="fa fa-check-square" aria-hidden="true"></i></span>
+        <span title="{{ updateUser.password.$error.validPassword ? 'Le mot de passe doit être compris entre 4 et 12 caractères incluant au moins une majuscule et un chiffre.'
+        : 'Le mot de passe et la confirmation du mot de passe ne correspondent pas.'}}"
+        class="is-invalid"
+        ng-if="updateUser.password.$invalid || updateUser.passwordConfirmation.$invalid || updateUser.password.$error.validPassword"><i
+        class="fa fa-minus-square" aria-hidden="true"></i></span>
+      </div>
       <input ng-model="vm.user.password" class="u-full-width" type="password" name="password"
-      placeholder="Saisir ici votre nouveau mot de passe" valid-password/>
-      <span class="u-text-error" ng-if="updateUser.password.$error.validPassword">
-        Le mot de passe doit être compris entre 4 et 12 caractères incluant au moins une majuscule et un chiffre.</span>
+      placeholder="Votre nouveau mot de passe" equals="{{vm.user.passwordConfirmation}}" valid-password/>
+      <label for="passwordConfirmation">Confirmation du mot de passe</label>
+      <div class="u-set-relative">
+        <span title="Les mots de passe sont identiques." class="is-valid"
+        ng-if="updateUser.password.$valid && updateUser.passwordConfirmation.$valid"><i
+        class="fa fa-check-square" aria-hidden="true"></i></span>
+        <span title="Le mot de passe et la confirmation du mot de passe ne correspondent pas." class="is-invalid"
+        ng-if="updateUser.password.$invalid || updateUser.passwordConfirmation.$invalid"><i
+        class="fa fa-minus-square" aria-hidden="true"></i></span>
+      </div>
+      <input ng-model="vm.user.passwordConfirmation" class="u-full-width" type="password" name="passwordConfirmation"
+      placeholder="Confirmation du nouvau" equals="{{vm.user.password}}" valid-password/>
+      <span class="u-text-error" ng-if="updateUser.password.$invalid || updateUser.passwordConfirmation.$invalid || updateUser.password.$error.validPassword">
+        {{ updateUser.password.$error.validPassword ? 'Le mot de passe doit être compris entre 4 et 12 caractères incluant au moins une majuscule et un chiffre.' :
+        'Le mot de passe et la confirmation du mot de passe ne correspondent pas.'}}</span>
         <label for="name">Nom</label>
         <input ng-model="vm.user.name" class="u-full-width" type="text" name="name"
         ng-value="vm.user.name"/>
@@ -35,7 +59,7 @@
         <input disabled class="u-full-width" type="text" name="updated_at"
         ng-value='vm.user.updatedAt | date:"EEEE dd MMMM yyyy à HH:mm"'/>
         <div class="form-actions">
-          <button type="submit" class="button-primary">Modifier</button>
+          <button id="submitUpdateuser" type="submit" class="button-primary">S'enregistrer</button>
           <a ng-controller="DeleteUserController" class="button" title="Supprimer mon compte"
           ng-confirm-click="Confirmez-vous la suppression de votre compte ?" confirmed-click="DeleteUser()">Supprimer
           mon compte</a>
