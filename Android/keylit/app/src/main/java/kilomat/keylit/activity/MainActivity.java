@@ -70,10 +70,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_ABOUT_US = "about";
     private static final String TAG_PRIVACY_POLICY = "privacy";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
     private static final String TAG_SYNC = "sync";
 >>>>>>> origin/master
+=======
+    private static final String TAG_SYNC = "sync";
+>>>>>>> refs/remotes/origin/master
     // index to identify current nav menu item
     public static int navItemIndex = 0;
     public static String CURRENT_TAG = TAG_HOME;
@@ -273,7 +277,10 @@ public class MainActivity extends AppCompatActivity {
                 return achievFragment;
             case 7:
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> refs/remotes/origin/master
                 // Sync fragment
                 return new SyncFragment();
             case 9:
@@ -338,10 +345,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_sync:
 <<<<<<< HEAD
+<<<<<<< HEAD
                         startActivity(new Intent(MainActivity.this, SynActivity.class));
                         drawer.closeDrawers();
                         return true;
 =======
+=======
+>>>>>>> refs/remotes/origin/master
                         navItemIndex = 7;
                         CURRENT_TAG = TAG_SYNC;
                         break;

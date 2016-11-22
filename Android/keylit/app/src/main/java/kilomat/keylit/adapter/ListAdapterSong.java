@@ -70,37 +70,38 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
+
                 DeleteSongClick(v, position);
-=======
+
                 Log.d("Test", "imageViewAddMovie.setOnClickListener");
-                SendFileByBluetoothClick(position);
->>>>>>> origin/master
+               // SendFileByBluetoothClick(position);
+
             }
         });
 
         holder.imageViewPlaymusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
+
                 onMidiPlayClick(v, holder, position);
-=======
+
                 Log.d("Test", "imageViewPlaymusic.setOnClickListener");
                 AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3]);
                 //onMidiPlayClick(holder, position);
->>>>>>> origin/master
+
+                Log.d("Test", "imageViewPlaymusic.setOnClickListener");
+                AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3]);
+                //onMidiPlayClick(holder, position);
             }
         });
 
         holder.imageViewStopmusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
                 onMidiStopClick(v, holder);
-=======
                 Log.d("Test", "imageViewStopmusic.setOnClickListener");
-                onMidiStopClick(holder);
->>>>>>> origin/master
+                onMidiStopClick(v, holder);
+
             }
         });
 

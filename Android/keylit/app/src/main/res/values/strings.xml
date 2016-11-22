@@ -86,7 +86,7 @@
         Tout cela est rendu possible grâce à des LEDs installées sur la parure qui s’allumeront pour indiquer les touches sur lesquelles appuyer.</string>
     <string name="homefragment_data_3" translatable="false">Profitez également de milliers de partitions disponibles sur le store pour en apprendre toujours plus. Une application mobile est aussi disponible et vous permet de personnaliser vos entraînements autant que vous le souhaitez.
         Vous pouvez aussi scanner et éditer vos propres partitions pour vous entraîner sur la musique de votre choix.</string>
-<<<<<<< HEAD
+
     <string name="homefragment_data_4" translatable="false">Grâce à Light Them Up partagez votre passion de la musique avec votre entourage et transformer votre apprentissage en amusement !</string>
     <string name="homefragment_data_5" translatable="false">"Light Them Up a la particularité de s'adapter à vous. Quel que soit votre piano ou votre rythme d’apprentissage, débutant ou professionnel, il s’adapte parfaitement à vos besoins.</string>
     <string name="homefragment_data_6" translatable="false">Que vous vouliez jouer des morceaux d’artistes connus ou bien vos propres créations, vous pouvez le faire en achetant des morceaux sur le magasin ou en les créant vous même grâce à notre éditeur. Pour ceux disposant de partition papier, il est aussi possible de les scanner depuis l’application."</string>
@@ -140,12 +140,6 @@
     <string name="api_url_songs" translatable="false">http://lightthemup.fr.nf:3000/songs/</string>
     <string name="api_url_achiev" translatable="false">http://lightthemup.fr.nf:3000/achievements</string>
 
-=======
-    <string name="homefragment_data_4">Grâce à Light Them Up partagez votre passion de la musique avec votre entourage et transformer votre apprentissage en amusement !</string>
-    <string name="homefragment_data_5">"Light Them Up a la particularité de s'adapter à vous. Quel que soit votre piano ou votre rythme d’apprentissage, débutant ou professionnel, il s’adapte parfaitement à vos besoins.</string>
-    <string name="homefragment_data_6">Que vous vouliez jouer des morceaux d’artistes connus ou bien vos propres créations, vous pouvez le faire en achetant des morceaux sur le magasin ou en les créant vous même grâce à notre éditeur. Pour ceux disposant de partition papier, il est aussi possible de les scanner depuis l’application."</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
->>>>>>> origin/master
+
 </resources>
