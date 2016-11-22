@@ -1,10 +1,15 @@
 package kilomat.keylit.adapter;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +30,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,7 +75,7 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
             @Override
             public void onClick(View v) {
                 Log.d("Test", "imageViewAddMovie.setOnClickListener");
-                SendFileByBluetoothClick(position);
+                //SendFileByBluetoothClick(position);
             }
         });
 
@@ -77,7 +83,10 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
             @Override
             public void onClick(View v) {
                 Log.d("Test", "imageViewPlaymusic.setOnClickListener");
-                AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3]);
+
+                //File myFile = new File(Environment.getExternalStorageDirectory().getPath(), "/Download/Keylit/" +  mMovieList.get(position).getGenre().split("/")[3]);
+                File myFile = new File(Environment.getExternalStorageDirectory().getPath(), mMovieList.get(position).getGenre().split("/")[3]);
+                AppController.getInstance().getBtControler().SendFile(myFile);
                 //onMidiPlayClick(holder, position);
             }
         });

@@ -319,12 +319,12 @@ public class BluetoothController {
         return res;
     }
 
-    public boolean SendFile(String path) {
-        Log.d("BtSendFile", path);
+    public boolean SendFile(File path) {
+        //Log.d("BtSendFile", path);
         int MAX_BLOB_SIZE = 200;
 
         try {
-            File tosend = new File(path);
+            File tosend = path;
             Log.d("BtSendFile", "size:"+tosend.length());
             FileInputStream file = new FileInputStream(tosend);
             byte[] buff = new byte[(int)tosend.length()];
