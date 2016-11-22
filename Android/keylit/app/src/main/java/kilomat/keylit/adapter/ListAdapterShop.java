@@ -1,10 +1,15 @@
 package kilomat.keylit.adapter;
 
-import android.app.DownloadManager;
+import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +33,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -39,32 +45,39 @@ import kilomat.keylit.controller.ToastMessage;
 import kilomat.keylit.fragments.ShopFragment;
 import kilomat.keylit.model.ShopData;
 
+import static kilomat.keylit.controller.ToastMessage.bar_message_warning;
+
 public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicViewHolder> {
 
     public String downloadFileUrl = "";
+    private static final int PERMISSION_REQUEST_CODE = 1;
     public String midiFile;
+    public String file_name_download, file_title_download;
     protected LinkedList<Integer> drawableLinkedList;
     MediaPlayer mediaPlayer;
-    private List<ShopData> mMovieList;
+    private List<ShopData> mShopList;
     private Context mContext;
+    SessionManager manager;
+    private ProgressDialog mProgressDialog;
 
     public ListAdapterShop(Context context, List<ShopData> followerList, LinkedList<Integer> drawableLinkedList) {
         this.mContext = context;
-        this.mMovieList = followerList;
+        this.mShopList = followerList;
         this.drawableLinkedList = drawableLinkedList;
     }
 
     @Override
     public void onBindViewHolder(final MusicViewHolder holder, final int position) {
 
-        ShopData movie = mMovieList.get(position);
+        ShopData movie = mShopList.get(position);
         final int actionDrawableId = this.drawableLinkedList.get(position);
         holder.title.setText(movie.getTitle());
         holder.rating.setText(movie.getArtist());
         float val = (float) movie.getRating();
         holder.ratingbar.setRating(val);
         //Use Glide to load the Image
-        Glide.with(mContext).load("http://95.85.2.100/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+        Glide.with(mContext).load(mContext.getString(R.string.api_url) +
+                movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
 
         downloadFileUrl = movie.getGenre();
         holder.download.setText("Download : " + String.valueOf(movie.getDownload()));
@@ -73,21 +86,21 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMemberClick(position);
+                onMemberClick(v, position);
             }
         });
 
         holder.imageViewPlaymusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMidiPlayClick(holder, position);
+                onMidiPlayClick(v, holder, position);
             }
         });
 
         holder.imageViewStopmusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMidiStopClick(holder);
+                onMidiStopClick(v, holder);
             }
         });
 
@@ -97,7 +110,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
 
     @Override
     public int getItemCount() {
-        return mMovieList.size();
+        return mShopList.size();
     }
 
     @Override
@@ -111,70 +124,136 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.item_layout_shop, viewGroup, false);
-
+        manager = new SessionManager();
         return new MusicViewHolder(itemView);
     }
 
-    public void test(int position) {
-        ShopData myData = mMovieList.get(position);
-        downloadFileUrl = myData.getGenre();
-        Uri uri = Uri.parse("http://95.85.2.100/" + downloadFileUrl);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        String CurrentString = downloadFileUrl;
-        String[] separated = CurrentString.split("/");
-        midiFile = "/keylit/" + separated[3];
+    private boolean isFileExists(String filename) {
 
-        request.setDescription(myData.getTitle())
-                .setTitle("Notification Title");
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Keylit/", separated[3]);
-        midiFile = Environment.getExternalStorageDirectory().getPath() + "/Download" + midiFile;
-        request.setVisibleInDownloadsUi(true);
-
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI
-                | DownloadManager.Request.NETWORK_MOBILE);
-
-        ShopFragment.myDownloadReference = ShopFragment.downloadManager.enqueue(request);
+        File folder1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + filename);
+        return folder1.exists();
     }
 
-    protected void onMidiPlayClick(MusicViewHolder holder, int position) {
-        test(position);
+    private boolean deleteFile(String filename) {
 
-        mediaPlayer = MediaPlayer.create(mContext, Uri.parse(midiFile));
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-            holder.imageViewPlaymusic.setVisibility(View.GONE);
-            holder.imageViewStopmusic.setVisibility(View.VISIBLE);
-            //Set the Image Resource
-            holder.imageViewPlaymusic.setImageResource(R.drawable.media_pause);
+        File folder1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + filename);
+        return folder1.delete();
+    }
 
-            ToastMessage toastMessage = new ToastMessage();
-            toastMessage.message_success(mContext, "MediaPlayer start");
+    public String  startDownload()
+    {
+        String request = null;
+        int result_write = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int result_read = ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (result_write == PackageManager.PERMISSION_GRANTED || result_read == PackageManager.PERMISSION_GRANTED){
+            request = startDownloading();
+        } else {
+            requestForLocationPermission();
+            //request = startDownloading();
+        }
+        return request;
+    }
+
+    private void requestForLocationPermission()
+    {
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                || ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE))
+        {
+        }
+        else {
+            ActivityCompat.requestPermissions((Activity) mContext,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions((Activity) mContext,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        }
+    }
+    
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    startDownloading();
+                }
+                break;
         }
     }
 
-    protected void onMidiStopClick(MusicViewHolder holder) {
+
+    public String startDownloading()
+    {
+
+        Uri uri = Uri.parse("http://lightthemup.fr.nf/" + downloadFileUrl);
+        android.app.DownloadManager.Request request = new android.app.DownloadManager.Request(uri);
+
+        request.setDescription(file_title_download)
+                .setTitle("Notification Title");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, file_name_download);
+
+        request.setVisibleInDownloadsUi(true);
+        request.setAllowedNetworkTypes(android.app.DownloadManager.Request.NETWORK_WIFI
+                | android.app.DownloadManager.Request.NETWORK_MOBILE);
+        ShopFragment.myDownloadReference = ShopFragment.downloadManager.enqueue(request);
+
+        // }
+        midiFile = Environment.getExternalStorageDirectory().getPath()+ "/Download/" + file_name_download;
+
+        return midiFile;
+    }
+
+
+    protected void onMidiPlayClick(final View v, MusicViewHolder holder, int position) {
+        // test pour montrer le chargement
+        final ShopData myData = mShopList.get(position);
+        file_name_download = myData.getIdSong() + ".mid";
+        downloadFileUrl = myData.getGenre();
+        file_title_download = myData.getTitle();
+
+        midiFile = startDownload();
+
+        playingMidifile(v, holder);
+    }
+
+    void playingMidifile(View v, MusicViewHolder holder)
+    {
+        mediaPlayer = MediaPlayer.create(mContext, Uri.parse(midiFile));
+
+        if (mediaPlayer != null) {
+            if (!mediaPlayer.isPlaying()) {
+                mediaPlayer.start();
+                holder.imageViewPlaymusic.setVisibility(View.GONE);
+                holder.imageViewStopmusic.setVisibility(View.VISIBLE);
+                //Set the Image Resource
+                holder.imageViewPlaymusic.setImageResource(R.drawable.ic_pause_circle_outline_white_24dp);
+                bar_message_warning(v, mContext.getString(R.string.music_play));
+            }
+        } else
+            bar_message_warning(v, mContext.getString(R.string.music_fail));
+    }
+
+    protected void onMidiStopClick(View v, MusicViewHolder holder) {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             holder.imageViewPlaymusic.setVisibility(View.VISIBLE);
             holder.imageViewStopmusic.setVisibility(View.GONE);
             //Set the Image Resource
-            holder.imageViewPlaymusic.setImageResource(R.drawable.media_play);
-
-            ToastMessage toastMessage = new ToastMessage();
-            toastMessage.message_success(mContext, "MediaPlayer stop");
+            holder.imageViewPlaymusic.setImageResource(R.drawable.ic_play_circle_outline_white_24dp);
+            bar_message_warning(v, mContext.getString(R.string.music_stop));
         }
-
     }
 
     protected String AddMusicToUser(int position) throws IOException, JSONException {
 
-        ShopData myDataSong = mMovieList.get(position);
+        ShopData myDataSong = mShopList.get(position);
         String idMySong = myDataSong.getIdSong();
         SessionManager manager = new SessionManager();
 
         String mytoken = manager.getPreferences(mContext, "TokenKey");
-        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
-        String address = "http://95.85.2.100:3000/users/songs/";
+        String address = mContext.getString(R.string.api_url_users_songs);
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);
@@ -195,7 +274,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         return Xresponse;
     }
 
-    protected void onMemberClick(final int position) {
+    protected void onMemberClick(View v, final int position) {
         String result = "NULL";
 
         try {
@@ -209,18 +288,17 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
             e.printStackTrace();
         }
 
-        ToastMessage toastMessage = new ToastMessage();
-
         if (result.equals("Complete")) {
-            toastMessage.message_success(mContext, "Musique ajouté à l'utilisateur !");
+            ToastMessage.bar_message_success(v, mContext.getString(R.string.shop_add_music),
+                    mContext.getString(R.string.toast_message_success));
             drawableLinkedList.remove(position);
             drawableLinkedList.add(position, R.drawable.movie_added_touch);
             notifyDataSetChanged();
         } else {
             drawableLinkedList.remove(position);
             drawableLinkedList.add(position, R.drawable.movie_error_touch);
-            toastMessage.message_error(mContext, mContext.getString(R.string.text_something_went_wrong));
-            toastMessage.message_error(mContext, "Error Shop : Add music failed");
+            ToastMessage.bar_message_fail(v, mContext.getString(R.string.shop_add_music),
+                    mContext.getString(R.string.toast_message_fail));
         }
     }
 

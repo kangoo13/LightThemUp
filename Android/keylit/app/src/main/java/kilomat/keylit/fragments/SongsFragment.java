@@ -78,7 +78,7 @@ public class SongsFragment extends Fragment {
 
         mProgressDialog = new ProgressDialog(getActivity());
         // Showing progress dialog before making http request
-        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setMessage(getString(R.string.action_load));
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
 
@@ -116,6 +116,7 @@ public class SongsFragment extends Fragment {
 
             } else {
 
+<<<<<<< HEAD
                 // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(getActivity(),
@@ -129,18 +130,17 @@ public class SongsFragment extends Fragment {
         }
         //mRecyclerView.setAdapter(adapter);
 
+=======
+>>>>>>> a90c960f9b466bce4567cb6bda8fa99ce9f27230
         return layout;
     }
 
     private void Songs() {
 
-        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
         final HashMap<String, String> params = new HashMap<String, String>();
         params.put("idUser", mytoken);
 
-        final JSONObject jsonObject = new JSONObject(params);
-        //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
-        String URL_PROFILE = "http://95.85.2.100:3000/users/" + idUser;
+        String URL_PROFILE = getString(R.string.api_url_users) + idUser;
 
         Volley.newRequestQueue(getContext()).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,
@@ -176,11 +176,11 @@ public class SongsFragment extends Fragment {
                                                         new LinkedList<>(Collections.nCopies(mSongsList.size(),
                                                                 R.drawable.movie_error_touch))));
                                             } else {
-                                                Log.e(TAG, "@shop Error: Adapter is null");
+                                                Log.e(TAG, "Error: Adapter is null");
                                             }
 
                                         } catch (JSONException jsonException) {
-                                            Log.e(TAG, "@shop JsonException Error: " + jsonException.getMessage());
+                                            Log.e(TAG, "JsonException Error: " + jsonException.getMessage());
                                         }
                                     }
                                 }
@@ -188,7 +188,7 @@ public class SongsFragment extends Fragment {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d("Profile Error: " + error.getMessage());
+                        VolleyLog.d("Error: " + error.getMessage());
                         hidePDialog();
                     }
                 }) {
@@ -290,8 +290,8 @@ public class SongsFragment extends Fragment {
             super(requestMethod, url, errorListener);
 
 
-            params = new HashMap<String, String>();
-            //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
+            params = new HashMap<>();
+
             params.put("idUser", mytoken);
             this.params = params;
             this.listener = responseListener;

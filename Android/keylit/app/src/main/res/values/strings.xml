@@ -1,54 +1,59 @@
 <resources>
-    <string name="app_name">keylit</string>
+    <string name="app_name" translatable="false">LightThemUp</string>
 
-    <!-- Strings related to login -->
-    <string name="action_settings">Settings</string>
-    <string name="action_refresh">Refresh</string>
+    <!-- Strings -->
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="action_refresh" translatable="false">Refresh</string>
+    <string name="action_load" translatable="false">Loading...</string>
+    <string name="action_yes" translatable="false">Yes</string>
+    <string name="action_cancel" translatable="false">Cancel</string>
+    <string name="action_sort" translatable="false">Sort</string>
+    <string name="action_search" translatable="false">Search</string>
+    <string name="action_close" translatable="false">Close</string>
+    <string name="action_open" translatable="false">Open</string>
+    <string name="action_ok" translatable="false">OK</string>
+    <string name="action_delete" translatable="false">Delete</string>
+    <string name="action_confirmation" translatable="false">Confirmation</string>
 
     <!-- Text -->
     <string name="text_something_went_wrong">Something Went wrong</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="action_sign_in" translatable="false">Sign in or register</string>
+    <string name="action_sign_in_short" translatable="false">Sign in</string>
+    <string name="error_invalid_email" translatable="false">This email address is invalid</string>
+    <string name="error_invalid_password" translatable="false">This password is too short</string>
+    <string name="error_incorrect_password" translatable="false">This password is incorrect</string>
+    <string name="error_field_required" translatable="false">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 
-    <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
-    <string name="hint_name">Fullname</string>
-    <string name="btn_login">LOGIN</string>
-    <string name="btn_register">REGISTER</string>
-    <string name="btn_link_to_register">Not a member ? Sign up now.</string>
-    <string name="btn_link_to_login">Already registred ! Login Me.</string>
+    <string name="hint_email" translatable="false">Email</string>
+    <string name="hint_password" translatable="false">Password</string>
+    <string name="hint_name" translatable="false">Fullname</string>
+    <string name="btn_login" translatable="false">LOGIN</string>
+    <string name="btn_register" translatable="false">REGISTER</string>
+    <string name="btn_link_to_register" translatable="false">Not a member ? Sign up now.</string>
+    <string name="btn_link_to_login" translatable="false">Already registred ! Login Me.</string>
     <string name="welcome">Welcome</string>
-    <string name="btn_logout">LOGOUT</string>
+    <string name="btn_logout" translatable="false">LOGOUT</string>
     <string name="name">Fullname</string>
 
-    <string name="action_sort">Sort</string>
-    <string name="action_search">Search</string>
-    <string name="action_home">Home</string>
+
+    <string name="action_home" translatable="false">Home</string>
     <string name="profile">Profile</string>
-    <string name="action_profile">Profile</string>
-    <string name="action_inbox">Inbox</string>
-    <string name="action_logout">Logout</string>
-    <string name="lbl_close">Close</string>
-    <string name="lbl_open">Open</string>
-    <string name="action_shop">Shop</string>
-    <string name="action_playlist">Playlist</string>
-    <string name="action_song">Songs</string>
+    <string name="action_profile" translatable="false">Profile</string>
+    <string name="action_inbox" translatable="false">Inbox</string>
+    <string name="action_logout" translatable="false">Logout</string>
+    <string name="action_shop" translatable="false">Shop</string>
+    <string name="action_playlist" translatable="false">Playlist</string>
+    <string name="action_song" translatable="false">Songs</string>
     <string name="action_achiev">Achievements</string>
-    <string name="action_scan">Scan</string>
+    <string name="action_scan" translatable="false">Scan</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="openDrawer">open_drawer</string>
-    <string name="closeDrawer">close_drawer</string>
+    <string name="closeDrawer" translatable="false">close_drawer</string>
 
     <!-- Navigation Drawer menu labels -->
     <string name="nav_home">Home</string>
@@ -60,6 +65,7 @@
     <string name="nav_achiev">Achievements</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_about_us">About Us</string>
+    <string name="nav_privacy_policy">Privacy Policy</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
@@ -73,21 +79,67 @@
         <item>Settings</item>
     </string-array>
 
-    <string name="activity_title_about_us">About Us</string>
-    <string name="activity_title_privacy_policy">Privacy Policy</string>
-    <string name="action_clear_all">Clear All</string>
-    <string name="action_mark_all_read">Mark All as Read</string>
-    <string name="privacy_policy">Privacy Policy</string>
-    <string name="homefragment_data_1">Oubliez les cours de piano avec un professeur qui vous coûte une fortune à chaque séance.
+    <!-- HOME page text -->
+    <string name="homefragment_data_1" translatable="false">Oubliez les cours de piano avec un professeur qui vous coûte une fortune à chaque séance.
         Light Them Up vous fait faire des économies grâce à Keylite, un professeur de piano à domicile accessible 24/7 pour votre plus grand plaisir.</string>
-    <string name="homefragment_data_2">Keylite est une parure qui s’adaptera à tout type de piano et qui vous permettra de façon ludique et dynamique d’apprendre à jouer vos chansons préférées.
+    <string name="homefragment_data_2" translatable="false">Keylite est une parure qui s’adaptera à tout type de piano et qui vous permettra de façon ludique et dynamique d’apprendre à jouer vos chansons préférées.
         Tout cela est rendu possible grâce à des LEDs installées sur la parure qui s’allumeront pour indiquer les touches sur lesquelles appuyer.</string>
-    <string name="homefragment_data_3">Profitez également de milliers de partitions disponibles sur le store pour en apprendre toujours plus. Une application mobile est aussi disponible et vous permet de personnaliser vos entraînements autant que vous le souhaitez.
+    <string name="homefragment_data_3" translatable="false">Profitez également de milliers de partitions disponibles sur le store pour en apprendre toujours plus. Une application mobile est aussi disponible et vous permet de personnaliser vos entraînements autant que vous le souhaitez.
         Vous pouvez aussi scanner et éditer vos propres partitions pour vous entraîner sur la musique de votre choix.</string>
-    <string name="homefragment_data_4">Grâce à Light Them Up partagez votre passion de la musique avec votre entourage et transformer votre apprentissage en amusement !</string>
-    <string name="homefragment_data_5">"Light Them Up a la particularité de s'adapter à vous. Quel que soit votre piano ou votre rythme d’apprentissage, débutant ou professionnel, il s’adapte parfaitement à vos besoins.</string>
-    <string name="homefragment_data_6">Que vous vouliez jouer des morceaux d’artistes connus ou bien vos propres créations, vous pouvez le faire en achetant des morceaux sur le magasin ou en les créant vous même grâce à notre éditeur. Pour ceux disposant de partition papier, il est aussi possible de les scanner depuis l’application."</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="homefragment_data_4" translatable="false">Grâce à Light Them Up partagez votre passion de la musique avec votre entourage et transformer votre apprentissage en amusement !</string>
+    <string name="homefragment_data_5" translatable="false">"Light Them Up a la particularité de s'adapter à vous. Quel que soit votre piano ou votre rythme d’apprentissage, débutant ou professionnel, il s’adapte parfaitement à vos besoins.</string>
+    <string name="homefragment_data_6" translatable="false">Que vous vouliez jouer des morceaux d’artistes connus ou bien vos propres créations, vous pouvez le faire en achetant des morceaux sur le magasin ou en les créant vous même grâce à notre éditeur. Pour ceux disposant de partition papier, il est aussi possible de les scanner depuis l’application."</string>
+
+    <!-- messages  -->
+    <string name="toast_message_success">Success</string>
+    <string name="toast_message_fail">Fail</string>
+
+    <!-- music  -->
+    <string name="music_play" translatable="false">Play</string>
+    <string name="music_stop" translatable="false">Stop</string>
+    <string name="music_fail" translatable="false">Fail, please try later !</string>
+
+
+    <!-- profile / scan -->
+    <string name="profile_delete">Are you sure you want to deactivate your account ?</string>
+    <string name="profile_update">Updating the user!</string>
+    <string name="image_take" translatable="false">Take Photo</string>
+    <string name="image_choose" translatable="false">Choose from Gallery</string>
+    <string name="image_title" translatable="false">Add Photo!</string>
+    <string name="scan_send_image">Sends the image!</string>
+
+    <!-- Song / playlist / shop-->
+    <string name="playlist_song_delete">Song Deleted from playlist !</string>
+    <string name="song_delete">deleting of music the user !</string>
+    <string name="playlist_add_song">Adding songs to the playlist !</string>
+    <string name="shop_add_music">Adding music to the user !</string>
+    <string name="playlist_add_new_playlist">Creation of the new playlist !</string>
+    <string name="playlist_delete_playlist">Deleting playlist !</string>
+    <string name="playlist_modification_playlist">Modification of the playlist !</string>
+    <string name="playlist_popup_playlist">You can add tracks to a playlist through our website and apps.</string>
+
+
+
+    <!-- Sing Up activity  -->
+    <string name="signup_activity_error_name">Please enter your nickname</string>
+    <string name="signup_activity_creating_account">Creating Account...</string>
+    <string name="signup_activity_create">Account creation</string>
+    <string name="signup_activity_error_email">Enter a valid email address</string>
+    <string name="signup_activity_error_password_match">Password doesn\'t match</string>
+    <string name="signup_activity_error_password_required">Confirm Password required</string>
+    <string name="signup_activity_error_password">The password must be between 4 and 12 characters including at least one capital letter and one number</string>
+
+    <!-- API -->
+    <string name="api_url" translatable="false">http://lightthemup.fr.nf/</string>
+    <string name="api_url_user_auth" translatable="false">http://lightthemup.fr.nf:3000/users/authenticate</string>
+    <string name="api_url_users" translatable="false">http://lightthemup.fr.nf:3000/users/</string>
+    <string name="api_url_playlist" translatable="false">http://lightthemup.fr.nf:3000/playlists/</string>
+    <string name="api_url_users_songs" translatable="false">http://lightthemup.fr.nf:3000/users/songs/</string>
+    <string name="api_url_playlist_users" translatable="false">http://lightthemup.fr.nf:3000/playlists/user/</string>
+    <string name="api_url_songs" translatable="false">http://lightthemup.fr.nf:3000/songs/</string>
+    <string name="api_url_achiev" translatable="false">http://lightthemup.fr.nf:3000/achievements</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

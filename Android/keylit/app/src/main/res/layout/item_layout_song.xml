@@ -67,7 +67,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginEnd="8dp"
                 android:focusable="false"
-                android:src="@drawable/media_play"
+                android:src="@drawable/ic_play_circle_outline_white_24dp"
                 android:textColor="@color/white" />
 
             <ImageView
@@ -76,7 +76,7 @@
                 android:layout_height="30dp"
                 android:layout_marginEnd="8dp"
                 android:focusable="false"
-                android:src="@drawable/media_pause"
+                android:src="@drawable/ic_pause_circle_outline_white_24dp"
                 android:textColor="@color/white"
                 android:visibility="gone" />
 
