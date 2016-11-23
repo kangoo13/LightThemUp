@@ -57,7 +57,7 @@ public class ListAdapterPlaylistSong extends RecyclerView.Adapter<ListAdapterPla
         holder.title.setText(movie.getTitle());
         holder.rating.setText(movie.getArtist());
         //Use Glide to load the Image
-        Glide.with(mContext).load("http://95.85.2.100/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
 
         downloadFileUrl = movie.getGenre();
 
@@ -109,7 +109,7 @@ public class ListAdapterPlaylistSong extends RecyclerView.Adapter<ListAdapterPla
     public void DownloadMidiFileFromServer(int position) {
         SongData myData = mMovieList.get(position);
         downloadFileUrl = myData.getGenre();
-        Uri uri = Uri.parse("http://95.85.2.100/" + downloadFileUrl);
+        Uri uri = Uri.parse("http://lightthemup.fr.nf/" + downloadFileUrl);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         String CurrentString = downloadFileUrl;
         String[] separated = CurrentString.split("/");
@@ -182,7 +182,7 @@ public class ListAdapterPlaylistSong extends RecyclerView.Adapter<ListAdapterPla
         SessionManager manager = new SessionManager();
         String mytoken = manager.getPreferences(mContext, "TokenKey");
         String PlaylistName = manager.getPreferences(mContext, "PlaylistName");
-        String address = "http://95.85.2.100:3000/playlists/" + PlaylistName + "/" + idMySong;
+        String address = "http://lightthemup.fr.nf:3000/playlists/" + PlaylistName + "/" + idMySong;
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
 
 

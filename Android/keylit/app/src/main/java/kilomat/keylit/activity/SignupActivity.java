@@ -108,7 +108,7 @@ public class SignupActivity extends AppCompatActivity {
         // TODO: Implement your own signup logic here.
 
         // Validation Completed
-        String address = "http://95.85.2.100:3000/users";
+        String address = "http://lightthemup.fr.nf:3000/users";
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();

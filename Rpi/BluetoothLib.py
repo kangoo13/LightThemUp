@@ -117,7 +117,7 @@ class BluetoothSock:
 			pass
 
 	def connect(self, term='/dev/ttyAMA0', baudrate=9600):
-		self.serial = serial.Serial(port=term, baudrate=baudrate, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=0.2)#term, baudrate, timeout=1)
+		self.serial = serial.Serial(port=term, baudrate=baudrate, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=0.01)#term, baudrate, timeout=1)
 		try:
 			return self.serial.is_open()
 		except:
@@ -176,7 +176,7 @@ class BluetoothSock:
 
 	def read(self):
 		try:
-			return self.serial.read()
+			return self.serial.read(100)
 		except:
 			self.if_except_catch_reco()
 			return ""
@@ -194,6 +194,7 @@ class BluetoothSock:
 
 	def receve_file(self, downloadMidi, pckg):
 		name, size, hash = pckg.blob.split("/")
+		print "Starting leech of '", name, "'"
 		size = int(size)
 		if os.path.exists(downloadMidi+name):
 			if os.path.getsize(downloadMidi+name) == size and hashlib.md5(open(downloadMidi+name, 'rb').read()).hexdigest() == hash:
@@ -281,7 +282,7 @@ class Package:
 		self.checsum = checsum
 
 	def __str__(self):
-		return "Package number "+str(self.num)+", code "+str(self.opcode)+", "+str(self.size)+" bytes de data"+(" ("+printBlob(self.blob)+")" if self.size > 0 else "")+". Pour une somme de "+str(self.checsum)
+		return ""#"Package number "+str(self.num)+", code "+str(self.opcode)+", "+str(self.size)+" bytes de data"+(" ("+printBlob(self.blob)+")" if self.size > 0 else "")+". Pour une somme de "+str(self.checsum)
 
 	def finalBuild(self):
 		global NUM_PACKAGE

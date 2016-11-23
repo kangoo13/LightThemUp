@@ -61,7 +61,7 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         holder.rating.setText(movie.getArtist());
 
         //Use Glide to load the Image
-        Glide.with(mContext).load("http://95.85.2.100/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
 
         downloadFileUrl = movie.getGenre();
 
@@ -77,7 +77,7 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
             @Override
             public void onClick(View v) {
                 Log.d("Test", "imageViewPlaymusic.setOnClickListener");
-                AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3]);
+                AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3], mContext);
                 //onMidiPlayClick(holder, position);
             }
         });
@@ -117,7 +117,7 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
     public void DownloadMidiFileFromServer(int position) {
         SongData myData = mMovieList.get(position);
         downloadFileUrl = myData.getGenre();
-        Uri uri = Uri.parse("http://95.85.2.100/" + downloadFileUrl);
+        Uri uri = Uri.parse("http://lightthemup.fr.nf/" + downloadFileUrl);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         String CurrentString = downloadFileUrl;
         Log.d("TestDownLoad" , "downloadFileUrl:"+downloadFileUrl);
@@ -202,7 +202,7 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         SessionManager manager = new SessionManager();
         String mytoken = manager.getPreferences(mContext, "TokenKey");
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
-        String address = "http://95.85.2.100:3000/users/songs/" + idMySong;
+        String address = "http://lightthemup.fr.nf:3000/users/songs/" + idMySong;
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpDelete del = new HttpDelete(address);

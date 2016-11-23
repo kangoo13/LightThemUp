@@ -1,8 +1,10 @@
 package kilomat.keylit.controller;
 
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -120,13 +123,16 @@ public class BluetoothController {
                     }
                 } while (cnt-- >= 0);*/
                 //receiverThread.start();
+                Log.d("BtConnect", "Connection Wins");
                 return true;
             }
         }
         catch (IOException e)
         {
+            Log.d("BtConnect", "Connection Fail");
             return false;
         }
+        Log.d("BtConnect", "Connection Fail");
         return false;
     }
     public boolean Disconnect() {
@@ -319,48 +325,158 @@ public class BluetoothController {
         return res;
     }
 
-    public boolean SendFile(String path) {
-        Log.d("BtSendFile", path);
-        int MAX_BLOB_SIZE = 200;
-
-        try {
-            File tosend = new File(path);
-            Log.d("BtSendFile", "size:"+tosend.length());
-            FileInputStream file = new FileInputStream(tosend);
-            byte[] buff = new byte[(int)tosend.length()];
-            file.read(buff);
-            String data = tosend.getName()+"/"+tosend.length()+"/"+getMD5EncryptedString(buff);
-
-            SendPackage(new BtPackage((byte)4, data.length(), data.getBytes())); // Send Request File
-
-            Thread.sleep(10);
-            BtPackage pckg = waitNextMsg(2000);// Thread.sleep(10); } while (pckg == null);
-            Log.d("BtSendFile", "Out");
-            if (pckg == null)
-                Log.d("BtSendFile", "Première");
-
-            //else if (pckg.getOpCode() == (byte)6){
-            //    Log.d("BtSendFile", "Deuxieme");
-            //    return true;
-            //}
-            Log.d("BtSendFile", "Here");
-
-            BtPackage[] pckglist = new BtPackage[(int)Math.ceil((double)buff.length / (double)MAX_BLOB_SIZE)];
-            for (int i = 0; i < pckglist.length; i++) {
-                byte[] blob = Arrays.copyOfRange(buff, i*MAX_BLOB_SIZE, (i+1 == pckglist.length ? i*MAX_BLOB_SIZE + (buff.length % MAX_BLOB_SIZE) : (i+1)*MAX_BLOB_SIZE));
-                Log.d("BtSendFile", "Package n°"+(PACKAGE_NUM+1)+" - "+stringfyByteArray(blob));
-                pckglist[i] = new BtPackage(PACKAGE_NUM++, (byte)7, blob.length, blob.clone(), (short)0);
+    private void refillMsgQueue(List<BtPackage> stuff) {
+        for (BtPackage p : stuff)
+            try {
+                WaitingMsg.put(p);
+            } catch (InterruptedException e) {
+                Log.d("BtRefillMsgQueue", "Package N°" + p.getNum() + ", Lost ... It was OPcode n°" + p.getOpCode() + "... RIP bro");
+                e.printStackTrace();
             }
+    }
 
-            SendingTaskPckg = new SendBtPackageTask();
-            SendingTaskPckg.execute(pckglist);
-
-
+    public boolean SendFile(String path, Context c) {
+        try {
+            // get file
+            File tosend = new File(path);
+            if (tosend.length() <= 0) {
+                Log.d("BtSendFile", "Unable to get Size");
+                return false;
+            }
+            new SendFileTask().setContext(c).execute(tosend);
         } catch (Exception e) {
             e.printStackTrace();
             Log.d("BtSendFile", "Fail...");
         }
         return true;
+    }
+
+    private class SendFileTask extends AsyncTask<File, Integer, Boolean> {
+        private Context _context = null;
+        private ProgressDialog progressDialog;
+
+
+        private SendFileTask setContext(Context c) {
+            _context = c;
+            return this;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(_context);
+            progressDialog.setCancelable(true);
+            progressDialog.setMessage("Sending File...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setProgress(0);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(File... params) {
+            File tosend = params[0];
+            Log.d("SendFileTask", tosend.getPath());
+            int MAX_BLOB_SIZE = 2000;
+
+            try {
+                if (tosend.length() <= 0) {
+                    Log.d("SendFileTask", "Unable to get Size");
+                    return false;
+                }
+                FileInputStream file = new FileInputStream(tosend);
+                byte[] buff = new byte[(int)tosend.length()];
+                file.read(buff);
+                String data = tosend.getName()+"/"+tosend.length()+"/"+getMD5EncryptedString(buff);
+
+                // Send Request File
+                sendPckg(new BtPackage((byte)4, data.length(), data.getBytes()));
+                List<BtPackage> stuff = new ArrayList<BtPackage>();
+                BtPackage pckg = null;
+
+                // Wait for package
+/**/
+            Log.d("SendFileTask", "Here We Go <3");
+            do {
+                Log.d("SendFileTask", "Loop");
+                if (pckg != null) {
+                    Log.d("SendFileTask", "Here OPcode n°"+pckg.getOpCode()+" Received");
+                    stuff.add(pckg);
+                    pckg = null;
+                }
+                pckg = getNextMsg();
+                Log.d("SendFileTask", "Pool");
+                Thread.sleep(100);
+            } while (pckg == null || (pckg.getOpCode() != (byte)5 && pckg.getOpCode() != (byte)6));
+
+            Log.d("SendFileTask", "OPcode n°"+pckg.getOpCode()+" Received");
+            // File already on device
+            if (pckg.getOpCode() == (byte)6) {
+                refillMsgQueue(stuff);
+                return true;
+            }
+
+                Log.d("SendFileTask", "Here");
+
+                BtPackage[] pckglist = new BtPackage[(int)Math.ceil((double)buff.length / (double)MAX_BLOB_SIZE)];
+                for (int i = 0; i < pckglist.length; i++) {
+                    byte[] blob = Arrays.copyOfRange(buff, i*MAX_BLOB_SIZE, (i+1 == pckglist.length ? i*MAX_BLOB_SIZE + (buff.length % MAX_BLOB_SIZE) : (i+1)*MAX_BLOB_SIZE));
+                    Log.d("SendFileTask", "Package n°"+(PACKAGE_NUM+1)+" - "+stringfyByteArray(blob));
+                    pckglist[i] = new BtPackage(PACKAGE_NUM++, (byte)7, blob.length, blob.clone(), (short)0);
+                }
+
+                int count = pckglist.length;
+                for (int i = 0; i < count; i++) {
+                        sendPckg(pckglist[i]);
+                        publishProgress(i * 100 / count);
+                }
+
+                Log.d("SendFileTask", "Here We Go <3");
+                do {
+                    Log.d("SendFileTask", "Loop");
+                    if (pckg != null) {
+                        Log.d("SendFileTask", "Here OPcode n°"+pckg.getOpCode()+" Received");
+                        stuff.add(pckg);
+                        pckg = null;
+                    }
+                    pckg = getNextMsg();
+                    Log.d("SendFileTask", "Pool");
+                    Thread.sleep(100);
+                } while (pckg == null || pckg.getOpCode() != (byte)8);
+
+                Log.d("SendFileTask", "OPcode n°"+pckg.getOpCode()+" Received");
+                // File already on device
+                if (pckg.getOpCode() == (byte)8) {
+                    refillMsgQueue(stuff);
+                    return true;
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("SendFileTask", "Fail...");
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            progressDialog.dismiss();
+        }
+
+        private void sendPckg(BtPackage p) {
+            try {
+                Log.d("SendFileTask", "Package n°"+(p.getNum())+" - "+stringfyByteArray(p.getBlob()));
+                btSocket.getOutputStream().write(p.finalPacking());
+                Log.d("SendFileTask Checksum", p.getNum()+"/"+p.getChecksum());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+            if (progress[0] > 0)
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgress(progress[0]);
+        }
     }
 
     private class SendBtMsgTask extends AsyncTask<String, Void, Boolean> {
@@ -393,7 +509,7 @@ public class BluetoothController {
                     Log.d("BtSendFile", "Package n°"+(pcks[i].getNum())+" - "+stringfyByteArray(pcks[i].getBlob()));
                     btSocket.getOutputStream().write(pcks[i].finalPacking());
                     Log.d("Checksum", pcks[i].getNum()+"/"+pcks[i].getChecksum());
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (IOException e) {
                     return false;
                 } catch (InterruptedException e) {

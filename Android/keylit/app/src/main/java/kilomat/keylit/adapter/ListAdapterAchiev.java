@@ -39,7 +39,7 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
         holder.current_score.setText(String.valueOf(data.getCurrent_score()));
         holder.progress.setProgress((int) data.getProgress());
         holder.current_progress.setText((int) data.getProgress() + "/100");
-        Glide.with(mContext).load("http://95.85.2.100/" + data.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + data.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
     }
 
     @Override

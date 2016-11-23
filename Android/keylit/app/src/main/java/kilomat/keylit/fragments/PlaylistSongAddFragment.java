@@ -127,7 +127,7 @@ public class PlaylistSongAddFragment extends Fragment {
 
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
 
-        String URL_PROFILE = "http://95.85.2.100:3000/users/" + idUser;
+        String URL_PROFILE = "http://lightthemup.fr.nf:3000/users/" + idUser;
 
         Volley.newRequestQueue(getContext()).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,

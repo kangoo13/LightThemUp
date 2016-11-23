@@ -257,7 +257,7 @@ public class PlaylistFragment extends Fragment implements SwipeRefreshLayout.OnR
     protected String AddNewPlaylist(String name_playlist) throws IOException, JSONException {
 
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
-        String address = "http://95.85.2.100:3000/playlists";
+        String address = "http://lightthemup.fr.nf:3000/playlists";
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);
@@ -308,7 +308,7 @@ public class PlaylistFragment extends Fragment implements SwipeRefreshLayout.OnR
     protected String ModifyPlaylist(String name_playlist, String id) throws IOException, JSONException {
 
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
-        String address = "http://95.85.2.100:3000/playlists/" + id;
+        String address = "http://lightthemup.fr.nf:3000/playlists/" + id;
 
         HttpClient client = new DefaultHttpClient();
         HttpPut post = new HttpPut(address);
@@ -334,7 +334,7 @@ public class PlaylistFragment extends Fragment implements SwipeRefreshLayout.OnR
     protected String DeleteMyPlaylist(String id) throws IOException, JSONException {
 
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
-        String address = "http://95.85.2.100:3000/playlists/" + id;
+        String address = "http://lightthemup.fr.nf:3000/playlists/" + id;
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpDelete del = new HttpDelete(address);
@@ -407,7 +407,7 @@ public class PlaylistFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         swiprefreshview.setRefreshing(true);
 
-        String url = "http://95.85.2.100:3000/playlists/user";
+        String url = "http://lightthemup.fr.nf:3000/playlists/user";
 
         final JSONObject _jsonRequest = new JSONObject();
 

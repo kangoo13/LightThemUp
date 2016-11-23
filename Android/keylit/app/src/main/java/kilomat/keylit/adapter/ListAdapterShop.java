@@ -64,7 +64,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
         float val = (float) movie.getRating();
         holder.ratingbar.setRating(val);
         //Use Glide to load the Image
-        Glide.with(mContext).load("http://95.85.2.100/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
 
         downloadFileUrl = movie.getGenre();
         holder.download.setText("Download : " + String.valueOf(movie.getDownload()));
@@ -118,7 +118,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
     public void test(int position) {
         ShopData myData = mMovieList.get(position);
         downloadFileUrl = myData.getGenre();
-        Uri uri = Uri.parse("http://95.85.2.100/" + downloadFileUrl);
+        Uri uri = Uri.parse("http://lightthemup.fr.nf/" + downloadFileUrl);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         String CurrentString = downloadFileUrl;
         String[] separated = CurrentString.split("/");
@@ -174,7 +174,7 @@ public class ListAdapterShop extends RecyclerView.Adapter<ListAdapterShop.MusicV
 
         String mytoken = manager.getPreferences(mContext, "TokenKey");
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
-        String address = "http://95.85.2.100:3000/users/songs/";
+        String address = "http://lightthemup.fr.nf:3000/users/songs/";
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);

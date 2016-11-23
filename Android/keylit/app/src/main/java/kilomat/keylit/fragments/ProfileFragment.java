@@ -204,7 +204,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         profilecity.setText(String.valueOf(data.getProfileCity()));
         profilecountry.setText(String.valueOf(data.getProfileCountry()));
 
-        Glide.with(this).load("http://95.85.2.100/" + data.getProfileUserView()).centerCrop().into(profileuserview);
+        Glide.with(this).load("http://lightthemup.fr.nf/" + data.getProfileUserView()).centerCrop().into(profileuserview);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,7 +256,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
         //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
-        String address = "http://95.85.2.100:3000/users/" + idUser;
+        String address = "http://lightthemup.fr.nf:3000/users/" + idUser;
 
 
         HttpClient client = new DefaultHttpClient();
@@ -394,7 +394,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
         //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
-        String address = "http://95.85.2.100:3000/users/" + idUser;
+        String address = "http://lightthemup.fr.nf:3000/users/" + idUser;
         String xprofileemail = profileemail.getText().toString();
         String xprofilepassword = profilepassword.getText().toString();
         String xprofilename = profilename.getText().toString();
@@ -445,7 +445,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         final JSONObject jsonObject = new JSONObject(params);
         //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
-        String URL_PROFILE = "http://95.85.2.100:3000/users/" + idUser;
+        String URL_PROFILE = "http://lightthemup.fr.nf:3000/users/" + idUser;
 
         Volley.newRequestQueue(getContext()).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,

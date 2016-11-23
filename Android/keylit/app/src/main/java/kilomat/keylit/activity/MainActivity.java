@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         params.put("idUser", mytoken);
 
         final JSONObject jsonObject = new JSONObject(params);
-        String URL_PROFILE = "http://95.85.2.100:3000/users/" + idUser;
+        String URL_PROFILE = "http://lightthemup.fr.nf:3000/users/" + idUser;
 
         Volley.newRequestQueue(this).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 {
                                     try {
-                                        String url = "http://95.85.2.100/" + response.getString("picture");
+                                        String url = "http://lightthemup.fr.nf/" + response.getString("picture");
                                         Glide.with(getApplicationContext()).load(url)
                                                 .crossFade()
                                                 .thumbnail(0.5f)

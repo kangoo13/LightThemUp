@@ -53,7 +53,7 @@ public class ListAdapterPlaylistSongAdd extends RecyclerView.Adapter<ListAdapter
         holder.title.setText(movie.getTitle());
         holder.rating.setText(movie.getArtist());
         //Use Glide to load the Image
-        Glide.with(mContext).load("http://95.85.2.100/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
 
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +114,7 @@ public class ListAdapterPlaylistSongAdd extends RecyclerView.Adapter<ListAdapter
         SessionManager manager = new SessionManager();
         String mytoken = manager.getPreferences(mContext, "TokenKey");
         String PlaylistName = manager.getPreferences(mContext, "PlaylistName");
-        String address = "http://95.85.2.100:3000/playlists/" + PlaylistName;
+        String address = "http://lightthemup.fr.nf:3000/playlists/" + PlaylistName;
         //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
 
 

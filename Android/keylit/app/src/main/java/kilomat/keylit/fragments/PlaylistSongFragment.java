@@ -125,7 +125,7 @@ public class PlaylistSongFragment extends Fragment {
 
         String PlaylistID = manager.getPreferences(getActivity(), "PlaylistID");
 
-        String URL_PROFILE = "http://95.85.2.100:3000/playlists/" + PlaylistID;
+        String URL_PROFILE = "http://lightthemup.fr.nf:3000/playlists/" + PlaylistID;
 
         Volley.newRequestQueue(getContext()).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,

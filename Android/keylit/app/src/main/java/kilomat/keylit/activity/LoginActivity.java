@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
 
-        String address = "http://95.85.2.100:3000/users/authenticate";
+        String address = "http://lightthemup.fr.nf:3000/users/authenticate";
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
