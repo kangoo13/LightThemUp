@@ -1,55 +1,62 @@
-var express         = require('express');
-var bodyParser      = require('body-parser');
-var mongoose        = require('mongoose');
-var morgan          = require('morgan');
-var config          = require('./config');
-var User            = require('./models/User');
-var passport        = require('passport');
-var expressSession  = require('express-session');
-var initPassport    = require('./passport/init');
-var fs              = require('fs');
-var path            = require('path');
-var app             = express();
+"use strict";
 
+var express = require('express');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var morgan = require('morgan');
+var config = require('./config');
+var User = require('./models/User');
+var passport = require('passport');
+var expressSession = require('express-session');
+var initPassport = require('./passport/init');
+var fs = require('fs');
+var path = require('path');
+var app = express();
 
-app.use(expressSession({secret: config.secret}));
+app.use(expressSession({
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use("/", express.static(path.join(__dirname, 'public')));
 mongoose.connect(config.database, function(err) {
-    if(err) {
+    if (err) {
         console.log('connection error', err);
     } else {
         console.log('connection successful');
     }
 });
 
-if (!fs.existsSync("public")){
+if (!fs.existsSync("public")) {
     fs.mkdirSync("public");
 }
-if (!fs.existsSync("public/uploads")){
+if (!fs.existsSync("public/uploads")) {
     fs.mkdirSync("public/uploads");
 }
-if (!fs.existsSync("public/uploads/avatar")){
+if (!fs.existsSync("public/uploads/avatar")) {
     fs.mkdirSync("public/uploads/avatar");
 }
-if (!fs.existsSync("public/uploads/achievements")){
+if (!fs.existsSync("public/uploads/achievements")) {
     fs.mkdirSync("public/uploads/achievements");
 }
-if (!fs.existsSync("public/uploads/songs")){
+if (!fs.existsSync("public/uploads/songs")) {
     fs.mkdirSync("public/uploads/songs");
 }
-if (!fs.existsSync("public/uploads/news")){
+if (!fs.existsSync("public/uploads/news")) {
     fs.mkdirSync("public/uploads/news");
 }
-if (!fs.existsSync("public/uploads/tmp")){
+if (!fs.existsSync("public/uploads/tmp")) {
     fs.mkdirSync("public/uploads/tmp");
 }
 // Add headers
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
 
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
