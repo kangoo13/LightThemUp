@@ -1,17 +1,19 @@
-/**
- * Created by Kangoo13 on 12/11/2015.
- */
-var jwt         = require('jsonwebtoken');
+"use strict";
+
+var jwt = require('jsonwebtoken');
 
 module.exports = function(options) {
-    if (!options || !options.secret) throw new Error('secret should be set');
+
+    if (!options || !options.secret) {
+        throw new Error('secret should be set');
+    }
 
     var secretCallback = options.secret;
+    return(function(req, res, next) {
 
-    var middleware = function(req, res, next) {
-// check header or url parameters or post parameters for token
+        // Check header or url parameters or post parameters for token
         var token = req.body.token || req.param('token') || req.headers['x-access-token'];
-        // decode token
+        // Decode token
         if (token) {
             // verifies secret and checks exp
             jwt.verify(token, secretCallback, function (err, decoded) {
@@ -20,24 +22,21 @@ module.exports = function(options) {
                         success: false,
                         message: 'Failed to authenticate token.'
                     });
-                } else {
+                } 
+                else {
                     // if everything is good, save to request for use in other routes
                     req.decoded = decoded;
-
                     next();
-
                 }
             });
-        } else {
+        } 
+        else {
             // if there is no token
             // return an HTTP response of 403 (access forbidden) and an error message
             return res.status(403).send({
                 success: false,
                 message: 'No token provided.'
             });
-
         }
-    };
-
-    return middleware;
+    });
 };

@@ -52,7 +52,7 @@ app.config(function ($routeProvider, $locationProvider) {
     templateUrl: '/news-details.html',
     controller: 'NewsDetailsController',
     controllerAs: 'vm',
-    authorizedAccess: true
+    authorizedAccess: false
   }).when('/succes', {
     templateUrl: '/mes-succes.html',
     controller: 'SuccesController',

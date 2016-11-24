@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -40,8 +39,10 @@ import kilomat.keylit.R;
 import kilomat.keylit.controller.ToastMessage;
 
 public class SignupActivity extends AppCompatActivity {
+
     private static final String TAG = "SignupActivity";
     public String Xresponse;
+
     @InjectView(R.id.input_name)
     EditText _nameText;
     @InjectView(R.id.input_email)
@@ -54,7 +55,7 @@ public class SignupActivity extends AppCompatActivity {
     TextView _loginLink;
     @InjectView(R.id.input_confirmpassword)
     EditText _confirmpasswordText;
-    private ProgressBar pb;
+
     private AsyncTask<String, String, String> asyncTask;
 
     @Override
@@ -88,7 +89,7 @@ public class SignupActivity extends AppCompatActivity {
     public void signup(final View v) throws IOException {
         Log.d(TAG, "Signup");
 
-        if (!validate()) {
+        if (!checkFormBeforeValidation()) {
             onSignupFailed(v);
             return;
         }
@@ -98,7 +99,7 @@ public class SignupActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage(getString(R.string.signup_activity_creating_account));
         progressDialog.show();
 
         final String name = _nameText.getText().toString();
@@ -108,13 +109,14 @@ public class SignupActivity extends AppCompatActivity {
         // TODO: Implement your own signup logic here.
 
         // Validation Completed
-        String address = "http://lightthemup.fr.nf:3000/users";
+        String address = getString(R.string.api_url_users);
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("name", name));
         pairs.add(new BasicNameValuePair("email", email));
         pairs.add(new BasicNameValuePair("password", password));
+
         try {
             post.setEntity(new UrlEncodedFormEntity(pairs));
         } catch (UnsupportedEncodingException e) {
@@ -138,7 +140,6 @@ public class SignupActivity extends AppCompatActivity {
             }
         }
 
-
         final boolean finalLoginStatus = loginStatus;
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -157,7 +158,9 @@ public class SignupActivity extends AppCompatActivity {
     public void onSignupSuccess(View v) {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-        ToastMessage.bar_message_success(v, "Registration", "Success");
+
+        ToastMessage.bar_message_success(v, getString(R.string.signup_activity_create),
+                getString(R.string.toast_message_success));
 
         Intent mainActivity = new Intent(this, LoginActivity.class);
         mainActivity.putExtra("activity", "SignUp");
@@ -166,7 +169,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed(View v) {
-        ToastMessage.bar_message_fail(v, "Registration", "Fail");
+        ToastMessage.bar_message_fail(v, getString(R.string.signup_activity_create),
+                getString(R.string.toast_message_fail));
         _signupButton.setEnabled(true);
     }
 
@@ -180,7 +184,7 @@ public class SignupActivity extends AppCompatActivity {
         return pstatus;
     }
 
-    public boolean validate() {
+    public boolean checkFormBeforeValidation() {
 
         boolean valid = true;
         boolean checkpass = false;
@@ -190,22 +194,21 @@ public class SignupActivity extends AppCompatActivity {
         String confirmpassword = _confirmpasswordText.getText().toString();
 
         if (name.isEmpty() || password.length() < 4 || password.length() > 20) {
-            _nameText.setError("please enter your nickname");
+            _nameText.setError(getString(R.string.signup_activity_error_name));
             valid = false;
         } else {
             _nameText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            _emailText.setError(getString(R.string.signup_activity_error_email));
             valid = false;
         } else {
             _emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("The password must be between 4 and 12 characters " +
-                    "including at least one capital letter and one number.");
+            _passwordText.setError(getString(R.string.signup_activity_error_password));
             valid = false;
         } else {
             _passwordText.setError(null);
@@ -215,9 +218,9 @@ public class SignupActivity extends AppCompatActivity {
 
         if (!checkpass) {
             if (confirmpassword.isEmpty())
-                _confirmpasswordText.setError("Confirm Password required");
+                _confirmpasswordText.setError(getString(R.string.signup_activity_error_password_required));
             else
-                _confirmpasswordText.setError("Password doesn't match.");
+                _confirmpasswordText.setError(getString(R.string.signup_activity_error_password_match));
             valid = false;
         } else {
             _passwordText.setError(null);
