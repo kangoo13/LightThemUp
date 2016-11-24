@@ -241,7 +241,6 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
   });
 });
 
-
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
   auth({secret: superSecret}), function(req, res, next) {
   // Only Admin or users are allowed here
@@ -290,15 +289,16 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
         // Start the promise stuff (to handle files uplaoded and more)
         Promise.resolve(files)
         .then(function(files) {
-          // Check the correct MIME for images
-          if (uploadConfig.acceptedMimeTypes.indexOf(files['picture'][0].mimetype) == -1) {
-              throw "Incorrect MIME type for picture : " + files['picture'][0].mimetype;
-          }
-          if (method == SCAN_PARTITION) {
-            if (uploadConfig.acceptedMimeTypes.indexOf(files['scan'][0].mimetype) == -1) {
-              throw "Incorrect MIME type for scan : " + files['scan'][0].mimetype;
-            }
-          }
+          // FOR ANDROID 
+          // // Check the correct MIME for images
+          // if (uploadConfig.acceptedMimeTypes.indexOf(files['picture'][0].mimetype) == -1) {
+          //     throw "Incorrect MIME type for picture : " + files['picture'][0].mimetype;
+          // }
+          // if (method == SCAN_PARTITION) {
+          //   if (uploadConfig.acceptedMimeTypes.indexOf(files['scan'][0].mimetype) == -1) {
+          //     throw "Incorrect MIME type for scan : " + files['scan'][0].mimetype;
+          //   }
+          // }
           if (method == BASIC_UPLOAD) {
             // Check the correct MIME for sounds
             if (uploadMusicConfig.acceptedMimeTypes.indexOf(files['file'][0].mimetype) == -1) {
