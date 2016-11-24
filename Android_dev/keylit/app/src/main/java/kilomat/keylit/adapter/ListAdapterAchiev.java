@@ -39,8 +39,12 @@ public class ListAdapterAchiev extends RecyclerView.Adapter<ListAdapterAchiev.Ac
         holder.current_score.setText(String.valueOf(data.getCurrent_score()));
         holder.progress.setProgress((int) data.getProgress());
         holder.current_progress.setText((int) data.getProgress() + "/100");
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterAchiev.java
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + data.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+=======
         String url = mContext.getString(R.string.api_url);
         Glide.with(mContext).load(url + data.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterAchiev.java
     }
 
     @Override

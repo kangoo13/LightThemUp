@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         params.put("idUser", mytoken);
 
         final JSONObject jsonObject = new JSONObject(params);
+
         String URL_PROFILE = getString(R.string.api_url_users) + idUser;
 
         Volley.newRequestQueue(this).add(

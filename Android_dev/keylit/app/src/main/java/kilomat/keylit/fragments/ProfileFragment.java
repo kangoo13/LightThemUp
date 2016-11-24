@@ -203,6 +203,9 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         profileemail.setText(String.valueOf(data.getProfileEmail()));
         profilename.setText(String.valueOf(data.getProfileUserName()));
 
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/fragments/ProfileFragment.java
+        Glide.with(this).load("http://lightthemup.fr.nf/" + data.getProfileUserView()).centerCrop().into(profileuserview);
+=======
         if (data.getProfileDescription() != null)
             profiledescription.setText(String.valueOf(data.getProfileDescription()));
         if (data.getProfileAddress() != null)
@@ -214,6 +217,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         Glide.with(this).load(getString(R.string.api_url) +
                 data.getProfileUserView()).centerCrop().into(profileuserview);
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/fragments/ProfileFragment.java
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,7 +267,13 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     {
         progressDialog();
 
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/fragments/ProfileFragment.java
+        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
+        //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
+        String address = "http://lightthemup.fr.nf:3000/users/" + idUser;
+=======
         String address = getString(R.string.api_url_users) + idUser;
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/fragments/ProfileFragment.java
 
 
         HttpClient client = new DefaultHttpClient();
@@ -393,7 +403,16 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     protected String UpdateDataUser() throws IOException, JSONException {
 
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/fragments/ProfileFragment.java
+        ProfileData myDataProfile = mProfileDataList.get(0);
+        progressDialog();
+
+        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
+        //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
+        String address = "http://lightthemup.fr.nf:3000/users/" + idUser;
+=======
         String address = getString(R.string.api_url_users) + idUser;
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/fragments/ProfileFragment.java
         String xprofileemail = profileemail.getText().toString();
         String xprofilepassword = profilepassword.getText().toString();
         String xprofilename = profilename.getText().toString();
@@ -438,7 +457,13 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         final HashMap<String, String> params = new HashMap<String, String>();
         params.put("idUser", mytoken);
 
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/fragments/ProfileFragment.java
+        final JSONObject jsonObject = new JSONObject(params);
+        //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
+        String URL_PROFILE = "http://lightthemup.fr.nf:3000/users/" + idUser;
+=======
         String URL_PROFILE = getString(R.string.api_url_users) + idUser;
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/fragments/ProfileFragment.java
 
         Volley.newRequestQueue(getContext()).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,

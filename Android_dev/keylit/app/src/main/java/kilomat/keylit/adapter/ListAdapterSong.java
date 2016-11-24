@@ -62,8 +62,12 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         holder.rating.setText(movie.getArtist());
 
         //Use Glide to load the Image
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterShop.java
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+=======
         Glide.with(mContext).load(mContext.getString(R.string.api_url)+
                 movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterSong.java
 
         downloadFileUrl = movie.getGenre();
 
@@ -123,9 +127,15 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         return new MusicViewHolder(itemView);
     }
 
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterShop.java
+    public void test(int position) {
+        ShopData myData = mMovieList.get(position);
+        downloadFileUrl = myData.getGenre();
+=======
     public void DownloadMidiFileFromServer(int position) {
         SongData myData = mMovieList.get(position);
         downloadFileUrl = myData.getGenre().replace(" ", "%20").replace("'", "%27");
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterSong.java
         Uri uri = Uri.parse("http://lightthemup.fr.nf/" + downloadFileUrl);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         String CurrentString = downloadFileUrl;
@@ -174,7 +184,35 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         }
     }
 
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterShop.java
+    protected String AddMusicToUser(int position) throws IOException, JSONException {
+
+        ShopData myDataSong = mMovieList.get(position);
+        String idMySong = myDataSong.getIdSong();
+        SessionManager manager = new SessionManager();
+
+        String mytoken = manager.getPreferences(mContext, "TokenKey");
+        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
+        String address = "http://lightthemup.fr.nf:3000/users/songs/";
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(address);
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+
+        post.setHeader(new BasicHeader("x-access-token", mytoken));
+        pairs.add(new BasicNameValuePair("idSong", idMySong));
+        post.setEntity(new UrlEncodedFormEntity(pairs));
+
+        HttpResponse response = client.execute(post);
+
+        HttpEntity entity = response.getEntity();
+        String resp = EntityUtils.toString(entity);
+
+        JSONObject jsonObj = new JSONObject(resp);
+        String Xresponse = jsonObj.getString("success");
+=======
     protected void DeleteSongClick(View v, final int position) {
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterSong.java
 
         String result = "";
 

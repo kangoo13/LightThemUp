@@ -53,7 +53,11 @@ public class ListAdapterPlaylistSongAdd extends RecyclerView.Adapter<ListAdapter
         holder.title.setText(movie.getTitle());
         holder.rating.setText(movie.getArtist());
         //Use Glide to load the Image
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterPlaylistSongAdd.java
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+=======
         Glide.with(mContext).load(mContext.getString(R.string.api_url)+ movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterPlaylistSongAdd.java
 
         holder.imageViewAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +120,12 @@ public class ListAdapterPlaylistSongAdd extends RecyclerView.Adapter<ListAdapter
         SessionManager manager = new SessionManager();
         String mytoken = manager.getPreferences(mContext, "TokenKey");
         String PlaylistName = manager.getPreferences(mContext, "PlaylistName");
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterPlaylistSongAdd.java
+        String address = "http://lightthemup.fr.nf:3000/playlists/" + PlaylistName;
+        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
+=======
         String address = mContext.getString(R.string.api_url_playlist) + PlaylistName;
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterPlaylistSongAdd.java
 
 
         HttpClient client = new DefaultHttpClient();

@@ -123,7 +123,11 @@ public class PlaylistSongFragment extends Fragment {
 
         String PlaylistID = manager.getPreferences(getActivity(), "PlaylistID");
 
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/fragments/PlaylistSongFragment.java
+        String URL_PROFILE = "http://lightthemup.fr.nf:3000/playlists/" + PlaylistID;
+=======
         String URL_PROFILE = getString(R.string.api_url_playlist) + PlaylistID;
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/fragments/PlaylistSongFragment.java
 
         Volley.newRequestQueue(getContext()).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,

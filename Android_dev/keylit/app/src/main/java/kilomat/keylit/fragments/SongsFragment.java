@@ -107,7 +107,13 @@ public class SongsFragment extends Fragment {
         final HashMap<String, String> params = new HashMap<String, String>();
         params.put("idUser", mytoken);
 
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/fragments/SongsFragment.java
+        final JSONObject jsonObject = new JSONObject(params);
+        //String idUser = LoginActivity.sharedPreferences.getString("IdUser", null);
+        String URL_PROFILE = "http://lightthemup.fr.nf:3000/users/" + idUser;
+=======
         String URL_PROFILE = getString(R.string.api_url_users) + idUser;
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Android_dev/keylit/app/src/main/java/kilomat/keylit/fragments/SongsFragment.java
 
         Volley.newRequestQueue(getContext()).add(
                 new CustomJsonRequest(Request.Method.GET, URL_PROFILE, null,

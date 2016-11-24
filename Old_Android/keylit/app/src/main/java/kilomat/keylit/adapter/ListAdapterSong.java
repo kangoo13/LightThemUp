@@ -68,8 +68,12 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         holder.rating.setText(movie.getArtist());
 
         //Use Glide to load the Image
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterSong.java
+        Glide.with(mContext).load("http://lightthemup.fr.nf/" + movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+=======
         Glide.with(mContext).load(mContext.getString(R.string.api_url)+
                 movie.getThumbnailUrl()).centerCrop().into(holder.thumbNail);
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Old_Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterSong.java
 
         downloadFileUrl = movie.getGenre();
 
@@ -96,7 +100,7 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
                 onMidiPlayClick(v, holder, position);
 
                 Log.d("Test", "imageViewPlaymusic.setOnClickListener");
-                AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3]);
+                AppController.getInstance().getBtControler().SendFile(Environment.getExternalStorageDirectory().getPath() + "/Download/Keylit/" + mMovieList.get(position).getGenre().split("/")[3], mContext);
                 //onMidiPlayClick(holder, position);
 
                 Log.d("Test", "imageViewPlaymusic.setOnClickListener");
@@ -233,7 +237,12 @@ public class ListAdapterSong extends RecyclerView.Adapter<ListAdapterSong.MusicV
         String idMySong = myDataSong.getIdSong();
         SessionManager manager = new SessionManager();
         String mytoken = manager.getPreferences(mContext, "TokenKey");
+<<<<<<< HEAD:Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterSong.java
+        //String mytoken = LoginActivity.sharedPreferences.getString("TokenKey", null);
+        String address = "http://lightthemup.fr.nf:3000/users/songs/" + idMySong;
+=======
         String address = mContext.getString(R.string.api_url_users_songs) + idMySong;
+>>>>>>> c400bcd8c18430a08839b1f6f3f08354b1ce5998:Old_Android/keylit/app/src/main/java/kilomat/keylit/adapter/ListAdapterSong.java
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpDelete del = new HttpDelete(address);

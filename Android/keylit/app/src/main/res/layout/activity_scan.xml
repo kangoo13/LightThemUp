@@ -1,0 +1,219 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:padding="5dp">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnSelectPhoto"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:background="#999b99"
+            android:drawableLeft="@drawable/ic_camera_enhance_white_24dp"
+            android:padding="12dp"
+            android:text="Take a photo"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/scan_picture"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/header_cover_image"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circular_imageview"
+            android:elevation="5dp"
+            android:padding="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/viewImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/back_scan_photo" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/scan_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="left"
+            android:maxLines="1"
+            android:text="Name        :"
+            android:textColor="#ffffff"
+            android:textColorHint="#bbbbbb"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/scan_name_inputText"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@id/scan_name_label"
+            android:gravity="center"
+            android:hint="my name"
+            android:textColor="#ffffff"
+            android:textColorHint="#bbbbbb" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/scan_artist_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="left"
+            android:maxLines="1"
+            android:text="Artist      :"
+            android:textColor="#ffffff"
+            android:textColorHint="#bbbbbb"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/scan_artist_inputText"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@id/scan_artist_label"
+            android:gravity="center"
+            android:hint="Artist name"
+            android:textColor="#ffffff"
+            android:textColorHint="#bbbbbb" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/scan_price_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="left"
+            android:maxLines="1"
+            android:text="Price       :"
+            android:textColor="#ffffff"
+            android:textColorHint="#bbbbbb"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/scan_price_inputText"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:inputType="number"
+            android:ems="10"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@id/scan_price_label"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textColorHint="#bbbbbb"
+            android:hint="Song price " />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/scan_difficulty_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="left"
+            android:maxLines="1"
+            android:text="Difficulty  :"
+            android:textColor="#ffffff"
+            android:textColorHint="#bbbbbb"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/scan_difficulty_inputText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@id/scan_difficulty_label"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textColorHint="#bbbbbb"
+            android:hint="Song difficulty" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnSendPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#009999"
+            android:drawableLeft="@drawable/ic_send_white_18dp"
+            android:padding="12dp"
+            android:text="Send"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</LinearLayout>

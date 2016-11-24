@@ -110,7 +110,6 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-
         String address = getString(R.string.api_url_user_auth);
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(address);
