@@ -13,6 +13,8 @@ var fs = require('fs');
 var path = require('path');
 var app = express();
 
+process.env.NODE_ENV = config.env;
+
 app.use(expressSession({
     secret: config.secret,
     resave: false,
@@ -83,6 +85,12 @@ app.use(function(err, req, res, next) {
         message: err.toString(),
     });
 });
+
+var env = process.env.NODE_ENV || 'development';
+// production only
+if (env === 'production') {
+    // TODO
+}
 
 // Set port depending on value from env or 3000 by force
 var port;

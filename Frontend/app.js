@@ -6,9 +6,12 @@ var express = require('express'),
     morgan = require('morgan'),
     routes = require('./routes'),
     http = require('http'),
-    path = require('path');
+    path = require('path')
+    config = require('./config');
 
 var app = module.exports = express();
+
+process.env.NODE_ENV = config.env;
 
 // Configuration
 
@@ -31,7 +34,6 @@ app.use('/sanitize', express.static(__dirname + '/node_modules/angular-sanitize/
 app.use('/ng-admin', express.static(__dirname + '/node_modules/ng-admin/'));
 app.use('/uploads', express.static(__dirname + '/../API/public/uploads/'));
 
-var env = process.env.NODE_ENV || 'development';
 app.use(function (err, req, res, next) {
     return res.status(500).send({
         success: false,
@@ -39,6 +41,7 @@ app.use(function (err, req, res, next) {
     });
 });
 
+var env = process.env.NODE_ENV || 'development';
 // production only
 if (env === 'production') {
     // TODO
