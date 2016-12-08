@@ -58,7 +58,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "api/comments.js",
+    "filename": "router/routes/api/comments.js",
     "groupTitle": "Comment"
   },
   {
@@ -153,13 +153,13 @@ define({ "api": [
         }
       ]
     },
-    "filename": "api/contact.js",
+    "filename": "router/routes/api/contact.js",
     "groupTitle": "Contact"
   },
   {
     "type": "get",
     "url": "/contact/",
-    "title": "Get all contacts demands",
+    "title": "Get all contact forms",
     "permission": [
       {
         "name": "admin"
@@ -241,7 +241,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "api/contact.js",
+    "filename": "router/routes/api/contact.js",
     "groupTitle": "Contact"
   },
   {
@@ -336,7 +336,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "api/contact.js",
+    "filename": "router/routes/api/contact.js",
     "groupTitle": "Contact"
   },
   {
@@ -428,7 +428,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "api/contact.js",
+    "filename": "router/routes/api/contact.js",
     "groupTitle": "Contact"
   }
 ] });
