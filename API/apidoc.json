@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "An API documentation about Light Them",
     "title": "Light Them Up - API Documentation",
-    "url": "http://lightthemup.fr.nf",
+    "url": "http://lightthemup.fr.nf:3000",
     "header": {
         "title": "Quick Links",
         "filename": "header.md"
