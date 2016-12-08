@@ -96,7 +96,7 @@ router.post('/', function(req, res) {
 });
 
 /**
- * @api {get} /contact/ Get all contacts demands
+ * @api {get} /contact/ Get all contact forms
  * @apiPermission admin
  * @apiVersion 0.1.0
  * @apiName GetContact
