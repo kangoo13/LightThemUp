@@ -6,48 +6,32 @@
  var auth        = require('authenticate');
  var router      = express.Router();
 
-
  /**
   * @api {post} /token/ Token validation checker
-  * @apiPermission none
+  * @apiPermission user
   * @apiVersion 0.1.0
-  * @apiName PostContact
-  * @apiGroup Contact
+  * @apiName GetTokenValidation
+  * @apiGroup Token
   *
-  * @apiParam {String} name Name of the contact.
-  * @apiParam {String} email Email of the contact.
-  * @apiParam {String} message Message of the contact.
+  * @apiParam {String} token Token value to check.
+  *
+  * @apiSuccess {Boolean} success Notify the success of current request.
+  * @apiSuccess {String} message Response message.
   *
   * @apiSuccessExample Success-Response:
   *     HTTP/1.1 200 OK
   *     {
-  *       "success": "true",
-  *       "message": "Votre message a bien été envoyé."
+  *       "success": true,
+  *       "message": "Token valid."
   *     }
   *
-  * @apiError CaptchaNotFound The form was submit without captcha.
-  * @apiError CaptchaInvalid The captcha is not valid.
-  * @apiError SaveError Impossible to save the contact form in database.
+  * @apiError TokenInvalid The token is invalid.
   *
-  * @apiErrorExample CaptchaNotFound:
+  * @apiErrorExample TokenInvalid:
   *     HTTP/1.1 404 Not Found
   *     {
-  *       "success": "false",
-  *       "message": "Captcha non renseigné."
-  *     }
-  *
-  * @apiErrorExample CaptchaInvalid:
-  *     HTTP/1.1 401 Not Found
-  *     {
-  *       "success": "false",
-  *       "message": "Captcha invalide."
-  *     }
-  *
-  * @apiErrorExample ServerError:
-  *     HTTP/1.1 503 Service Unavailable
-  *     {
-  *       "success": "false",
-  *       "message": "Error message"
+  *       "success": false,
+  *       "message": "Failed to authenticate token."
   *     }
   */
  router.post('/', auth({secret: superSecret}), function(req, res, next) {

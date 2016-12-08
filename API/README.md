@@ -1,17 +1,12 @@
 # LightThemUp API
 
-Installer Node JS, npm, mongodb
+Installer Node JS et NPM
 
 Faire un npm install pour installer les modules
 
-Launch MongoDb
-mongod --smallfiles --dbpath mongo/db/
+La documentation des routes / méthodes de l'API est consultable depuis :
 
-Stop MongoDb
-mongod --dbpath mongo/db/ --shutdown
+http://lightthemup.fr.nf:3000/apiDoc
 
-
-Mongo-express pour Admin UI comme phpmyadmin
-
-Au premier lancement de l'app, décommenter le code dans app.js dans db.once() pour créer les collections de MongoDB, puis commenter de nouveau une fois créer.
-
+CLI pour générer la documentation de l'API :
+apidoc -i router/routes/api/ -o apidoc/

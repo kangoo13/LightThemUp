@@ -18,35 +18,38 @@ var request = require('request');
  * @apiParam {String} email Email of the contact.
  * @apiParam {String} message Message of the contact.
  *
+ * @apiSuccess {Boolean} success Notify the success of current request.
+ * @apiSuccess {String} message Response message.
+ *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "success": "true",
+ *       "success": true,
  *       "message": "Votre message a bien été envoyé."
  *     }
  *
  * @apiError CaptchaNotFound The form was submit without captcha.
  * @apiError CaptchaInvalid The captcha is not valid.
- * @apiError SaveError Impossible to save the contact form in database.
+ * @apiError ServerError Impossible to save the contact form in database.
  *
  * @apiErrorExample CaptchaNotFound:
  *     HTTP/1.1 404 Not Found
  *     {
- *       "success": "false",
+ *       "success": false,
  *       "message": "Captcha non renseigné."
  *     }
  *
  * @apiErrorExample CaptchaInvalid:
  *     HTTP/1.1 401 Not Found
  *     {
- *       "success": "false",
+ *       "success": false,
  *       "message": "Captcha invalide."
  *     }
  *
  * @apiErrorExample ServerError:
  *     HTTP/1.1 503 Service Unavailable
  *     {
- *       "success": "false",
+ *       "success": false,
  *       "message": "Error message"
  *     }
  */
@@ -121,7 +124,7 @@ router.post('/', function(req, res) {
  *            "email": "test@test.fr",
  *            "name": "Tanguy",
  *            "__v": 0
- *        }
+ *        },
  *        {
  *            ...
  *        }
@@ -132,7 +135,7 @@ router.post('/', function(req, res) {
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": "false",
+ *       "success": false,
  *       "message": "Unauthorized."
  *     }
  */
@@ -186,7 +189,7 @@ router.get('/', auth({
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": "false",
+ *       "success": false,
  *       "message": "Unauthorized."
  *     }
  */
@@ -217,22 +220,14 @@ router.get('/:idContact', auth({
  * @apiParam {String} idContact Contact form id that you want to delete.
  * @apiParam {String} token authentification token is mandatory.
  *
- * @apiSuccess {String} name Name of the contact.
- * @apiSuccess {String} email Email of the contact.
- * @apiSuccess {String} message Message of the contact.
- * @apiSuccess {String} remoteIp Remote IP of the contact.
+ * @apiSuccess {Boolean} success Notify the success of current request.
+ * @apiSuccess {String} message Response message.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *        "_id": "584932b0ea6f19740c2faee8",
- *        "updatedAt": "2016-12-08T10:15:12.000Z",
- *        "createdAt": "2016-12-08T10:15:12.000Z",
- *        "remoteIp": "::ffff:163.5.220.100",
- *        "message": "peti test",
- *        "email": "test@test.fr",
- *        "name": "Tanguy",
- *        "__v": 0
+ *          success: true,
+ *          message: 'The contact form has been deleted.'
  *     }
  *
  * @apiError Unauthorized The token is not valid.
@@ -240,7 +235,7 @@ router.get('/:idContact', auth({
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": "false",
+ *       "success": false,
  *       "message": "Unauthorized."
  *     }
  */
