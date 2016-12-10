@@ -137,7 +137,6 @@ router.get('/', function(req, res, next) {
     });
 });
 
-
 /**
  * @api {post} /achievements/ New achievement
  * @apiPermission admin
@@ -161,7 +160,6 @@ router.get('/', function(req, res, next) {
  *        success: true,
  *        message: 'Achievement created !'
  *     }
- *
  *
  * @apiError Unauthorized The token is not valid.
  *

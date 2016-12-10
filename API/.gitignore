@@ -1,3 +1,5 @@
 .idea/
 .DS_STORE
-public/
+public
+err.log
+out.log
