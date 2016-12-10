@@ -48,7 +48,7 @@
   *                    "__v": 2,
   *            "comments": [
   *                   "57f816c348165e7e18a84f37",
-  *                    "5836192a48e54efc0a9b8695"
+  *                   "5836192a48e54efc0a9b8695"
   *            ],
   *            "picture": "uploads/news/default-news.jpg"
   *       },
@@ -169,6 +169,51 @@
          });
  });
 
+ /**
+  * @api {get} /news/idNews Get a news by id
+  * @apiPermission none
+  * @apiVersion 0.1.0
+  * @apiName GetNewsById
+  * @apiGroup News
+  *
+  * @apiParam {Number} idNews News you want to get.
+  *
+  * @apiSuccess {String} slug Url translate of news' title.
+  * @apiSuccess {String} author Author of the news.
+  * @apiSuccess {String} description Description of the news.
+  * @apiSuccess {String} name Name / Title of the news.
+  * @apiSuccess {Array} comments Array with all comments (see comment section
+  for an explanation about fields).
+  * @apiSuccess {Image} picture Picture of the news.
+  *
+  * @apiSuccessExample Success-Response:
+  *     HTTP/1.1 200 OK
+  *     {
+  *        {
+  *            "_id": "57e54896ce58658110cd855e",
+  *            "updatedAt": "2016-11-23T22:33:14.258Z",
+  *            "createdAt": "2016-09-23T15:21:58.000Z",
+  *            "slug": "DEVOS-Tanguy",
+  *            "author": "577ea485fee4ec632f5c663f",
+  *            "description": "yeaaah",
+  *            "name": "A big news",
+  *                    "__v": 2,
+  *            "comments": [
+  *                   "_id": "5836192a48e54efc0a9b8695",
+  *                   "updatedAt": "2016-11-23T22:33:14.000Z",
+  *                   "createdAt": "2016-11-23T22:33:14.000Z",
+  *                   "type": "news",
+  *                   "message": "Super actualité ! :)",
+  *                   "author": {
+  *                         "_id": "581e67289043e3880cad7ec0",
+  *                         "name": "Faucheur",
+  *                         "picture": "uploads/avatar/581e67289043e3880cad7ec0/reaper.jpg"
+  *                    },
+  *                   "__v": 0
+  *                   ],
+  *            "picture": "uploads/news/default-news.jpg"
+  *       }
+  */
  router.get('/:idNews', function(req, res, next) {
      News.findOne({
          'slug': req.params.idNews
@@ -294,7 +339,61 @@
      }
  });
 
-
+ /**
+  * @api {get} /getNewsFromComment/:idComment/:index Get a news by comment id
+  * @apiPermission none
+  * @apiVersion 0.1.0
+  * @apiName GetNewsByCommentId
+  * @apiGroup News
+  *
+  * @apiParam {Number} idComment News you want to get.
+  * @apiParam {Number} index WTF is that param.
+  *
+  * @apiSuccess {String} slug Url translate of news' title.
+  * @apiSuccess {String} author Author of the news.
+  * @apiSuccess {String} description Description of the news.
+  * @apiSuccess {String} name Name / Title of the news.
+  * @apiSuccess {Array} comments Array with all comments (see comment section
+  for an explanation about fields).
+  * @apiSuccess {Image} picture Picture of the news.
+  *
+  * @apiSuccessExample Success-Response:
+  *     HTTP/1.1 200 OK
+  *     {
+  *        {
+  *            "_id": "57e54896ce58658110cd855e",
+  *            "updatedAt": "2016-11-23T22:33:14.258Z",
+  *            "createdAt": "2016-09-23T15:21:58.000Z",
+  *            "slug": "DEVOS-Tanguy",
+  *            "author": "577ea485fee4ec632f5c663f",
+  *            "description": "yeaaah",
+  *            "name": "A big news",
+  *                    "__v": 2,
+  *            "comments": [
+  *                   "_id": "5836192a48e54efc0a9b8695",
+  *                   "updatedAt": "2016-11-23T22:33:14.000Z",
+  *                   "createdAt": "2016-11-23T22:33:14.000Z",
+  *                   "type": "news",
+  *                   "message": "Super actualité ! :)",
+  *                   "author": {
+  *                         "_id": "581e67289043e3880cad7ec0",
+  *                         "name": "Faucheur",
+  *                         "picture": "uploads/avatar/581e67289043e3880cad7ec0/reaper.jpg"
+  *                    },
+  *                   "__v": 0
+  *                   ],
+  *            "picture": "uploads/news/default-news.jpg"
+  *       }
+  *
+  * @apiError NewsNotFound Impossible to create a new achievement.
+  *
+  * @apiErrorExample NewsNotFound:
+  *     HTTP/1.1 404 Service Not found
+  *     {
+  *       "success": false,
+  *       "message": "La news n'a pas été trouvée."
+  *     }
+  */
  router.get('/getNewsFromComment/:idComment/:index', function(req, res, next) {
      News.find().populate("comments").exec(function(err, news) {
          if (err) return next(err);
@@ -313,7 +412,7 @@
          if (goodNews)
              return res.status(200).json(goodNews);
          else
-             return res.status(503).json({
+             return res.status(404).json({
                  success: false,
                  message: "La news n'a pas été trouvée"
              });

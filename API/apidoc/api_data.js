@@ -951,6 +951,268 @@ define({ "api": [
     "groupTitle": "Contact"
   },
   {
+    "type": "get",
+    "url": "/news/",
+    "title": "Get all news",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetNews",
+    "group": "News",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Url translate of news' title.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "author",
+            "description": "<p>Author of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name / Title of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Array with all comments id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Image",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the news.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   {\n       \"_id\": \"57e54896ce58658110cd855e\",\n       \"updatedAt\": \"2016-11-23T22:33:14.258Z\",\n       \"createdAt\": \"2016-09-23T15:21:58.000Z\",\n       \"slug\": \"DEVOS-Tanguy\",\n       \"author\": \"577ea485fee4ec632f5c663f\",\n       \"description\": \"yeaaah\",\n       \"name\": \"A big news\",\n               \"__v\": 2,\n       \"comments\": [\n              \"57f816c348165e7e18a84f37\",\n              \"5836192a48e54efc0a9b8695\"\n       ],\n       \"picture\": \"uploads/news/default-news.jpg\"\n  },\n  {\n      ...\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/news.js",
+    "groupTitle": "News"
+  },
+  {
+    "type": "get",
+    "url": "/getNewsFromComment/:idComment/:index",
+    "title": "Get a news by comment id",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetNewsByCommentId",
+    "group": "News",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idComment",
+            "description": "<p>News you want to get.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "index",
+            "description": "<p>WTF is that param.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Url translate of news' title.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "author",
+            "description": "<p>Author of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name / Title of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Array with all comments (see comment section for an explanation about fields).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Image",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the news.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   {\n       \"_id\": \"57e54896ce58658110cd855e\",\n       \"updatedAt\": \"2016-11-23T22:33:14.258Z\",\n       \"createdAt\": \"2016-09-23T15:21:58.000Z\",\n       \"slug\": \"DEVOS-Tanguy\",\n       \"author\": \"577ea485fee4ec632f5c663f\",\n       \"description\": \"yeaaah\",\n       \"name\": \"A big news\",\n               \"__v\": 2,\n       \"comments\": [\n              \"_id\": \"5836192a48e54efc0a9b8695\",\n              \"updatedAt\": \"2016-11-23T22:33:14.000Z\",\n              \"createdAt\": \"2016-11-23T22:33:14.000Z\",\n              \"type\": \"news\",\n              \"message\": \"Super actualité ! :)\",\n              \"author\": {\n                    \"_id\": \"581e67289043e3880cad7ec0\",\n                    \"name\": \"Faucheur\",\n                    \"picture\": \"uploads/avatar/581e67289043e3880cad7ec0/reaper.jpg\"\n               },\n              \"__v\": 0\n              ],\n       \"picture\": \"uploads/news/default-news.jpg\"\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NewsNotFound",
+            "description": "<p>Impossible to create a new achievement.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "NewsNotFound:",
+          "content": "HTTP/1.1 404 Service Not found\n{\n  \"success\": false,\n  \"message\": \"La news n'a pas été trouvée.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/news.js",
+    "groupTitle": "News"
+  },
+  {
+    "type": "get",
+    "url": "/news/idNews",
+    "title": "Get a news by id",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetNewsById",
+    "group": "News",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idNews",
+            "description": "<p>News you want to get.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Url translate of news' title.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "author",
+            "description": "<p>Author of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name / Title of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Array with all comments (see comment section for an explanation about fields).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Image",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the news.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   {\n       \"_id\": \"57e54896ce58658110cd855e\",\n       \"updatedAt\": \"2016-11-23T22:33:14.258Z\",\n       \"createdAt\": \"2016-09-23T15:21:58.000Z\",\n       \"slug\": \"DEVOS-Tanguy\",\n       \"author\": \"577ea485fee4ec632f5c663f\",\n       \"description\": \"yeaaah\",\n       \"name\": \"A big news\",\n               \"__v\": 2,\n       \"comments\": [\n              \"_id\": \"5836192a48e54efc0a9b8695\",\n              \"updatedAt\": \"2016-11-23T22:33:14.000Z\",\n              \"createdAt\": \"2016-11-23T22:33:14.000Z\",\n              \"type\": \"news\",\n              \"message\": \"Super actualité ! :)\",\n              \"author\": {\n                    \"_id\": \"581e67289043e3880cad7ec0\",\n                    \"name\": \"Faucheur\",\n                    \"picture\": \"uploads/avatar/581e67289043e3880cad7ec0/reaper.jpg\"\n               },\n              \"__v\": 0\n              ],\n       \"picture\": \"uploads/news/default-news.jpg\"\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/news.js",
+    "groupTitle": "News"
+  },
+  {
     "type": "post",
     "url": "/token/",
     "title": "Token validation checker",
