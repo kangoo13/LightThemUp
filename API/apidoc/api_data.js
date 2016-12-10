@@ -1114,7 +1114,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "NewsNotFound",
-            "description": "<p>Impossible to create a new achievement.</p>"
+            "description": "<p>Impossible to create a news.</p>"
           }
         ]
       },
