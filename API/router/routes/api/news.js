@@ -385,7 +385,7 @@
   *            "picture": "uploads/news/default-news.jpg"
   *       }
   *
-  * @apiError NewsNotFound Impossible to create a new achievement.
+  * @apiError NewsNotFound Impossible to create a news.
   *
   * @apiErrorExample NewsNotFound:
   *     HTTP/1.1 404 Service Not found
