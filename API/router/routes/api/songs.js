@@ -409,6 +409,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
               path.resolve(apiPath + "/public/" + scanPath) + " " +
               path.resolve(realPath +"song.mid"),
               function callback(error, stdout, stderr){
+              	console.log(error + " - " + stdout + " - " + stderr);
                 if (error) {
                     throw "Error while trying to convert the sheet music into MIDI song";
                 }

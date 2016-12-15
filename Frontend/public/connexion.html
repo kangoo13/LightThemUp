@@ -1,5 +1,8 @@
 <div class="content">
   <h3>Connexion</h3>
+  <form ng-submit="ng-submit-fb">
+    <button type="submit">Connexion avec Facebook</button>
+  </form>
   <form name="loginUser" ng-submit="vm.LoginUser()" role="form" autocomplete="on">
     <label for="email">Email *</label>
     <input required ng-model="vm.user.email" class="u-full-width" type="email" name="email"
