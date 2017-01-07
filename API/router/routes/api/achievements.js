@@ -38,7 +38,7 @@ var uploadConfig = {
  *     HTTP/1.1 200 OK
  *     {
  *        success: true,
- *        message: 'The achievement has been deleted.'
+ *        message: 'Achievement added to the user !'
  *     }
  *
  *
@@ -173,7 +173,7 @@ router.get('/', function(req, res, next) {
  * @apiError WrongArgs Missing arguments to create the achievement.
  *
  * @apiErrorExample WrongArgs:
- *     HTTP/1.1 409 Conflict
+ *     HTTP/1.1 400 Bad Request
  *     {
  *        success: false,
  *        message: 'Wrong arguments'
