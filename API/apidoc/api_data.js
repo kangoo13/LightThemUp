@@ -2703,5 +2703,94 @@ define({ "api": [
     },
     "filename": "router/routes/api/token.js",
     "groupTitle": "Token"
+  },
+  {
+    "type": "get",
+    "url": "/users/",
+    "title": "Get all users",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetUsers",
+    "group": "User",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Address of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>City of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "country",
+            "description": "<p>Country of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "songs",
+            "description": "<p>All songs from the playlist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n\t\t\t\t{\n\t\t\t\t\t_id\": \"581e67289043e3880cad7ec0\",\n\t\t\t\t\tupdatedAt: \"2016-11-10T00:12:12.848Z\",\n\t\t\t\t\tcreatedAt: \"2016-11-05T23:11:36.000Z\",\n\t\t\t\t\tname: \"Faucheur\",\n\t\t\t\t\temail: \"faucheur@faucheur.fr\",\n\t\t\t\t\t__v: 3,\n\t\t\t\t\taddress: \"75 rue des pommes\",\n\t\t\t\t\tcity: \"MS\",\n\t\t\t\t\tcountry: \"France\",\n\t\t\t\t\tdescription: \"hey ma poule\",\n\t\t\t\t\tsongs: [\n\t\t\t\t\t\t\"581e1f2bfae905040b64874d\",\n\t\t\t\t\t\t\"581e1f04fae905040b64874c\",\n\t\t\t\t\t\t\"581e1eedfae905040b64874b\"\n\t\t\t\t\t],\n\t\t\t\t\tachievements: [],\n\t\t\t\t\tpicture: \"uploads/avatar/581e67289043e3880cad7ec0/reaper.jpg\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t...\n\t\t\t\t}\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Playlist not found in database.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "NotFound:",
+          "content": "HTTP/1.1 404 Not found\n{\n  success: false,\n  message: \"Playlist doesn't exist !\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/users.js",
+    "groupTitle": "User"
   }
 ] });
