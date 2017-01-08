@@ -22,13 +22,12 @@ var router = express.Router();
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "author": "John",
- *       "message": "Hey !",
- *       "type":  "news"
+ *       author: "John",
+ *       message: "Hey !",
+ *       type:  "news"
  *     }
  *
  */
-
 router.get('/lastComments/:nbComments', function(req, res, next) {
     Comment.find().limit(parseInt(req.params.nbComments, 10)).sort({
         'createdAt': -1

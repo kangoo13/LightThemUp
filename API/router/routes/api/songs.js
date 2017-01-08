@@ -289,7 +289,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
         // Start the promise stuff (to handle files uplaoded and more)
         Promise.resolve(files)
         .then(function(files) {
-          // FOR ANDROID 
+          // FOR ANDROID
           // // Check the correct MIME for images
           // if (uploadConfig.acceptedMimeTypes.indexOf(files['picture'][0].mimetype) == -1) {
           //     throw "Incorrect MIME type for picture : " + files['picture'][0].mimetype;
@@ -485,8 +485,6 @@ router.get('/:slug', function(req, res, next) {
     }
   });
 });
-
-
 
 router.put('/:idSong', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin) {

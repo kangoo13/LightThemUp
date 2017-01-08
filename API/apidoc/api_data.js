@@ -53,7 +53,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   success: true,\n   message: 'Achievement added to the user !'\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Achievement added to the user !'\n}",
           "type": "json"
         }
       ]
@@ -78,12 +78,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Unauthorized:",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"success\": false,\n  \"message\": \"Unauthorized.\"\n}",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
           "type": "json"
         },
         {
           "title": "ServerError:",
-          "content": "HTTP/1.1 503 Service Unavailable\n{\n  \"success\": false,\n  \"message\": \"Error message.\"\n}",
+          "content": "HTTP/1.1 503 Service Unavailable\n{\n  success: false,\n  message: \"Error message.\"\n}",
           "type": "json"
         }
       ]
@@ -145,7 +145,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   success: true,\n   message: 'The achievement has been deleted.'\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'The achievement has been deleted.'\n}",
           "type": "json"
         }
       ]
@@ -164,7 +164,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Unauthorized:",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"success\": false,\n  \"message\": \"Unauthorized.\"\n}",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
           "type": "json"
         }
       ]
@@ -247,7 +247,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   success: true,\n   message: 'Achievement updated !'\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Achievement updated !'\n}",
           "type": "json"
         }
       ]
@@ -266,7 +266,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Unauthorized:",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"success\": false,\n  \"message\": \"Unauthorized.\"\n}",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
           "type": "json"
         }
       ]
@@ -328,7 +328,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   {\n      \"_id\": \"577cff520e5f32a50ac407c1\",\n       \"updatedAt\": \"2016-07-06T12:53:38.000Z\",\n       \"createdAt\": \"2016-07-06T12:53:38.000Z\",\n       \"description\": \"Compléter 100 musiques sans la moindre fausse note\",\n       \"name\": \"Virtuose\",\n       \"__v\": 0,\n       \"picture\": \"uploads/achievements/577cff520e5f32a50ac407c1/achievement.png\"\n   }",
+          "content": "HTTP/1.1 200 OK\n{\n   {\n      _id: \"577cff520e5f32a50ac407c1\",\n      updatedAt: \"2016-07-06T12:53:38.000Z\",\n      createdAt: \"2016-07-06T12:53:38.000Z\",\n      description: \"Compléter 100 musiques sans la moindre fausse note\",\n      name: \"Virtuose\",\n      __v: 0,\n      picture: \"uploads/achievements/577cff520e5f32a50ac407c1/achievement.png\"\n   }",
           "type": "json"
         }
       ]
@@ -377,7 +377,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   {\n      \"_id\": \"577cff520e5f32a50ac407c1\",\n       \"updatedAt\": \"2016-07-06T12:53:38.000Z\",\n       \"createdAt\": \"2016-07-06T12:53:38.000Z\",\n       \"description\": \"Compléter 100 musiques sans la moindre fausse note\",\n       \"name\": \"Virtuose\",\n       \"__v\": 0,\n       \"picture\": \"uploads/achievements/577cff520e5f32a50ac407c1/achievement.png\"\n   },\n   {\n       ...\n   }",
+          "content": "HTTP/1.1 200 OK\n{\n   {\n      _id: \"577cff520e5f32a50ac407c1\",\n      updatedAt: \"2016-07-06T12:53:38.000Z\",\n      createdAt: \"2016-07-06T12:53:38.000Z\",\n      description: \"Compléter 100 musiques sans la moindre fausse note\",\n      name: \"Virtuose\",\n      __v: 0,\n      picture: \"uploads/achievements/577cff520e5f32a50ac407c1/achievement.png\"\n   },\n   {\n      ...\n   }",
           "type": "json"
         }
       ]
@@ -454,7 +454,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   success: true,\n   message: 'Achievement created !'\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Achievement created !'\n}",
           "type": "json"
         }
       ]
@@ -491,22 +491,22 @@ define({ "api": [
       "examples": [
         {
           "title": "Unauthorized:",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"success\": false,\n  \"message\": \"Unauthorized.\"\n}",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
           "type": "json"
         },
         {
           "title": "WrongArgs:",
-          "content": "HTTP/1.1 400 Bad Request\n{\n   success: false,\n   message: 'Wrong arguments'\n}",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
           "type": "json"
         },
         {
           "title": "AlreadyExists:",
-          "content": "HTTP/1.1 409 Conflict\n{\n   success: false,\n   message: 'Achievement already exists'\n}",
+          "content": "HTTP/1.1 409 Conflict\n{\n  success: false,\n  message: 'Achievement already exists'\n}",
           "type": "json"
         },
         {
           "title": "ServerError:",
-          "content": "HTTP/1.1 503/500 Service Unavailable or Server Error\n{\n  \"success\": false,\n  \"message\": \"Error message.\"\n}",
+          "content": "HTTP/1.1 503/500 Service Unavailable or Server Error\n{\n  success: false,\n  message: \"Error message.\"\n}",
           "type": "json"
         }
       ]
@@ -920,7 +920,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"author\": \"John\",\n  \"message\": \"Hey !\",\n  \"type\":  \"news\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  author: \"John\",\n  message: \"Hey !\",\n  type:  \"news\"\n}",
           "type": "json"
         }
       ]
@@ -982,7 +982,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n     success: true,\n     message: 'The contact form has been deleted.'\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'The contact form has been deleted.'\n}",
           "type": "json"
         }
       ]
@@ -1001,7 +1001,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Unauthorized:",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"success\": false,\n  \"message\": \"Unauthorized.\"\n}",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
           "type": "json"
         }
       ]
@@ -1070,7 +1070,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   {\n       \"_id\": \"584932b0ea6f19740c2faee8\",\n       \"updatedAt\": \"2016-12-08T10:15:12.000Z\",\n       \"createdAt\": \"2016-12-08T10:15:12.000Z\",\n       \"remoteIp\": \"::ffff:163.5.220.100\",\n       \"message\": \"peti test\",\n       \"email\": \"test@test.fr\",\n       \"name\": \"Tanguy\",\n       \"__v\": 0\n   },\n   {\n       ...\n   }\n }",
+          "content": "HTTP/1.1 200 OK\n{\n   {\n       _id: \"584932b0ea6f19740c2faee8\",\n       updatedAt: \"2016-12-08T10:15:12.000Z\",\n       createdAt: \"2016-12-08T10:15:12.000Z\",\n       remoteIp: \"::ffff:163.5.220.100\",\n       message: \"peti test\",\n       email: \"test@test.fr\",\n       name: \"Tanguy\",\n       __v: 0\n   },\n   {\n       ...\n   }\n }",
           "type": "json"
         }
       ]
@@ -1089,7 +1089,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Unauthorized:",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"success\": false,\n  \"message\": \"Unauthorized.\"\n}",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
           "type": "json"
         }
       ]
@@ -1165,7 +1165,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"_id\": \"584932b0ea6f19740c2faee8\",\n   \"updatedAt\": \"2016-12-08T10:15:12.000Z\",\n   \"createdAt\": \"2016-12-08T10:15:12.000Z\",\n   \"remoteIp\": \"::ffff:163.5.220.100\",\n   \"message\": \"peti test\",\n   \"email\": \"test@test.fr\",\n   \"name\": \"Tanguy\",\n   \"__v\": 0\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   _id: \"584932b0ea6f19740c2faee8\",\n   updatedAt: \"2016-12-08T10:15:12.000Z\",\n   createdAt: \"2016-12-08T10:15:12.000Z\",\n   remoteIp: \"::ffff:163.5.220.100\",\n   message: \"peti test\",\n   email: \"test@test.fr\",\n   name: \"Tanguy\",\n   __v: 0\n}",
           "type": "json"
         }
       ]
@@ -1184,7 +1184,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Unauthorized:",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"success\": false,\n  \"message\": \"Unauthorized.\"\n}",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
           "type": "json"
         }
       ]
@@ -1253,7 +1253,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"success\": true,\n  \"message\": \"Votre message a bien été envoyé.\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: \"Votre message a bien été envoyé.\"\n}",
           "type": "json"
         }
       ]
@@ -1284,17 +1284,17 @@ define({ "api": [
       "examples": [
         {
           "title": "CaptchaNotFound:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  \"success\": false,\n  \"message\": \"Captcha non renseigné.\"\n}",
+          "content": "HTTP/1.1 404 Not Found\n{\n  success: false,\n  message: \"Captcha non renseigné.\"\n}",
           "type": "json"
         },
         {
           "title": "CaptchaInvalid:",
-          "content": "HTTP/1.1 401 Not Found\n{\n  \"success\": false,\n  \"message\": \"Captcha invalide.\"\n}",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: \"Captcha invalide.\"\n}",
           "type": "json"
         },
         {
           "title": "ServerError:",
-          "content": "HTTP/1.1 503 Service Unavailable\n{\n  \"success\": false,\n  \"message\": \"Error message\"\n}",
+          "content": "HTTP/1.1 503 Service Unavailable\n{\n  success: false,\n  message: \"Error message\"\n}",
           "type": "json"
         }
       ]
@@ -1708,6 +1708,76 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/news/",
+    "title": "Get all playlists by user",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetNews",
+    "group": "News",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Url translate of news' title.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "author",
+            "description": "<p>Author of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name / Title of the news.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Array with all comments id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Image",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the news.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  {\n    _id: \"57e54896ce58658110cd855e\",\n    updatedAt: \"2016-11-23T22:33:14.258Z\",\n    createdAt: \"2016-09-23T15:21:58.000Z\",\n    slug: \"DEVOS-Tanguy\",\n    author: \"577ea485fee4ec632f5c663f\",\n    description: \"yeaaah\",\n    name: \"A big news\",\n    \"__v\": 2,\n    comments: [\n      \"57f816c348165e7e18a84f37\",\n      \"5836192a48e54efc0a9b8695\"\n    ],\n    picture: \"uploads/news/default-news.jpg\"\n   },\n   {\n    ...\n   }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "News"
+  },
+  {
+    "type": "get",
     "url": "/getNewsFromComment/:idComment/:index",
     "title": "Get a news by comment id",
     "permission": [
@@ -1897,6 +1967,201 @@ define({ "api": [
     },
     "filename": "router/routes/api/news.js",
     "groupTitle": "News"
+  },
+  {
+    "type": "post",
+    "url": "/playlists/",
+    "title": "Add a playlist",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "AddPlaylist",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token to be authentified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>Name of the playlist.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Playlist created !'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongArgs",
+            "description": "<p>Missing arguments to create the playlist.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AlreadyExists",
+            "description": "<p>Playlist already exists in database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ServerError",
+            "description": "<p>Impossible to create a playlist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "WrongArgs:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        },
+        {
+          "title": "AlreadyExists:",
+          "content": "HTTP/1.1 409 Conflict\n{\n  success: false,\n  message: \"Playlist already exists\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "ServerError:",
+          "content": "HTTP/1.1 503 Service Unavailable\n{\n  success: false,\n  message: \"Error message.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "Playlist"
+  },
+  {
+    "type": "delete",
+    "url": "/news/:idPlaylist",
+    "title": "Delete a playlist by id",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "DeletePlaylistById",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idPlaylist",
+            "description": "<p>Playlist id that you want to delete.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>authentification token is mandatory.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'The playlist has been deleted.'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "Playlist"
   },
   {
     "type": "post",

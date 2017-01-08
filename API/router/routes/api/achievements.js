@@ -37,18 +37,17 @@ var uploadConfig = {
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *        success: true,
- *        message: 'Achievement added to the user !'
+ *       success: true,
+ *       message: 'Achievement added to the user !'
  *     }
- *
  *
  * @apiError Unauthorized The token is not valid.
  *
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": false,
- *       "message": "Unauthorized."
+ *       success: false,
+ *       message: "Unauthorized."
  *     }
  *
  * @apiError ServerError Impossible to add achievement to user.
@@ -56,8 +55,8 @@ var uploadConfig = {
  * @apiErrorExample ServerError:
  *     HTTP/1.1 503 Service Unavailable
  *     {
- *       "success": false,
- *       "message": "Error message."
+ *       success: false,
+ *       message: "Error message."
  *     }
  */
 router.post('/:idAchievement', auth({
@@ -118,16 +117,16 @@ router.post('/:idAchievement', auth({
  *     HTTP/1.1 200 OK
  *     {
  *        {
- *           "_id": "577cff520e5f32a50ac407c1",
- *            "updatedAt": "2016-07-06T12:53:38.000Z",
- *            "createdAt": "2016-07-06T12:53:38.000Z",
- *            "description": "Compléter 100 musiques sans la moindre fausse note",
- *            "name": "Virtuose",
- *            "__v": 0,
- *            "picture": "uploads/achievements/577cff520e5f32a50ac407c1/achievement.png"
+ *           _id: "577cff520e5f32a50ac407c1",
+ *           updatedAt: "2016-07-06T12:53:38.000Z",
+ *           createdAt: "2016-07-06T12:53:38.000Z",
+ *           description: "Compléter 100 musiques sans la moindre fausse note",
+ *           name: "Virtuose",
+ *           __v: 0,
+ *           picture: "uploads/achievements/577cff520e5f32a50ac407c1/achievement.png"
  *        },
  *        {
- *            ...
+ *           ...
  *        }
  */
 router.get('/', function(req, res, next) {
@@ -157,8 +156,8 @@ router.get('/', function(req, res, next) {
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *        success: true,
- *        message: 'Achievement created !'
+ *       success: true,
+ *       message: 'Achievement created !'
  *     }
  *
  * @apiError Unauthorized The token is not valid.
@@ -166,8 +165,8 @@ router.get('/', function(req, res, next) {
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": false,
- *       "message": "Unauthorized."
+ *       success: false,
+ *       message: "Unauthorized."
  *     }
  *
  * @apiError WrongArgs Missing arguments to create the achievement.
@@ -175,8 +174,8 @@ router.get('/', function(req, res, next) {
  * @apiErrorExample WrongArgs:
  *     HTTP/1.1 400 Bad Request
  *     {
- *        success: false,
- *        message: 'Wrong arguments'
+ *       success: false,
+ *       message: 'Wrong arguments'
  *     }
  *
  * @apiError AlreadyExists Achievement already exists in database.
@@ -184,8 +183,8 @@ router.get('/', function(req, res, next) {
  * @apiErrorExample AlreadyExists:
  *     HTTP/1.1 409 Conflict
  *     {
- *        success: false,
- *        message: 'Achievement already exists'
+ *       success: false,
+ *       message: 'Achievement already exists'
  *     }
  *
  * @apiError ServerError Impossible to create a new achievement.
@@ -193,8 +192,8 @@ router.get('/', function(req, res, next) {
  * @apiErrorExample ServerError:
  *     HTTP/1.1 503/500 Service Unavailable or Server Error
  *     {
- *       "success": false,
- *       "message": "Error message."
+ *       success: false,
+ *       message: "Error message."
  *     }
  */
 router.post('/', auth({
@@ -317,13 +316,13 @@ router.post('/', auth({
  *     HTTP/1.1 200 OK
  *     {
  *        {
- *           "_id": "577cff520e5f32a50ac407c1",
- *            "updatedAt": "2016-07-06T12:53:38.000Z",
- *            "createdAt": "2016-07-06T12:53:38.000Z",
- *            "description": "Compléter 100 musiques sans la moindre fausse note",
- *            "name": "Virtuose",
- *            "__v": 0,
- *            "picture": "uploads/achievements/577cff520e5f32a50ac407c1/achievement.png"
+ *           _id: "577cff520e5f32a50ac407c1",
+ *           updatedAt: "2016-07-06T12:53:38.000Z",
+ *           createdAt: "2016-07-06T12:53:38.000Z",
+ *           description: "Compléter 100 musiques sans la moindre fausse note",
+ *           name: "Virtuose",
+ *           __v: 0,
+ *           picture: "uploads/achievements/577cff520e5f32a50ac407c1/achievement.png"
  *        }
  */
 router.get('/:idAchievement', function(req, res, next) {
@@ -353,8 +352,8 @@ router.get('/:idAchievement', function(req, res, next) {
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *        success: true,
- *        message: 'Achievement updated !'
+ *       success: true,
+ *       message: 'Achievement updated !'
  *     }
  *
  * @apiError Unauthorized The token is not valid.
@@ -362,8 +361,8 @@ router.get('/:idAchievement', function(req, res, next) {
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": false,
- *       "message": "Unauthorized."
+ *       success: false,
+ *       message: "Unauthorized."
  *     }
  */
 router.put('/:idAchievement', auth({
@@ -401,8 +400,8 @@ router.put('/:idAchievement', auth({
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *        success: true,
- *        message: 'The achievement has been deleted.'
+ *       success: true,
+ *       message: 'The achievement has been deleted.'
  *     }
  *
  * @apiError Unauthorized The token is not valid.
@@ -410,8 +409,8 @@ router.put('/:idAchievement', auth({
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": false,
- *       "message": "Unauthorized."
+ *       success: false,
+ *       message: "Unauthorized."
  *     }
  */
 router.delete('/:idAchievement', auth({
