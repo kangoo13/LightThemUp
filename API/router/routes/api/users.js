@@ -22,6 +22,58 @@ var uploadConfig = {
 	maxFileSize : 2000000
 };
 
+
+/**
+* @api {get} /users/ Get all users
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetUsers
+* @apiGroup User
+*
+* @apiSuccess {String} name Name of the user.
+* @apiSuccess {String} email Email of the user.
+* @apiSuccess {String} address Address of the user.
+* @apiSuccess {String} city City of the user.
+* @apiSuccess {String} country Country of the user.
+* @apiSuccess {Object} songs All songs from the playlist.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*				{
+*					_id": "581e67289043e3880cad7ec0",
+*					updatedAt: "2016-11-10T00:12:12.848Z",
+*					createdAt: "2016-11-05T23:11:36.000Z",
+*					name: "Faucheur",
+*					email: "faucheur@faucheur.fr",
+*					__v: 3,
+*					address: "75 rue des pommes",
+*					city: "MS",
+*					country: "France",
+*					description: "hey ma poule",
+*					songs: [
+*						"581e1f2bfae905040b64874d",
+*						"581e1f04fae905040b64874c",
+*						"581e1eedfae905040b64874b"
+*					],
+*					achievements: [],
+*					picture: "uploads/avatar/581e67289043e3880cad7ec0/reaper.jpg"
+*				},
+*				{
+*					...
+*				}
+*     }
+*
+* @apiError NotFound Playlist not found in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not found
+*     {
+*       success: false,
+*       message: "Playlist doesn't exist !"
+*     }
+*
+*/
 router.get('/', function(req, res, next) {
 	User.find({}).populate("achievements").exec(function (err, users) {
 		if (err) return next(err);

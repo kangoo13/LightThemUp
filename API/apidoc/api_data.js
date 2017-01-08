@@ -1708,76 +1708,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/news/",
-    "title": "Get all playlists by user",
-    "permission": [
-      {
-        "name": "none"
-      }
-    ],
-    "version": "0.1.0",
-    "name": "GetNews",
-    "group": "News",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>Url translate of news' title.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "author",
-            "description": "<p>Author of the news.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "description",
-            "description": "<p>Description of the news.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Name / Title of the news.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "comments",
-            "description": "<p>Array with all comments id.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Image",
-            "optional": false,
-            "field": "picture",
-            "description": "<p>Picture of the news.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  {\n    _id: \"57e54896ce58658110cd855e\",\n    updatedAt: \"2016-11-23T22:33:14.258Z\",\n    createdAt: \"2016-09-23T15:21:58.000Z\",\n    slug: \"DEVOS-Tanguy\",\n    author: \"577ea485fee4ec632f5c663f\",\n    description: \"yeaaah\",\n    name: \"A big news\",\n    \"__v\": 2,\n    comments: [\n      \"57f816c348165e7e18a84f37\",\n      \"5836192a48e54efc0a9b8695\"\n    ],\n    picture: \"uploads/news/default-news.jpg\"\n   },\n   {\n    ...\n   }",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "router/routes/api/playlists.js",
-    "groupTitle": "News"
-  },
-  {
-    "type": "get",
     "url": "/getNewsFromComment/:idComment/:index",
     "title": "Get a news by comment id",
     "permission": [
@@ -2083,8 +2013,107 @@ define({ "api": [
     "groupTitle": "Playlist"
   },
   {
+    "type": "post",
+    "url": "/playlists/:slug/",
+    "title": "Add a song to a playlist",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "AddSongToPlaylist",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token to be authentified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "Slug",
+            "description": "<p>from the playlist selected.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "idSong",
+            "description": "<p>Id of the song.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Song added to the playlist !'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongArgs",
+            "description": "<p>Missing arguments to create the playlist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "WrongArgs:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "Playlist"
+  },
+  {
     "type": "delete",
-    "url": "/news/:idPlaylist",
+    "url": "/playlists/:idPlaylist",
     "title": "Delete a playlist by id",
     "permission": [
       {
@@ -2156,6 +2185,444 @@ define({ "api": [
         {
           "title": "Unauthorized:",
           "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "Playlist"
+  },
+  {
+    "type": "delete",
+    "url": "/playlists/:slugPlaylist/:idSong",
+    "title": "Delete a song from a playlist",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "DeleteSongFromPlaylist",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slugPlaylist",
+            "description": "<p>Playlist slug that you want to select.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idSong",
+            "description": "<p>Song id that you want to delete.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>authentification token is mandatory.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Song removed from the playlist !'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "Playlist"
+  },
+  {
+    "type": "put",
+    "url": "/playlists/:idPlaylist/",
+    "title": "Edit a playlist",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "EditPlaylist",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idPlaylist",
+            "description": "<p>Playlist you want to edit.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token to be authentified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>Name of the playlist.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Playlist updated !'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongArgs",
+            "description": "<p>Missing arguments to edit the comment.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ServerError",
+            "description": "<p>Impossible to edit the playlist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "WrongArgs:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        },
+        {
+          "title": "ServerError:",
+          "content": "HTTP/1.1 500 Service Error\n{\n  success: false,\n  message: \"Error message.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "Playlist"
+  },
+  {
+    "type": "get",
+    "url": "/playlists/:idPlaylist",
+    "title": "Get a playlist by id",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetPlaylistById",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token to be authentified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idPlaylist",
+            "description": "<p>Id from the playlist.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the playlist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "created_by",
+            "description": "<p>Playlist created by this id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the playlist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "songs",
+            "description": "<p>All songs from the playlist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  {\n    _id: \"5850501e16f93d1c0c6305f6\",\n    updatedAt: \"2016-12-13T19:46:38.000Z\",\n    createdAt: \"2016-12-13T19:46:38.000Z\",\n    slug: \"playlist1\",\n    created_by: \"581e67289043e3880cad7ec0\",\n    name: \"playlist1\",\n    __v: 0,\n    songs: []\n  }\n  {\n    ...\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Playlist not found in database.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "NotFound:",
+          "content": "HTTP/1.1 404 Not found\n{\n  success: false,\n  message: \"Playlist doesn't exist !\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "Playlist"
+  },
+  {
+    "type": "get",
+    "url": "/playlists/user",
+    "title": "Get all playlists from an user",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetPlaylistsFromUser",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token to be authentified.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the playlist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "created_by",
+            "description": "<p>Playlist created by this id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the playlist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "songs",
+            "description": "<p>All songs from the playlist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  {\n    _id: \"5850501e16f93d1c0c6305f6\",\n    updatedAt: \"2016-12-13T19:46:38.000Z\",\n    createdAt: \"2016-12-13T19:46:38.000Z\",\n    slug: \"playlist1\",\n    created_by: \"581e67289043e3880cad7ec0\",\n    name: \"playlist1\",\n    __v: 0,\n    songs: []\n  }\n  {\n    ...\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/playlists.js",
+    "groupTitle": "Playlist"
+  },
+  {
+    "type": "get",
+    "url": "/playlists/user",
+    "title": "Get songs from a playlist",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetSongsFromPlaylist",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token to be authentified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug from playlist.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the playlist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "created_by",
+            "description": "<p>Playlist created by this id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the playlist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "songs",
+            "description": "<p>All songs from the playlist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  {\n    _id: \"5850501e16f93d1c0c6305f6\",\n    updatedAt: \"2016-12-13T19:46:38.000Z\",\n    createdAt: \"2016-12-13T19:46:38.000Z\",\n    slug: \"playlist1\",\n    created_by: \"581e67289043e3880cad7ec0\",\n    name: \"playlist1\",\n    __v: 0,\n    songs: []\n  }\n  {\n    ...\n  }",
           "type": "json"
         }
       ]
