@@ -128,6 +128,7 @@ class BluetoothSock:
 
 	def stopRecevThread(self):
 		self.recevThread.stop()
+		self.recevThread.join()
 
 	def reconnect(self):
 		for i in range(10) :
