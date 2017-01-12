@@ -22,7 +22,7 @@
 			<a ng-if="bought == false" title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToUser()">Ajouter</a>
 			<a id="{{ song._id }}_launch" href="#" class="button launch_button" ng-click="launchMidi(song.file, song._id)">Ecouter</a>
 			<a id="{{ song._id }}_stop" href="#" class="button stop_button" ng-click="stopMidi(song._id)">Arrêter</a>
-			<div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+			<div style="display:block" class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
 		</div>
 	</div>
 </div>
