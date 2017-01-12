@@ -9,5 +9,3 @@
  	app.use('/comments', require('./routes/api/comments'));
  	app.use('/token', require('./routes/api/token'));
  };
-
-

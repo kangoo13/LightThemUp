@@ -24,8 +24,8 @@ var request = require('request');
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "success": true,
- *       "message": "Votre message a bien été envoyé."
+ *       success: true,
+ *       message: "Votre message a bien été envoyé."
  *     }
  *
  * @apiError CaptchaNotFound The form was submit without captcha.
@@ -35,22 +35,22 @@ var request = require('request');
  * @apiErrorExample CaptchaNotFound:
  *     HTTP/1.1 404 Not Found
  *     {
- *       "success": false,
- *       "message": "Captcha non renseigné."
+ *       success: false,
+ *       message: "Captcha non renseigné."
  *     }
  *
  * @apiErrorExample CaptchaInvalid:
- *     HTTP/1.1 401 Not Found
+ *     HTTP/1.1 400 Bad Request
  *     {
- *       "success": false,
- *       "message": "Captcha invalide."
+ *       success: false,
+ *       message: "Captcha invalide."
  *     }
  *
  * @apiErrorExample ServerError:
  *     HTTP/1.1 503 Service Unavailable
  *     {
- *       "success": false,
- *       "message": "Error message"
+ *       success: false,
+ *       message: "Error message"
  *     }
  */
 router.post('/', function(req, res) {
@@ -70,7 +70,7 @@ router.post('/', function(req, res) {
         body = JSON.parse(body);
         // Success will be true or false depending upon captcha validation.
         if (body.success !== undefined && !body.success) {
-            return res.status(401).send({
+            return res.status(400).send({
                 success: false,
                 message: 'Captcha invalide.'
             });
@@ -116,14 +116,14 @@ router.post('/', function(req, res) {
  *     HTTP/1.1 200 OK
  *     {
  *        {
- *            "_id": "584932b0ea6f19740c2faee8",
- *            "updatedAt": "2016-12-08T10:15:12.000Z",
- *            "createdAt": "2016-12-08T10:15:12.000Z",
- *            "remoteIp": "::ffff:163.5.220.100",
- *            "message": "peti test",
- *            "email": "test@test.fr",
- *            "name": "Tanguy",
- *            "__v": 0
+ *            _id: "584932b0ea6f19740c2faee8",
+ *            updatedAt: "2016-12-08T10:15:12.000Z",
+ *            createdAt: "2016-12-08T10:15:12.000Z",
+ *            remoteIp: "::ffff:163.5.220.100",
+ *            message: "peti test",
+ *            email: "test@test.fr",
+ *            name: "Tanguy",
+ *            __v: 0
  *        },
  *        {
  *            ...
@@ -135,8 +135,8 @@ router.post('/', function(req, res) {
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": false,
- *       "message": "Unauthorized."
+ *       success: false,
+ *       message: "Unauthorized."
  *     }
  */
 router.get('/', auth({
@@ -174,14 +174,14 @@ router.get('/', auth({
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *        "_id": "584932b0ea6f19740c2faee8",
- *        "updatedAt": "2016-12-08T10:15:12.000Z",
- *        "createdAt": "2016-12-08T10:15:12.000Z",
- *        "remoteIp": "::ffff:163.5.220.100",
- *        "message": "peti test",
- *        "email": "test@test.fr",
- *        "name": "Tanguy",
- *        "__v": 0
+ *        _id: "584932b0ea6f19740c2faee8",
+ *        updatedAt: "2016-12-08T10:15:12.000Z",
+ *        createdAt: "2016-12-08T10:15:12.000Z",
+ *        remoteIp: "::ffff:163.5.220.100",
+ *        message: "peti test",
+ *        email: "test@test.fr",
+ *        name: "Tanguy",
+ *        __v: 0
  *     }
  *
  * @apiError Unauthorized The token is not valid.
@@ -189,8 +189,8 @@ router.get('/', auth({
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": false,
- *       "message": "Unauthorized."
+ *       success: false,
+ *       message: "Unauthorized."
  *     }
  */
 router.get('/:idContact', auth({
@@ -226,8 +226,8 @@ router.get('/:idContact', auth({
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *          success: true,
- *          message: 'The contact form has been deleted.'
+ *       success: true,
+ *       message: 'The contact form has been deleted.'
  *     }
  *
  * @apiError Unauthorized The token is not valid.
@@ -235,8 +235,8 @@ router.get('/:idContact', auth({
  * @apiErrorExample Unauthorized:
  *     HTTP/1.1 401 Unauthorized
  *     {
- *       "success": false,
- *       "message": "Unauthorized."
+ *       success: false,
+ *       message: "Unauthorized."
  *     }
  */
 router.delete('/:idContact', auth({

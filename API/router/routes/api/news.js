@@ -63,7 +63,6 @@
      });
  });
 
-
  /**
   * @api {post} /news/ Add a news
   * @apiPermission admin
@@ -749,7 +748,6 @@
          });
      }
  });
-
 
  /**
   * @api {delete} /news/:idNews Delete a news by id
