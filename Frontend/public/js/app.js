@@ -31,6 +31,10 @@ app.run(function ($rootScope, $location, $cookies, $window) {
 			xfbml: true,
 			version: 'v2.8'
 		});
+
+		fbButton = document.getElementById('fb-button');
+		fbButton.innerHTML = '<div id="fb-button" class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>'
+		setTimeout("FB.XFBML.parse(fbButton)", 1100);
 	};
 
 	(function(d){

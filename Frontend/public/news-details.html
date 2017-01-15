@@ -9,7 +9,7 @@
 	<h3>{{ newsDetails.name }}</h3>
 	<img title="{{ newsDetails.name }}" alt="Miniature de {{ newsDetails.name }}" class="u-max-full-width" src="/{{ newsDetails.picture }}">
 	<p>{{ newsDetails.description }}</p>
-	<div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+	<div id="fb-button" class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
 	<p style="float:right;" class="no-margin-bottom u-text-right">Publiée le <span class="news-date">{{ newsDetails.createdAt | date:"EEEE dd MMMM yyyy à HH'h'mm"}}</span></p>
 </div>
 
