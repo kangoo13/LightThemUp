@@ -1,0 +1,11 @@
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\bin\Debug\Sanford.Multimedia.Midi.XML
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\bin\Debug\Sanford.Multimedia.Midi.dll
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\bin\Debug\Sanford.Multimedia.Midi.pdb
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\obj\Debug\Sanford.Multimedia.Midi.UI.DeviceDialog.resources
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\obj\Debug\Sanford.Multimedia.Midi.UI.InputDeviceDialog.resources
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\obj\Debug\Sanford.Multimedia.Midi.UI.OutputDeviceDialog.resources
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\obj\Debug\Sanford.Multimedia.Midi.UI.PianoControlDialog.resources
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\obj\Debug\Sanford.Multimedia.Midi.csproj.GenerateResource.Cache
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\obj\Debug\Sanford.Multimedia.Midi.dll
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\obj\Debug\Sanford.Multimedia.Midi.pdb
+C:\Users\Nicholas\lightthemup\MidiToolKit Source\obj\Debug\Sanford.Multimedia.Midi.csprojResolveAssemblyReference.cache

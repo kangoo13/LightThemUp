@@ -1,0 +1,12 @@
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\bin\Debug\PSAMControlLibrary.dll.config
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\bin\Debug\PSAMControlLibrary.dll
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\bin\Debug\PSAMControlLibrary.pdb
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.IncipitViewer.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.PSAMChart.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.PSAMRuler.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.Properties.Resources.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.Test.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.csproj.GenerateResource.Cache
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.dll
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.pdb
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Debug\PSAMControlLibrary.csprojResolveAssemblyReference.cache

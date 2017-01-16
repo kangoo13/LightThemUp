@@ -1,0 +1,11 @@
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\bin\Release\PSAMControlLibrary.dll.config
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\bin\Release\PSAMControlLibrary.dll
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\bin\Release\PSAMControlLibrary.pdb
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Release\PSAMControlLibrary.IncipitViewer.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Release\PSAMControlLibrary.PSAMChart.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Release\PSAMControlLibrary.PSAMRuler.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Release\PSAMControlLibrary.Properties.Resources.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Release\PSAMControlLibrary.Test.resources
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Release\PSAMControlLibrary.csproj.GenerateResource.Cache
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Release\PSAMControlLibrary.dll
+C:\Users\Nicholas\lightthemup\PSAMControlLibrary\PSAMControlLibrary\obj\Release\PSAMControlLibrary.pdb
