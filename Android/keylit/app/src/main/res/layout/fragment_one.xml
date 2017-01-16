@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="-15dp"
+        android:paddingBottom="30dp">
+    <ImageView
+        android:id="@+id/homefragment_logo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/logo"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/homefragment_data1"
+        android:layout_below="@+id/homefragment_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:textColor="@android:color/white"
+        android:text="@string/homefragment_data_1" />
+    <TextView
+        android:id="@+id/homefragment_data2"
+        android:layout_below="@+id/homefragment_data1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="10dp"
+        android:textColor="@android:color/white"
+        android:text="@string/homefragment_data_2" />
+    <ImageView
+        android:id="@+id/homefragment_piano"
+        android:layout_below="@+id/homefragment_data2"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/piano_demo" />
+    <TextView
+        android:id="@+id/homefragment_data3"
+        android:layout_below="@+id/homefragment_piano"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:textColor="@android:color/white"
+        android:text="@string/homefragment_data_3" />
+    <TextView
+        android:id="@+id/homefragment_data4"
+        android:layout_below="@+id/homefragment_data3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:textColor="@android:color/white"
+        android:text="@string/homefragment_data_4" />
+    <TextView
+        android:id="@+id/homefragment_data5"
+        android:layout_below="@+id/homefragment_data4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:text="@string/homefragment_data_5" />
+        <TextView
+            android:id="@+id/homefragment_data6"
+            android:layout_below="@+id/homefragment_data5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:text="@string/homefragment_data_6" />
+    </RelativeLayout>
+</ScrollView>
+</RelativeLayout>

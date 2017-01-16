@@ -28,33 +28,22 @@ app.run(function ($rootScope, $location, $cookies, $window) {
 		FB.init({ 
 			appId: '1864965117056025',
 			cookie: true, 
-			xfbml: true,
+			xfbml: false,
 			version: 'v2.8'
 		});
-
-		fbButton = document.getElementById('fb-button');
-		fbButton.innerHTML = '<div id="fb-button" class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>'
-		setTimeout("FB.XFBML.parse(fbButton)", 1100);
 	};
 
-	(function(d){
-    // load the Facebook javascript SDK
+	(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 
-	    var js,
-	    id = 'facebook-jssdk',
-	    ref = d.getElementsByTagName('script')[0];
-
-	    if (d.getElementById(id)) {
-	      return;
-	    }
-
-	    js = d.createElement('script');
-	    js.id = id;
-	    js.async = true;
-	    js.src = "//connect.facebook.net/en_US/sdk.js";
-
-	    ref.parentNode.insertBefore(js, ref);
-	}(document));
+	$rootScope.$on('$viewContentLoaded', function() {
+		setTimeout("FB.XFBML.parse()", 1000);
+	});
 });
 
 app.config(function (toastrConfig) {

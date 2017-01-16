@@ -22,7 +22,6 @@ var uploadConfig = {
 	maxFileSize : 2000000
 };
 
-
 /**
 * @api {get} /users/ Get all users
 * @apiPermission none
@@ -35,44 +34,32 @@ var uploadConfig = {
 * @apiSuccess {String} address Address of the user.
 * @apiSuccess {String} city City of the user.
 * @apiSuccess {String} country Country of the user.
-* @apiSuccess {Object} songs All songs from the playlist.
+* @apiSuccess {String} picture Picture URL of the user.
+* @apiSuccess {Object} songs All songs from the user.
+* @apiSuccess {Object} achievements All achievements from the user.
 *
 * @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*     {
-*				{
-*					_id": "581e67289043e3880cad7ec0",
-*					updatedAt: "2016-11-10T00:12:12.848Z",
-*					createdAt: "2016-11-05T23:11:36.000Z",
-*					name: "Faucheur",
-*					email: "faucheur@faucheur.fr",
-*					__v: 3,
-*					address: "75 rue des pommes",
-*					city: "MS",
-*					country: "France",
-*					description: "hey ma poule",
-*					songs: [
-*						"581e1f2bfae905040b64874d",
-*						"581e1f04fae905040b64874c",
-*						"581e1eedfae905040b64874b"
-*					],
-*					achievements: [],
-*					picture: "uploads/avatar/581e67289043e3880cad7ec0/reaper.jpg"
-*				},
-*				{
-*					...
-*				}
-*     }
-*
-* @apiError NotFound Playlist not found in database.
-*
-* @apiErrorExample NotFound:
-*     HTTP/1.1 404 Not found
-*     {
-*       success: false,
-*       message: "Playlist doesn't exist !"
-*     }
-*
+*    HTTP/1.1 200 OK
+*      {
+*        {
+*          updatedAt: "2016-11-23T22:33:14.258Z",
+*          updatedAt: "2016-11-23T22:33:14.258Z",
+*          createdAt: "2016-09-23T15:21:58.000Z",
+*          slug: "DEVOS-Tanguy",
+*          author: "577ea485fee4ec632f5c663f",
+*          description: "yeaaah",
+*          name: "A big news",
+*          __v: 2,
+*          comments: [
+*            "57f816c348165e7e18a84f37",
+*            "5836192a48e54efc0a9b8695"
+*          ],
+*          picture: "uploads/news/default-news.jpg"
+*         },
+*         {
+*          ...
+*         }
+*    }
 */
 router.get('/', function(req, res, next) {
 	User.find({}).populate("achievements").exec(function (err, users) {
@@ -81,6 +68,52 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+/**
+* @api {post} /users/songs Add a song to an user
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName AddSongUser
+* @apiGroup Song
+*
+* @apiParam {Number} idSong Song you want to add to user.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'Song added to user.'
+*     }
+*
+* @apiError WrongArgs Missing arguments to add a song to the user.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError AlreadyExists Song already added to user.
+*
+* @apiErrorExample AlreadyExists:
+*     HTTP/1.1 409 Conflict
+*     {
+*       success: false,
+*       message: 'Song already added to user.'
+*     }
+*
+* @apiError ServiceUnavailable Unable to add a song to the user.
+*
+* @apiErrorExample ServiceUnavailable:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "error message."
+*     }
+*/
 router.post('/songs', auth({secret: superSecret}), function(req, res) {
 	if (req.body.idSong) {
 		User.findOne({_id: req.decoded.id}, function (err, user) {
@@ -120,13 +153,41 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
 		});
 	}
 	else
-		return res.json({
-			success: false,
-			message: 'Wrong arguments'
-		});
+	return res.json({
+		success: false,
+		message: 'Wrong arguments'
+	});
 });
 
-
+/**
+* @api {delete} /users/songs/:idSong Delete a song from an user
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName DeleteSongFromUser
+* @apiGroup Song
+*
+* @apiParam {Number} idSong Song that you want to delete.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'Song removed.'
+*     }
+*
+* @apiError ServiceUnavailable The token is not valid.
+*
+* @apiErrorExample ServiceUnavailable:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "error message."
+*     }
+*/
 router.delete('/songs/:idSong', auth({secret: superSecret}), function(req, res, next) {
 	User.findOne({_id: req.decoded.id}, function (err, user) {
 		var objectid = new mongoose.mongo.ObjectID(req.params.idSong);
@@ -159,6 +220,79 @@ router.delete('/songs/:idSong', auth({secret: superSecret}), function(req, res, 
 	});
 });
 
+/**
+* @api {post} /users Add an user
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName AddUser
+* @apiGroup User
+*
+* @apiParam {String} email Email of the user.
+* @apiParam {String} password Password of the user.
+* @apiParam {String} [name] Name of the user.
+* @apiParam {String} [address] Address of the user.
+* @apiParam {String} [description] Description of the user.
+* @apiParam {String} [city] City of the user.
+* @apiParam {String} [country] Country of the user.
+* @apiParam {Image{2 Mo}} [picture] Custom picture for the user :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'User created !',
+*     }
+*
+* @apiError WrongArgs Missing arguments to add the user.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError AlreadyExists User already exists in database.
+*
+* @apiErrorExample AlreadyExists:
+*     HTTP/1.1 409 Conflict
+*     {
+*       success: false,
+*       message: 'User already exists'
+*     }
+*
+* @apiError UserNotFound User not found in database.
+*
+* @apiErrorExample UserNotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "Authentication failed. User not found."
+*     }
+*
+* @apiError ServiceUnavailable The token is not valid.
+*
+* @apiErrorExample ServiceUnavailable:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "error message."
+*     }
+*
+* @apiError ServerError Unable to add an user.
+*
+* @apiErrorExample ServerError:
+*     HTTP/1.1 500 Server Error
+*     {
+*       success: false,
+*       message: "error message."
+*     }
+*/
 router.post('/', upload.single('picture'), function(req, res, next) {
 	if (req.body.email && req.body.password){
 		User.find({email : req.body.email}, function (err, docs) {
@@ -167,15 +301,15 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 				user.email = req.body.email;
 				user.password = req.body.password;
 				if (req.body.name)
-					user.name = req.body.name;
+				user.name = req.body.name;
 				if (req.body.address)
-					user.address = req.body.address;
+				user.address = req.body.address;
 				if (req.body.description)
-					user.description = req.body.description;
+				user.description = req.body.description;
 				if (req.body.city)
-					user.city = req.body.city;
+				user.city = req.body.city;
 				if (req.body.country)
-					user.country = req.body.country;
+				user.country = req.body.country;
 				if (req.file)
 				{
 					var picturePath = "";
@@ -204,7 +338,7 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 					})
 					.then(function(err) {
 						if (err)
-							throw err;
+						throw err;
 						else
 						{
 							user.picture = picturePath;
@@ -248,12 +382,78 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 		});
 	}
 	else
-		return res.status(400).json({
-			success: false,
-			message: 'Wrong arguments'
-		});
+	return res.status(400).json({
+		success: false,
+		message: 'Wrong arguments'
+	});
 });
 
+/**
+* @api {put} /users/:idUser Edit an user
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName EditUser
+* @apiGroup User
+*
+* @apiParam {Number} idUser User you want to edit.
+* @apiParam {String} email Email of the user.
+* @apiParam {String} [password] Password of the user.
+* @apiParam {String} [name] Name of the user.
+* @apiParam {String} [address] Address of the user.
+* @apiParam {String} [description] Description of the user.
+* @apiParam {String} [city] City of the user.
+* @apiParam {String} [country] Country of the user.
+* @apiParam {Image{2 Mo}} [picture ] Custom picture for the user :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'User updated !'
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*
+* @apiError NotFound User doesn't exist in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "User not found"
+*     }
+*
+* @apiError BadRequest Minssing email field to edit user.
+*
+* @apiErrorExample BadRequest:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: "Email cannot be empty"
+*     }
+*
+* @apiError ServerError Impossible to edit the user.
+*
+* @apiErrorExample ServerError:
+*     HTTP/1.1 500 Server Error
+*     {
+*       success: false,
+*       message: "Error message."
+*     }
+*
+*/
 router.put('/:idUser', upload.single('picture'), auth({secret: superSecret}), function(req, res, next) {
 	if (req.decoded.admin || req.decoded.id == req.params.idUser) {
 		if (req.body.email) {
@@ -261,7 +461,7 @@ router.put('/:idUser', upload.single('picture'), auth({secret: superSecret}), fu
 				if (!result1) {
 					User.findOne({_id : req.params.idUser}, function (err, result2) {
 						if (!result2) {
-							return res.status(500).json({
+							return res.status(404).json({
 								success: false,
 								message: "User not found"
 							});
@@ -292,17 +492,17 @@ router.put('/:idUser', upload.single('picture'), auth({secret: superSecret}), fu
 		if (user && user._id == req.params.idUser) {
 			user.email = req.body.email;
 			if (req.body.password)
-				user.password = req.body.password;
+			user.password = req.body.password;
 			if (req.body.name)
-				user.name = req.body.name;
+			user.name = req.body.name;
 			if (req.body.address)
-				user.address = req.body.address;
+			user.address = req.body.address;
 			if (req.body.description)
-				user.description = req.body.description;
+			user.description = req.body.description;
 			if (req.body.city)
-				user.city = req.body.city;
+			user.city = req.body.city;
 			if (req.body.country)
-				user.country = req.body.country;
+			user.country = req.body.country;
 			if (req.file)
 			{
 				var picturePath = "";
@@ -371,6 +571,35 @@ router.put('/:idUser', upload.single('picture'), auth({secret: superSecret}), fu
 	}
 });
 
+/**
+* @api {delete} /users/:idUser Delete an user by id
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName DeleteUserById
+* @apiGroup User
+*
+* @apiParam {Number} idUser User that you want to delete.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'The user has been deleted.'
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*/
 router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) {
 	if (req.decoded.admin || req.decoded.id == req.params.idUser) {
 		User.findByIdAndRemove(req.params.idUser, req.body, function (err, post) {
@@ -389,6 +618,47 @@ router.delete('/:idUser', auth({secret: superSecret}), function(req, res, next) 
 	}
 });
 
+/**
+* @api {get} /users/:idUser Get an user by id
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetUsersById
+* @apiGroup User
+*
+* @apiParam {Number} idUser User you want to get.
+*
+* @apiSuccess {String} name Name of the user.
+* @apiSuccess {String} email Email of the user.
+* @apiSuccess {String} address Address of the user.
+* @apiSuccess {String} city City of the user.
+* @apiSuccess {String} country Country of the user.
+* @apiSuccess {String} picture Picture URL of the user.
+* @apiSuccess {Object} songs All songs from the user.
+* @apiSuccess {Object} achievements All achievements from the user.
+*
+* @apiSuccessExample Success-Response:
+*    HTTP/1.1 200 OK
+*      {
+*        {
+*          updatedAt: "2016-11-23T22:33:14.258Z",
+*          updatedAt: "2016-11-23T22:33:14.258Z",
+*          createdAt: "2016-09-23T15:21:58.000Z",
+*          slug: "DEVOS-Tanguy",
+*          author: "577ea485fee4ec632f5c663f",
+*          description: "yeaaah",
+*          name: "A big news",
+*          __v: 2,
+*          comments: [
+*            "57f816c348165e7e18a84f37",
+*            "5836192a48e54efc0a9b8695"
+*          ],
+*          picture: "uploads/news/default-news.jpg"
+*         },
+*         {
+*          ...
+*         }
+*    }
+*/
 router.get('/:idUser', function(req, res, next) {
 	User.findById(req.params.idUser).populate("achievements").populate("songs").exec(function (err, post) {
 		if (err) return next(err);
@@ -396,6 +666,58 @@ router.get('/:idUser', function(req, res, next) {
 	});
 });
 
+/**
+* @api {post} /users/authenticate Authenticate an user
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName AuthenticateUser
+* @apiGroup User
+*
+* @apiParam {String} email Email to be authentified.
+* @apiParam {String} password Password to be authentified.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+* @apiSuccess {String} token Token of authentification.
+* @apiSuccess {Number} id Id of user.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'Enjoy your token!',
+*       token: token,
+*       id: user.id
+*     }
+*
+* @apiError WrongPassword The password isn't correct.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Authentication failed. Wrong password."
+*     }
+*
+* @apiError WrongArgs Missing arguments to authenticate the user.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError UserNotFound User not found in database.
+*
+* @apiErrorExample UserNotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "Authentication failed. User not found."
+*     }
+*
+*/
 router.post('/authenticate', function(req, res) {
 	if (req.body.email && req.body.password) {
 		User.findOne({
@@ -422,8 +744,8 @@ router.post('/authenticate', function(req, res) {
 						'id': user.id,
 						'admin': user.admin,
 					}, superSecret, {
-            expiresInMinutes: 1440 // expires in 24 hours
-        });
+						expiresInMinutes: 1440 // expires in 24 hours
+					});
 
 					res.status(200).json({
 						success: true,
@@ -432,16 +754,15 @@ router.post('/authenticate', function(req, res) {
 						id: user.id
 					});
 				}
-
 			}
-
 		});
 	}
-	else
-		return res.json({
+	else {
+		return res.status(400).json({
 			success: false,
 			message: 'Wrong arguments'
 		});
+	}
 });
 
 module.exports = router;

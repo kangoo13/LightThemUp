@@ -351,7 +351,7 @@
   * @apiError NotFound Comment doesn't exist in database.
   *
   * @apiErrorExample NotFound:
-  *     HTTP/1.1 404 Conflict
+  *     HTTP/1.1 404 Not Found
   *     {
   *       success: false,
   *       message: "Comment doesn't exist."
