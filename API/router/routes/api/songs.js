@@ -27,6 +27,48 @@ var uploadMusicConfig = {
   maxFileSize : 200000000
 };
 
+/**
+* @api {get} /songs/ Get all songs
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetSongs
+* @apiGroup Song
+*
+* @apiSuccess {String} slug Slug of the song.
+* @apiSuccess {String} preview Preview of the song (path to preview audio file).
+* @apiSuccess {String} file Audio file of the song.
+* @apiSuccess {Number} price Price of the song.
+* @apiSuccess {String} picture Picture of the song (path to image file).
+* @apiSuccess {String} artist Artist of the song.
+* @apiSuccess {String} name Name of the song.
+* @apiSuccess {Object} comments Comments from the song.
+* @apiSuccess {Number} bought Number of how many times the song was bought.
+* @apiSuccess {Number} difficulty Difficulty of the song.
+*
+* @apiSuccessExample Success-Response:
+*   HTTP/1.1 200 OK
+*     {
+*       {
+*         "_id": "581e1eedfae905040b64874b",
+*         "updatedAt": "2016-11-08T12:28:42.926Z",
+*         "createdAt": "2016-11-05T18:03:25.000Z",
+*         "slug": "Pirates-des-Caraibes",
+*         "preview": "",
+*         "file": "uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid",
+*         "price": 12,
+*         "picture": "uploads/songs/581e1eedfae905040b64874b/cover.jpg",
+*         "artist": "Disney",
+*         "name": "Pirates des Caraïbes",
+*         "__v": 0,
+*         "comments": [],
+*         "bought": 1,
+*         "difficulty": 5
+*         },
+*         {
+*          ...
+*         }
+*    }
+*/
 router.get('/', function(req, res, next) {
   Song.find(function (err, songs) {
     if (err) return next(err);

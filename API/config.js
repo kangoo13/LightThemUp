@@ -1,5 +1,4 @@
 module.exports = {
-
     'env': 'development',
     'secret': 'ilovebananas5328',
     'database': 'mongodb://lightthemup:lightthemup@ds011790.mlab.com:11790/apiforlightthemup',
@@ -20,5 +19,4 @@ module.exports = {
         'callbackURL': 'http://ec2-52-89-221-124.us-west-2.compute.amazonaws.com/auth/google/callback',
         'realm': 'http://ec2-52-89-221-124.us-west-2.compute.amazonaws.com/'
     }
-
 };
