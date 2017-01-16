@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/SyncFragmentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/PairedDeviceTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/listView"
+        android:layout_alignStart="@+id/listView"
+        android:layout_below="@+id/button4"
+        android:text="PAIRED DEVICES"
+        android:textColor="@color/white"
+        android:textSize="25dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/PairedDeviceList">
+    </ListView>
+
+    <TextView
+        android:id="@+id/OtherAvailableDevicesTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/listView2"
+        android:layout_alignStart="@+id/listView2"
+        android:layout_below="@+id/listView"
+        android:text="OTHER AVAILABLE DEVICES "
+        android:textColor="@android:color/white"
+        android:textSize="25dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/OtherAvailableDevicesList"
+        android:layout_height="00dp" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnRefreshBluetooth"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="24dp"
+        android:background="#009999"
+        android:padding="10dp"
+        android:text="Refresh"
+        android:textColor="@color/white" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnDisconnectBt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="10dp"
+        android:background="#009999"
+        android:padding="12dp"
+        android:text="Disconnect"
+        android:textColor="@color/white" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/testButt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="10dp"
+        android:background="#009999"
+        android:padding="12dp"
+        android:text="led test"
+        android:textColor="@color/white" />
+
+</LinearLayout>
