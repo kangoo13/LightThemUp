@@ -619,6 +619,121 @@
   },
   {
     "type": "delete",
+    "url": "/songs/:idSong/comments/:idComment",
+    "title": "Delete a comment from a song",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "DeleteCommentFromSong",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idSong",
+            "description": "<p>Song that you want to select.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idComment",
+            "description": "<p>Comment that you want to delete.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>authentification token is mandatory.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Comment removed.'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Comment doesn't exist in database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongArgs",
+            "description": "<p>Missing arguments to delete comment from song.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFound:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  success: false,\n  message: \"Comment doesn't exist.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "ServerError:",
+          "content": "HTTP/1.1 503 Service Unavailable\n{\n  success: false,\n  message: \"Error message.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "WrongArgs:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Comment"
+  },
+  {
+    "type": "delete",
     "url": "/news/:idNews/comments/:idComment",
     "title": "Delete a news' comment",
     "permission": [
@@ -2728,6 +2843,87 @@
   },
   {
     "type": "delete",
+    "url": "/songs/:idSong",
+    "title": "Delete a song",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "DeleteSong",
+    "group": "Song",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idSong",
+            "description": "<p>Song that you want to delete.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>authentification token is mandatory.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'The song has been deleted.'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "delete",
     "url": "/users/songs/:idSong",
     "title": "Delete a song from an user",
     "permission": [
@@ -3161,6 +3357,143 @@
   },
   {
     "type": "get",
+    "url": "/songs/getSongFromComment/:idComment/:index",
+    "title": "Get a song from a comment",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetSongFromComment",
+    "group": "Song",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "idComment",
+            "description": "<p>Comment you want to select.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "index",
+            "description": "<p>???.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "preview",
+            "description": "<p>Preview of the song (path to preview audio file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Audio file of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Price of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the song (path to image file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "artist",
+            "description": "<p>Artist of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comments from the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "bought",
+            "description": "<p>Number of how many times the song was bought.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "difficulty",
+            "description": "<p>Difficulty of the song.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  {\n    {\n      \"_id\": \"581e1eedfae905040b64874b\",\n      \"updatedAt\": \"2016-11-08T12:28:42.926Z\",\n      \"createdAt\": \"2016-11-05T18:03:25.000Z\",\n      \"slug\": \"Pirates-des-Caraibes\",\n      \"preview\": \"\",\n      \"file\": \"uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid\",\n      \"price\": 12,\n      \"picture\": \"uploads/songs/581e1eedfae905040b64874b/cover.jpg\",\n      \"artist\": \"Disney\",\n      \"name\": \"Pirates des Caraïbes\",\n      \"__v\": 0,\n      \"comments\": [],\n      \"bought\": 1,\n      \"difficulty\": 5\n      }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Song doesn't exist in database.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "NotFound:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  success: false,\n  message: \"La musique n'a pas été trouvée\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "get",
     "url": "/songs/",
     "title": "Get all songs",
     "permission": [
@@ -3360,7 +3693,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  {\n    {\n      \"_id\": \"581e1eedfae905040b64874b\",\n      \"updatedAt\": \"2016-11-08T12:28:42.926Z\",\n      \"createdAt\": \"2016-11-05T18:03:25.000Z\",\n      \"slug\": \"Pirates-des-Caraibes\",\n      \"preview\": \"\",\n      \"file\": \"uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid\",\n      \"price\": 12,\n      \"picture\": \"uploads/songs/581e1eedfae905040b64874b/cover.jpg\",\n      \"artist\": \"Disney\",\n      \"name\": \"Pirates des Caraïbes\",\n      \"__v\": 0,\n      \"comments\": [],\n      \"bought\": 1,\n      \"difficulty\": 5\n      },\n      {\n       ...\n      }\n }",
+          "content": "HTTP/1.1 200 OK\n  {\n    {\n      \"_id\": \"581e1eedfae905040b64874b\",\n      \"updatedAt\": \"2016-11-08T12:28:42.926Z\",\n      \"createdAt\": \"2016-11-05T18:03:25.000Z\",\n      \"slug\": \"Pirates-des-Caraibes\",\n      \"preview\": \"\",\n      \"file\": \"uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid\",\n      \"price\": 12,\n      \"picture\": \"uploads/songs/581e1eedfae905040b64874b/cover.jpg\",\n      \"artist\": \"Disney\",\n      \"name\": \"Pirates des Caraïbes\",\n      \"__v\": 0,\n      \"comments\": [],\n      \"bought\": 1,\n      \"difficulty\": 5\n      }\n }",
           "type": "json"
         }
       ]

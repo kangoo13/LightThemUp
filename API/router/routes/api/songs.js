@@ -178,6 +178,57 @@ router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
   });
 });
 
+/**
+* @api {get} /songs/getSongFromComment/:idComment/:index Get a song from a comment
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetSongFromComment
+* @apiGroup Song
+*
+* @apiParam {Number} idComment Comment you want to select.
+* @apiParam {Number} index ???.
+*
+* @apiSuccess {String} slug Slug of the song.
+* @apiSuccess {String} preview Preview of the song (path to preview audio file).
+* @apiSuccess {String} file Audio file of the song.
+* @apiSuccess {Number} price Price of the song.
+* @apiSuccess {String} picture Picture of the song (path to image file).
+* @apiSuccess {String} artist Artist of the song.
+* @apiSuccess {String} name Name of the song.
+* @apiSuccess {Object} comments Comments from the song.
+* @apiSuccess {Number} bought Number of how many times the song was bought.
+* @apiSuccess {Number} difficulty Difficulty of the song.
+*
+* @apiSuccessExample Success-Response:
+*   HTTP/1.1 200 OK
+*     {
+*       {
+*         "_id": "581e1eedfae905040b64874b",
+*         "updatedAt": "2016-11-08T12:28:42.926Z",
+*         "createdAt": "2016-11-05T18:03:25.000Z",
+*         "slug": "Pirates-des-Caraibes",
+*         "preview": "",
+*         "file": "uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid",
+*         "price": 12,
+*         "picture": "uploads/songs/581e1eedfae905040b64874b/cover.jpg",
+*         "artist": "Disney",
+*         "name": "Pirates des Caraïbes",
+*         "__v": 0,
+*         "comments": [],
+*         "bought": 1,
+*         "difficulty": 5
+*         }
+*    }
+*
+* @apiError NotFound Song doesn't exist in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "La musique n'a pas été trouvée"
+*     }
+*/
 router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
   Song.find().populate("comments").exec(function (err, songs){
     if (err) return next(err);
@@ -198,7 +249,7 @@ router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
     if (goodSong)
     return res.status(200).json(goodSong);
     else
-    return res.status(503).json({
+    return res.status(404).json({
       success: false,
       message: "La musique n'a pas été trouvée"
     });
@@ -336,12 +387,67 @@ router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function
   }
 });
 
+/**
+* @api {delete} /songs/:idSong/comments/:idComment Delete a comment from a song
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName DeleteCommentFromSong
+* @apiGroup Comment
+*
+* @apiParam {Number} idSong Song that you want to select.
+* @apiParam {Number} idComment Comment that you want to delete.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'Comment removed.'
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*
+* @apiError NotFound Comment doesn't exist in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "Comment doesn't exist."
+*     }
+*
+* @apiErrorExample ServerError:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "Error message."
+*     }
+*
+* @apiError WrongArgs Missing arguments to delete comment from song.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*/
 router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment) {
     Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
       Comment.findById(req.params.idComment, function (err, comment) {
         if (comment == null) {
-          return res.status(503).json({
+          return res.status(404).json({
             success: false,
             message: "Comment doesn't exist."
           });
@@ -678,9 +784,6 @@ auth({secret: superSecret}), function(req, res, next) {
 *         "comments": [],
 *         "bought": 1,
 *         "difficulty": 5
-*         },
-*         {
-*          ...
 *         }
 *    }
 */
@@ -731,6 +834,35 @@ router.put('/:idSong', auth({secret: superSecret}), function(req, res, next) {
   }
 });
 
+/**
+* @api {delete} /songs/:idSong Delete a song
+* @apiPermission admin
+* @apiVersion 0.1.0
+* @apiName DeleteSong
+* @apiGroup Song
+*
+* @apiParam {Number} idSong Song that you want to delete.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'The song has been deleted.'
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*/
 router.delete('/:idSong', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin) {
     Song.findByIdAndRemove(req.params.idSong, req.body, function (err, post) {
