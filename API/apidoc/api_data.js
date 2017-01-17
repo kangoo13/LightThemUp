@@ -3260,7 +3260,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/songs/:slug",
-    "title": "Ge song by slug",
+    "title": "Get song by slug",
     "permission": [
       {
         "name": "none"

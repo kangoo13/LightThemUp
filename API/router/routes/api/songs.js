@@ -641,7 +641,7 @@ auth({secret: superSecret}), function(req, res, next) {
 });
 
 /**
-* @api {get} /songs/:slug Ge song by slug
+* @api {get} /songs/:slug Get song by slug
 * @apiPermission none
 * @apiVersion 0.1.0
 * @apiName GetSongsBySlug
