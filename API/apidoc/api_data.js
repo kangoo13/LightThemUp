@@ -2809,6 +2809,358 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/songs/mostBoughtSongs/:nbSong",
+    "title": "Get most bought songs (limit by n)",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetMostBoughtSongs",
+    "group": "Song",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "nbSong",
+            "description": "<p>Number of songs you want to retrieve.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "preview",
+            "description": "<p>Preview of the song (path to preview audio file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Audio file of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Price of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the song (path to image file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "artist",
+            "description": "<p>Artist of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comments from the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "bought",
+            "description": "<p>Number of how many times the song was bought.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "difficulty",
+            "description": "<p>Difficulty of the song.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  {\n    {\n      \"_id\": \"581e1eedfae905040b64874b\",\n      \"updatedAt\": \"2016-11-08T12:28:42.926Z\",\n      \"createdAt\": \"2016-11-05T18:03:25.000Z\",\n      \"slug\": \"Pirates-des-Caraibes\",\n      \"preview\": \"\",\n      \"file\": \"uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid\",\n      \"price\": 12,\n      \"picture\": \"uploads/songs/581e1eedfae905040b64874b/cover.jpg\",\n      \"artist\": \"Disney\",\n      \"name\": \"Pirates des Caraïbes\",\n      \"__v\": 0,\n      \"comments\": [],\n      \"bought\": 1,\n      \"difficulty\": 5\n      },\n      {\n       ...\n      }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "get",
+    "url": "/songs/newSongs/:nbSong",
+    "title": "Get new songs (limit by n)",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetNewSongs",
+    "group": "Song",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "nbSong",
+            "description": "<p>Number of songs you want to retrieve.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "preview",
+            "description": "<p>Preview of the song (path to preview audio file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Audio file of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Price of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the song (path to image file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "artist",
+            "description": "<p>Artist of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comments from the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "bought",
+            "description": "<p>Number of how many times the song was bought.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "difficulty",
+            "description": "<p>Difficulty of the song.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  {\n    {\n      \"_id\": \"581e1eedfae905040b64874b\",\n      \"updatedAt\": \"2016-11-08T12:28:42.926Z\",\n      \"createdAt\": \"2016-11-05T18:03:25.000Z\",\n      \"slug\": \"Pirates-des-Caraibes\",\n      \"preview\": \"\",\n      \"file\": \"uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid\",\n      \"price\": 12,\n      \"picture\": \"uploads/songs/581e1eedfae905040b64874b/cover.jpg\",\n      \"artist\": \"Disney\",\n      \"name\": \"Pirates des Caraïbes\",\n      \"__v\": 0,\n      \"comments\": [],\n      \"bought\": 1,\n      \"difficulty\": 5\n      },\n      {\n       ...\n      }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "get",
+    "url": "/songs/randomSongs/:nbSong",
+    "title": "Get random songs (limit by n)",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetRandomSongs",
+    "group": "Song",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "nbSong",
+            "description": "<p>Number of songs you want to retrieve.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "preview",
+            "description": "<p>Preview of the song (path to preview audio file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Audio file of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Price of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the song (path to image file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "artist",
+            "description": "<p>Artist of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comments from the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "bought",
+            "description": "<p>Number of how many times the song was bought.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "difficulty",
+            "description": "<p>Difficulty of the song.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  {\n    {\n      \"_id\": \"581e1eedfae905040b64874b\",\n      \"updatedAt\": \"2016-11-08T12:28:42.926Z\",\n      \"createdAt\": \"2016-11-05T18:03:25.000Z\",\n      \"slug\": \"Pirates-des-Caraibes\",\n      \"preview\": \"\",\n      \"file\": \"uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid\",\n      \"price\": 12,\n      \"picture\": \"uploads/songs/581e1eedfae905040b64874b/cover.jpg\",\n      \"artist\": \"Disney\",\n      \"name\": \"Pirates des Caraïbes\",\n      \"__v\": 0,\n      \"comments\": [],\n      \"bought\": 1,\n      \"difficulty\": 5\n      },\n      {\n       ...\n      }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NumberTooBig",
+            "description": "<p>Missing arguments to add a song to the user.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "NumberTooBig:",
+          "content": "HTTP/1.1 503 Service Unavailable\n{\n  success: false,\n  message: \"Il n'y a pas assez de musiques pour cette demande.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "get",
     "url": "/songs/",
     "title": "Get all songs",
     "permission": [
@@ -2819,6 +3171,117 @@ define({ "api": [
     "version": "0.1.0",
     "name": "GetSongs",
     "group": "Song",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "preview",
+            "description": "<p>Preview of the song (path to preview audio file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Audio file of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Price of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Picture of the song (path to image file).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "artist",
+            "description": "<p>Artist of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comments from the song.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "bought",
+            "description": "<p>Number of how many times the song was bought.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "difficulty",
+            "description": "<p>Difficulty of the song.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  {\n    {\n      \"_id\": \"581e1eedfae905040b64874b\",\n      \"updatedAt\": \"2016-11-08T12:28:42.926Z\",\n      \"createdAt\": \"2016-11-05T18:03:25.000Z\",\n      \"slug\": \"Pirates-des-Caraibes\",\n      \"preview\": \"\",\n      \"file\": \"uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid\",\n      \"price\": 12,\n      \"picture\": \"uploads/songs/581e1eedfae905040b64874b/cover.jpg\",\n      \"artist\": \"Disney\",\n      \"name\": \"Pirates des Caraïbes\",\n      \"__v\": 0,\n      \"comments\": [],\n      \"bought\": 1,\n      \"difficulty\": 5\n      },\n      {\n       ...\n      }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "get",
+    "url": "/songs/:slug",
+    "title": "Ge song by slug",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "GetSongsBySlug",
+    "group": "Song",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the song to retrieve.</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
