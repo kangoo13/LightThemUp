@@ -618,6 +618,98 @@ define({ "api": [
     "groupTitle": "Comment"
   },
   {
+    "type": "post",
+    "url": "/songs/:idSong/comments",
+    "title": "Add a comment to a song",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "AddCommentToSong",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Message of the comment.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>authentification token is mandatory.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: \"Comment added.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongArgs",
+            "description": "<p>Missing arguments to add a comment to a song.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ServiceUnavailable",
+            "description": "<p>Impossible to add a comment to a song.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "WrongArgs:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        },
+        {
+          "title": "ServiceUnavailable:",
+          "content": "HTTP/1.1 503 Service Unavailable\n{\n  success: false,\n  message: \"error message.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Comment"
+  },
+  {
     "type": "delete",
     "url": "/songs/:idSong/comments/:idComment",
     "title": "Delete a comment from a song",
@@ -851,6 +943,120 @@ define({ "api": [
       ]
     },
     "filename": "router/routes/api/news.js",
+    "groupTitle": "Comment"
+  },
+  {
+    "type": "put",
+    "url": "/songs/:idSong/comments",
+    "title": "Edit a comment from a song",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "EditCommentFromSong",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Message of the comment.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>authentification token is mandatory.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: \"Comment edited.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongArgs",
+            "description": "<p>Missing arguments to add a comment from a song.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Missing arguments to edit a comment from a song.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ServiceUnavailable",
+            "description": "<p>Impossible to add a comment from a song.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "WrongArgs:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFound:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  success: false,\n  message: \"Comment doesn't exist.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "ServiceUnavailable:",
+          "content": "HTTP/1.1 503 Service Unavailable\n{\n  success: false,\n  message: \"error message.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
     "groupTitle": "Comment"
   },
   {
@@ -2747,6 +2953,174 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/songs",
+    "title": "Add a song",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "AddSong",
+    "group": "Song",
+    "description": "<p>This api methos has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.</p> <p>For the first method, just add &quot;file&quot; and &quot;preview&quot; with basic fields (name, artist, price, difficulty and a picture).</p> <p>For the second method, just add &quot;scan&quot; with basic fields (name, artist, price (optionnal), difficulty and a picture).</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>authentification token is mandatory.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the song.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "artist",
+            "description": "<p>Artist of the song.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Price of the song.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "difficulty",
+            "description": "<p>Difficulty of the song.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Image",
+            "size": "2 Mo",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Custom picture for the song : MIME Type has to be : [&quot;image/jpeg&quot;, &quot;image/png&quot;, &quot;image/gif&quot;, &quot;image/tiff&quot;] and accepted extensions [&quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;, &quot;tiff&quot;].</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Image",
+            "size": "2 Mo",
+            "optional": false,
+            "field": "scan",
+            "description": "<p>Custom scan for the song : MIME Type has to be : [&quot;image/jpeg&quot;, &quot;image/png&quot;, &quot;image/gif&quot;, &quot;image/tiff&quot;] and accepted extensions [&quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;, &quot;tiff&quot;].</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Song",
+            "size": "20 Mo",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Audio file for the song : MIME Type has to be : [&quot;midi&quot;, &quot;mp3&quot;, &quot;wav&quot;, &quot;mid&quot;] and accepted extensions [&quot;audio/midi&quot;, &quot;audio/mid&quot;].</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Song",
+            "size": "20 Mo",
+            "optional": false,
+            "field": "preview",
+            "description": "<p>Audio preview file for the song : MIME Type has to be : [&quot;midi&quot;, &quot;mp3&quot;, &quot;wav&quot;, &quot;mid&quot;] and accepted extensions [&quot;audio/midi&quot;, &quot;audio/mid&quot;].</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: 'Song created !',\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongArgs",
+            "description": "<p>Missing arguments to add a song.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AlreadyExists",
+            "description": "<p>This song already exists in database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ServerError",
+            "description": "<p>Impossible to add a song to database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Impossible to add a song.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "WrongArgs:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        },
+        {
+          "title": "AlreadyExists:",
+          "content": "HTTP/1.1 409 Conflict\n{\n  success: false,\n  message: 'Song already exists.'\n}",
+          "type": "json"
+        },
+        {
+          "title": "ServerError:",
+          "content": "HTTP/1.1 409 Server Error\n{\n  success: false,\n  message: 'Song already exists.'\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "post",
     "url": "/users/songs",
     "title": "Add a song to an user",
     "permission": [
@@ -2988,7 +3362,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "ServiceUnavailable",
-            "description": "<p>The token is not valid.</p>"
+            "description": "<p>Impossible to delete a song from an user.</p>"
           }
         ]
       },
@@ -3001,6 +3375,140 @@ define({ "api": [
       ]
     },
     "filename": "router/routes/api/users.js",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "put",
+    "url": "/songs/:idSong",
+    "title": "Edit a song",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "version": "0.1.0",
+    "name": "EditSong",
+    "group": "Song",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>authentification token is mandatory.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>Name of the song.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "artist",
+            "description": "<p>Artist of the song.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "price",
+            "description": "<p>Price of the song.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "difficulty",
+            "description": "<p>Difficulty of the song.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Image",
+            "size": "2 Mo",
+            "optional": true,
+            "field": "picture",
+            "description": "<p>Custom picture for the song : MIME Type has to be : [&quot;image/jpeg&quot;, &quot;image/png&quot;, &quot;image/gif&quot;, &quot;image/tiff&quot;] and accepted extensions [&quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;, &quot;tiff&quot;].</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Image",
+            "size": "2 Mo",
+            "optional": true,
+            "field": "scan",
+            "description": "<p>Custom scan for the song : MIME Type has to be : [&quot;image/jpeg&quot;, &quot;image/png&quot;, &quot;image/gif&quot;, &quot;image/tiff&quot;] and accepted extensions [&quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;, &quot;tiff&quot;].</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Song",
+            "size": "20 Mo",
+            "optional": true,
+            "field": "file",
+            "description": "<p>Audio file for the song : MIME Type has to be : [&quot;midi&quot;, &quot;mp3&quot;, &quot;wav&quot;, &quot;mid&quot;] and accepted extensions [&quot;audio/midi&quot;, &quot;audio/mid&quot;].</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Song",
+            "size": "20 Mo",
+            "optional": true,
+            "field": "preview",
+            "description": "<p>Audio preview file for the song : MIME Type has to be : [&quot;midi&quot;, &quot;mp3&quot;, &quot;wav&quot;, &quot;mid&quot;] and accepted extensions [&quot;audio/midi&quot;, &quot;audio/mid&quot;].</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Notify the success of current request.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  success: true,\n  message: \"Song updated !\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>The token is not valid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "router/routes/api/songs.js",
     "groupTitle": "Song"
   },
   {
@@ -3902,7 +4410,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "ServiceUnavailable",
-            "description": "<p>The token is not valid.</p>"
+            "description": "<p>Impossible to add an user.</p>"
           },
           {
             "group": "Error 4xx",

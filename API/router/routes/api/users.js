@@ -179,7 +179,7 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
 *       message: 'Song removed.'
 *     }
 *
-* @apiError ServiceUnavailable The token is not valid.
+* @apiError ServiceUnavailable Impossible to delete a song from an user.
 *
 * @apiErrorExample ServiceUnavailable:
 *     HTTP/1.1 503 Service Unavailable
@@ -275,7 +275,7 @@ accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
 *       message: "Authentication failed. User not found."
 *     }
 *
-* @apiError ServiceUnavailable The token is not valid.
+* @apiError ServiceUnavailable Impossible to add an user.
 *
 * @apiErrorExample ServiceUnavailable:
 *     HTTP/1.1 503 Service Unavailable

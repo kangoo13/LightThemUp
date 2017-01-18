@@ -343,13 +343,68 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
   });
 });
 
-
+/**
+* @api {put} /songs/:idSong/comments Edit a comment from a song
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName EditCommentFromSong
+* @apiGroup Comment
+*
+* @apiParam {String} message Message of the comment.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: "Comment edited."
+*     }
+*
+* @apiError WrongArgs Missing arguments to add a comment from a song.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError NotFound Missing arguments to edit a comment from a song.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "Comment doesn't exist."
+*     }
+*
+* @apiError ServiceUnavailable Impossible to add a comment from a song.
+*
+* @apiErrorExample ServiceUnavailable:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "error message."
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*/
 router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment && req.body.message) {
     Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
       Comment.findById(req.params.idComment, function (err, comment) {
         if (comment == null) {
-          return res.status(503).json({
+          return res.status(404).json({
             success: false,
             message: "Comment doesn't exist."
           });
@@ -487,6 +542,44 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
   }
 });
 
+/**
+* @api {post} /songs/:idSong/comments Add a comment to a song
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName AddCommentToSong
+* @apiGroup Comment
+*
+* @apiParam {String} message Message of the comment.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: "Comment added."
+*     }
+*
+* @apiError WrongArgs Missing arguments to add a comment to a song.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError ServiceUnavailable Impossible to add a comment to a song.
+*
+* @apiErrorExample ServiceUnavailable:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "error message."
+*     }
+*/
 router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res, next) {
   Song.findOne({ 'slug': req.params.idSong }).exec(function (err, post) {
     if (err) return next(err);
@@ -530,6 +623,83 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
   });
 });
 
+/**
+* @api {post} /songs Add a song
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName AddSong
+* @apiGroup Song
+*
+* @apiDescription This api methos has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.
+*
+* For the first method, just add "file" and "preview" with basic fields (name, artist, price, difficulty and a picture).
+*
+* For the second method, just add "scan" with basic fields (name, artist, price (optionnal), difficulty and a picture).
+*
+* @apiParam {String} token authentification token is mandatory.
+* @apiParam {String} name Name of the song.
+* @apiParam {String} artist Artist of the song.
+* @apiParam {Number} price Price of the song.
+* @apiParam {String} difficulty Difficulty of the song.
+* @apiParam {Image{2 Mo}} picture Custom picture for the song :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+* @apiParam {Image{2 Mo}} scan Custom scan for the song :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+* @apiParam {Song{20 Mo}} file Audio file for the song :
+MIME Type has to be : ["midi", "mp3", "wav", "mid"] and
+accepted extensions ["audio/midi", "audio/mid"].
+* @apiParam {Song{20 Mo}} preview Audio preview file for the song :
+MIME Type has to be : ["midi", "mp3", "wav", "mid"] and
+accepted extensions ["audio/midi", "audio/mid"].
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'Song created !',
+*     }
+*
+* @apiError WrongArgs Missing arguments to add a song.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError AlreadyExists This song already exists in database.
+*
+* @apiErrorExample AlreadyExists:
+*     HTTP/1.1 409 Conflict
+*     {
+*       success: false,
+*       message: 'Song already exists.'
+*     }
+*
+* @apiError ServerError Impossible to add a song to database.
+*
+* @apiErrorExample ServerError:
+*     HTTP/1.1 409 Server Error
+*     {
+*       success: false,
+*       message: 'Song already exists.'
+*     }
+*
+* @apiError Unauthorized Impossible to add a song.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*/
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
 auth({secret: superSecret}), function(req, res, next) {
   // Only Admin or users are allowed here
@@ -816,6 +986,50 @@ router.get('/:slug', function(req, res, next) {
   });
 });
 
+/**
+* @api {put} /songs/:idSong Edit a song
+* @apiPermission admin
+* @apiVersion 0.1.0
+* @apiName EditSong
+* @apiGroup Song
+*
+* @apiParam {String} token authentification token is mandatory.
+* @apiParam {String} [name] Name of the song.
+* @apiParam {String} [artist] Artist of the song.
+* @apiParam {Number} [price] Price of the song.
+* @apiParam {String} [difficulty] Difficulty of the song.
+* @apiParam {Image{2 Mo}} [picture] Custom picture for the song :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+* @apiParam {Image{2 Mo}} [scan] Custom scan for the song :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+* @apiParam {Song{20 Mo}} [file] Audio file for the song :
+MIME Type has to be : ["midi", "mp3", "wav", "mid"] and
+accepted extensions ["audio/midi", "audio/mid"].
+* @apiParam {Song{20 Mo}} [preview] Audio preview file for the song :
+MIME Type has to be : ["midi", "mp3", "wav", "mid"] and
+accepted extensions ["audio/midi", "audio/mid"].
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: "Song updated !"
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*/
 router.put('/:idSong', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin) {
     Song.findByIdAndUpdate(req.params.idSong, req.body, function (err, post) {
