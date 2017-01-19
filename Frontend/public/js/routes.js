@@ -40,7 +40,7 @@ app.config(function ($routeProvider, $locationProvider) {
     authorizedAccess: true
   }).when('/songs/new', {
     templateUrl: '/new-song.html',
-    controller: 'CreatePlaylistController',
+    controller: 'NewSongController',
     controllerAs: 'vm',
     authorizedAccess: true
   }).when('/songs/:slug', {
