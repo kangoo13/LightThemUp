@@ -444,6 +444,28 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 
 }]);
 
+
+app.controller('NewSongController', ['$scope', '$cookies', 'SongService', '$location', 'toastr', function ($scope, $cookies, SongService, $location, toastr) {
+
+	var vm = this;
+	vm.NewSong = NewSong;
+	function NewSong() {
+		vm.dataLoading = true;
+		SongService.Create(vm.song, $cookies.get('token'))
+		.then(function (response) {
+			if (response.success) {
+				toastr.success("Musique créée.");
+				$location.path('/mes-musiques');
+			} else {
+				toastr.error(response.message, "Error");
+				vm.dataLoading = false;
+			}
+		});
+	}
+
+}]);
+
+
 app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'NewsService', 'CommentService', function ($scope, UserService, SongService, NewsService, CommentService) {
 
 	var vm = this;

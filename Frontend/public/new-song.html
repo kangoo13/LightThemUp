@@ -1,0 +1,22 @@
+<div class="content">
+  <a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
+  <h3>Ajout d'une musique</h3>
+  <form name="newSong" ng-submit="vm.NewSong()" role="form" autocomplete="on">
+    <label for="name">Titre</label>
+    <input ng-model="vm.song.name" class="u-full-width" type="text" name="name"/>
+    <label for="artist">Artiste</label>
+    <input ng-model="vm.song.artist" class="u-full-width" type="text" name="artist"/>
+    <label for="price">Prix</label>
+    <input ng-model="vm.song.price" class="u-full-width" type="number" name="price" min="0"/>
+    <label for="difficulty">Difficulté</label>
+    <input ng-model="vm.song.difficulty" class="u-full-width" type="number" name="difficulty" min="1" max="5"/>
+    <label for="picture">Miniature</label>
+    <input type="file" file="file" accept="image/*" name="picture" />
+    <label for="scan">Scan de la partition</label>
+    <input type="file" file="file" accept="image/*" name="scan" />
+    <div class="form-actions">
+      <button type="submit" class="button-primary">Envoyer</button>
+      <a class="button" href="/mes-musiques">Annuler</a>
+    </div>
+  </form>
+</div>

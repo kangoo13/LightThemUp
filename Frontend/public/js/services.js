@@ -13,6 +13,7 @@ app.factory("UserService", function ($http) {
   service.Update = Update;
   service.Delete = Delete;
   service.AddSong = AddSong;
+  service.NewSong = NewSong;
   service.RemoveSong = RemoveSong;
   service.AddSongToPlaylist = AddSongToPlaylist;
   service.RemoveSongFromPlaylist = RemoveSongFromPlaylist;
@@ -82,6 +83,20 @@ app.factory("UserService", function ($http) {
         "x-access-token": token
       }
     }).then(handleSuccess, handleError);
+  }
+
+  function NewSong(songId, token) {
+    var data = song;
+    data.token = token;
+    var formData = new FormData();
+    angular.forEach(data, function (value, key) {
+      formData.append(key, value);
+    });
+    return $http.put(apiUrl + '/songs/', formData, {
+      headers: {
+       'Content-Type': undefined
+     }
+   }).then(handleSuccess, handleError);
   }
 
   function AddSong(songId, token) {
