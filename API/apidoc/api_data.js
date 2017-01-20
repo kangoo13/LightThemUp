@@ -2963,7 +2963,7 @@ define({ "api": [
     "version": "0.1.0",
     "name": "AddSong",
     "group": "Song",
-    "description": "<p>This api methos has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.</p> <p>For the first method, just add &quot;file&quot; and &quot;preview&quot; with basic fields (name, artist, price, difficulty and a picture).</p> <p>For the second method, just add &quot;scan&quot; with basic fields (name, artist, price (optionnal), difficulty and a picture).</p>",
+    "description": "<p>This api method has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.</p> <p>For the first method, just add &quot;file&quot; and &quot;preview&quot; with basic fields (name, artist, price, difficulty and a picture).</p> <p>For the second method, just add &quot;scan&quot; with basic fields (name, artist, price (optionnal), difficulty and a picture).</p>",
     "parameter": {
       "fields": {
         "Parameter": [
