@@ -3082,12 +3082,6 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "ServerError",
-            "description": "<p>Impossible to add a song to database.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
             "field": "Unauthorized",
             "description": "<p>Impossible to add a song.</p>"
           },
@@ -3096,6 +3090,12 @@
             "optional": false,
             "field": "CannotConvertScan",
             "description": "<p>Impossible to create song from scan.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ServerError",
+            "description": "<p>Impossible to save the song.</p>"
           }
         ]
       },
@@ -3111,18 +3111,13 @@
           "type": "json"
         },
         {
-          "title": "ServerError:",
-          "content": "HTTP/1.1 409 Server Error\n{\n  success: false,\n  message: 'Song already exists.'\n}",
-          "type": "json"
-        },
-        {
           "title": "Unauthorized:",
           "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
           "type": "json"
         },
         {
           "title": "CannotConvertScan:",
-          "content": "HTTP/1.1 501 Service Unavailable\n{\n  success: false,\n  message: \"\"Error while trying to convert the sheet music into MIDI song\"\n}",
+          "content": "HTTP/1.1 501 Service Unavailable\n{\n  success: false,\n  message: \"Error while trying to convert the sheet music into MIDI song\"\n}",
           "type": "json"
         },
         {

@@ -682,15 +682,6 @@ accepted extensions ["audio/midi", "audio/mid"].
 *       message: 'Song already exists.'
 *     }
 *
-* @apiError ServerError Impossible to add a song to database.
-*
-* @apiErrorExample ServerError:
-*     HTTP/1.1 409 Server Error
-*     {
-*       success: false,
-*       message: 'Song already exists.'
-*     }
-*
 * @apiError Unauthorized Impossible to add a song.
 *
 * @apiErrorExample Unauthorized:
@@ -706,7 +697,7 @@ accepted extensions ["audio/midi", "audio/mid"].
 *     HTTP/1.1 501 Service Unavailable
 *     {
 *       success: false,
-*       message: ""Error while trying to convert the sheet music into MIDI song"
+*       message: "Error while trying to convert the sheet music into MIDI song"
 *     }
 *
 * @apiError ServerError Impossible to save the song.
