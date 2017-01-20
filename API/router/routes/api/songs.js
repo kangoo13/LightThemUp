@@ -869,7 +869,7 @@ auth({secret: superSecret}), function(req, res, next) {
             path.resolve(realPath +"song.mid"),
             function callback(error, stdout, stderr){
               console.log(error + " - " + stdout + " - " + stderr);
-              if (error) {
+              if (error || stdout === "") {
                 throw "Error while trying to convert the sheet music into MIDI song";
               }
               song.file = "uploads/songs/" + song._id + "/" + "song.mid";
@@ -917,13 +917,14 @@ auth({secret: superSecret}), function(req, res, next) {
 });
 
 /**
-* @api {get} /songs/:slug Get song by slug
+* @api {get} /songs/:slug Get song by slug or id
 * @apiPermission none
 * @apiVersion 0.1.0
-* @apiName GetSongsBySlug
+* @apiName GetSong
 * @apiGroup Song
 *
-* @apiParam {String} slug Slug of the song to retrieve.
+* @apiParam {String} [slug] Slug of the song to retrieve.
+* @apiParam {String} [idSong] idSong of the song to retrieve.
 *
 * @apiSuccess {String} slug Slug of the song.
 * @apiSuccess {String} preview Preview of the song (path to preview audio file).
