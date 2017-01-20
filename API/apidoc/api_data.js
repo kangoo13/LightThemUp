@@ -3864,7 +3864,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "NumberTooBig",
-            "description": "<p>Missing arguments to add a song to the user.</p>"
+            "description": "<p>There are not enough songs in database for requested number.</p>"
           }
         ]
       },

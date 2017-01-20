@@ -300,7 +300,7 @@ router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
 *         }
 *    }
 *
-* @apiError NumberTooBig Missing arguments to add a song to the user.
+* @apiError NumberTooBig There are not enough songs in database for requested number.
 *
 * @apiErrorExample NumberTooBig:
 *     HTTP/1.1 503 Service Unavailable
