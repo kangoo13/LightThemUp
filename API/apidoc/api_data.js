@@ -3090,6 +3090,12 @@ define({ "api": [
             "optional": false,
             "field": "Unauthorized",
             "description": "<p>Impossible to add a song.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "CannotConvertScan",
+            "description": "<p>Impossible to create song from scan.</p>"
           }
         ]
       },
@@ -3112,6 +3118,16 @@ define({ "api": [
         {
           "title": "Unauthorized:",
           "content": "HTTP/1.1 401 Unauthorized\n{\n  success: false,\n  message: \"Unauthorized.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "CannotConvertScan:",
+          "content": "HTTP/1.1 501 Service Unavailable\n{\n  success: false,\n  message: \"\"Error while trying to convert the sheet music into MIDI song\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "ServerError:",
+          "content": "HTTP/1.1 500 Server Error\n{\n  success: false,\n  message: \"error message\"\n}",
           "type": "json"
         }
       ]

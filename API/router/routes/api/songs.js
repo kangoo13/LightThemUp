@@ -699,6 +699,24 @@ accepted extensions ["audio/midi", "audio/mid"].
 *       success: false,
 *       message: "Unauthorized."
 *     }
+*
+* @apiError CannotConvertScan Impossible to create song from scan.
+*
+* @apiErrorExample CannotConvertScan:
+*     HTTP/1.1 501 Service Unavailable
+*     {
+*       success: false,
+*       message: ""Error while trying to convert the sheet music into MIDI song"
+*     }
+*
+* @apiError ServerError Impossible to save the song.
+*
+* @apiErrorExample ServerError:
+*     HTTP/1.1 500 Server Error
+*     {
+*       success: false,
+*       message: "error message"
+*     }
 */
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
 auth({secret: superSecret}), function(req, res, next) {
@@ -870,7 +888,10 @@ auth({secret: superSecret}), function(req, res, next) {
             function callback(error, stdout, stderr){
               console.log(error + " - " + stdout + " - " + stderr);
               if (error || stdout === "") {
-                throw "Error while trying to convert the sheet music into MIDI song";
+                res.status(501).json({
+                  success: false,
+                  message: "Error while trying to convert the sheet music into MIDI song"
+                });
               }
               song.file = "uploads/songs/" + song._id + "/" + "song.mid";
               song.preview = "uploads/songs/" + song._id + "/" + "song.mid";
@@ -884,7 +905,10 @@ auth({secret: superSecret}), function(req, res, next) {
               song.slug = slug(req.body.name);
               song.save(function (err) {
                 if (err) {
-                  throw err;
+                  res.status(500).json({
+                    success: false,
+                    message: err.message;
+                  });
                 }
                 return res.status(200).json({
                   success: true,
