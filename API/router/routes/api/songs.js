@@ -886,9 +886,9 @@ auth({secret: superSecret}), function(req, res, next) {
             path.resolve(apiPath + "/public/" + scanPath) + " " +
             path.resolve(realPath +"song.mid"),
             function callback(error, stdout, stderr){
-              console.log(error + " - " + stdout + " - " + stderr);
+              console.log("Error = " + error + "\n - Sortie standard =  " + stdout + "\n - Sortie d'erreur = " + stderr);
               if (error || stdout === "") {
-                res.status(501).json({
+                return res.status(501).json({
                   success: false,
                   message: "Error while trying to convert the sheet music into MIDI song"
                 });
@@ -905,7 +905,7 @@ auth({secret: superSecret}), function(req, res, next) {
               song.slug = slug(req.body.name);
               song.save(function (err) {
                 if (err) {
-                  res.status(500).json({
+                  return res.status(500).json({
                     success: false,
                     message: err.message
                   });
