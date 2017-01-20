@@ -630,7 +630,7 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
 * @apiName AddSong
 * @apiGroup Song
 *
-* @apiDescription This api methos has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.
+* @apiDescription This api method has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.
 *
 * For the first method, just add "file" and "preview" with basic fields (name, artist, price, difficulty and a picture).
 *
