@@ -279,6 +279,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setToolbarTitle() {
+        System.out.println(navItemIndex);
         getSupportActionBar().setTitle(activityTitles[navItemIndex]);
     }
 

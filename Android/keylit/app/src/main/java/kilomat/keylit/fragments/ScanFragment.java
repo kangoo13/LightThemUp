@@ -1,31 +1,50 @@
 package kilomat.keylit.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,7 +52,7 @@ import java.io.OutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cz.msebera.android.httpclient.Header;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import kilomat.keylit.R;
 import kilomat.keylit.controller.SessionManager;
 import kilomat.keylit.controller.ToastMessage;
@@ -90,6 +109,8 @@ public class ScanFragment extends Fragment {
         b.setVisibility(View.VISIBLE);
         scan.setVisibility(View.VISIBLE);
 
+
+
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,31 +156,69 @@ public class ScanFragment extends Fragment {
         }, delayInMillis);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    Toast.makeText(this.getActivity(), "You did not allow camera usage :(", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
     private void selectImage() {
 
         final CharSequence[] options = {getString(R.string.image_take),
                 getString(R.string.image_choose), getString(R.string.action_cancel)};
 
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
-        builder.setTitle(getString(R.string.image_title));
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals(getString(R.string.image_take))) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, 1);
-                } else if (options[item].equals(getString(R.string.image_choose))) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);
 
-                } else if (options[item].equals(getString(R.string.action_cancel))) {
-                    dialog.dismiss();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.getActivity().checkSelfPermission(Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                Log.d("MyApp", "Request permission");
+                ActivityCompat.requestPermissions(this.getActivity(),
+                        new String[]{Manifest.permission.CAMERA},
+                        1);
+
+                if (! shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(ScanFragment.this.getActivity(), new String[] {Manifest.permission.CAMERA},
+                                            1);
+                                }
+                            };
                 }
             }
-        });
-        builder.show();
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(getString(R.string.image_title));
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals(getString(R.string.image_take))) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                            startActivityForResult(intent, 1);
+                        } else if (options[item].equals(getString(R.string.image_choose))) {
+                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(intent, 2);
+
+                        } else if (options[item].equals(getString(R.string.action_cancel))) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        }
+
     }
 
     @Override
@@ -249,7 +308,32 @@ public class ScanFragment extends Fragment {
 
         SyncHttpClient client = new SyncHttpClient();
         RequestParams params = new RequestParams();
+        /******/
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpContext localContext = new BasicHttpContext();
+        HttpPost httpPost = new HttpPost(url_address);
 
+        try {
+            MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+
+            entity.addPart("scan", new FileBody(new File (scan_path)));
+            entity.addPart("picture", new FileBody(new File (picture_path)));
+            entity.addPart("idUser", new StringBody(idUser));
+            entity.addPart("name", new StringBody(my_name));
+            entity.addPart("artist", new StringBody(my_artist));
+            entity.addPart("price", new StringBody(my_price));
+            entity.addPart("difficulty", new StringBody(my_dif));
+
+            httpPost.setEntity(entity);
+            httpPost.addHeader("x-access-token", mytoken);
+            HttpResponse response = httpClient.execute(httpPost, localContext);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /****/
+        /*
         client.addHeader("x-access-token", mytoken);
         try {
             params.put("idUser", idUser);
@@ -281,6 +365,7 @@ public class ScanFragment extends Fragment {
                         getString(R.string.toast_message_success));
             }
         });
+        */
     }
     @Override
     public void onDestroy() {
