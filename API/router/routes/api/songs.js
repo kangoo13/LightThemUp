@@ -300,7 +300,7 @@ router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
 *         }
 *    }
 *
-* @apiError NumberTooBig Missing arguments to add a song to the user.
+* @apiError NumberTooBig There are not enough songs in database for requested number.
 *
 * @apiErrorExample NumberTooBig:
 *     HTTP/1.1 503 Service Unavailable
@@ -630,7 +630,7 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
 * @apiName AddSong
 * @apiGroup Song
 *
-* @apiDescription This api methos has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.
+* @apiDescription This api method has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.
 *
 * For the first method, just add "file" and "preview" with basic fields (name, artist, price, difficulty and a picture).
 *
@@ -682,15 +682,6 @@ accepted extensions ["audio/midi", "audio/mid"].
 *       message: 'Song already exists.'
 *     }
 *
-* @apiError ServerError Impossible to add a song to database.
-*
-* @apiErrorExample ServerError:
-*     HTTP/1.1 409 Server Error
-*     {
-*       success: false,
-*       message: 'Song already exists.'
-*     }
-*
 * @apiError Unauthorized Impossible to add a song.
 *
 * @apiErrorExample Unauthorized:
@@ -698,6 +689,24 @@ accepted extensions ["audio/midi", "audio/mid"].
 *     {
 *       success: false,
 *       message: "Unauthorized."
+*     }
+*
+* @apiError CannotConvertScan Impossible to create song from scan.
+*
+* @apiErrorExample CannotConvertScan:
+*     HTTP/1.1 501 Service Unavailable
+*     {
+*       success: false,
+*       message: "Error while trying to convert the sheet music into MIDI song"
+*     }
+*
+* @apiError ServerError Impossible to save the song.
+*
+* @apiErrorExample ServerError:
+*     HTTP/1.1 500 Server Error
+*     {
+*       success: false,
+*       message: "error message"
 *     }
 */
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
@@ -868,9 +877,12 @@ auth({secret: superSecret}), function(req, res, next) {
             path.resolve(apiPath + "/public/" + scanPath) + " " +
             path.resolve(realPath +"song.mid"),
             function callback(error, stdout, stderr){
-              console.log(error + " - " + stdout + " - " + stderr);
-              if (error) {
-                throw "Error while trying to convert the sheet music into MIDI song";
+              console.log("Error = " + error + "\n - Sortie standard =  " + stdout + "\n - Sortie d'erreur = " + stderr);
+              if (error || stdout === "") {
+                return res.status(501).json({
+                  success: false,
+                  message: "Error while trying to convert the sheet music into MIDI song"
+                });
               }
               song.file = "uploads/songs/" + song._id + "/" + "song.mid";
               song.preview = "uploads/songs/" + song._id + "/" + "song.mid";
@@ -884,7 +896,10 @@ auth({secret: superSecret}), function(req, res, next) {
               song.slug = slug(req.body.name);
               song.save(function (err) {
                 if (err) {
-                  throw err;
+                  return res.status(500).json({
+                    success: false,
+                    message: err.message
+                  });
                 }
                 return res.status(200).json({
                   success: true,
@@ -917,13 +932,14 @@ auth({secret: superSecret}), function(req, res, next) {
 });
 
 /**
-* @api {get} /songs/:slug Get song by slug
+* @api {get} /songs/:slug Get song by slug or id
 * @apiPermission none
 * @apiVersion 0.1.0
-* @apiName GetSongsBySlug
+* @apiName GetSong
 * @apiGroup Song
 *
-* @apiParam {String} slug Slug of the song to retrieve.
+* @apiParam {String} [slug] Slug of the song to retrieve.
+* @apiParam {String} [idSong] idSong of the song to retrieve.
 *
 * @apiSuccess {String} slug Slug of the song.
 * @apiSuccess {String} preview Preview of the song (path to preview audio file).

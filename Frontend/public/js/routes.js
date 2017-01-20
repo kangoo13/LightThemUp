@@ -38,6 +38,11 @@ app.config(function ($routeProvider, $locationProvider) {
     controller: 'ShopAllSongsController',
     controllerAs: 'vm',
     authorizedAccess: true
+  }).when('/songs/new', {
+    templateUrl: '/new-song.html',
+    controller: 'NewSongController',
+    controllerAs: 'vm',
+    authorizedAccess: true
   }).when('/songs/:slug', {
     templateUrl: '/song-details.html',
     controller: 'SongDetailController',

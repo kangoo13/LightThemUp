@@ -115,7 +115,6 @@ app.controller('AccountController', ['UserService', "$cookies", 'toastr', '$loca
 		}
 		vm.dataLoading = true;
 		var picture = $scope.file;
-		console.log($scope.updateUser.$valid);
 		UserService.Update($cookies.get("id"), vm.user, picture, $cookies.get("token"))
 		.then(function (response) {
 			if (response.success) {
@@ -443,6 +442,46 @@ app.controller('CreatePlaylistController', ['$scope', '$cookies', 'PlaylistServi
 	}
 
 }]);
+
+
+app.controller('NewSongController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+
+	var vm = this;
+	vm.NewSong = NewSong;
+	function getUserInfos() {
+		UserService.Account($cookies.get("id")).then(function (response) {
+			if (response) {
+				vm.dataLoading = false;
+				vm.user = response;
+				vm.song.artist = vm.user.name;
+			} else {
+				toastr.error("Compte indisponible.");
+				$location.path('/');
+			}
+		});
+	}
+	getUserInfos();
+	function NewSong() {
+		vm.dataLoading = true;
+		if (!$scope.picture || !$scope.scan) {
+			return toastr.error("Merci de bien remplir entièrement le formulaire.");
+		}
+		vm.song.picture = $scope.picture;
+		vm.song.scan = $scope.scan;
+		SongService.NewSong(vm.song, $cookies.get('token'))
+		.then(function (response) {
+			if (response.success) {
+				toastr.success("Musique créée.");
+				$location.path('/mes-musiques');
+			} else {
+				toastr.error(response.message, "Error");
+				vm.dataLoading = false;
+			}
+		});
+	}
+
+}]);
+
 
 app.controller('CommentsController', ['$scope', 'UserService', 'SongService', 'NewsService', 'CommentService', function ($scope, UserService, SongService, NewsService, CommentService) {
 
