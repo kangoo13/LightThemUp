@@ -907,7 +907,7 @@ auth({secret: superSecret}), function(req, res, next) {
                 if (err) {
                   res.status(500).json({
                     success: false,
-                    message: err.message;
+                    message: err.message
                   });
                 }
                 return res.status(200).json({
