@@ -1,12 +1,23 @@
 package kilomat.keylit.fragments;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
 
 import kilomat.keylit.R;
+import kilomat.keylit.activity.LoginActivity;
+import kilomat.keylit.activity.MainActivity;
+import kilomat.keylit.controller.AppController;
+import kilomat.keylit.controller.BluetoothController;
 import kilomat.keylit.controller.SessionManager;
 
 /**
@@ -23,31 +34,27 @@ public class LogoutFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        logout();
     }
 
-    public void logout() {
-        final CharSequence[] options = {getString(R.string.action_yes), getString(R.string.action_cancel)};
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.action_logout));
-        builder.setItems(options, new DialogInterface.OnClickListener() {
+        View layout = inflater.inflate(R.layout.activity_logout, container, false);
+
+        Button refreshButt = (Button) layout.findViewById(R.id.btn_logout);
+        refreshButt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals(getString(R.string.action_yes))) {
-                    manager = new SessionManager();
+            public void onClick(View v) {
+                manager = new SessionManager();
 
-                    manager.setPreferences(getActivity(), "status", "0");
+                manager.setPreferences(getActivity(), "status", "0");
 
-                    getActivity().finish();
-                } else if (options[item].equals(getString(R.string.action_cancel))) {
-                    dialog.dismiss();
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    HomeFragment yfObj = new HomeFragment();
-                    fm.beginTransaction().replace(R.id.frame, yfObj).commit();
-                }
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
-        builder.show();
+        return layout;
     }
 }

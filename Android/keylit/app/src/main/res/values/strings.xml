@@ -77,6 +77,7 @@
         <item>Shop</item>
         <item>Achievements</item>
         <item>Settings</item>
+        <item>Logout</item>
     </string-array>
 
     <!-- HOME page text -->

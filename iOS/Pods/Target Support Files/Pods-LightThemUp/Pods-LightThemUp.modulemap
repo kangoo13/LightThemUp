@@ -1,0 +1,6 @@
+framework module Pods_LightThemUp {
+  umbrella header "Pods-LightThemUp-umbrella.h"
+
+  export *
+  module * { export * }
+}

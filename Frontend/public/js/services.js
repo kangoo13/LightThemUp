@@ -1,6 +1,6 @@
 'use strict';
 
-var apiUrl = 'http://178.33.210.28:3000';
+var apiUrl = '//lightthemup.fr.nf:3000';
 
 app.factory("UserService", function ($http) {
 
@@ -230,6 +230,7 @@ app.factory("SongService", function ($http) {
   service.GetMostBoughtSongs = GetMostBoughtSongs;
   service.GetRandomSongs = GetRandomSongs;
   service.GetNewSongs = GetNewSongs;
+  service.NewSong = NewSong;
   service.SendComment = SendComment;
   service.RemoveComment = RemoveComment;
   service.EditComment = EditComment;
@@ -259,6 +260,21 @@ app.factory("SongService", function ($http) {
 
   function GetNewSongs(nbSong) {
     return $http.get(apiUrl + '/songs/newSongs/' + nbSong).then(handleSuccess, handleError);
+  }
+
+  function NewSong(song, token) {
+    var data = song;
+    data.token = token;
+    var formData = new FormData();
+    angular.forEach(data, function (value, key) {
+      formData.append(key, value);
+    });
+    console.log(data);
+    return $http.post(apiUrl + '/songs/', formData, {
+      headers: {
+       'Content-Type': undefined
+     }
+   }).then(handleSuccess, handleError);
   }
 
   function SendComment(form, slug, token) {

@@ -2,6 +2,7 @@
 
 var express     = require('express');
 var Song        = require('../../../models/Song.js');
+var User        = require('../../../models/User.js');
 var Comment     = require('../../../models/Comment.js');
 var superSecret = require('../../../config.js').secret;
 var auth        = require('authenticate');
@@ -27,6 +28,48 @@ var uploadMusicConfig = {
   maxFileSize : 200000000
 };
 
+/**
+* @api {get} /songs/ Get all songs
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetSongs
+* @apiGroup Song
+*
+* @apiSuccess {String} slug Slug of the song.
+* @apiSuccess {String} preview Preview of the song (path to preview audio file).
+* @apiSuccess {String} file Audio file of the song.
+* @apiSuccess {Number} price Price of the song.
+* @apiSuccess {String} picture Picture of the song (path to image file).
+* @apiSuccess {String} artist Artist of the song.
+* @apiSuccess {String} name Name of the song.
+* @apiSuccess {Object} comments Comments from the song.
+* @apiSuccess {Number} bought Number of how many times the song was bought.
+* @apiSuccess {Number} difficulty Difficulty of the song.
+*
+* @apiSuccessExample Success-Response:
+*   HTTP/1.1 200 OK
+*     {
+*       {
+*         "_id": "581e1eedfae905040b64874b",
+*         "updatedAt": "2016-11-08T12:28:42.926Z",
+*         "createdAt": "2016-11-05T18:03:25.000Z",
+*         "slug": "Pirates-des-Caraibes",
+*         "preview": "",
+*         "file": "uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid",
+*         "price": 12,
+*         "picture": "uploads/songs/581e1eedfae905040b64874b/cover.jpg",
+*         "artist": "Disney",
+*         "name": "Pirates des Caraïbes",
+*         "__v": 0,
+*         "comments": [],
+*         "bought": 1,
+*         "difficulty": 5
+*         },
+*         {
+*          ...
+*         }
+*    }
+*/
 router.get('/', function(req, res, next) {
   Song.find(function (err, songs) {
     if (err) return next(err);
@@ -34,6 +77,50 @@ router.get('/', function(req, res, next) {
   });
 });
 
+/**
+* @api {get} /songs/newSongs/:nbSong Get new songs (limit by n)
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetNewSongs
+* @apiGroup Song
+*
+* @apiParam {Number} nbSong Number of songs you want to retrieve.
+*
+* @apiSuccess {String} slug Slug of the song.
+* @apiSuccess {String} preview Preview of the song (path to preview audio file).
+* @apiSuccess {String} file Audio file of the song.
+* @apiSuccess {Number} price Price of the song.
+* @apiSuccess {String} picture Picture of the song (path to image file).
+* @apiSuccess {String} artist Artist of the song.
+* @apiSuccess {String} name Name of the song.
+* @apiSuccess {Object} comments Comments from the song.
+* @apiSuccess {Number} bought Number of how many times the song was bought.
+* @apiSuccess {Number} difficulty Difficulty of the song.
+*
+* @apiSuccessExample Success-Response:
+*   HTTP/1.1 200 OK
+*     {
+*       {
+*         "_id": "581e1eedfae905040b64874b",
+*         "updatedAt": "2016-11-08T12:28:42.926Z",
+*         "createdAt": "2016-11-05T18:03:25.000Z",
+*         "slug": "Pirates-des-Caraibes",
+*         "preview": "",
+*         "file": "uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid",
+*         "price": 12,
+*         "picture": "uploads/songs/581e1eedfae905040b64874b/cover.jpg",
+*         "artist": "Disney",
+*         "name": "Pirates des Caraïbes",
+*         "__v": 0,
+*         "comments": [],
+*         "bought": 1,
+*         "difficulty": 5
+*         },
+*         {
+*          ...
+*         }
+*    }
+*/
 router.get('/newSongs/:nbSong', function(req, res, next) {
   Song.find().limit(parseInt(req.params.nbSong, 10)).sort({'createdAt': -1}).exec(function (err, songs) {
     if (err) return next(err);
@@ -41,7 +128,50 @@ router.get('/newSongs/:nbSong', function(req, res, next) {
   });
 });
 
-
+/**
+* @api {get} /songs/mostBoughtSongs/:nbSong Get most bought songs (limit by n)
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetMostBoughtSongs
+* @apiGroup Song
+*
+* @apiParam {Number} nbSong Number of songs you want to retrieve.
+*
+* @apiSuccess {String} slug Slug of the song.
+* @apiSuccess {String} preview Preview of the song (path to preview audio file).
+* @apiSuccess {String} file Audio file of the song.
+* @apiSuccess {Number} price Price of the song.
+* @apiSuccess {String} picture Picture of the song (path to image file).
+* @apiSuccess {String} artist Artist of the song.
+* @apiSuccess {String} name Name of the song.
+* @apiSuccess {Object} comments Comments from the song.
+* @apiSuccess {Number} bought Number of how many times the song was bought.
+* @apiSuccess {Number} difficulty Difficulty of the song.
+*
+* @apiSuccessExample Success-Response:
+*   HTTP/1.1 200 OK
+*     {
+*       {
+*         "_id": "581e1eedfae905040b64874b",
+*         "updatedAt": "2016-11-08T12:28:42.926Z",
+*         "createdAt": "2016-11-05T18:03:25.000Z",
+*         "slug": "Pirates-des-Caraibes",
+*         "preview": "",
+*         "file": "uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid",
+*         "price": 12,
+*         "picture": "uploads/songs/581e1eedfae905040b64874b/cover.jpg",
+*         "artist": "Disney",
+*         "name": "Pirates des Caraïbes",
+*         "__v": 0,
+*         "comments": [],
+*         "bought": 1,
+*         "difficulty": 5
+*         },
+*         {
+*          ...
+*         }
+*    }
+*/
 router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
   Song.find().limit(parseInt(req.params.nbSong, 10)).sort({'bought': -1}).exec(function (err, songs) {
     if (err) return next(err);
@@ -49,6 +179,57 @@ router.get('/mostBoughtSongs/:nbSong', function(req, res, next) {
   });
 });
 
+/**
+* @api {get} /songs/getSongFromComment/:idComment/:index Get a song from a comment
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetSongFromComment
+* @apiGroup Song
+*
+* @apiParam {Number} idComment Comment you want to select.
+* @apiParam {Number} index ???.
+*
+* @apiSuccess {String} slug Slug of the song.
+* @apiSuccess {String} preview Preview of the song (path to preview audio file).
+* @apiSuccess {String} file Audio file of the song.
+* @apiSuccess {Number} price Price of the song.
+* @apiSuccess {String} picture Picture of the song (path to image file).
+* @apiSuccess {String} artist Artist of the song.
+* @apiSuccess {String} name Name of the song.
+* @apiSuccess {Object} comments Comments from the song.
+* @apiSuccess {Number} bought Number of how many times the song was bought.
+* @apiSuccess {Number} difficulty Difficulty of the song.
+*
+* @apiSuccessExample Success-Response:
+*   HTTP/1.1 200 OK
+*     {
+*       {
+*         "_id": "581e1eedfae905040b64874b",
+*         "updatedAt": "2016-11-08T12:28:42.926Z",
+*         "createdAt": "2016-11-05T18:03:25.000Z",
+*         "slug": "Pirates-des-Caraibes",
+*         "preview": "",
+*         "file": "uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid",
+*         "price": 12,
+*         "picture": "uploads/songs/581e1eedfae905040b64874b/cover.jpg",
+*         "artist": "Disney",
+*         "name": "Pirates des Caraïbes",
+*         "__v": 0,
+*         "comments": [],
+*         "bought": 1,
+*         "difficulty": 5
+*         }
+*    }
+*
+* @apiError NotFound Song doesn't exist in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "La musique n'a pas été trouvée"
+*     }
+*/
 router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
   Song.find().populate("comments").exec(function (err, songs){
     if (err) return next(err);
@@ -64,26 +245,80 @@ router.get('/getSongFromComment/:idComment/:index', function(req, res, next){
         }
       }
       if (goodSong != null)
-        break;
+      break;
     }
     if (goodSong)
-      return res.status(200).json(goodSong);
+    return res.status(200).json(goodSong);
     else
-      return res.status(503).json({
-        success: false,
-        message: "La musique n'a pas été trouvée"
-      });
+    return res.status(404).json({
+      success: false,
+      message: "La musique n'a pas été trouvée"
+    });
   })
 });
 
+/**
+* @api {get} /songs/randomSongs/:nbSong Get random songs (limit by n)
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetRandomSongs
+* @apiGroup Song
+*
+* @apiParam {Number} nbSong Number of songs you want to retrieve.
+*
+* @apiSuccess {String} slug Slug of the song.
+* @apiSuccess {String} preview Preview of the song (path to preview audio file).
+* @apiSuccess {String} file Audio file of the song.
+* @apiSuccess {Number} price Price of the song.
+* @apiSuccess {String} picture Picture of the song (path to image file).
+* @apiSuccess {String} artist Artist of the song.
+* @apiSuccess {String} name Name of the song.
+* @apiSuccess {Object} comments Comments from the song.
+* @apiSuccess {Number} bought Number of how many times the song was bought.
+* @apiSuccess {Number} difficulty Difficulty of the song.
+*
+* @apiSuccessExample Success-Response:
+*   HTTP/1.1 200 OK
+*     {
+*       {
+*         "_id": "581e1eedfae905040b64874b",
+*         "updatedAt": "2016-11-08T12:28:42.926Z",
+*         "createdAt": "2016-11-05T18:03:25.000Z",
+*         "slug": "Pirates-des-Caraibes",
+*         "preview": "",
+*         "file": "uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid",
+*         "price": 12,
+*         "picture": "uploads/songs/581e1eedfae905040b64874b/cover.jpg",
+*         "artist": "Disney",
+*         "name": "Pirates des Caraïbes",
+*         "__v": 0,
+*         "comments": [],
+*         "bought": 1,
+*         "difficulty": 5
+*         },
+*         {
+*          ...
+*         }
+*    }
+*
+* @apiError NumberTooBig There are not enough songs in database for requested number.
+*
+* @apiErrorExample NumberTooBig:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "Il n'y a pas assez de musiques pour cette demande."
+*     }
+*
+*/
 router.get('/randomSongs/:nbSong', function(req, res, next) {
   Song.find().exec(function (err, songs) {
     var maxRandom = songs.length - 1;
     if (req.params.nbSong-1 > maxRandom)
-      return res.status(503).json({
-        success: false,
-        message: "Il n'y a pas assez de musiques pour cette demande."
-      });
+    return res.status(503).json({
+      success: false,
+      message: "Il n'y a pas assez de musiques pour cette demande."
+    });
     else
     {
       var randomTab = [];
@@ -100,7 +335,7 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
           }
         }
         if (isContained == false)
-          randomTab.push(randTab);
+        randomTab.push(randTab);
       }
       res.status(200).json(randomTab);
 
@@ -109,13 +344,68 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
   });
 });
 
-
+/**
+* @api {put} /songs/:idSong/comments Edit a comment from a song
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName EditCommentFromSong
+* @apiGroup Comment
+*
+* @apiParam {String} message Message of the comment.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: "Comment edited."
+*     }
+*
+* @apiError WrongArgs Missing arguments to add a comment from a song.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError NotFound Missing arguments to edit a comment from a song.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "Comment doesn't exist."
+*     }
+*
+* @apiError ServiceUnavailable Impossible to add a comment from a song.
+*
+* @apiErrorExample ServiceUnavailable:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "error message."
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*/
 router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment && req.body.message) {
     Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
       Comment.findById(req.params.idComment, function (err, comment) {
         if (comment == null) {
-          return res.status(503).json({
+          return res.status(404).json({
             success: false,
             message: "Comment doesn't exist."
           });
@@ -153,12 +443,67 @@ router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function
   }
 });
 
+/**
+* @api {delete} /songs/:idSong/comments/:idComment Delete a comment from a song
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName DeleteCommentFromSong
+* @apiGroup Comment
+*
+* @apiParam {Number} idSong Song that you want to select.
+* @apiParam {Number} idComment Comment that you want to delete.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'Comment removed.'
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*
+* @apiError NotFound Comment doesn't exist in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "Comment doesn't exist."
+*     }
+*
+* @apiErrorExample ServerError:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "Error message."
+*     }
+*
+* @apiError WrongArgs Missing arguments to delete comment from song.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*/
 router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment) {
     Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
       Comment.findById(req.params.idComment, function (err, comment) {
         if (comment == null) {
-          return res.status(503).json({
+          return res.status(404).json({
             success: false,
             message: "Comment doesn't exist."
           });
@@ -198,6 +543,44 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
   }
 });
 
+/**
+* @api {post} /songs/:idSong/comments Add a comment to a song
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName AddCommentToSong
+* @apiGroup Comment
+*
+* @apiParam {String} message Message of the comment.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: "Comment added."
+*     }
+*
+* @apiError WrongArgs Missing arguments to add a comment to a song.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError ServiceUnavailable Impossible to add a comment to a song.
+*
+* @apiErrorExample ServiceUnavailable:
+*     HTTP/1.1 503 Service Unavailable
+*     {
+*       success: false,
+*       message: "error message."
+*     }
+*/
 router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res, next) {
   Song.findOne({ 'slug': req.params.idSong }).exec(function (err, post) {
     if (err) return next(err);
@@ -234,15 +617,101 @@ router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res,
       });
     }
     else
-      return res.status(400).json({
-        success: false,
-        message: 'Wrong arguments'
-      });
+    return res.status(400).json({
+      success: false,
+      message: 'Wrong arguments'
+    });
   });
 });
 
+/**
+* @api {post} /songs Add a song
+* @apiPermission user
+* @apiVersion 0.1.0
+* @apiName AddSong
+* @apiGroup Song
+*
+* @apiDescription This api method has to ways to run : there is a method to add a song with audio file and another one from a scanned partition, without audio file.
+*
+* For the first method, just add "file" and "preview" with basic fields (name, artist, price, difficulty and a picture).
+*
+* For the second method, just add "scan" with basic fields (name, artist, price (optionnal), difficulty and a picture).
+*
+* @apiParam {String} token authentification token is mandatory.
+* @apiParam {String} name Name of the song.
+* @apiParam {String} artist Artist of the song.
+* @apiParam {Number} price Price of the song.
+* @apiParam {String} difficulty Difficulty of the song.
+* @apiParam {Image{2 Mo}} picture Custom picture for the song :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+* @apiParam {Image{2 Mo}} scan Custom scan for the song :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+* @apiParam {Song{20 Mo}} file Audio file for the song :
+MIME Type has to be : ["midi", "mp3", "wav", "mid"] and
+accepted extensions ["audio/midi", "audio/mid"].
+* @apiParam {Song{20 Mo}} preview Audio preview file for the song :
+MIME Type has to be : ["midi", "mp3", "wav", "mid"] and
+accepted extensions ["audio/midi", "audio/mid"].
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'Song created !',
+*     }
+*
+* @apiError WrongArgs Missing arguments to add a song.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       success: false,
+*       message: 'Wrong arguments'
+*     }
+*
+* @apiError AlreadyExists This song already exists in database.
+*
+* @apiErrorExample AlreadyExists:
+*     HTTP/1.1 409 Conflict
+*     {
+*       success: false,
+*       message: 'Song already exists.'
+*     }
+*
+* @apiError Unauthorized Impossible to add a song.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*
+* @apiError CannotConvertScan Impossible to create song from scan.
+*
+* @apiErrorExample CannotConvertScan:
+*     HTTP/1.1 501 Service Unavailable
+*     {
+*       success: false,
+*       message: "Error while trying to convert the sheet music into MIDI song"
+*     }
+*
+* @apiError ServerError Impossible to save the song.
+*
+* @apiErrorExample ServerError:
+*     HTTP/1.1 500 Server Error
+*     {
+*       success: false,
+*       message: "error message"
+*     }
+*/
 router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'preview', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'scan', maxCount: 1 }]),
-  auth({secret: superSecret}), function(req, res, next) {
+auth({secret: superSecret}), function(req, res, next) {
   // Only Admin or users are allowed here
   if (req.decoded.admin || req.decoded.id ) {
     var method = -1;
@@ -302,10 +771,10 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
           if (method == BASIC_UPLOAD) {
             // Check the correct MIME for sounds
             if (uploadMusicConfig.acceptedMimeTypes.indexOf(files['file'][0].mimetype) == -1) {
-                throw "Incorrect MIME type for file : " + files['file'][0].mimetype;
+              throw "Incorrect MIME type for file : " + files['file'][0].mimetype;
             }
             if (uploadMusicConfig.acceptedMimeTypes.indexOf(files['preview'][0].mimetype) == -1) {
-                throw "Incorrect MIME type for preview : " + files['preview'][0].mimetype;
+              throw "Incorrect MIME type for preview : " + files['preview'][0].mimetype;
             }
           }
           return files;
@@ -313,20 +782,20 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
         .then(function(files) {
           // Check the maxsize for images
           if (files['picture'][0].size > uploadConfig.maxFileSize) {
-              throw "File is too large for the picture : " + files['picture'][0].size + " instead of  " + uploadConfig.maxFileSize;
+            throw "File is too large for the picture : " + files['picture'][0].size + " instead of  " + uploadConfig.maxFileSize;
           }
           if (method == SCAN_PARTITION) {
             if (files['scan'][0].size > uploadConfig.maxFileSize) {
-                throw "File is too large for the scan : " + files['scan'][0].size + " instead of " + uploadConfig.maxFileSize;
+              throw "File is too large for the scan : " + files['scan'][0].size + " instead of " + uploadConfig.maxFileSize;
             }
           }
           if (method == BASIC_UPLOAD) {
             // Check the maxsize for sounds
             if (files['file'][0].size > uploadMusicConfig.maxFileSize) {
-                throw "File is too large for the song : " + files['file'][0].size + " instead of  " + uploadConfig.maxFileSize;
+              throw "File is too large for the song : " + files['file'][0].size + " instead of  " + uploadConfig.maxFileSize;
             }
             if (files['preview'][0].size > uploadMusicConfig.maxFileSize) {
-                throw "File is too large for the preview : " + files['preview'][0].size + " instead of  " + uploadConfig.maxFileSize;
+              throw "File is too large for the preview : " + files['preview'][0].size + " instead of  " + uploadConfig.maxFileSize;
             }
           }
           return files;
@@ -356,7 +825,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
           // Moving files to song folder
           fs.rename(tempPath, realPath + files['picture'][0].originalname, function(err){
             if (err) {
-                throw "Server error about moving tmp picture file";
+              throw "Server error about moving tmp picture file";
             }
             if (method == SCAN_PARTITION) {
               return fs.rename(tempScanPath, realPath + files['scan'][0].originalname);
@@ -364,7 +833,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
             if (method == BASIC_UPLOAD) {
               fs.rename(tempFilePath, realPath + files['file'][0].originalname, function(err){
                 if (err) {
-                    throw  "Server error about moving tmp song file";
+                  throw  "Server error about moving tmp song file";
                 }
                 return fs.rename(tempPreviewPath, realPath + files['preview'][0].originalname);
               });
@@ -380,7 +849,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
             if (method ==  BASIC_UPLOAD) {
               errorFrom = "preview";
             }
-              throw "Server error about moving tmp " + errorFrom + " file";
+            throw "Server error about moving tmp " + errorFrom + " file";
           }
 
           if (method == BASIC_UPLOAD) {
@@ -394,7 +863,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
             song.slug = slug(req.body.name);
             song.save(function (err) {
               if (err) {
-                  throw err;
+                throw err;
               }
               return res.status(200).json({
                 success: true,
@@ -406,18 +875,21 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
           if (method == SCAN_PARTITION) {
             // Launch OpenORM (Java) to perform the scan
             exec("java -jar " + path.resolve(apiPath + "/OpenOMR/OpenOMR.jar") + " " +
-              path.resolve(apiPath + "/public/" + scanPath) + " " +
-              path.resolve(realPath +"song.mid"),
-              function callback(error, stdout, stderr){
-              	console.log(error + " - " + stdout + " - " + stderr);
-                if (error) {
-                    throw "Error while trying to convert the sheet music into MIDI song";
-                }
-                song.file = "uploads/songs/" + song._id + "/" + "song.mid";
-                song.preview = "uploads/songs/" + song._id + "/" + "song.mid";
-                song.name = req.body.name;
-                song.artist = req.body.artist;
-                song.picture = picturePath;
+            path.resolve(apiPath + "/public/" + scanPath) + " " +
+            path.resolve(realPath +"song.mid"),
+            function callback(error, stdout, stderr){
+              console.log("Error = " + error + "\n - Sortie standard =  " + stdout + "\n - Sortie d'erreur = " + stderr);
+              if (error || stdout === "") {
+                return res.status(501).json({
+                  success: false,
+                  message: "Error while trying to convert the sheet music into MIDI song"
+                });
+              }
+              song.file = "uploads/songs/" + song._id + "/" + "song.mid";
+              song.preview = "uploads/songs/" + song._id + "/" + "song.mid";
+              song.name = req.body.name;
+              song.artist = req.body.artist;
+              song.picture = picturePath;
               // Price is not mandatory, 0 if empty
               song.price = req.body.price || 0;
               song.difficulty = req.body.difficulty;
@@ -425,12 +897,16 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
               song.slug = slug(req.body.name);
               song.save(function (err) {
                 if (err) {
-                    throw err;
+                  return res.status(500).json({
+                    success: false,
+                    message: err.message
+                  });
                 }
-                return res.status(200).json({
-                  success: true,
-                  message: 'Song created from your sheet music !'
-                });
+                // User.addSongToUser(req, res);
+                // return res.status(200).json({
+                //   success: true,
+                //   message: 'Song created from your sheet music !'
+                // });
               });
             });
           }
@@ -447,7 +923,7 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
         });
       }
     });
-}
+  }
   // Not allowed quit with unauthorized message
   else {
     return res.status(401).send({
@@ -457,6 +933,48 @@ router.post('/', upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'previ
   }
 });
 
+/**
+* @api {get} /songs/:slug Get song by slug or id
+* @apiPermission none
+* @apiVersion 0.1.0
+* @apiName GetSong
+* @apiGroup Song
+*
+* @apiParam {String} [slug] Slug of the song to retrieve.
+* @apiParam {String} [idSong] idSong of the song to retrieve.
+*
+* @apiSuccess {String} slug Slug of the song.
+* @apiSuccess {String} preview Preview of the song (path to preview audio file).
+* @apiSuccess {String} file Audio file of the song.
+* @apiSuccess {Number} price Price of the song.
+* @apiSuccess {String} picture Picture of the song (path to image file).
+* @apiSuccess {String} artist Artist of the song.
+* @apiSuccess {String} name Name of the song.
+* @apiSuccess {Object} comments Comments from the song.
+* @apiSuccess {Number} bought Number of how many times the song was bought.
+* @apiSuccess {Number} difficulty Difficulty of the song.
+*
+* @apiSuccessExample Success-Response:
+*   HTTP/1.1 200 OK
+*     {
+*       {
+*         "_id": "581e1eedfae905040b64874b",
+*         "updatedAt": "2016-11-08T12:28:42.926Z",
+*         "createdAt": "2016-11-05T18:03:25.000Z",
+*         "slug": "Pirates-des-Caraibes",
+*         "preview": "",
+*         "file": "uploads/songs/581e1eedfae905040b64874b/Pirates of the Caribbean - He's a Pirate.mid",
+*         "price": 12,
+*         "picture": "uploads/songs/581e1eedfae905040b64874b/cover.jpg",
+*         "artist": "Disney",
+*         "name": "Pirates des Caraïbes",
+*         "__v": 0,
+*         "comments": [],
+*         "bought": 1,
+*         "difficulty": 5
+*         }
+*    }
+*/
 router.get('/:slug', function(req, res, next) {
   Song.findOne({'slug': req.params.slug}).populate({
     path: 'comments',
@@ -486,6 +1004,50 @@ router.get('/:slug', function(req, res, next) {
   });
 });
 
+/**
+* @api {put} /songs/:idSong Edit a song
+* @apiPermission admin
+* @apiVersion 0.1.0
+* @apiName EditSong
+* @apiGroup Song
+*
+* @apiParam {String} token authentification token is mandatory.
+* @apiParam {String} [name] Name of the song.
+* @apiParam {String} [artist] Artist of the song.
+* @apiParam {Number} [price] Price of the song.
+* @apiParam {String} [difficulty] Difficulty of the song.
+* @apiParam {Image{2 Mo}} [picture] Custom picture for the song :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+* @apiParam {Image{2 Mo}} [scan] Custom scan for the song :
+MIME Type has to be : ["image/jpeg", "image/png", "image/gif", "image/tiff"] and
+accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
+* @apiParam {Song{20 Mo}} [file] Audio file for the song :
+MIME Type has to be : ["midi", "mp3", "wav", "mid"] and
+accepted extensions ["audio/midi", "audio/mid"].
+* @apiParam {Song{20 Mo}} [preview] Audio preview file for the song :
+MIME Type has to be : ["midi", "mp3", "wav", "mid"] and
+accepted extensions ["audio/midi", "audio/mid"].
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: "Song updated !"
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*/
 router.put('/:idSong', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin) {
     Song.findByIdAndUpdate(req.params.idSong, req.body, function (err, post) {
@@ -504,6 +1066,35 @@ router.put('/:idSong', auth({secret: superSecret}), function(req, res, next) {
   }
 });
 
+/**
+* @api {delete} /songs/:idSong Delete a song
+* @apiPermission admin
+* @apiVersion 0.1.0
+* @apiName DeleteSong
+* @apiGroup Song
+*
+* @apiParam {Number} idSong Song that you want to delete.
+* @apiParam {String} token authentification token is mandatory.
+*
+* @apiSuccess {Boolean} success Notify the success of current request.
+* @apiSuccess {String} message Response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       success: true,
+*       message: 'The song has been deleted.'
+*     }
+*
+* @apiError Unauthorized The token is not valid.
+*
+* @apiErrorExample Unauthorized:
+*     HTTP/1.1 401 Unauthorized
+*     {
+*       success: false,
+*       message: "Unauthorized."
+*     }
+*/
 router.delete('/:idSong', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin) {
     Song.findByIdAndRemove(req.params.idSong, req.body, function (err, post) {

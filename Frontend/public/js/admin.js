@@ -1,10 +1,9 @@
 'use strict';
 
-
 // declare a new module called 'myApp', and make it require the `ng-admin` module as a dependency
 var myApp = angular.module('LightThemUpAdmin', ['ng-admin', 'ngCookies', 'restangular']);
-var apiUrl = "http://178.33.210.28:3000/";
-var frontendUrl = "http://178.33.210.28/";
+var apiUrl = '//lightthemup.fr.nf:3000/';
+var frontendUrl = "//lightthemup.fr.nf/";
 
 myApp.config(['RestangularProvider', function(RestangularProvider) {
   var $cookies;

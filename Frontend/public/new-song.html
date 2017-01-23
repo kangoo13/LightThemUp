@@ -1,0 +1,26 @@
+<div class="content">
+  <a id="goBack" href="#" title="Retour"><i class="fa fa-arrow-circle-left" aria-hidden="true" back></i></a>
+  <h3>Création de ma musique</h3>
+  <img ng-if="vm.dataLoading" class="dataLoading"
+  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+  <div ng-hide="vm.dataLoading">
+    <form name="newSong" ng-submit="vm.NewSong()" role="form" autocomplete="on">
+      <label for="name">Titre *</label>
+      <input ng-model="vm.song.name" class="u-full-width" type="text" name="name" required/>
+      <label for="artist">Artiste *</label>
+      <input ng-model="vm.song.artist" class="u-full-width" type="text" name="artist" disabled/>
+      <label for="price">Prix *</label>
+      <input ng-model="vm.song.price" class="u-full-width" type="number" name="price" min="0" ng-init="vm.song.price=0" required/>
+      <label for="difficulty">Difficulté *</label>
+      <input ng-model="vm.song.difficulty" class="u-full-width" type="number" name="difficulty" min="1" max="5" ng-init="vm.song.difficulty=1" required/>
+      <label for="picture">Miniature *</label>
+      <input type="file" file="picture" accept="image/*" name="picture" required />
+      <label for="scan">Scan de la partition *</label>
+      <input type="file" file="scan" accept="image/*" name="scan" required/>
+      <div class="form-actions">
+        <button type="submit" class="button-primary">Envoyer</button>
+        <a class="button" href="/mes-musiques">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>

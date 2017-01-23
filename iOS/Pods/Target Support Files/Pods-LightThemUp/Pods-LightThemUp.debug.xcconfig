@@ -1,0 +1,10 @@
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/Alamofire" "$PODS_CONFIGURATION_BUILD_DIR/ImagePicker" "$PODS_CONFIGURATION_BUILD_DIR/JASON" "$PODS_CONFIGURATION_BUILD_DIR/SideMenuController" "$PODS_CONFIGURATION_BUILD_DIR/SwiftOverlays"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/Alamofire/Alamofire.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/ImagePicker/ImagePicker.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/JASON/JASON.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SideMenuController/SideMenuController.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SwiftOverlays/SwiftOverlays.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "Alamofire" -framework "ImagePicker" -framework "JASON" -framework "SideMenuController" -framework "SwiftOverlays"
+OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_ROOT = ${SRCROOT}/Pods

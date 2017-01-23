@@ -114,7 +114,9 @@ router.get('/', function(req, res, next) {
 *       message: "error message."
 *     }
 */
-router.post('/songs', auth({secret: superSecret}), function(req, res) {
+router.post('/songs', auth({secret: superSecret}), addSongToUser);
+
+function addSongToUser(req, res) {
 	if (req.body.idSong) {
 		User.findOne({_id: req.decoded.id}, function (err, user) {
 			Song.findOne({_id: req.body.idSong}, function (err, song) {
@@ -157,7 +159,9 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
 		success: false,
 		message: 'Wrong arguments'
 	});
-});
+}
+
+exports.addSongToUser = addSongToUser;
 
 /**
 * @api {delete} /users/songs/:idSong Delete a song from an user
@@ -179,7 +183,7 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
 *       message: 'Song removed.'
 *     }
 *
-* @apiError ServiceUnavailable The token is not valid.
+* @apiError ServiceUnavailable Impossible to delete a song from an user.
 *
 * @apiErrorExample ServiceUnavailable:
 *     HTTP/1.1 503 Service Unavailable
@@ -275,7 +279,7 @@ accepted extensions ["jpg", "jpeg", "png", "gif", "tiff"].
 *       message: "Authentication failed. User not found."
 *     }
 *
-* @apiError ServiceUnavailable The token is not valid.
+* @apiError ServiceUnavailable Impossible to add an user.
 *
 * @apiErrorExample ServiceUnavailable:
 *     HTTP/1.1 503 Service Unavailable

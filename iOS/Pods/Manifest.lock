@@ -1,0 +1,24 @@
+PODS:
+  - Alamofire (4.2.0)
+  - ImagePicker (2.0.0)
+  - JASON (3.1)
+  - SideMenuController (0.2.1)
+  - SwiftOverlays (3.0.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.0)
+  - ImagePicker
+  - JASON (~> 3.0)
+  - SideMenuController
+  - SwiftOverlays (~> 3.0.0)
+
+SPEC CHECKSUMS:
+  Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  ImagePicker: 81175d36c2852cb543cb4f5d6c19e28f3e8d90eb
+  JASON: c1204b01c9979eef35b6948ca939aac5e7bef081
+  SideMenuController: 4c543122289d74e1db9d1e24fd3264581fd6ac4e
+  SwiftOverlays: 4cdd9e4f5c7817fb6348882059eb697e11685fad
+
+PODFILE CHECKSUM: 5c448e7f189316ee4a354b11f4d8e71710970c99
+
+COCOAPODS: 1.2.0.beta.3
