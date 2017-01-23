@@ -116,7 +116,7 @@ router.get('/', function(req, res, next) {
 */
 router.post('/songs', auth({secret: superSecret}), addSongToUser);
 
-exports.addSongToUser = function(req, res) {
+var addSongToUser=  function addSongToUser(req, res) {
 	if (req.body.idSong) {
 		User.findOne({_id: req.decoded.id}, function (err, user) {
 			Song.findOne({_id: req.body.idSong}, function (err, song) {
@@ -160,6 +160,8 @@ exports.addSongToUser = function(req, res) {
 		message: 'Wrong arguments'
 	});
 }
+
+exports.addSongToUser = addSongToUser;
 
 /**
 * @api {delete} /users/songs/:idSong Delete a song from an user
