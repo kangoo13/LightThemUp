@@ -116,7 +116,7 @@ router.get('/', function(req, res, next) {
 */
 router.post('/songs', auth({secret: superSecret}), addSongToUser);
 
-var addSongToUser=  function addSongToUser(req, res) {
+function addSongToUser(req, res) {
 	if (req.body.idSong) {
 		User.findOne({_id: req.decoded.id}, function (err, user) {
 			Song.findOne({_id: req.body.idSong}, function (err, song) {
@@ -161,7 +161,6 @@ var addSongToUser=  function addSongToUser(req, res) {
 	});
 }
 
-exports.addSongToUser = addSongToUser;
 
 /**
 * @api {delete} /users/songs/:idSong Delete a song from an user
