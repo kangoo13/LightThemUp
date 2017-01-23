@@ -902,7 +902,7 @@ auth({secret: superSecret}), function(req, res, next) {
                     message: err.message
                   });
                 }
-                User.addSongToUser(req, res);
+                // User.addSongToUser(req, res);
                 // return res.status(200).json({
                 //   success: true,
                 //   message: 'Song created from your sheet music !'
