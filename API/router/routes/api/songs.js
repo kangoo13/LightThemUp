@@ -2,6 +2,7 @@
 
 var express     = require('express');
 var Song        = require('../../../models/Song.js');
+var User        = require('../../../models/User.js');
 var Comment     = require('../../../models/Comment.js');
 var superSecret = require('../../../config.js').secret;
 var auth        = require('authenticate');
@@ -901,10 +902,11 @@ auth({secret: superSecret}), function(req, res, next) {
                     message: err.message
                   });
                 }
-                return res.status(200).json({
-                  success: true,
-                  message: 'Song created from your sheet music !'
-                });
+                User.addSongToUser(req, res);
+                // return res.status(200).json({
+                //   success: true,
+                //   message: 'Song created from your sheet music !'
+                // });
               });
             });
           }

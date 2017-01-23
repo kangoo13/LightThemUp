@@ -1,7 +1,7 @@
 {
   "name": "LightThemUp",
   "version": "0.1.0",
-  "description": "An API documentation about Light Them",
+  "description": "The API documentation about Light Them Up",
   "title": "Light Them Up - API Documentation",
   "url": "http://lightthemup.fr.nf:3000",
   "header": {
@@ -12,7 +12,7 @@
   "apidoc": "0.2.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-01-20T16:42:03.904Z",
+    "time": "2017-01-23T11:13:30.011Z",
     "url": "http://apidocjs.com",
     "version": "0.16.1"
   }
