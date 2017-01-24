@@ -573,6 +573,15 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
 *       message: 'Wrong arguments'
 *     }
 *
+* @apiError NotFound The song is not found in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "Song is not found"
+*     }
+*
 * @apiError ServiceUnavailable Impossible to add a comment to a song.
 *
 * @apiErrorExample ServiceUnavailable:
@@ -585,43 +594,51 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
 router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res, next) {
   Song.findOne({ 'slug': req.params.idSong }).exec(function (err, post) {
     if (err) return next(err);
-    if (req.decoded.id && req.body.message) {
-      var comment = new Comment();
-      if (err) return next(err);
-      var author = new mongoose.mongo.ObjectID(req.decoded.id);
-      comment.author = author;
-      comment.message = req.body.message;
-      comment.type = "song";
-      comment.save(function (err) {
-        if (err) {
-          return res.status(503).json({
-            success: false,
-            message: err.errors
-          });
-        }
-        else {
-          var objectid = new mongoose.mongo.ObjectID(comment._id);
-          post.comments.push(objectid);
-          post.save(function (err) {
-            if (err) {
-              return res.status(503).json({
-                success: false,
-                message: err.errors
-              });
-            }
-            res.status(200).json({
-              success: true,
-              message: 'Comment added.'
+    if (post) {
+      if (req.decoded.id && req.body.message) {
+        var comment = new Comment();
+        if (err) return next(err);
+        var author = new mongoose.mongo.ObjectID(req.decoded.id);
+        comment.author = author;
+        comment.message = req.body.message;
+        comment.type = "song";
+        comment.save(function (err) {
+          if (err) {
+            return res.status(503).json({
+              success: false,
+              message: err.errors
             });
-          });
-        }
+          }
+          else {
+            var objectid = new mongoose.mongo.ObjectID(comment._id);
+            post.comments.push(objectid);
+            post.save(function (err) {
+              if (err) {
+                return res.status(503).json({
+                  success: false,
+                  message: err.errors
+                });
+              }
+              res.status(200).json({
+                success: true,
+                message: 'Comment added.'
+              });
+            });
+          }
+        });
+      }
+      else {
+        return res.status(400).json({
+          success: false,
+          message: 'Wrong arguments'
+        });
+      }
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: "Song is not found"
       });
     }
-    else
-    return res.status(400).json({
-      success: false,
-      message: 'Wrong arguments'
-    });
   });
 });
 

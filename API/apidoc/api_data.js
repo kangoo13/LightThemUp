@@ -688,6 +688,12 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": false,
+            "field": "NotFound",
+            "description": "<p>The song is not found in database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
             "field": "ServiceUnavailable",
             "description": "<p>Impossible to add a comment to a song.</p>"
           }
@@ -697,6 +703,11 @@ define({ "api": [
         {
           "title": "WrongArgs:",
           "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFound:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  success: false,\n  message: \"Song is not found\"\n}",
           "type": "json"
         },
         {
