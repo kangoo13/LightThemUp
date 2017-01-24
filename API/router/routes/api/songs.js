@@ -551,6 +551,7 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
 * @apiName AddCommentToSong
 * @apiGroup Comment
 *
+* @apiParam {Number} idSong The song you want to select.
 * @apiParam {String} message Message of the comment.
 * @apiParam {String} token authentification token is mandatory.
 *
