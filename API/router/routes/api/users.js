@@ -161,8 +161,6 @@ function addSongToUser(req, res) {
 	});
 }
 
-exports.addSongToUser = addSongToUser;
-
 /**
 * @api {delete} /users/songs/:idSong Delete a song from an user
 * @apiPermission user
