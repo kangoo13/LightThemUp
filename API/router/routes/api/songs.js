@@ -2,7 +2,9 @@
 
 var express     = require('express');
 var Song        = require('../../../models/Song.js');
+var User        = require('./users.js');
 var Comment     = require('../../../models/Comment.js');
+var User        = require('../../../models/User.js');
 var superSecret = require('../../../config.js').secret;
 var auth        = require('authenticate');
 var fs          = require('fs');
@@ -344,12 +346,13 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
 });
 
 /**
-* @api {put} /songs/:idSong/comments Edit a comment from a song
+* @api {put} /songs/:slug/comments Edit a comment from a song
 * @apiPermission user
 * @apiVersion 0.1.0
 * @apiName EditCommentFromSong
 * @apiGroup Comment
 *
+* @apiParam {String} slug The song you want to select.
 * @apiParam {String} message Message of the comment.
 * @apiParam {String} token authentification token is mandatory.
 *
@@ -399,9 +402,9 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
 *       message: "Unauthorized."
 *     }
 */
-router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+router.put('/:slug/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment && req.body.message) {
-    Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
+    Song.findOne({ 'slug': req.params.slug }).exec(function (err, song) {
       Comment.findById(req.params.idComment, function (err, comment) {
         if (comment == null) {
           return res.status(404).json({
@@ -443,13 +446,13 @@ router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function
 });
 
 /**
-* @api {delete} /songs/:idSong/comments/:idComment Delete a comment from a song
+* @api {delete} /songs/:slug/comments/:idComment Delete a comment from a song
 * @apiPermission user
 * @apiVersion 0.1.0
 * @apiName DeleteCommentFromSong
 * @apiGroup Comment
 *
-* @apiParam {Number} idSong Song that you want to select.
+* @apiParam {String} slug Song that you want to select.
 * @apiParam {Number} idComment Comment that you want to delete.
 * @apiParam {String} token authentification token is mandatory.
 *
@@ -497,9 +500,9 @@ router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function
 *       message: 'Wrong arguments'
 *     }
 */
-router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+router.delete('/:slug/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment) {
-    Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
+    Song.findOne({ 'slug': req.params.slug }).exec(function (err, song) {
       Comment.findById(req.params.idComment, function (err, comment) {
         if (comment == null) {
           return res.status(404).json({
@@ -543,12 +546,13 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
 });
 
 /**
-* @api {post} /songs/:idSong/comments Add a comment to a song
+* @api {post} /songs/:slug/comments Add a comment to a song
 * @apiPermission user
 * @apiVersion 0.1.0
 * @apiName AddCommentToSong
 * @apiGroup Comment
 *
+* @apiParam {String} slug The song you want to select.
 * @apiParam {String} message Message of the comment.
 * @apiParam {String} token authentification token is mandatory.
 *
@@ -571,6 +575,15 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
 *       message: 'Wrong arguments'
 *     }
 *
+* @apiError NotFound The song is not found in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: "Song is not found"
+*     }
+*
 * @apiError ServiceUnavailable Impossible to add a comment to a song.
 *
 * @apiErrorExample ServiceUnavailable:
@@ -580,46 +593,54 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
 *       message: "error message."
 *     }
 */
-router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res, next) {
-  Song.findOne({ 'slug': req.params.idSong }).exec(function (err, post) {
+router.post('/:slug/comments', auth({secret: superSecret}), function(req, res, next) {
+  Song.findOne({ 'slug': req.params.slug }).exec(function (err, post) {
     if (err) return next(err);
-    if (req.decoded.id && req.body.message) {
-      var comment = new Comment();
-      if (err) return next(err);
-      var author = new mongoose.mongo.ObjectID(req.decoded.id);
-      comment.author = author;
-      comment.message = req.body.message;
-      comment.type = "song";
-      comment.save(function (err) {
-        if (err) {
-          return res.status(503).json({
-            success: false,
-            message: err.errors
-          });
-        }
-        else {
-          var objectid = new mongoose.mongo.ObjectID(comment._id);
-          post.comments.push(objectid);
-          post.save(function (err) {
-            if (err) {
-              return res.status(503).json({
-                success: false,
-                message: err.errors
-              });
-            }
-            res.status(200).json({
-              success: true,
-              message: 'Comment added.'
+    if (post) {
+      if (req.decoded.id && req.body.message) {
+        var comment = new Comment();
+        if (err) return next(err);
+        var author = new mongoose.mongo.ObjectID(req.decoded.id);
+        comment.author = author;
+        comment.message = req.body.message;
+        comment.type = "song";
+        comment.save(function (err) {
+          if (err) {
+            return res.status(503).json({
+              success: false,
+              message: err.errors
             });
-          });
-        }
+          }
+          else {
+            var objectid = new mongoose.mongo.ObjectID(comment._id);
+            post.comments.push(objectid);
+            post.save(function (err) {
+              if (err) {
+                return res.status(503).json({
+                  success: false,
+                  message: err.errors
+                });
+              }
+              res.status(200).json({
+                success: true,
+                message: 'Comment added.'
+              });
+            });
+          }
+        });
+      }
+      else {
+        return res.status(400).json({
+          success: false,
+          message: 'Wrong arguments'
+        });
+      }
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: "Song is not found"
       });
     }
-    else
-    return res.status(400).json({
-      success: false,
-      message: 'Wrong arguments'
-    });
   });
 });
 
@@ -894,17 +915,16 @@ auth({secret: superSecret}), function(req, res, next) {
               song.difficulty = req.body.difficulty;
               song.scan = scanPath;
               song.slug = slug(req.body.name);
-              song.save(function (err) {
+              song.save(function (err, songCreated) {
                 if (err) {
                   return res.status(500).json({
                     success: false,
                     message: err.message
                   });
                 }
-                return res.status(200).json({
-                  success: true,
-                  message: 'Song created from your sheet music !'
-                });
+                else {
+                  addSongToUser(req, songCreated, res);
+                }
               });
             });
           }
@@ -930,6 +950,52 @@ auth({secret: superSecret}), function(req, res, next) {
     });
   }
 });
+
+// Function from "/songs" from users routes but a little bit different
+function addSongToUser(req, songCreated, res) {
+  if (songCreated) {
+    User.findOne({_id: req.decoded.id}, function (err, user) {
+      Song.findOne({_id: songCreated.id}, function (err, song) {
+        var objectid = new mongoose.mongo.ObjectID(songCreated.id);
+        if (user.songs.indexOf(objectid) === -1) {
+          user.songs.push(objectid);
+          user.save(function (err) {
+            if (err) {
+              return res.status(503).json({
+                success: false,
+                message: err.toString()
+              });
+            }
+            song.bought += 1;
+            song.save(function (err){
+              if (err) {
+                return res.status(503).json({
+                  success: false,
+                  message: err.toString()
+                });
+              }
+            });
+            res.status(200).json({
+              success: true,
+              message: 'Song added to user.'
+            });
+          });
+        }
+        else {
+          res.status(409).json({
+            success: false,
+            message: 'Song already added to user.'
+          });
+        }
+      });
+    });
+  }
+  else
+  return res.json({
+    success: false,
+    message: 'Wrong arguments'
+  });
+}
 
 /**
 * @api {get} /songs/:slug Get song by slug or id

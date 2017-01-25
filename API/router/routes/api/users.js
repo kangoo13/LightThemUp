@@ -114,7 +114,9 @@ router.get('/', function(req, res, next) {
 *       message: "error message."
 *     }
 */
-router.post('/songs', auth({secret: superSecret}), function(req, res) {
+router.post('/songs', auth({secret: superSecret}), addSongToUser);
+
+function addSongToUser(req, res) {
 	if (req.body.idSong) {
 		User.findOne({_id: req.decoded.id}, function (err, user) {
 			Song.findOne({_id: req.body.idSong}, function (err, song) {
@@ -157,7 +159,7 @@ router.post('/songs', auth({secret: superSecret}), function(req, res) {
 		success: false,
 		message: 'Wrong arguments'
 	});
-});
+}
 
 /**
 * @api {delete} /users/songs/:idSong Delete a song from an user

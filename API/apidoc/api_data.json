@@ -619,7 +619,7 @@
   },
   {
     "type": "post",
-    "url": "/songs/:idSong/comments",
+    "url": "/songs/:slug/comments",
     "title": "Add a comment to a song",
     "permission": [
       {
@@ -632,6 +632,13 @@
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The song you want to select.</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
@@ -688,6 +695,12 @@
           {
             "group": "Error 4xx",
             "optional": false,
+            "field": "NotFound",
+            "description": "<p>The song is not found in database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
             "field": "ServiceUnavailable",
             "description": "<p>Impossible to add a comment to a song.</p>"
           }
@@ -697,6 +710,11 @@
         {
           "title": "WrongArgs:",
           "content": "HTTP/1.1 400 Bad Request\n{\n  success: false,\n  message: 'Wrong arguments'\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFound:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  success: false,\n  message: \"Song is not found\"\n}",
           "type": "json"
         },
         {
@@ -711,7 +729,7 @@
   },
   {
     "type": "delete",
-    "url": "/songs/:idSong/comments/:idComment",
+    "url": "/songs/:slug/comments/:idComment",
     "title": "Delete a comment from a song",
     "permission": [
       {
@@ -726,9 +744,9 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "String",
             "optional": false,
-            "field": "idSong",
+            "field": "slug",
             "description": "<p>Song that you want to select.</p>"
           },
           {
@@ -947,7 +965,7 @@
   },
   {
     "type": "put",
-    "url": "/songs/:idSong/comments",
+    "url": "/songs/:slug/comments",
     "title": "Edit a comment from a song",
     "permission": [
       {
@@ -960,6 +978,13 @@
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The song you want to select.</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
