@@ -590,15 +590,18 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'PaypalService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, PaypalService, UserService, $location, toastr) {
 	var vm = this;
 
+	vm.dataLoading = true;
 	var token = $cookies.get("token");
 	var PayerID = $routeParams.PayerID;
 
 	PaypalService.getPaypalConfirmation(token, PayerID).then(function (response) {
 		if (!response.success) {
 			toastr.error("Le paiement a echoué. Merci de réessayer.");
+			vm.dataLoading = false;
 			$location.path('/');
 		}
 		else {
+			vm.dataLoading = false;
 			toastr.success("Merci pour votre achat ! :)");
 			$location.path('/mes-musiques');
 		}
