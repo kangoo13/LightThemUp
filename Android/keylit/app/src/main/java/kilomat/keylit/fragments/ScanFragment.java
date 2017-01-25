@@ -16,6 +16,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +55,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.http.entity.mime.HttpMultipartMode;
+import org.json.JSONObject;
+
 import kilomat.keylit.R;
+import kilomat.keylit.activity.LoginActivity;
 import kilomat.keylit.controller.SessionManager;
 import kilomat.keylit.controller.ToastMessage;
 
@@ -68,7 +73,7 @@ public class ScanFragment extends Fragment {
     EditText price;
     EditText artist;
     EditText difficulty;
-    Button b;
+    ImageView b;
     Button send;
     String mytoken;
     String idUser;
@@ -88,7 +93,6 @@ public class ScanFragment extends Fragment {
         manager = new SessionManager();
         mytoken = manager.getPreferences(getActivity(), "TokenKey");
         idUser = manager.getPreferences(getActivity(), "IdUser");
-        selectImage();
     }
 
     @Override
@@ -97,7 +101,7 @@ public class ScanFragment extends Fragment {
 
         View layout = inflater.inflate(R.layout.activity_scan, container, false);
 
-        b = (Button) layout.findViewById(R.id.btnSelectPhoto);
+
         send = (Button) layout.findViewById(R.id.btnSendPhoto);
         scan = (ImageView) layout.findViewById(R.id.viewImage);
         picture = (ImageView) layout.findViewById(R.id.scan_picture);
@@ -106,7 +110,6 @@ public class ScanFragment extends Fragment {
         price = (EditText) layout.findViewById(R.id.scan_price_inputText);
         difficulty = (EditText) layout.findViewById(R.id.scan_difficulty_inputText);
         send.setVisibility(View.VISIBLE);
-        b.setVisibility(View.VISIBLE);
         scan.setVisibility(View.VISIBLE);
 
 
@@ -114,10 +117,10 @@ public class ScanFragment extends Fragment {
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage();
+                selectImageAvatar();
             }
         });
-        b.setOnClickListener(new View.OnClickListener() {
+        scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
@@ -186,13 +189,13 @@ public class ScanFragment extends Fragment {
                         1);
 
                 if (! shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ActivityCompat.requestPermissions(ScanFragment.this.getActivity(), new String[] {Manifest.permission.CAMERA},
-                                            1);
-                                }
-                            };
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(ScanFragment.this.getActivity(), new String[] {Manifest.permission.CAMERA},
+                                    1);
+                        }
+                    };
                 }
             }
             else {
@@ -209,6 +212,56 @@ public class ScanFragment extends Fragment {
                         } else if (options[item].equals(getString(R.string.image_choose))) {
                             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, 2);
+
+                        } else if (options[item].equals(getString(R.string.action_cancel))) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        }
+
+    }
+
+    private void selectImageAvatar() {
+
+        final CharSequence[] options = {getString(R.string.image_take),
+                getString(R.string.image_choose), getString(R.string.action_cancel)};
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.getActivity().checkSelfPermission(Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                Log.d("MyApp", "Request permission");
+                ActivityCompat.requestPermissions(this.getActivity(),
+                        new String[]{Manifest.permission.CAMERA},
+                        1);
+
+                if (! shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(ScanFragment.this.getActivity(), new String[] {Manifest.permission.CAMERA},
+                                    1);
+                        }
+                    };
+                }
+            }
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(getString(R.string.image_title));
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals(getString(R.string.image_take))) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                            startActivityForResult(intent, 3);
+                        } else if (options[item].equals(getString(R.string.image_choose))) {
+                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(intent, 4);
 
                         } else if (options[item].equals(getString(R.string.action_cancel))) {
                             dialog.dismiss();
@@ -246,7 +299,6 @@ public class ScanFragment extends Fragment {
                     picture.setImageBitmap(bitmap);
                     /////
                     send.setVisibility(View.VISIBLE);
-                    b.setVisibility(View.VISIBLE);
                     scan.setVisibility(View.VISIBLE);
                     /////
                     String path = android.os.Environment
@@ -271,7 +323,71 @@ public class ScanFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (requestCode == 2) {
+            } else if (requestCode == 3) {
+                File f = new File(Environment.getExternalStorageDirectory().toString());
+                for (File temp : f.listFiles()) {
+                    if (temp.getName().equals("temp.jpg")) {
+                        f = temp;
+                        break;
+                    }
+                }
+                try {
+                    Bitmap bitmap;
+                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    bitmapOptions.inSampleSize = 2;
+                    /*bitmapOptions.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(new FileInputStream(f),null,bitmapOptions);*/
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                            bitmapOptions);
+
+                    picture.setImageBitmap(bitmap);
+                    /////
+                    send.setVisibility(View.VISIBLE);
+                    scan.setVisibility(View.VISIBLE);
+                    /////
+                    String path = android.os.Environment
+                            .getExternalStorageDirectory()
+                            + File.separator
+                            + "Phoenix" + File.separator + "default";
+                    f.delete();
+                    OutputStream outFile = null;
+                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+                    try {
+                        outFile = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        outFile.flush();
+                        outFile.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (requestCode == 2) {
+
+                Uri selectedImage = data.getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContext().getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+
+                scan_path = picturePath;
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 2;
+                Bitmap thumbnail = BitmapFactory.decodeFile(picturePath, options);
+
+                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                scan.setImageBitmap(thumbnail);
+                send.setVisibility(View.VISIBLE);
+                scan.setVisibility(View.VISIBLE);
+            } else if (requestCode == 4) {
 
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
@@ -282,16 +398,13 @@ public class ScanFragment extends Fragment {
                 c.close();
 
                 picture_path = picturePath;
-                scan_path = picturePath;
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inSampleSize = 2;
                 Bitmap thumbnail = BitmapFactory.decodeFile(picturePath, options);
 
                 //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                scan.setImageBitmap(thumbnail);
                 picture.setImageBitmap(thumbnail);
                 send.setVisibility(View.VISIBLE);
-                b.setVisibility(View.VISIBLE);
                 scan.setVisibility(View.VISIBLE);
             }
         }
@@ -330,7 +443,39 @@ public class ScanFragment extends Fragment {
             HttpResponse response = httpClient.execute(httpPost, localContext);
             String responseAsString = EntityUtils.toString(response.getEntity());
             System.out.println(responseAsString);
+            JSONObject obj = new JSONObject(responseAsString);
+            if (obj.getBoolean("success"))
+            {
+                ToastMessage.bar_message_success(v, "Success !",
+                        "OK");
 
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        picture.setImageResource(0);
+                        scan.setImageResource(0);
+                        Fragment fragment = new ShopFragment();
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                                android.R.anim.fade_out);
+                        fragmentTransaction.replace(R.id.frame, fragment, "shop");
+                        fragmentTransaction.commitAllowingStateLoss();
+                    }
+                });
+
+            }
+            else
+            {
+                ToastMessage.bar_message_fail(v, obj.getString("message"),
+                        "Error");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        picture.setImageResource(0);
+                        scan.setImageResource(0);
+                    }
+                });
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,52 +6,66 @@
     android:padding="10dp"
     android:weightSum="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:padding="5dp">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnSelectPhoto"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:layout_marginTop="1dp"
-            android:background="#999b99"
-            android:drawableLeft="@drawable/ic_camera_enhance_white_24dp"
-            android:padding="12dp"
-            android:text="Take a photo"
-            android:textColor="@color/white" />
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_vertical|center_horizontal|center"
         android:layout_height="wrap_content">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/scan_picture"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_below="@+id/header_cover_image"
-            android:layout_centerHorizontal="true"
             android:background="@drawable/circular_imageview"
             android:elevation="5dp"
             android:padding="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/profile" />
+            android:src="@drawable/profile"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp" />
+
+        <TextView
+            android:text="Preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:textColor="#ffffff"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal|center"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:text="Picture to scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView5"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:textColor="#ffffff" />
+
+
+    </RelativeLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="144dp"
         android:orientation="vertical"
         android:padding="5dp">
 
         <ImageView
             android:id="@+id/viewImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="141dp"
             android:layout_gravity="center"
             android:src="@drawable/back_scan_photo" />
     </LinearLayout>
