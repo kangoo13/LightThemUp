@@ -546,7 +546,7 @@ function ($scope, $cookies, SongService, PaypalService, toastr, $window) {
 
 }]);
 
-app.controller('ShopAllSongsController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', '$window'
+app.controller('ShopAllSongsController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', '$window',
 function ($scope, $cookies, SongService, UserService, $location, toastr, $window) {
 
 	var vm = this;
