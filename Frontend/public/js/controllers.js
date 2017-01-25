@@ -594,7 +594,7 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 
 }]);
 
-app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'PaypalService', 'UserService', '$location', 'toastr', '$window'
+app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'PaypalService', 'UserService', '$location', 'toastr', '$window',
 function ($scope, $routeParams, $cookies, PaypalService, UserService, $location, toastr, $window) {
 	var vm = this;
 
