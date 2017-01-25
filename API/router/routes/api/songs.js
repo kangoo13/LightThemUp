@@ -346,12 +346,13 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
 });
 
 /**
-* @api {put} /songs/:idSong/comments Edit a comment from a song
+* @api {put} /songs/:slug/comments Edit a comment from a song
 * @apiPermission user
 * @apiVersion 0.1.0
 * @apiName EditCommentFromSong
 * @apiGroup Comment
 *
+* @apiParam {String} slug The song you want to select.
 * @apiParam {String} message Message of the comment.
 * @apiParam {String} token authentification token is mandatory.
 *
@@ -401,9 +402,9 @@ router.get('/randomSongs/:nbSong', function(req, res, next) {
 *       message: "Unauthorized."
 *     }
 */
-router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+router.put('/:slug/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment && req.body.message) {
-    Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
+    Song.findOne({ 'slug': req.params.slug }).exec(function (err, song) {
       Comment.findById(req.params.idComment, function (err, comment) {
         if (comment == null) {
           return res.status(404).json({
@@ -445,13 +446,13 @@ router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function
 });
 
 /**
-* @api {delete} /songs/:idSong/comments/:idComment Delete a comment from a song
+* @api {delete} /songs/:slug/comments/:idComment Delete a comment from a song
 * @apiPermission user
 * @apiVersion 0.1.0
 * @apiName DeleteCommentFromSong
 * @apiGroup Comment
 *
-* @apiParam {Number} idSong Song that you want to select.
+* @apiParam {String} slug Song that you want to select.
 * @apiParam {Number} idComment Comment that you want to delete.
 * @apiParam {String} token authentification token is mandatory.
 *
@@ -499,9 +500,9 @@ router.put('/:idSong/comments/:idComment', auth({secret: superSecret}), function
 *       message: 'Wrong arguments'
 *     }
 */
-router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
+router.delete('/:slug/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment) {
-    Song.findOne({ 'slug': req.params.idSong }).exec(function (err, song) {
+    Song.findOne({ 'slug': req.params.slug }).exec(function (err, song) {
       Comment.findById(req.params.idComment, function (err, comment) {
         if (comment == null) {
           return res.status(404).json({

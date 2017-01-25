@@ -729,7 +729,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/songs/:idSong/comments/:idComment",
+    "url": "/songs/:slug/comments/:idComment",
     "title": "Delete a comment from a song",
     "permission": [
       {
@@ -744,9 +744,9 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "String",
             "optional": false,
-            "field": "idSong",
+            "field": "slug",
             "description": "<p>Song that you want to select.</p>"
           },
           {
@@ -965,7 +965,7 @@ define({ "api": [
   },
   {
     "type": "put",
-    "url": "/songs/:idSong/comments",
+    "url": "/songs/:slug/comments",
     "title": "Edit a comment from a song",
     "permission": [
       {
@@ -978,6 +978,13 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The song you want to select.</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
