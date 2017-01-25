@@ -48,6 +48,11 @@ app.config(function ($routeProvider, $locationProvider) {
     controller: 'SongDetailController',
     controllerAs: 'vm',
     authorizedAccess: true
+  }).when('/paypal/execute', {
+    templateUrl: '/execute.html',
+    controller: 'PaypalController',
+    controllerAs: 'vm',
+    authorizedAccess: true
   }).when('/news', {
     templateUrl: '/news.html',
     controller: 'NewsController',

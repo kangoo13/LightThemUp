@@ -578,6 +578,19 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 
 }]);
 
+app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'PaypalService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, PaypalService, UserService, $location, toastr) {
+	var vm = this;
+
+	var token = $cookies.get("token");
+	var PayerID = $routeParams.PayerID;
+
+	console.log(PayerID);
+
+	// PaypalService.getPaypalConfirmation(token, PayerID).then(function (response) {
+	//
+	// });
+}]);
+
 app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, SongService, UserService, $location, toastr) {
 
 	var vm = this;

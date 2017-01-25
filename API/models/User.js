@@ -12,6 +12,7 @@ var userSchema = mongoose.Schema({
   description : { type: String },
   city : { type: String },
   country : { type: String },
+  paymentId : { type: String },
   achievements: [{type: Schema.Types.ObjectId, ref: 'Achievement'}],
   songs: [{type: Schema.Types.ObjectId, ref: 'Song'}],
   facebook         : {
