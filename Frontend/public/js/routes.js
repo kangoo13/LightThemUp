@@ -49,7 +49,7 @@ app.config(function ($routeProvider, $locationProvider) {
     controllerAs: 'vm',
     authorizedAccess: true
   }).when('/paypal/execute', {
-    templateUrl: '/execute.html',
+    templateUrl: '/paypal.html',
     controller: 'PaypalController',
     controllerAs: 'vm',
     authorizedAccess: true
