@@ -619,7 +619,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/songs/:idSong/comments",
+    "url": "/songs/:slug/comments",
     "title": "Add a comment to a song",
     "permission": [
       {
@@ -634,9 +634,9 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "String",
             "optional": false,
-            "field": "idSong",
+            "field": "slug",
             "description": "<p>The song you want to select.</p>"
           },
           {

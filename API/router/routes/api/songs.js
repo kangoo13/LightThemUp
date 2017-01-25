@@ -545,13 +545,13 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
 });
 
 /**
-* @api {post} /songs/:idSong/comments Add a comment to a song
+* @api {post} /songs/:slug/comments Add a comment to a song
 * @apiPermission user
 * @apiVersion 0.1.0
 * @apiName AddCommentToSong
 * @apiGroup Comment
 *
-* @apiParam {Number} idSong The song you want to select.
+* @apiParam {String} slug The song you want to select.
 * @apiParam {String} message Message of the comment.
 * @apiParam {String} token authentification token is mandatory.
 *
@@ -592,8 +592,8 @@ router.delete('/:idSong/comments/:idComment', auth({secret: superSecret}), funct
 *       message: "error message."
 *     }
 */
-router.post('/:idSong/comments', auth({secret: superSecret}), function(req, res, next) {
-  Song.findOne({ 'slug': req.params.idSong }).exec(function (err, post) {
+router.post('/:slug/comments', auth({secret: superSecret}), function(req, res, next) {
+  Song.findOne({ 'slug': req.params.slug }).exec(function (err, post) {
     if (err) return next(err);
     if (post) {
       if (req.decoded.id && req.body.message) {
