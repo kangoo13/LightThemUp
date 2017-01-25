@@ -27,9 +27,7 @@ router.get('/execute', auth({secret: superSecret}), function(req, res, next) {
         if (error) {
           console.log(error);
         } else {
-          console.log(payment);
-          console.log(payment.description);
-          addSongToUser(req, res, payment.description);
+          addSongToUser(req, res, user.lastPurchase);
         }
       });
     } else {
@@ -42,10 +40,10 @@ router.get('/execute', auth({secret: superSecret}), function(req, res, next) {
 });
 
 // Function from "/songs" from users routes but a little bit different
-function addSongToUser(req, res, songSlug) {
+function addSongToUser(req, res, idSong) {
   User.findOne({_id: req.decoded.id}, function (err, user) {
-    Song.findOne({slug: songSlug}, function (err, song) {
-      var objectid = new mongoose.mongo.ObjectID(song.id);
+    Song.findOne({_id: idSong}, function (err, song) {
+      var objectid = new mongoose.mongo.ObjectID(idSong);
       if (user.songs.indexOf(objectid) === -1) {
         user.songs.push(objectid);
         user.save(function (err) {
@@ -90,7 +88,7 @@ router.get('/:slug/:method/', auth({secret: superSecret}), function(req, res, ne
             if (song) {
               var method = req.params.method;
               var amount = song.price;
-              var description = song.slug;
+              var description = "Song that you want to purchase : " + song.artist + " - " + song.name;
 
               var payment = {
                 "intent": "sale",
@@ -143,6 +141,7 @@ router.get('/:slug/:method/', auth({secret: superSecret}), function(req, res, ne
                   console.log(payment);
                   if (payment.payer.payment_method === 'paypal') {
                     user.paymentId = payment.id;
+                    user.lastPurchase = song.id;
                     user.save(function (err) {
                       if (err) {
                         return res.status(503).json({
