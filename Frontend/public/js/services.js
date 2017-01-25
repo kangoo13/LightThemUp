@@ -426,7 +426,7 @@ app.factory("PaypalService", function ($http) {
 
   var service = {};
 
-  service.GetAllByUser = GetAllByUser;
+  service.getPaypalConfirmation = getPaypalConfirmation;
 
   return service;
 
