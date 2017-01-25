@@ -25,7 +25,11 @@ router.get('/execute', auth({secret: superSecret}), function(req, res, next) {
 
       paypal.payment.execute(paymentId, details, function (error, payment) {
         if (error) {
-          console.log(error);
+          console.error(error);
+          return res.status(501).json({
+            success: false,
+            message: "Cannot verify payment."
+          });
         } else {
           addSongToUser(req, res, user.lastPurchase);
         }
