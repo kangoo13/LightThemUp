@@ -53,6 +53,10 @@ app.config(function ($routeProvider, $locationProvider) {
     controller: 'PaypalController',
     controllerAs: 'vm',
     authorizedAccess: true
+  }).when('/paypal/cancel', {
+    redirectTo: function() {
+      window.location.replace = "/";
+    }
   }).when('/news', {
     templateUrl: '/news.html',
     controller: 'NewsController',

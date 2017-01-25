@@ -1,6 +1,7 @@
 'use strict';
 
 var apiUrl = "//lightthemup.fr.nf:3000"
+var frontendUrl = "//lightthemup.fr.nf"
 
 /* Controllers */
 
@@ -554,6 +555,12 @@ app.controller('ShopAllSongsController', ['$scope', '$cookies', 'SongService', '
 		vm.dataLoading = false;
 	});
 
+	vm.buySong = buySong;
+	function buySong(idSong) {
+		var method = "paypal";
+		$window.location.href = apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + $cookies.get("token");
+	}
+
 }]);
 
 
@@ -587,7 +594,8 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 
 }]);
 
-app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'PaypalService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, PaypalService, UserService, $location, toastr) {
+app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'PaypalService', 'UserService', '$location', 'toastr', '$window'
+function ($scope, $routeParams, $cookies, PaypalService, UserService, $location, toastr, $window) {
 	var vm = this;
 
 	vm.dataLoading = true;
@@ -598,12 +606,12 @@ app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'Paypa
 		if (!response.success) {
 			toastr.error("Le paiement a echoué. Merci de réessayer.");
 			vm.dataLoading = false;
-			$location.path('/');
+			$window.location.href = frontendUrl;
 		}
 		else {
 			vm.dataLoading = false;
 			toastr.success("Merci pour votre achat ! :)");
-			$location.path('/mes-musiques');
+			$window.location.href = frontendUrl + "mes-musiques";
 		}
 	});
 }]);
