@@ -328,6 +328,9 @@ public class ScanFragment extends Fragment {
             httpPost.setEntity(entity);
             httpPost.addHeader("x-access-token", mytoken);
             HttpResponse response = httpClient.execute(httpPost, localContext);
+            String responseAsString = EntityUtils.toString(response.getEntity());
+            System.out.println(responseAsString);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
