@@ -38,7 +38,7 @@ router.get('/execute', auth({secret: superSecret}), function(req, res, next) {
         message: "User not found."
       });
     }
-  }
+  });
 });
 
 // Function from "/songs" from users routes but a little bit different
