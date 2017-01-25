@@ -521,7 +521,8 @@ app.controller('LastSongsSideBlockController', ['$scope', 'UserService', 'SongSe
 	});
 }]);
 
-app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'PaypalService', '$location', 'toastr', function ($scope, $cookies, SongService, PaypalService, $location, toastr) {
+app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'PaypalService', 'toastr', '$window',
+function ($scope, $cookies, SongService, PaypalService, toastr, $window) {
 
 	var vm = this;
 	vm.dataLoading = true;
@@ -539,7 +540,7 @@ app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'PaypalSe
 	vm.buySong = buySong;
 	function buySong(idSong) {
 		var method = "paypal";
-		$location.path(apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + $cookies.get("token"));
+		$window.location.href = apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + $cookies.get("token");
 	}
 
 }]);
