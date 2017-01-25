@@ -45,9 +45,9 @@ app.factory("UserService", function ($http) {
     });
     return $http.put(apiUrl + '/users/' + id, formData, {
       headers: {
-       'Content-Type': undefined
-     }
-   }).then(handleSuccess, handleError);
+        'Content-Type': undefined
+      }
+    }).then(handleSuccess, handleError);
   }
 
   function Delete(id, token) {
@@ -272,9 +272,9 @@ app.factory("SongService", function ($http) {
     console.log(data);
     return $http.post(apiUrl + '/songs/', formData, {
       headers: {
-       'Content-Type': undefined
-     }
-   }).then(handleSuccess, handleError);
+        'Content-Type': undefined
+      }
+    }).then(handleSuccess, handleError);
   }
 
   function SendComment(form, slug, token) {
@@ -411,6 +411,27 @@ app.factory("SuccesService", function ($http) {
 
   function GetAll() {
     return $http.get(apiUrl + '/achievements').then(handleSuccess, handleError);
+  }
+
+  function handleSuccess(res) {
+    return res.data;
+  }
+
+  function handleError(res) {
+    return res.data;
+  }
+});
+
+app.factory("PaypalService", function ($http) {
+
+  var service = {};
+
+  service.GetAllByUser = GetAllByUser;
+
+  return service;
+
+  function getPaypalConfirmation(token, PayerID) {
+    return $http.get(apiUrl + '/paypal/execute?token=' + token + '&PayerID=' + PayerID).then(handleSuccess, handleError);
   }
 
   function handleSuccess(res) {

@@ -7,5 +7,6 @@
  	app.use('/users', require('./routes/api/users'));
  	app.use('/contact', require('./routes/api/contact'));
  	app.use('/comments', require('./routes/api/comments'));
+  app.use('/paypal', require('./routes/api/paypal'));
  	app.use('/token', require('./routes/api/token'));
  };
