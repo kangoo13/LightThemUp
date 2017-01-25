@@ -584,11 +584,9 @@ app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'Paypa
 	var token = $cookies.get("token");
 	var PayerID = $routeParams.PayerID;
 
-	console.log(PayerID);
-
-	// PaypalService.getPaypalConfirmation(token, PayerID).then(function (response) {
-	//
-	// });
+	PaypalService.getPaypalConfirmation(token, PayerID).then(function (response) {
+		console.log(response);
+	});
 }]);
 
 app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, SongService, UserService, $location, toastr) {

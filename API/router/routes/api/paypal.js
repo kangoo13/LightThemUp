@@ -18,31 +18,34 @@ router.get('/cancel', function(req, res, next) {
 });
 
 router.get('/execute', auth({secret: superSecret}), function(req, res, next) {
-  // res.status(200).json({
-  //   token: req.query.token,
-  //   paymentId: req.query.paymentId,
-  //   PayerID: req.query.PayerID,
-  //   paymentId2: req.session.paymentId
-  // });
-  var paymentId = req.session.paymentId;
-  var payerId = req.query.PayerID;
+  User.findOne({_id: req.decoded.id}, function (err, user) {
+    if (user) {
+      var paymentId = user.paymentId;
+      var details = { "payer_id": req.query.PayerID };
 
-  var details = { "payer_id": payerId };
-  paypal.payment.execute(paymentId, details, function (error, payment) {
-    if (error) {
-      console.log(error);
+      paypal.payment.execute(paymentId, details, function (error, payment) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(payment);
+          console.log(payment.description);
+          addSongToUser(req, res, payment.description);
+        }
+      });
     } else {
-      addSongToUser(req, res);
-      res.send(payment);
+      return res.status(404).json({
+        success: false,
+        message: "User not found."
+      });
     }
-  });
+  }
 });
 
 // Function from "/songs" from users routes but a little bit different
-function addSongToUser(req, res) {
+function addSongToUser(req, res, songSlug) {
   User.findOne({_id: req.decoded.id}, function (err, user) {
-    Song.findOne({_id: songCreated.id}, function (err, song) {
-      var objectid = new mongoose.mongo.ObjectID(songCreated.id);
+    Song.findOne({slug: songSlug}, function (err, song) {
+      var objectid = new mongoose.mongo.ObjectID(song.id);
       if (user.songs.indexOf(objectid) === -1) {
         user.songs.push(objectid);
         user.save(function (err) {
@@ -87,7 +90,7 @@ router.get('/:slug/:method/', auth({secret: superSecret}), function(req, res, ne
             if (song) {
               var method = req.params.method;
               var amount = song.price;
-              var description = "Song that you want to purchase : " + song.artist + " - " + song.name;
+              var description = song.slug;
 
               var payment = {
                 "intent": "sale",
