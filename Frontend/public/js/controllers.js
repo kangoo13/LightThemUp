@@ -539,7 +539,7 @@ app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'PaypalSe
 	vm.buySong = buySong;
 	function buySong(idSong) {
 		var method = "paypal";
-		$location.path(apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + token);
+		$location.path(apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + $cookies.get("token"));
 	}
 
 }]);
