@@ -806,7 +806,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "NotFound",
-            "description": "<p>Comment doesn't exist in database.</p>"
+            "description": "<p>Comment or song don't exist in database.</p>"
           },
           {
             "group": "Error 4xx",
@@ -824,7 +824,7 @@
         },
         {
           "title": "NotFound:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  success: false,\n  message: \"Comment doesn't exist.\"\n}",
+          "content": "HTTP/1.1 404 Not Found\n{\n  success: false,\n  message: \"Comment/Song doesn't exist.\"\n}",
           "type": "json"
         },
         {
