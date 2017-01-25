@@ -22,7 +22,7 @@
 							Difficulté: {{ song.difficulty }}
 							<br>
 						</p>
-						<a title="Acheter" class="button button-primary" href="songs/{{ song.slug }}">Acheter</a>
+						<a title="Acheter" class="button button-primary" ng-click="vm.buySong(song.id)">Acheter</a>
 						<a title="Ecouter" class="button" href="{{ song.preview }}">Ecouter</a>
 					</div>
 				</div>

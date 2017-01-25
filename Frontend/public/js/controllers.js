@@ -1,5 +1,7 @@
 'use strict';
 
+var apiUrl = "//lightthemup.fr.nf:3000"
+
 /* Controllers */
 
 app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', 'UserService', 'toastr',  function ($rootScope, $scope, $location, $cookies, UserService, toastr) {
@@ -519,7 +521,7 @@ app.controller('LastSongsSideBlockController', ['$scope', 'UserService', 'SongSe
 	});
 }]);
 
-app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'PaypalService', '$location', 'toastr', function ($scope, $cookies, SongService, PaypalService, $location, toastr) {
 
 	var vm = this;
 	vm.dataLoading = true;
@@ -533,6 +535,12 @@ app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserServ
 		$scope.newSongs = response;
 		vm.dataLoading = false;
 	});
+
+	vm.buySong = buySong;
+	function buySong(idSong) {
+		var method = "paypal";
+		$location.path(apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + token);
+	}
 
 }]);
 
@@ -585,7 +593,14 @@ app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'Paypa
 	var PayerID = $routeParams.PayerID;
 
 	PaypalService.getPaypalConfirmation(token, PayerID).then(function (response) {
-		console.log(response);
+		if (!response.success) {
+			toastr.error("Le paiement a echoué. Merci de réessayer.");
+			$location.path('/');
+		}
+		else {
+			toastr.success("Merci pour votre achat ! :)");
+			$location.path('/mes-musiques');
+		}
 	});
 }]);
 

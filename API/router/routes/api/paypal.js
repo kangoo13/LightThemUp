@@ -79,12 +79,12 @@ function addSongToUser(req, res, idSong) {
 }
 
 
-router.get('/:slug/:method/', auth({secret: superSecret}), function(req, res, next) {
+router.get('/:idSong/:method/', auth({secret: superSecret}), function(req, res, next) {
   if (req.decoded.admin || req.decoded.id ) {
-    if (req.params.slug && req.params.method) {
+    if (req.params.idSong && req.params.method) {
       User.findOne({_id: req.decoded.id}, function (err, user) {
         if (user) {
-          Song.findOne({'slug': req.params.slug}, function (err, song) {
+          Song.findOne({_id: req.params.idSong}, function (err, song) {
             if (song) {
               var method = req.params.method;
               var amount = song.price;

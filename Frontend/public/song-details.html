@@ -18,7 +18,7 @@
 				Difficulté: <span ng-bind-html="song.difficulty"></span>
 				<br>
 			</p>
-			<a ng-if="bought == true" title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique ?" confirmed-click="vm.RemoveSongFromUser()" href="#">Supprimer</a>
+			<!-- <a ng-if="bought == true" title="Supprimer" class="button" ng-confirm-click="Confirmez-vous la suppression de la musique ?" confirmed-click="vm.RemoveSongFromUser()" href="#">Supprimer</a> -->
 			<a ng-if="bought == false" title="Ajouter" class="button button-primary" href="#" ng-click="vm.AddSongToUser()">Ajouter</a>
 			<a id="{{ song._id }}_launch" href="#" class="button launch_button" ng-click="launchMidi(song.file, song._id)">Ecouter</a>
 			<a id="{{ song._id }}_stop" href="#" class="button stop_button" ng-click="stopMidi(song._id)">Arrêter</a>
