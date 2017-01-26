@@ -522,8 +522,8 @@ app.controller('LastSongsSideBlockController', ['$scope', 'UserService', 'SongSe
 	});
 }]);
 
-app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'PaypalService', 'UserService', 'toastr', '$window',
-function ($scope, $cookies, SongService, PaypalService, UserService, toastr, $window) {
+app.controller('ShopController', ['$scope', '$cookies', '$routeParams', 'SongService', 'PaypalService', 'UserService', 'toastr', '$window',
+function ($scope, $cookies, $routeParams, SongService, PaypalService, UserService, toastr, $window) {
 
 	var vm = this;
 	vm.dataLoading = true;
@@ -628,7 +628,7 @@ function ($scope, $routeParams, $cookies, PaypalService, UserService, $location,
 }]);
 
 app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', '$window',
-function ($scope, $routeParams,$cookies, SongService, UserService, $location, toastr, $window) {
+function ($scope, $routeParams, $cookies, SongService, UserService, $location, toastr, $window) {
 
 	var vm = this;
 	vm.dataLoading = true;
