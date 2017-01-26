@@ -306,6 +306,7 @@ public class ScanFragment extends Fragment {
                             + File.separator
                             + "Phoenix" + File.separator + "default";
                     f.delete();
+
                     OutputStream outFile = null;
                     File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
@@ -349,7 +350,7 @@ public class ScanFragment extends Fragment {
                             .getExternalStorageDirectory()
                             + File.separator
                             + "Phoenix" + File.separator + "default";
-                    f.delete();
+                    picture_path = f.getAbsolutePath();
                     OutputStream outFile = null;
                     File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
