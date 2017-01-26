@@ -1,5 +1,8 @@
 'use strict';
 
+var apiUrl = "//lightthemup.fr.nf:3000"
+var frontendUrl = "//lightthemup.fr.nf"
+
 /* Controllers */
 
 app.controller('MainController', ['$rootScope', '$scope', '$location', '$cookies', 'UserService', 'toastr',  function ($rootScope, $scope, $location, $cookies, UserService, toastr) {
@@ -519,7 +522,8 @@ app.controller('LastSongsSideBlockController', ['$scope', 'UserService', 'SongSe
 	});
 }]);
 
-app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'PaypalService', 'toastr', '$window',
+function ($scope, $cookies, SongService, PaypalService, toastr, $window) {
 
 	var vm = this;
 	vm.dataLoading = true;
@@ -534,9 +538,16 @@ app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'UserServ
 		vm.dataLoading = false;
 	});
 
+	vm.buySong = buySong;
+	function buySong(idSong) {
+		var method = "paypal";
+		$window.location.href = apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + $cookies.get("token");
+	}
+
 }]);
 
-app.controller('ShopAllSongsController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $cookies, SongService, UserService, $location, toastr) {
+app.controller('ShopAllSongsController', ['$scope', '$cookies', 'SongService', 'UserService', '$location', 'toastr', '$window',
+function ($scope, $cookies, SongService, UserService, $location, toastr, $window) {
 
 	var vm = this;
 	vm.dataLoading = true;
@@ -544,6 +555,12 @@ app.controller('ShopAllSongsController', ['$scope', '$cookies', 'SongService', '
 		$scope.songs = response;
 		vm.dataLoading = false;
 	});
+
+	vm.buySong = buySong;
+	function buySong(idSong) {
+		var method = "paypal";
+		$window.location.href = apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + $cookies.get("token");
+	}
 
 }]);
 
@@ -578,20 +595,30 @@ app.controller('MySongsController', ['$scope', '$cookies', 'SongService', 'UserS
 
 }]);
 
-app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'PaypalService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, PaypalService, UserService, $location, toastr) {
+app.controller('PaypalController', ['$scope', '$routeParams', '$cookies', 'PaypalService', 'UserService', '$location', 'toastr', '$window',
+function ($scope, $routeParams, $cookies, PaypalService, UserService, $location, toastr, $window) {
 	var vm = this;
 
+	vm.dataLoading = true;
 	var token = $cookies.get("token");
 	var PayerID = $routeParams.PayerID;
 
-	console.log(PayerID);
-
-	// PaypalService.getPaypalConfirmation(token, PayerID).then(function (response) {
-	//
-	// });
+	PaypalService.getPaypalConfirmation(token, PayerID).then(function (response) {
+		if (!response.success) {
+			toastr.error("Le paiement a echoué. Merci de réessayer.");
+			vm.dataLoading = false;
+			$window.location.href = frontendUrl;
+		}
+		else {
+			vm.dataLoading = false;
+			toastr.success("Merci pour votre achat ! :)");
+			$window.location.href = frontendUrl + "/mes-musiques";
+		}
+	});
 }]);
 
-app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', function ($scope, $routeParams,$cookies, SongService, UserService, $location, toastr) {
+app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', '$window',
+function ($scope, $routeParams,$cookies, SongService, UserService, $location, toastr, $window) {
 
 	var vm = this;
 	vm.dataLoading = true;
@@ -724,6 +751,12 @@ app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'S
 			i++;
 		}
 		$scope.song.difficulty = result;
+	}
+
+	vm.buySong = buySong;
+	function buySong(idSong) {
+		var method = "paypal";
+		$window.location.href = apiUrl + '/paypal/' + idSong + "/" + method + '?token=' + $cookies.get("token");
 	}
 
 }]);

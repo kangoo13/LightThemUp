@@ -475,13 +475,13 @@ router.put('/:slug/comments/:idComment', auth({secret: superSecret}), function(r
 *       message: "Unauthorized."
 *     }
 *
-* @apiError NotFound Comment doesn't exist in database.
+* @apiError NotFound Comment or song don't exist in database.
 *
 * @apiErrorExample NotFound:
 *     HTTP/1.1 404 Not Found
 *     {
 *       success: false,
-*       message: "Comment doesn't exist."
+*       message: "Comment/Song doesn't exist."
 *     }
 *
 * @apiErrorExample ServerError:
@@ -503,8 +503,14 @@ router.put('/:slug/comments/:idComment', auth({secret: superSecret}), function(r
 router.delete('/:slug/comments/:idComment', auth({secret: superSecret}), function(req, res, next) {
   if (req.params.idComment) {
     Song.findOne({ 'slug': req.params.slug }).exec(function (err, song) {
+      if (!song) {
+        return res.status(404).json({
+          success: false,
+          message: "Song doesn't exist."
+        });
+      }
       Comment.findById(req.params.idComment, function (err, comment) {
-        if (comment == null) {
+        if (!comment) {
           return res.status(404).json({
             success: false,
             message: "Comment doesn't exist."
