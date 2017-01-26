@@ -6,7 +6,7 @@ var should = require('should');
 var config = require('../config');
 var path = require('path');
 var fs = require('fs');
-var url = 'http://localhost:3000';
+var url = 'http://lightthemup.fr.nf:3000';
 
 // Variables used in test
 var token;
@@ -23,10 +23,10 @@ var passwordAdmin = 'Test1234';
 describe('Users', function() {
  this.timeout(10000);
  before(function(done) {
-  mongoose.connect(config.database);              
+  mongoose.connect(config.database);
   done();
 });
- 
+
  it('Should return error trying to save a new user with dumb arguments', function(done) {
   var profile = {
     dsq: emailUser,
@@ -410,5 +410,5 @@ describe('Users', function() {
  after(function() {
   mongoose.disconnect();
 });
- 
+
 });

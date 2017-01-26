@@ -20,7 +20,7 @@ var router      = express.Router();
 var uploadConfig = {
   acceptedMimeTypes : [ "image/jpeg", "image/png", "image/gif", "image/tiff" ],
   acceptedExtensions : [ "jpg", "jpeg", "png", "gif", "tiff" ],
-  maxFileSize : 2000000
+  maxFileSize : 20000000
 };
 
 var uploadMusicConfig = {
@@ -905,7 +905,7 @@ auth({secret: superSecret}), function(req, res, next) {
             path.resolve(realPath +"song.mid"),
             function callback(error, stdout, stderr){
               console.log("Error = " + error + "\n - Sortie standard =  " + stdout + "\n - Sortie d'erreur = " + stderr);
-              if (error || stdout === "") {
+               if (error || stdout === "" || stderr) {
                 return res.status(501).json({
                   success: false,
                   message: "Error while trying to convert the sheet music into MIDI song"

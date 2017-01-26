@@ -10,13 +10,6 @@ var paypal      = require('paypal-rest-sdk');
 var frontendUrl = "http://lightthemup.fr.nf/"
 var router      = express.Router();
 
-
-router.get('/cancel', function(req, res, next) {
-  res.status(200).json({
-    token: req.query.token
-  });
-});
-
 router.get('/execute', auth({secret: superSecret}), function(req, res, next) {
   User.findOne({_id: req.decoded.id}, function (err, user) {
     if (user) {

@@ -6,7 +6,7 @@ var should = require('should');
 var config = require('../config');
 var path = require('path');
 var fs = require('fs');
-var url = 'http://localhost:3000';
+var url = 'http://lightthemup.fr.nf:3000';
 
 // Variables used in test
 var tokenAdmin;
@@ -22,7 +22,7 @@ var idUser;
 describe('Playlists', function() {
 	this.timeout(10000);
 	before(function(done) {
-		mongoose.connect(config.database);              
+		mongoose.connect(config.database);
 		done();
 	});
 
