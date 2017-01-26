@@ -522,8 +522,8 @@ app.controller('LastSongsSideBlockController', ['$scope', 'UserService', 'SongSe
 	});
 }]);
 
-app.controller('ShopController', ['$scope', '$cookies', '$routeParams', 'SongService', 'PaypalService', 'UserService', 'toastr', '$window',
-function ($scope, $cookies, $routeParams, SongService, PaypalService, UserService, toastr, $window) {
+app.controller('ShopController', ['$scope', '$cookies', 'SongService', 'PaypalService', 'toastr', '$window',
+function ($scope, $cookies, SongService, PaypalService, toastr, $window) {
 
 	var vm = this;
 	vm.dataLoading = true;
@@ -536,16 +536,6 @@ function ($scope, $cookies, $routeParams, SongService, PaypalService, UserServic
 	SongService.GetNewSongs(3).then(function (response) {
 		$scope.newSongs = response;
 		vm.dataLoading = false;
-	});
-
-	UserService.Account($cookies.get('id')).then(function (response) {
-		$scope.bought = false;
-		$scope.user = response;
-
-		for(var i = 0; i < response.songs.length; i++) {
-			if (response.songs[i].slug == $routeParams.slug)
-			$scope.bought = true;
-		}
 	});
 
 	vm.buySong = buySong;
@@ -628,7 +618,7 @@ function ($scope, $routeParams, $cookies, PaypalService, UserService, $location,
 }]);
 
 app.controller('SongDetailController', ['$scope', '$routeParams', '$cookies', 'SongService', 'UserService', '$location', 'toastr', '$window',
-function ($scope, $routeParams, $cookies, SongService, UserService, $location, toastr, $window) {
+function ($scope, $routeParams,$cookies, SongService, UserService, $location, toastr, $window) {
 
 	var vm = this;
 	vm.dataLoading = true;
