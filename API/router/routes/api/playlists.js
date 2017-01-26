@@ -418,6 +418,15 @@ router.get('/:idPlaylist', auth({secret: superSecret}), function(req, res, next)
 *       message: "Unauthorized."
 *     }
 *
+* @apiError NotFound Playlist not found.
+*
+* @apiErrorExample WrongArgs:
+*     HTTP/1.1 404 Not Found
+*     {
+*       success: false,
+*       message: 'Playlist not found.'
+*     }
+*
 * @apiError WrongArgs Missing arguments to edit the comment.
 *
 * @apiErrorExample WrongArgs:
@@ -438,6 +447,12 @@ router.get('/:idPlaylist', auth({secret: superSecret}), function(req, res, next)
 */
 router.put('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
   Playlist.findOne({'_id': req.params.idPlaylist}, function (err, playlist) {
+    if (!playlist) {
+      return res.status(404).json({
+        success: false,
+        message: 'Playlist not found.'
+      });
+    }
     if (req.decoded.admin || req.decoded.id == playlist.created_by) {
       if (req.body.name) {
         Playlist.findByIdAndUpdate(req.params.idPlaylist,  { $set: { name: req.body.name}}, function (err, post) {
