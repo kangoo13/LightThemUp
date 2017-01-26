@@ -514,10 +514,26 @@ router.put('/:idPlaylist', auth({secret: superSecret}), function(req, res, next)
 *       success: false,
 *       message: "Unauthorized."
 *     }
+*
+* @apiError NotFound Playlist not found in database.
+*
+* @apiErrorExample NotFound:
+*     HTTP/1.1 404 Not found
+*     {
+*       success: false,
+*       message: "Playlist doesn't exist !"
+*     }
+*
 */
 router.delete('/:idPlaylist', auth({secret: superSecret}), function(req, res, next) {
   Playlist.findOne({'_id': req.params.idPlaylist}, function (err, playlist) {
     if (req.decoded.admin || req.decoded.id == playlist.created_by) {
+      if (!playlist) {
+        return res.status(404).json({
+          success: false,
+          message: 'Playlist not found.'
+        });
+      }
       Playlist.findByIdAndRemove(req.params.idPlaylist, req.body, function (err, post) {
         if (err) {
           return next(err);
